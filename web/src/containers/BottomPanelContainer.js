@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import * as s from '../components';
+import * as l from '../components/layout';
 import styled from 'styled-components';
 import MappingForm from './forms/MappingForm';
 import ResourceForm from './forms/ResourceForm';
@@ -13,7 +13,7 @@ class BottomPanelContainer extends Component {
   constructor(props){
       super(props);
       this.state = {
-        view: 0, // 0: detail, 1,2,3 forms:mapping,resource,category
+        view: 1, // 0: detail, 1,2,3 forms:mapping,resource,category
         edit: false,
         
       }
@@ -104,7 +104,7 @@ class BottomPanelContainer extends Component {
                 editResource={this.editResource}    // function to change to edit view
                 cancel={this.cancelEdit}
                 setDetail={this.props.setDetail}
-            />  
+            />
             </PanelContent>
             </BottomPanel>
         );

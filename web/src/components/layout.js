@@ -239,10 +239,12 @@ export const PreviewAndForms = styled.div`
 `;
 
 export const BottomPanelContent = styled.div`
+    display: flex;
+    justify-content: center;
     background: #fafafa;
     padding: 12px;
     border-radius: 5px;
     height: inherit;
-    width: auto;
+    width: 80vw;
     color: rgb(45, 45, 57);
 `;

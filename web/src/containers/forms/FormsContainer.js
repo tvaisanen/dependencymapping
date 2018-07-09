@@ -6,19 +6,21 @@ import CategoryForm from './CategoryForm';
 import ResourceForm from './ResourceForm';
 import MappingForm from './MappingForm';
 
-export const SelectForm = ({openForm}) => <l.LayoutCol>
+export const SelectForm = ({openForm}) => <l.LayoutCol id="form-selection-container">
     <h2>Create new</h2>
-        <f.FormSelection 
+    <f.FormSelectionItems id="form-selection-items">
+        <f.FormSelection id="form-selection-item"
             onClick={() => openForm({ viewId: 1 })}
             >Mapping
         </f.FormSelection>
-        <f.FormSelection
+        <f.FormSelection id="form-selection-item"
             onClick={() => openForm({ viewId: 2 })}
             >Resource
         </f.FormSelection>
-        <f.FormSelection
+        <f.FormSelection id="form-selection-item"
             onClick={() => openForm({ viewId: 3 })}
         >Category</f.FormSelection>
+    </f.FormSelectionItems>
 </l.LayoutCol>;
 
 class FormsContainer extends Component {
