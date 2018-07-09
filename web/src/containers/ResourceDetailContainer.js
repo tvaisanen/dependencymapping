@@ -19,7 +19,7 @@ const ResourceDetail = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     height: 100%;
-    width: 50rem;
+    width: auto;
     background: rgba(24,24,24,0.03);
     border-radius: 3px;
     border: 1px solid gray;
@@ -30,7 +30,7 @@ const ResourceDetail = styled.div`
 const DetailBlock = styled.div`
     display: flex;
     flex-direction: column;
-    width: ${props=>props.width};
+    width: auto;
     flex-grow: ${props=>props.grow};
     align-items: center;
 
@@ -84,8 +84,8 @@ const Button = styled.button`
     border: none;
     padding: 0px;
     margin: 12px;
-    width: 32px;
-    height: 32px;
+    width: auto;
+    height: auto;
     text-transform: uppercase;
     font-weight: bold;
     cursor: pointer;
@@ -105,7 +105,7 @@ const ListItems = ({items}) => items.map(r => <ListItem>{r.name}</ListItem>)
 const ResourceDetailContainer = ({
         detail, editResource, type, setDetail, isResourceInMap,
         addResourceToActiveMapping}) => (
-    <ResourceDetail>
+    <ResourceDetail id="resource-detail-container">
         {/* Row with two columns */}
   <DetailBlock>
  <DetailHeader>{detail.name}</DetailHeader>
@@ -132,27 +132,27 @@ const ResourceDetailContainer = ({
               : null
           }
 
-          <div>
-          { 
-              // If resources is already included in mapping 
+
+        </DetailBlock>
+                  <div>
+          {
+              // If resources is already included in mapping
               // provide a way to remove it and in the other
               // case add the resource to current mapping.
               isResourceInMap ?
-              <Button>
+              <Button >
                   <ButtonIcon src={remove}/>
               </Button>
-              : 
+              :
               <Button onClick={()=>addResourceToActiveMapping(detail)}>
                 <ButtonIcon src={add} />
               </Button>
           }
-          <Button 
-            onClick={() => console.edit({resource: detail, type: type})}> 
+          <Button
+            onClick={() => console.edit({resource: detail, type: type})}>
             <ButtonIcon src={edit} />
           </Button>
         </div>
-        </DetailBlock>
-        
    
             
   </ResourceDetail>

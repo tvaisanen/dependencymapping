@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User, Group
-from application.models import  DependencyMap, SemanticCategory, Resource
+from application.models import  DependencyMap, Tag, Resource
 from rest_framework import serializers
 
 
@@ -15,9 +15,9 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'name')
 
 
-class SemanticCategorySerializer(serializers.HyperlinkedModelSerializer):
+class TagSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = SemanticCategory
+        model = Tag
         fields = ('name', 'description')
 
 
@@ -25,7 +25,7 @@ class ResourceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Resource
-        fields =  '__all__'
+        fields = '__all__'
         depth = 2
 
 

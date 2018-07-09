@@ -4,7 +4,7 @@ import * as l from '../components/layout';
 import styled from 'styled-components';
 import MappingForm from './forms/MappingForm';
 import ResourceForm from './forms/ResourceForm';
-import CategoryForm from './forms/CategoryForm';
+import CategoryForm from './forms/TagForm';
 import ResourceDetailContainer from './ResourceDetailContainer';
 import ResourceBrowserContainer from './ResourceBrowserContainer';
 import FormsContainer from './forms/FormsContainer';
@@ -13,7 +13,7 @@ class BottomPanelContainer extends Component {
   constructor(props){
       super(props);
       this.state = {
-        view: 1, // 0: detail, 1,2,3 forms:mapping,resource,category
+        view: 0, // 0: detail, 1,2,3 forms:mapping,resource,category
         edit: false,
         
       }
@@ -28,11 +28,16 @@ class BottomPanelContainer extends Component {
 
       this.editResource = this.editResource.bind(this);
       this.cancelEdit = this.cancelEdit.bind(this);
+      this.setView = this.setView.bind(this);
   
     } 
 
     cancelEdit(){
         this.setState({view: 0, edit: false})
+    }
+
+    setView(v){
+      this.setState({view: v});
     }
 
 
@@ -58,7 +63,7 @@ class BottomPanelContainer extends Component {
 
       const view = this.views[this.state.view];
         return (
-            <BottomPanel>
+            <BottomPanel id="bottom-panel-container">
                 <PanelNavigation>
                     <div>
                         {/* Left Block*/}
@@ -72,28 +77,11 @@ class BottomPanelContainer extends Component {
                             selected={this.state.view === 1}
                             onClick={()=>this.setState({view: 1})} 
                             largePadding
-                            >+
+                            >Create
                         </PanelNavItem>    
                     </div>
                     <div>
-                        {/* Right Block */}
-                        {/*
-                        <PanelNavLabel>create:</PanelNavLabel>
-                        <PanelNavItem
-                            selected={this.state.view === 2} 
-                            onClick={()=>this.setState({view: 2})} 
-                            >Mapping 
-                        </PanelNavItem>    
-                        <PanelNavItem 
-                            selected={this.state.view === 3}
-                            onClick={()=>this.setState({view: 3})}
-                            >Resource
-                        </PanelNavItem>    
-                        <PanelNavItem 
-                            selected={this.state.view === 4}
-                            onClick={()=>this.setState({view: 4})}
-                            >Category
-                        </PanelNavItem> */}
+
                     </div>
                 </PanelNavigation>
                 <PanelContent id="panel-content">
@@ -104,6 +92,7 @@ class BottomPanelContainer extends Component {
                 editResource={this.editResource}    // function to change to edit view
                 cancel={this.cancelEdit}
                 setDetail={this.props.setDetail}
+                setView={this.setView}
             />
             </PanelContent>
             </BottomPanel>
@@ -118,7 +107,7 @@ BottomPanelContainer.propTypes = {
 export default BottomPanelContainer;
 
 const BottomPanel = styled.div`
-    max-width: auto;
+    max-width: 100vw;
     flex-grow: 1;
     width: 100vw;
     height: inherit;
@@ -154,7 +143,7 @@ const PanelNavItem = styled.span`
 const PanelContent = styled.div`
     display: flex;
     justify-content: center;
-    align-items: auto;
+    align-items: center;
     padding: 0 24px;
     color: #fafafa;
     background: transparent;

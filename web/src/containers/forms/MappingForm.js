@@ -10,6 +10,7 @@ import { mappingExists } from '../../common/resource-helpers';
 import { getSelected, selectOptionsInList } from './form.helpers';
 import _ from 'lodash';
 import * as parser from '../../common/parser';
+import * as validators from '../../common/validators';
 
 class MappingForm extends Component {
     constructor(props){
@@ -52,46 +53,95 @@ class MappingForm extends Component {
         }
     }
 
+    areArgumentsValid(){
+        const nameValid = validators.validMappingName(this.state.name);
+        const descriptionValid = validators.validDescription(this.state.description);
+        return nameValid && descriptionValid;
+    }
+
     onSave() {
-        const name = this.state.name;
-        const description = this.state.description;
-        const options = this.inputResources.options;
-        const resourceIds = getSelected(this.inputResources.options);
-        const resources = parser.filterResourcesByIds({
-            ids: resourceIds,
-            resources: this.props.resources
-        });
-        const resourceIdList = resources.map(r => r.name);
-        const categories = getSelected(this.inputCategories.options);
-        // if editing
-        console.log(this.props.mappings);
-        console.log(mappingExists({id: name, mappings: this.props.mappings}))
-        if (mappingExists({id: name, mappings: this.props.mappings})){
-            console.log('map exists.. update');
-        } else {
+        if (this.areArgumentsValid()) {
 
-    
+            // get form values
+            const name = this.state.name;
+            const description = this.state.description;
+            const resourceIds = getSelected(this.inputResources.options);
 
-        const response = this.props.postMapping({
-            name, description, resources, categories});
-        response.then(r => console.info(r));
+            const resources = parser.filterResourcesByIds({
+                ids: resourceIds,
+                resources: this.props.resources
+            });
+
+            console.info("resources: ");
+            console.info(resources);
+
+            /** todo:
+             *      make so that, the final implementation deals with
+             *      id strings instead of complete objects.
+             */
+
+            const resourceIdList = resources.map(r => r.name);
+            const categories = getSelected(this.inputCategories.options);
+            const nameReserved = mappingExists({id: name, mappings: this.props.mappings});
+
+            if (nameReserved) {
+                // notify user that the name is reserved.
+                // ask if it should be replaced!
+                console.log('map exists.. update');
+            } else {
+
+                // if response is error do something
+                const response = this.props.postMapping({
+                    name,
+                    description,
+                    resources,
+                    categories
+                });
+                    response.then(r => {
+                        // return data to caller
+                        console.info("response.then")
+                        console.info(r);
+                    })
+                    .catch(error => {
+                        // return error response to caller
+                        console.info('response catch')
+                        console.info(error);
+                        return error.response;
+                    });
+
+
+                // set view back tho browsing
+                // this.props.setView(0);
+            }
+
+            // if mapping stored successfully return to browse view
+        }
+        else {
+            this.toggleValidation();
         }
     }
 
-    render() {
+    toggleValidation(){
+        this.setState({check: true});
+    }
 
+    render() {
         const categoryNameList = this.props.categories.map( c => c.name );
         const resourceNameList = this.props.resources.map( r => r.name );
         const mapping = this.props.detail
         const { edit } = this.props;
-        console.debug(this.props);  
+        const nameValid = validators.validMappingName(this.state.name);
+        const descriptionValid = validators.validDescription(this.state.description);
         return (
             <form.Container column>
                     <form.Container row id="form-col-one">
                         <form.Container column>
+
                             <form.Label>Name</form.Label>
                             <form.Input 
                                 value={this.state.name}
+                                valid={nameValid}
+                                check={this.state.check}
                                 onChange={(e) =>
                                     this.setState({name: e.target.value})
                                 }
@@ -99,7 +149,9 @@ class MappingForm extends Component {
 
                             <form.Label>Description</form.Label>
                             <form.TextArea rows="9" 
-                                value={this.state.description} 
+                                           value={this.state.description}
+                                           valid={descriptionValid}
+                                           check={this.state.check}
                                 onChange={(e) =>
                                     this.setState({description: e.target.value})
                                 }
@@ -134,6 +186,8 @@ class MappingForm extends Component {
                         onClick={this.onSave}>
                         save
                     </form.Button>
+                    <form.Button onClick={()=>this.setState({check: true})}>
+                        check</form.Button>
                 </form.ButtonBox>
  
             </form.Container>
@@ -144,7 +198,8 @@ class MappingForm extends Component {
 
 MappingForm.propTypes = {
     detail: PropTypes.object,
-    cancelForm: PropTypes.func.isRequired
+    cancel: PropTypes.func.isRequired,
+    setView: PropTypes.func.isRequired
 };
 
 const mapStateToProps = (state, ownProps = {}) => {

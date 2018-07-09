@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Group
-from application.models import SemanticCategory, Resource, DependencyMap
+from application.models import Tag, Resource, DependencyMap
 from rest_framework import viewsets
-from application.serializers import DependencyMapSerializer, UserSerializer, GroupSerializer, SemanticCategorySerializer, ResourceSerializer
+from application.serializers import DependencyMapSerializer, UserSerializer, GroupSerializer, TagSerializer, ResourceSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -20,13 +20,12 @@ class GroupViewSet(viewsets.ModelViewSet):
     serializer_class = GroupSerializer
 
 
-
-class SemanticCategoryViewSet(viewsets.ModelViewSet):
+class TagViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
     """
-    queryset = SemanticCategory.objects.all()
-    serializer_class = SemanticCategorySerializer
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
 
 
 class ResourceViewSet(viewsets.ModelViewSet):
@@ -37,11 +36,11 @@ class ResourceViewSet(viewsets.ModelViewSet):
     serializer_class = ResourceSerializer
 
 
-
 class DependencyMapViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
     """
+
     queryset = DependencyMap.objects.all()
     serializer_class = DependencyMapSerializer
 

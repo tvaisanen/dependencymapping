@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+const cValid = "rgba(10,255,10,0.2)";
+const cInvalid = "rgba(255,0,0,0.3)";
 
 export const Container = styled.div`
     display: flex;
@@ -24,11 +26,17 @@ export const Button = styled.button``;
 
 export const Input = styled.input`
     width: inherit;
+    background-color: ${ props => 
+        props.check ? (props.valid ? cValid : cInvalid) : null
+    };
 `;
 
 export const TextArea = styled.textarea`
     width: inherit;
     min-width: 200px;
+    background-color: ${ props => 
+        props.check ? (props.valid ? cValid : cInvalid) : null
+    };
 `;
 
 export const Selection = styled.select`

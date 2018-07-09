@@ -43,14 +43,14 @@ class GwClientApi {
     }
 
     static getCategories() {
-        return fetch('http://127.0.0.1:8000/semantic-categories/')
+        return fetch('http://127.0.0.1:8000/tags/')
             .then(response => {
                 return response.json();
             }).catch(error => {
                 return fetch('http://192.168.1.127:8000/semantic-categories/')
                 .then(response => {
                     return response.json();
-            
+
                 }).catch(error => {
                     return error;
                 });
@@ -59,52 +59,21 @@ class GwClientApi {
 
 
     static postMapping({name, description, resources, categories}) {
-        console.debug(name);
-        console.debug(description);
-        console.debug(resources);
-        console.debug(categories);
-        const payload = JSON.stringify({name, description, resources, categories})
-        
-        console.debug(payload);
+        console.info('postmapping')
+        console.info(name);
+        console.info(description);
+        console.info(resources);
+        console.info(categories);
 
-        const postRequest = new Request(
-            'http://127.0.0.1:8000/mappings/',
-        {
-                method: 'post',
-                body: JSON.stringify(payload),
-                headers: {
-                    "Content-Type": "application/json"
-                },
-            }
-        );
-
-        /*return fetch('http://127.0.0.1:8000/mappings/',{
-                method: 'post',
-                body: JSON.stringify(payload),
-                headers: {
-                    "Content-Type": "application/json"
-                },
-            })*/
-
-        return axios.post('http://127.0.0.1:8000/mappings/', 
+        return axios.post('http://127.0.0.1:8000/mappings/',
                     {
-                        name: name, 
+                        name: name,
                         description: description,
-                        resources: resources,
-                        categories: categories
+                        resources: JSON.stringify(resources),
+                        categories: JSON.stringify(categories)
 
                     })
-                    .then(response => response.data)
-                    .catch(error => {
-                        console.debug(error.response);
-                    });
 
-        return fetch(postRequest).then(response => {
-                return response.json();
-            }).catch(error => {
-                alert('error')
-                return error;
-            });
     }
 
     static postResource(name) {
@@ -118,15 +87,19 @@ class GwClientApi {
             })
             .then(response => {
                 console.debug(response);
-                
+
                 if (response.status >= 400 && response.status < 600) {
                     throw new Error(response.statusText);
                 }
-                
+
                 return response.json();
             }).catch(error => {
                 return {error: error};
             });
+    }
+
+    static postTag({name, description}){
+        return axios.post('http://127.0.0.1:8000/tags/', {name, description})
     }
 }
 export default GwClientApi;

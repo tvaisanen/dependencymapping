@@ -5,6 +5,8 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import * as actionCreators from '../../actions/graphActions';
 import { getSelected } from './form.helpers';
+import * as validators from '../../common/validators';
+
 
 class MappingForm extends Component {
     constructor(props){
@@ -26,6 +28,10 @@ class MappingForm extends Component {
         
     }
 
+    toggleValidation(){
+        this.setState({check: true});
+    }
+
     onSave() {
         const name = this.inputName.value;
         const description = this.inputDescription.value;
@@ -39,17 +45,24 @@ class MappingForm extends Component {
 
         const categoryNameList = this.props.categories.map( c => c.name );
         const resourceNameList = this.props.resources.map( r => r.name );
+        const nameValid = validators.validMappingName(this.state.name);
+        const descriptionValid = validators.validDescription(this.state.description);
         return (
             <form.Container column>
                     <form.Container row id="form-col-one">
                         <form.Container column >
+
                             <form.Label>Name</form.Label>
-                            <form.Input 
+                            <form.Input
+                                valid={nameValid}
+                                check={this.state.check}
                                 value={this.state.name}
                                 onChange={e => this.setState({name: e.target.value})}
                             />
                             <form.Label>Description</form.Label>
-                            <form.TextArea rows="9" 
+                            <form.TextArea rows="9"
+                                           valid={descriptionValid}
+                                           check={this.state.check}
                                 value={this.state.description}
                                 onChange={(e) => this.setState({description: e.target.value})}
                             /> 
@@ -58,7 +71,7 @@ class MappingForm extends Component {
                             {/* Selectable resource list */}
                             <form.Label>Related to</form.Label>
                             <form.SelectionList multiple innerRef={ref => this.inputResources = ref}>
-                                {resourceNameList.map(r => <option>{r}</option>)}
+                                {resourceNameList.map((r,i) => <option key={i}>{r}</option>)}
                              </form.SelectionList>
 
                         </form.Container>
@@ -77,6 +90,8 @@ class MappingForm extends Component {
                     cancel
                 </form.Button>
                 <form.Button onClick={this.onSave}>save</form.Button>
+                    <form.Button onClick={()=>this.setState({check: true})}>
+                        check</form.Button>
                 </form.ButtonBox>
                     </form.Container>
         );

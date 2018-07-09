@@ -17,7 +17,7 @@ class ResourceBrowserContainer extends Component {
             resourceId: this.props.detail.name
         })
         return (
-            <l.BottomPanelContent>
+            <l.BottomPanelContent id="resource-browser-container">
     
                 <l.LayoutRow justify={'center'}>
                 <ResourceList>
@@ -62,7 +62,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(ResourceBrowserConta
 
 const ResourceList = styled.div`
     height: 100%;
-    width:16em;
+    width:auto;
     min-width: 16em;
     overflow-y: scroll;
     

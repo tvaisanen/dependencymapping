@@ -85,6 +85,19 @@ export function postResource(name){
     }
 }
 
+export function postTag({name, description}){
+
+    return function(dispatch) {
+        // if mapping already exist update mapping
+        dispatch(addTag({name, description}));
+
+        return GwClientApi.postTag({name, description}).then(response =>{
+            dispatch(postTagSuccess(response));
+        }).catch(error => {
+            throw(error);
+        });
+    }
+}
 export function addResourceToMapping({nameMapping, nameResource}){
     // if no resource -> create resource
     console.debug('add ' + nameResource + " to " + nameMapping);
@@ -123,6 +136,10 @@ export function addMapping(mapping){
     return {type: types.ADD_MAPPING, mapping};
 }
 
+export function addTag(tag){
+    return {type: types.ADD_TAG, tag}
+}
+
 export function addResource(resource){
     return {type: types.ADD_RESOURCE, resource}
 }
@@ -133,6 +150,10 @@ export function postMappingSuccess(response) {
 
 export function postResourceSuccess(response) {
     return {type: types.POST_MAPPING_SUCCESS, response}
+}
+
+export function postTagSuccess(response){
+    return {type: types.ADD_TAG_SUCCESS, response}
 }
 
 export function loadCategoriesSuccess(categories) {

@@ -5,7 +5,7 @@ The `urlpatterns` list routes URLs to views. For more information please see:
 Examples:
 Function views
     1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
+    2. Add a URL to urlpatterns:  url(r'^$', views.home, name='hoemanticCategory)
 Class-based views
     1. Add an import:  from other_app.views import Home
     2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
@@ -22,7 +22,7 @@ from application import views
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
-router.register(r'semantic-categories', views.SemanticCategoryViewSet)
+router.register(r'tags', views.TagViewSet)
 router.register(r'resources', views.ResourceViewSet)
 router.register(r'resources-detail', views.ResourceViewSet)
 router.register(r'mappings', views.DependencyMapViewSet)
