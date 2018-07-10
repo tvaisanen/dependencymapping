@@ -7,7 +7,7 @@ import {
     SidePanelTabButton,
     SidePanelContentContainer
 } from '../components/';
-
+import styled from 'styled-components';
 
 const LIST_ITEM_FORM_ID = "new-list-item-form";
   
@@ -66,25 +66,17 @@ class SideTabMenuContainer extends Component {
             <SidePanelMenu>
                 { this.props.noHeaderBlock ? null :
                 <SidePanelTabButton >
-                    <c.PanelHeaderTitle onClick={this.toggleMenuVisibility}>
-                        {this.props.title}{resourceCount !== 0 ? ` [${resourceCount}]` : null}
-                    </c.PanelHeaderTitle>
+                    <PanelHeaderTitle onClick={this.toggleMenuVisibility}>
+                        <div>{this.props.title}</div>
+                        <div>
+                            {resourceCount !== 0 ? ` [${resourceCount}]` : null}
+                        </div>
+                    </PanelHeaderTitle>
 
-                    {/* The " + " button, which prompts the form for creating new elemenets */}    
-                    <c.PanelAddBtn onClick={this.showItemForm}>+</c.PanelAddBtn>
                 </SidePanelTabButton>
                 }
 
-                <c.NewListItemForm collapsed={collapsed} id={LIST_ITEM_FORM_ID} innerRef={(form) => {this.form=form}}>
-                {
-                    this.state.enterNewItem ? 
-                    <c.MenuItem>
-                        <c.ListItemInput innerRef={input => this.input = input}/>
-                        <button onClick={this.onCreateNewItem}>save</button>
-                    </c.MenuItem>                    
-                    : null
-                }
-                </c.NewListItemForm>
+
 
                 <SidePanelContentContainer collapsed={collapsed}>
                     {listItems ? 
@@ -106,3 +98,17 @@ SideTabMenuContainer.propTypes = {
     onItemClick: PropTypes.func,
     createNewListItem: PropTypes.func
 };
+
+export const PanelHeaderTitle = styled.span`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    text-transform: capitalize;
+    border-bottom: solid 2px transparent;
+    :hover {
+        border-color: grey;
+    }
+
+    cursor: pointer;
+`;
+

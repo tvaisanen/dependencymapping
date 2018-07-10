@@ -212,16 +212,6 @@ export const ResourceDescription = styled.div`
 `;
     /*background: rgb(50, 46, 50);*/
 
-export const PanelHeaderTitle = styled.span`
-    
-    text-transform: capitalize;
-    border-bottom: solid 2px transparent;
-    :hover {
-        border-color: grey;
-    }
-
-    cursor: pointer;
-`;
 
 export const PanelAddBtn = styled.span`
     border: solid 2px transparent;

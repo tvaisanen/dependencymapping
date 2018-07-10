@@ -174,23 +174,11 @@ class MappingForm extends Component {
                         </form.Container>
 
             </form.Container>
+                <form.ButtonRow
+                    check={()=>this.setState({check: true})} // debugging
+                    save={this.onSave}
+                    cancel={this.props.cancel}/>
 
-            <form.Container row>
-                {/* Row for buttons*/}
-                <form.ButtonBox>           
-                    <form.Button 
-                        onClick={this.props.cancel}>
-                        cancel
-                    </form.Button>
-                    <form.Button 
-                        onClick={this.onSave}>
-                        save
-                    </form.Button>
-                    <form.Button onClick={()=>this.setState({check: true})}>
-                        check</form.Button>
-                </form.ButtonBox>
- 
-            </form.Container>
             </form.Container>
         );
     }

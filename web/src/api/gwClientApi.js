@@ -76,26 +76,14 @@ class GwClientApi {
 
     }
 
-    static postResource(name) {
-        const payload = JSON.stringify({name: name})
-        return fetch('http://127.0.0.1:8000/resources/',{
-                method: 'post',
-                body: payload,
-                headers: {
-                    "Content-Type": "application/json"
-                },
+    static postResource({name, description, connected_to, categories}) {
+        return axios.post('http://127.0.0.1:8000/resources/',
+            {
+                name: name,
+                description: description,
+                connected_to: connected_to,
+                categories: categories
             })
-            .then(response => {
-                console.debug(response);
-
-                if (response.status >= 400 && response.status < 600) {
-                    throw new Error(response.statusText);
-                }
-
-                return response.json();
-            }).catch(error => {
-                return {error: error};
-            });
     }
 
     static postTag({name, description}){

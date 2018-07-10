@@ -7,6 +7,7 @@ import configureStore from './store/configureStore';
 import { Provider } from 'react-redux';
 import * as actions from './actions/graphActions';
 
+
 const store = configureStore();
 
 // load resources and stored graphs
@@ -15,9 +16,10 @@ store.dispatch(actions.loadAllResources());
 store.dispatch(actions.loadAllCategories());
 
 
+
 ReactDOM.render(
     <Provider store={store}>
-        <App />
+        <App/>
     </Provider>
     , document.getElementById('root'));
 registerServiceWorker();

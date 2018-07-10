@@ -54,7 +54,6 @@ class FormsContainer extends Component {
 
     render() { 
         const view = this.formViews[this.state.view];
-
         return (
             <l.BottomPanelContent>
                 <view.component {...view.props}/>

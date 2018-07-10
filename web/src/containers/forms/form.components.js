@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 
 const cValid = "rgba(10,255,10,0.2)";
@@ -83,3 +84,20 @@ export const FormSelection = styled.div`
       background: rgba(100,100,100,0.3);
     }
 `;
+
+export const ButtonRow = ({cancel, save, check}) => (
+    <Container row>
+        <ButtonBox>
+        <Button
+            onClick={cancel}>
+            cancel
+        </Button>
+        <Button
+            onClick={save}>
+            save
+        </Button>
+        <Button onClick={check}>
+            check</Button>
+    </ButtonBox>
+    </Container>
+)

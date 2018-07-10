@@ -29,16 +29,31 @@ class MappingForm extends Component {
     }
 
     toggleValidation(){
+        // show the validity of inputs
         this.setState({check: true});
     }
 
+    areArgumentsValid(){
+        const nameValid = validators.validMappingName(this.state.name);
+        const descriptionValid = validators.validDescription(this.state.description);
+        return nameValid && descriptionValid;
+    }
+
+
     onSave() {
-        const name = this.inputName.value;
-        const description = this.inputDescription.value;
-        const options = this.inputResources.options;
-        const resources = getSelected(this.inputResources.options);
-        const categories = getSelected()
-        this.props.postResource({name, description, connected_to: resources});
+        if (this.areArgumentsValid()) {
+            const name = this.state.name;
+            const description = this.state.description;
+            const resources = getSelected(this.inputResources.options);
+            const categories = getSelected(this.inputCategories.options);
+            console.info(name);
+            console.info(description);
+            console.info(resources);
+            console.info(categories); 
+            this.props.postResource({name, description, connected_to: resources, categories});
+        } else {
+            this.toggleValidation() // if not ok
+        }
     }
 
     render() {
@@ -84,16 +99,11 @@ class MappingForm extends Component {
 
 
             </form.Container>
-                <form.ButtonBox>           
-                <form.Button
-                    onClick={this.props.cancel}>
-                    cancel
-                </form.Button>
-                <form.Button onClick={this.onSave}>save</form.Button>
-                    <form.Button onClick={()=>this.setState({check: true})}>
-                        check</form.Button>
-                </form.ButtonBox>
-                    </form.Container>
+                 <form.ButtonRow
+                    check={()=>this.setState({check: true})} // debugging
+                    save={this.onSave}
+                    cancel={this.props.cancel}/>
+            </form.Container>
         );
     }
 }

@@ -29,7 +29,13 @@ export default function activeMappingReducer(state = initialState.activeMapping,
             return {...state, resources: [...state.resources, ...resourcesToAdd]}
 
         case types.ADD_ACTIVE_MAPPING_RESOURCE:
-            return {...state, resources: [...state.resources, ...action.resource]};
+            // return the current active mapping with a new resource in the list
+            return { ...state, resources: [...state.resources, action.resource]};
+
+        case types.REMOVE_ACTIVE_MAPPING_RESOURCE:
+            // remove the given resource from active mapping resources
+            const filteredResources = state.resources.filter(r => r.name !== action.resource.name);
+            return { ...state, resources: filteredResources };
 
         case types.ADD_ACTIVE_MAPPING_CONNECTIONS:
             return {...state, connections: [...action.connections, ...state.connections]}

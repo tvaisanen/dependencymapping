@@ -129,7 +129,13 @@ export function saveMapping(mapping) {
 }
 
 export function addResourceToActiveMapping(resource){
+    console.info('add resource to active mapping action');
     return {type: types.ADD_ACTIVE_MAPPING_RESOURCE, resource};
+}
+
+export function removeResourceFromActiveMapping(resource){
+    console.info('remove resource from active mapping');
+    return {type: types.REMOVE_ACTIVE_MAPPING_RESOURCE, resource };
 }
 
 export function addMapping(mapping){

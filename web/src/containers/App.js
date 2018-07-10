@@ -315,6 +315,7 @@ class App extends Component {
             detail={this.state.detail} 
             detailType={this.state.detailType}
             setDetail={this.setResourceDetail}
+            cy={this.state.cy}
           />
           {/*<PreviewAndFormsContainer detail={this.state.detail}/>*/}
         </LayoutCol>
