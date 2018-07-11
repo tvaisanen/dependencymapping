@@ -22,8 +22,8 @@ class Resource(models.Model):
 class DependencyMap(models.Model):
     name = models.CharField(max_length=100, primary_key=True)
     description = models.TextField()
-    resources = models.ManyToManyField("Resource")
-    tags = models.ManyToManyField("Tag")
+    resources = models.ManyToManyField("Resource", related_name="resources")
+    tags = models.ManyToManyField("Tag", related_name="tags")
 
     def __str__(self):
         return self.name

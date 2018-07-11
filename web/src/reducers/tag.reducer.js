@@ -1,12 +1,12 @@
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 
-export default function categoryReducer(state = initialState.categories, action){
+export default function categoryReducer(state = initialState.tags, action){
     switch(action.type) {
         case types.LOAD_CATEGORIES_SUCCESS:
             console.debug('LOAD_CATEGORIES_SUCCESS');
             console.debug(action);
-            return action.categories;
+            return action.tags;
         case types.ADD_TAG:
             console.info("tag reducer");
             console.info(action);
