@@ -2,23 +2,18 @@ import React, { Component } from 'react';
 import cytoscape from 'cytoscape';
 import cola from 'cytoscape-cola';
 import { 
-  Input,
-  Layout, 
-  Button,
+  Layout,
   ButtonPanel,
   LayoutRow,
   LayoutCol,
   SidePanel,
   ContentWindow, 
   MenuHeader,
-  ResourceDetail,
   TopBar,
   FloatingButton,
-  ResourceDescription
 } from '../components/';
 import GraphContainer from './GraphContainer';
 import SideTabMenuContainer from './SideTabMenuContainer';
-import styled from 'styled-components';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import { addElement, addElements, updateLayout, clearGraph } from '../common/graph-helpers';
@@ -28,8 +23,7 @@ import _ from 'lodash';
 import * as constants from '../constants/';
 import BottomPaneContainer from './BottomPanelContainer';
 import dagre from 'cytoscape-dagre';
-import menuIcon from '../icons/menu-toggle.png';
-//import configsCytoscape from '../configs/configs.cytoscape';
+import * as texts from '../data/text';
 
 cytoscape.use( dagre );
 cytoscape.use( cola );
@@ -40,20 +34,19 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      enableResize: false,
-      resizing: false,
       cy: null,
-      resourceDetail: {name:'Welcome', description:"Welcome back! To start working select a mapping to work with or start a new one by clicking this [NEW]."},
       resourceCategories: [],
       showGraphButtons: true,
-      detail: {name:'Welcome', description:"Welcome back! To start working select a mapping to work with or start a new one by clicking this [NEW].", type:"Init"},
-      detailType: null,
+      detail: texts.landingDetail,
+      detailType: "",
       layout: LAYOUT
-    }
+    };
+
     this.clearGraphSelection = this.clearGraphSelection.bind(this);
     this.setResourceDetail = this.setResourceDetail.bind(this);
     this.toggleFloatingButtons = this.toggleFloatingButtons.bind(this);
     this.setCategoryDetail = this.setCategoryDetail.bind(this);
+    this.setDetail = this.setDetail.bind(this);
   }
 
   componentDidMount(){
@@ -125,32 +118,28 @@ class App extends Component {
     updateLayout(this.state.cy);
   }
 
-  toggleElementVisibility = (element) => {
-    const e = this.state.elements.filter(el =>  el.data.id === element);
-  }
-  
-  getElementDetail = (element) => {
-  }
 
   loadDependencyMap = (mapId) => {
     // load graph resources to the active mapping
     console.info('GwClientApi.getDependencyMap("' + mapId + '");');
 
     // current state of cy graph needs to be cleared
-    clearGraph(this.state.cy)
+    clearGraph(this.state.cy);
 
     const mapping = this.props.graphs.filter(g=>g.name===mapId)[0];
-    
+
     // By default this is an array of objects.
-    let resources = mapping.resources;
+    let resources = mapping ? mapping.resources : [];
   
     // Set mapping as active. 
     this.props.loadActiveMappingResources(mapping);
 
-    // This is because at the moment there's no back end solution.
-    // Current dev. environment returns mapping resources as objects,
-    // which is not too efficient. Preferred method would be using 
-    // just an array of id's which would be used in a following manner.
+    /**
+     * This is because at the moment there's no back end solution.
+     *  Current dev. environment returns mapping resources as objects,
+     * which is not too efficient. Preferred method would be using
+     * just an array of id's which would be used in a following manner.
+     */
     if (_.isString(resources[0])){
       // if resource is a string
       // map resource id's to resource objects
@@ -158,9 +147,6 @@ class App extends Component {
         ids: resources, 
         resources: this.props.resources
       });
-
-      
-
     }
 
     // objects for redux state
@@ -180,22 +166,36 @@ class App extends Component {
     this.setState({detail: mapping, detailType: constants.MAPPING})
 
     this.updateLayout();
+  };
+
+  setDetail({detail, type}){
+    console.info("App.setDetail({detail, type});");
+    console.info(detail);
+    console.info(type);
+
+    if (detail === constants.EMPTY){
+      clearGraph(this.state.cy);
+      this.setState({detail: {name:"no selection", description:"no selection"}});
+      this.props.clearActiveMappingSelection();
+      return;
+    }
+    switch (type){
+        case constants.MAPPING:
+          this.loadDependencyMap(detail);
+          break;
+        case constants.RESOURCE:
+          this.setResourceDetail(detail);
+          break;
+        case constants.TAG:
+          this.setCategoryDetail(detail);
+          break;
+        default:
+          break;
+    }
   }
 
 
 
-  highlightElement = (id) => {
-    console.info('highlight');
-    console.info(id);
-  }
-
-  getDependencies() {
-    return this.state.elements.filter(e => e.group === 'edges');
-  }
-
-  getResources() {
-    return this.state.elements.filter(e => e.group === 'nodes');
-  }
 
   setResourceDetail(resourceId){
     const clickedResource = this.props.resources.filter(r=>r.name===resourceId)[0];
@@ -206,8 +206,8 @@ class App extends Component {
   }
 
   setCategoryDetail(categoryId){
-    const clickedCategory = this.props.categories.filter(r=>r.name===categoryId)[0];
-    this.setState({detail: clickedCategory, detailType: constants.CATEGORY})
+    const clickedTag = this.props.tags.filter(r=>r.name===categoryId)[0];
+    this.setState({detail: clickedTag, detailType: constants.TAG})
   }
 
   toggleFloatingButtons(){
@@ -223,9 +223,6 @@ class App extends Component {
     // create post the mapping
     // this adds the resource to db
     const resource = this.props.postResource(nameResource); 
-    const nameMapping = this.props.activeMapping.name;
-    //const resource = this.props.addResourceToMapping({nameMapping,nameResource});
-    console.log(resource);
 
     if (resource.error){
       // if there's an error while doing so handle ui 
@@ -238,10 +235,9 @@ class App extends Component {
   render() {
   
     const mappings = this.props.graphs.map(m => m.name ).sort();
-    const categories = this.props.categories.map(c=>c.name).sort();
+    const tags = this.props.tags.map(c=>c.name).sort();
     const activeResources = getResourceNameList(this.props.activeMapping.resources);
-    const activeConnections = getConnectionsNameList(this.props.activeMapping.connections);
-   
+
     const { cy } = this.state;
 
     return (
@@ -272,7 +268,7 @@ class App extends Component {
 
             <SideTabMenuContainer 
                 title="Categories" 
-                listItems={categories} 
+                listItems={tags}
                 onItemClick={this.setCategoryDetail}
                 onCreateNewItem={({id})=> this.props.postMapping({mappingName: id})}
             />
@@ -284,6 +280,7 @@ class App extends Component {
             
             <SideTabMenuContainer 
               noHeaderBlock
+              resources
               title="Resources" 
               listItems={activeResources} 
               onItemClick={this.setResourceDetail}
@@ -314,7 +311,8 @@ class App extends Component {
             id="bottom-panel" 
             detail={this.state.detail} 
             detailType={this.state.detailType}
-            setDetail={this.setResourceDetail}
+            setResourceDetail={this.setResourceDetail}
+            setDetail={this.setDetail}
             cy={this.state.cy}
           />
           {/*<PreviewAndFormsContainer detail={this.state.detail}/>*/}
@@ -323,19 +321,11 @@ class App extends Component {
     );
   }
 }
-const getConnectionsNameList = (connections) => {
-  /**
-   * return array of json objects 
-   */
-  if (_.isArray(connections) && !_.isEmpty(connections)){
-    return connections.map(c => `${c.source.name}-${c.target.name}`)
-  }
-}
 
 const getResourceNameList = (resources) => {
   //return resources.map(r=>r.url.split('/')[4]);
   return resources.map(r=>r.name);
-}
+};
 
 
 const graphStyle = [ // the stylesheet for the graph
@@ -385,7 +375,7 @@ const mapStateToProps = (state, ownProps = {}) => {
     graphs: state.graphs,
     resources: state.resources,
     dependencies: state.dependencies,
-    categories: state.categories,
+    tags: state.tags,
     activeMapping: state.activeMapping
   }
 }

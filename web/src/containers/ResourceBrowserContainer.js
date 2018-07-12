@@ -5,6 +5,7 @@ import {bindActionCreators} from 'redux';
 import * as actionCreators from '../actions/graphActions';
 import styled from 'styled-components';
 import * as l from '../components/layout';
+import * as types from '../constants/types';
 import {isResourceInMapping} from '../common/resource-helpers';
 import {
     addElement, nodeElementFromResource,
@@ -39,10 +40,7 @@ class ResourceBrowserContainer extends Component {
     }
 
     filterResources({resources, filterValue}) {
-        console.info("filtering with: " + filterValue);
-        const filtered = resources.filter(r => r.name.toLowerCase().includes(filterValue));
-        console.info(filtered);
-        return filtered;
+        return resources.filter(r => r.name.toLowerCase().includes(filterValue));
     }
 
     onFilterChange(e) {
@@ -59,32 +57,38 @@ class ResourceBrowserContainer extends Component {
         })
 
         const resourceItems = this.filterResources({resources, filterValue});
-
         return (
 
             <ResourceBrowserLayout>
                 <l.LayoutRow justify={'center'}>
 
-                        <ResourceBrowser>
+                    <ResourceBrowser>
 
-                            <input type="text" onChange={this.onFilterChange}/>
-                            <ResourceList>
+                        <FilterInput
+                            type="text"
+                            placeholder="filter..."
+                            onChange={this.onFilterChange}/>
+
+                        <ResourceList>
                             {
-                                resourceItems.map(r => (
+                                resourceItems.map((r,i) => (
                                         <ResourceListItem
+                                            key={i}
                                             selected={r.name === this.props.detail.name}
-                                            onClick={() => this.props.setDetail(r.name)}
+                                            onClick={() => this.props.setDetail({detail: r.name, type: types.RESOURCE})}
                                         >{r.name}
                                         </ResourceListItem>
                                     )
                                 )
                             }</ResourceList>
-                        </ResourceBrowser>
+                    </ResourceBrowser>
 
                     <ResourceDetail
+                        editDetail={this.props.editDetail}
                         detailType={this.props.type}
                         detail={this.props.detail}
                         setDetail={this.props.setDetail}
+                        setResourceDetail={this.props.setResourceDetail}
                         isResourceInMap={isResourceInMap}
                         addResourceToActiveMapping={this.addResourceToMapping}
                         removeResourceFromActiveMapping={this.removeResourceFromMapping}
@@ -98,7 +102,10 @@ class ResourceBrowserContainer extends Component {
 ResourceBrowserContainer.propTypes = {
     cyRef: PropTypes.object.isRequired,
     addResourceToActiveMapping: PropTypes.func.isRequired,
-    removeResourceFromActiveMapping: PropTypes.func.isRequired
+    removeResourceFromActiveMapping: PropTypes.func.isRequired,
+    setDetail: PropTypes.func.isRequired,
+    editDetail: PropTypes.func.isRequired,
+    type: PropTypes.string.isRequired
 };
 
 const mapStateToProps = (state, ownProps = {}) => {
@@ -114,9 +121,26 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResourceBrowserContainer);
 
+const FilterInput = styled.input`
+  background-color: transparent;
+  text-align: center;
+  max-width: 200px;
+  width: 80%;
+  border: none; 
+  border-bottom: 1px solid grey; 
+  margin: 0 8px 8px 0;
+  color: rgba(255,255,255,0.6);
+
+  :focus::placeholder{
+    color: transparent;
+  }
+`;
+
+
 const ResourceBrowserLayout = styled.div`
   width: 100%;
   height: 100%;
+  color: rgba(255,255,255,0.8);
 
 `;
 const ResourceBrowser = styled.div`
@@ -141,27 +165,23 @@ const ResourceList = styled.div`
     width:33%;
     min-width: 16em;
     overflow-y: scroll;
+    overflow-x: hidden;
     margin-right: 12px;
     border-radius: 3px;
 
 `;
 
 const ResourceListItem = styled.div`
+    font-size: small;
     text-align: center;
-    margin-bottom: 2px;
-    padding: 4px;
+    padding: 2px;
     cursor: pointer;
-    border-bottom: 2px solid white;
-    border: 2px solid ${props => props.selected ? 'gray' : 'transparent'};
-    border-right: 2px solid #4d4c4c;
+    margin: 2px 4px;
     width: 100%;
-    background: ${props => props.selected ? 'rgba(40,40,40,0.2)' : null};
+    border-radius: 3px;
+    background: ${props => props.selected ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.1)'};
     :hover{
-        background: rgba(255,255,255, 0.5);
+        background: rgba(255,255,255, 0.35);
     }
 `;
 
-const Header = styled.h2`
-    margin: 4px 0;
-`
-;

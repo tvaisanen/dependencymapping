@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import * as c from '../components/';
 
 import { 
     SidePanelMenu,
@@ -9,8 +8,7 @@ import {
 } from '../components/';
 import styled from 'styled-components';
 
-const LIST_ITEM_FORM_ID = "new-list-item-form";
-  
+
 class SideTabMenuContainer extends Component {
     constructor(props){
         super(props);
@@ -61,31 +59,39 @@ class SideTabMenuContainer extends Component {
         // console.info(this.props);
         const collapsed = this.state.collapsed;
         const { listItems, onItemClick } = this.props;
-        const resourceCount = listItems ? listItems.length : null;
         return (
             <SidePanelMenu>
                 { this.props.noHeaderBlock ? null :
                 <SidePanelTabButton >
-                    <PanelHeaderTitle onClick={this.toggleMenuVisibility}>
-                        <div>{this.props.title}</div>
-                        <div>
-                            {resourceCount !== 0 ? ` [${resourceCount}]` : null}
-                        </div>
+                    <PanelHeaderTitle>
+                        {this.props.title}
                     </PanelHeaderTitle>
 
                 </SidePanelTabButton>
                 }
 
 
+                {this.props.resources ?
+                     <SidePanelContentContainer collapsed={collapsed}>
+                        {listItems ?
+                            listItems.map((item, i) => <ResourceListItem key={i}
+                                                                 onClick={onItemClick ? () => onItemClick(item) : () => alert('no action')}>
+                                {item}
+                            </ResourceListItem>)
+                            : null}
 
-                <SidePanelContentContainer collapsed={collapsed}>
-                    {listItems ? 
-                        listItems.map((item, i) => <c.MenuItem key={i} onClick={onItemClick ? ()=>onItemClick(item) : ()=>alert('no action')}>
-                        <c.MenuItemLabel key={i}>{item} </c.MenuItemLabel>
-                                </c.MenuItem>) 
-                    : null }
-                    
-                </SidePanelContentContainer>
+                    </SidePanelContentContainer>
+                    :
+                    <SidePanelContentContainer collapsed={collapsed}>
+                        {listItems ?
+                            listItems.map((item, i) => <MenuItem key={i}
+                                                                 onClick={onItemClick ? () => onItemClick(item) : () => alert('no action')}>
+                                {item}
+                            </MenuItem>)
+                            : null}
+
+                    </SidePanelContentContainer>
+                }
             </SidePanelMenu>
       );
     }
@@ -99,16 +105,45 @@ SideTabMenuContainer.propTypes = {
     createNewListItem: PropTypes.func
 };
 
-export const PanelHeaderTitle = styled.span`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+export const PanelHeaderTitle = styled.div`
+    
+    text-center: center;
     text-transform: capitalize;
     border-bottom: solid 2px transparent;
-    :hover {
-        border-color: grey;
-    }
 
-    cursor: pointer;
 `;
 
+
+export const MenuItem = styled.div`
+    text-align: center;
+    font-size: small;
+    
+    background: #F5F5F5;
+    padding: 2px;
+    border-top: 2px solid rgba(54, 48, 54);
+    border-bottom: 2px solid rgba(54,48,54);
+    
+    cursor: pointer;
+
+    :hover{
+        background-color: rgba(255,255,255,0.8); 
+    }
+
+    transition: all .15s ease-in-out;   
+`;
+
+const ResourceListItem = styled.div`
+    color: rgba(255,255,255,0.9);
+    font-size: small;
+    text-align: center;
+    padding: 2px;
+    cursor: pointer;
+    margin: 2px 0;
+    width: 100%;
+    border-radius: 3px;
+    background: ${props => props.selected ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.1)'};
+    :hover{
+        background: rgba(255,255,255, 0.35);
+    }
+    transition: all .15s ease-in-out;   
+`;

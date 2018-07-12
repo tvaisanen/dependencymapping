@@ -2,8 +2,7 @@ from django.contrib.auth.models import User, Group
 from application.models import Tag, Resource, DependencyMap
 from rest_framework import viewsets
 from application.serializers import DependencyMapSerializer, UserSerializer, GroupSerializer, TagSerializer, ResourceSerializer
-from django.core import serializers
-import json
+from rest_framework.permissions import AllowAny
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -51,6 +50,11 @@ class DependencyMapViewSet(viewsets.ModelViewSet):
     API endpoint that allows groups to be viewed or edited.
     """
 
+    permission_classes = (AllowAny, )
+    queryset = DependencyMap.objects.all()
+    serializer_class = DependencyMapSerializer
+    allowed_methods = ['get', 'post', 'put', 'delete']
+
     def create(self, request, *args, **kwargs):
         data = request.data
         print("\n######## Viewset create #########")
@@ -69,9 +73,10 @@ class DependencyMapViewSet(viewsets.ModelViewSet):
         print("\n#################################")
 
         return super(DependencyMapViewSet, self).create(request, args, kwargs)
-
-    queryset = DependencyMap.objects.all()
-    serializer_class = DependencyMapSerializer
+    
+    def destroy(self, request, *args, **kwargs):
+        print('destroy')
+        return super(DependencyMapViewSet, self).destroy(request, *args, **kwargs)
 
 
 

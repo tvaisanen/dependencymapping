@@ -3,13 +3,13 @@ import graphs from './graphReducer';
 import resources from './resourceReducer';
 import dependencies from './dependencyReducer';
 import activeMapping from './activeMapping';
-import categories from './category.reducer';
+import tags from './tag.reducer';
 
 const rootReducer = combineReducers({
     graphs,
     resources,
     dependencies,
-    categories,
+    tags,
     activeMapping,
 })
 

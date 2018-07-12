@@ -13,7 +13,7 @@ const store = configureStore();
 // load resources and stored graphs
 store.dispatch(actions.loadAllMappings());
 store.dispatch(actions.loadAllResources());
-store.dispatch(actions.loadAllCategories());
+store.dispatch(actions.loadAllTags());
 
 
 

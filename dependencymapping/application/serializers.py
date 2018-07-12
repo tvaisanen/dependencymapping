@@ -103,3 +103,33 @@ class DependencyMapSerializer(serializers.ModelSerializer):
         print("####################################")
         return new_dependency_map
 
+    def update(self, instance, validated_data):
+        print("####### serializer update ##########\n")
+
+        resource_data = json.loads(self.initial_data['resources'])
+        tag_names = json.loads(self.initial_data['tags'])
+        print(tag_names)
+
+        resource_names = [r['name'] for r in resource_data]
+
+        resources = list(
+            filter(
+                lambda r: r.name in resource_names,
+                Resource.objects.all()
+            )
+        )
+
+        tags = list(
+            filter(
+                lambda t: t.name in tag_names,
+                Tag.objects.all()
+            )
+        )
+
+        instance.resources.clear()
+        instance.tags.clear()
+
+        instance.resources.add(*resources)
+        instance.tags.add(*tags)
+        print("####################################")
+        return super(DependencyMapSerializer, self).update(instance, validated_data)

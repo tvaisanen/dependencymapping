@@ -13,10 +13,13 @@ export default function resourceReducer(state = initialState.resources, action){
             console.debug(action);
             return action.resources;
 
+        case types.POST_RESOURCE_SUCCESS:
+            return [...state, action.resource];
+
         case types.ADD_RESOURCE:
             console.debug("added resource");
             console.debug(action.resource);
-            return [...state, action.resource]
+            return [...state, action.resource];
 
         default:
             return state;

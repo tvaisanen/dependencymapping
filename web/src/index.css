@@ -7,14 +7,28 @@ body {
 }
 
 div::-webkit-scrollbar {
-  width: 0.4em;
+  width: 0.2em;
 }
 
 div::-webkit-scrollbar-track {
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  -webkit-box-shadow: inset 0 0 6px rgba(200,200,200,0.7);
 }
 
 div::-webkit-scrollbar-thumb {
 background-color: darkgrey;
 outline: 1px solid slategrey;
+  width: 0.2em;
+}
+select::-webkit-scrollbar {
+  width: 0.2em;
+}
+
+select::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(200,200,200,0.7);
+}
+
+select::-webkit-scrollbar-thumb {
+background-color: darkgrey;
+outline: 1px solid slategrey;
+  width: 0.2em;
 }

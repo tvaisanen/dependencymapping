@@ -1,13 +1,7 @@
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import * as s from '../components';
-import CategoryListContainer from './CategoryListContainer';
 import styled from 'styled-components';
-import * as l from '../components/layout';
 import MarkDownRenderer from 'react-markdown-renderer';
-import edit from '../icons/edit.png';
-import add from '../icons/add.png';
-import remove from '../icons/remove.png';
 import * as types from '../constants/types';
 
 const Row = styled.div`
@@ -29,11 +23,6 @@ const Row = styled.div`
 
 `;
 
-const List = styled.div`
-    padding: 6px;
-    margin: 6px;
-`;
-
 const Detail = styled.div`
     display: flex;
     flex-direction: column;
@@ -46,11 +35,14 @@ const Detail = styled.div`
 
 const DetailBlock = styled.div`
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     width: auto;
     flex-grow: 1;
     align-items: center;
-
+    height: inherit;
+    > div {
+      height: 90%;
+    }
 `;
 
 const DetailDescription = styled.div`
@@ -59,86 +51,90 @@ const DetailDescription = styled.div`
     overflow-y: scroll;
     border: 1px solid gray;
     margin-top: 12px;
-    height: 100%;
-    width: inherit;
-    flex-grow: 1;
-    padding: 10px 30px;
+    height: inherit;
+    width: 70%;
+    max-width: 70%;
+    flex-grow: 2;
+    padding: 5px 30px;
     text-align: justify;
     text-justify: inter-character;
+    box-shadow: 0 0 20px rgba(255,255,255,0.2);
 `;
 
 const DetailHeader = styled.h2`
   margin: 4px 0;
+  color: rgba(255,255,255,0.9);
 `;
 
-const ListItem = styled.li`
-    list-style: none;
-    border-left: solid 2px white;
-    border-bottom: solid 2px rgba(200,200,200,0.1);
-    margin-bottom: 4px;
-    padding-left: 4px;
-`;
-
-const CategoryLabel = styled.span`
-    font-size: .8rem;
-    text-align: center;
-    padding: 2px;
-    margin: 2px;
-    border: 1px solid grey;
-    border-radius: 2px;
-    height: 1rem;
-    cursor: pointer;
-    :hover {
-      background-color: #8a8a8a;
-    }
-    transition: background-color .2s ease-in-out;
-`;
-
-const Categories = styled.div`
+const ListBlock = styled.div`
     display: flex;
-    flex-wrap: wrap;
-    height: auto;
-    min-height: 1rem;
+    margin: 12px;
+    flex-direction: column;
+    flex-grow: 8;
+    width: 30%;
+    height: inherit;
 `;
 
-const Button = styled.button`
-    font-size: 1rem;
-    border-radius: 3px;
-    border: none;
-    padding: 0px;
-    margin: 12px;
-    width: 20px;
-    height: 20px;
-    text-transform: uppercase;
+const List = styled.div`
+  max-width: 200px;
+  overflow-y: scroll;
+  margin: 0 4px;
+
+`;
+
+const ListLabel = styled.div`
+    text-align: center;
     font-weight: bold;
+    color: rgba(255,255,255,0.9);
+    margin: 4px 0;
+    border-bottom: 1px solid rgba(255,255,255,.5);
+    padding-left: 3px;
+    max-width: 200px;
+`;
+
+const ListItem = styled.div`
+    font-size: small;
+    background-color: rgba(255,255,255,0.2);
+    padding: 2px;
+    margin: 2px 0;
+    border-radius: 3px;
+    box-shadow: 0 0 2px rgba(255,255,255,0.1);
+    :hover {
+    background-color: rgba(255,255,255,0.35);
+    }
+    transition: all .15s ease-in-out;
     cursor: pointer;
 `;
 
-const ButtonIcon = styled.img`
-    width: 1rem;
-    height: 1rem;
+const ActionLink = styled.span`
+  width: 100px;
+  color: rgba(255,255,255,0.3);
+  border-bottom: 2px solid transparent;
+  padding: 0 20px; 
+  
+  :first-of-type{
+  border-left: none;
+  }
+  
+  :hover {
+    color: rgba(255,255,255,.6);    
+  }
+  cursor: pointer;
 `;
-
-const WrapRow = styled.div`
-  flex-grow: 2;
-  display: flex;
-  flex-wrap: wrap;
-
-`;
-
-const EdgeListContainer = ({resource}) => <List>list</List>;
-const ListItems = ({items}) => items.map(r => <ListItem>{r.name}</ListItem>)
-
 
 const ResourceDetail = ({
-                            detail, editResource, type, setDetail, isResourceInMap,
+                            detail, editDetail, type, setDetail, isResourceInMap,
                             addResourceToActiveMapping, detailType, removeResourceFromActiveMapping
                         }) => (
     <Detail id="resource-detail-container">
         {/* column with two three rows */}
         <Row>
-            <small>{detailType}</small>
-            <span>
+            {detailType ?
+                <React.Fragment>
+                    <small>{detailType}</small>
+                    <div>
+                    </div>
+                    <span>
                 <RenderToggleButton
                     inMap={isResourceInMap}
                     addToMap={addResourceToActiveMapping}
@@ -146,49 +142,71 @@ const ResourceDetail = ({
                     detail={detail}
                     detailType={detailType}
                 />
-                <Button onClick={() => console.edit({resource: detail, type: type})}>
-                    <ButtonIcon src={edit}/>
-                </Button>
+                <ActionLink
+                    onClick={() => editDetail({resource: detail, type: detailType})}>
+                    edit
+                </ActionLink>
             </span>
+                </React.Fragment>
+                : null
+            }
         </Row>
-        <Row center header>
+        <Row header>
             <DetailHeader>{detail.name}</DetailHeader>
         </Row>
         <DetailBlock>
-            {
-                detail.categories ?
-                    <Categories>
-                        {detail.categories.map(c => <CategoryLabel>{c.name}</CategoryLabel>)}
-                    </Categories>
-                    : null
-            }
+
 
             {/* Render mardkown description */}
             <DetailDescription>
                 <MarkDownRenderer markdown={detail.description}/>
             </DetailDescription>
 
-            <WrapRow>
-            {
-                detail.connected_to ?
-                    <Categories>
-                        {detail.connected_to.map(r => <CategoryLabel
-                            onClick={() => setDetail(r.name)}>{r.name}
-                        </CategoryLabel>)}
-                    </Categories>
+            {/**           REFACTOR ME             */
+                detailType !== types.TAG ?
+                    <ListBlock>
+                        {// render tags if detail has them
+                            detail.tags ?
+                                <React.Fragment>
+                                    <ListLabel>Tags</ListLabel>
+                                    <List>
+                                        {detail.tags.map((t,i) => <ListItem key={i}>{t.name}</ListItem>)}
+                                    </List>
+                                </React.Fragment>
+                                : <span>[no tags]</span>
+                        }
+                        {
+                            detail.connected_to ?
+                                <React.Fragment>
+                                    <ListLabel>Connections</ListLabel>
+                                    <List>
+                                        {
+                                            detail.connected_to.map((r,i) => <ListItem
+                                                key={i}
+                                                onClick={() => setDetail({
+                                                        detail: r.name,
+                                                        type: detailType
+                                            })}>{r.name}
+                                        </ListItem>)}
+                                    </List>
+                                </React.Fragment>
+                                : <span>[no connections]</span>
+                        }
+                    </ListBlock>
                     : null
-            }</WrapRow>
-
+                /**            TILL HERE               */
+            }
 
         </DetailBlock>
-
     </Detail>
 )
 
 export default ResourceDetail;
 
 ResourceDetail.propTypes = {
-    editResource: PropTypes.func.isRequired,
+    editDetail: PropTypes.func.isRequired,
+    setDetail: PropTypes.func.isRequired,
+    detail: PropTypes.object.isRequired
 }
 
 const RenderToggleButton = ({detailType, inMap, addToMap, removeFromMap, detail}) => {
@@ -208,12 +226,8 @@ const RenderToggleButton = ({detailType, inMap, addToMap, removeFromMap, detail}
 
 const ResourceInMappingToggleButton = ({inMap, addToMap, removeFromMap, detail}) => {
     if (inMap) {
-        return <Button onClick={() => removeFromMap(detail)}>
-            <ButtonIcon src={remove}/>
-        </Button>
+        return <ActionLink onClick={() => removeFromMap(detail)}>remove from map</ActionLink>
     } else {
-        return <Button onClick={() => addToMap(detail)}>
-            <ButtonIcon src={add}/>
-        </Button>
+        return <ActionLink onClick={() => addToMap(detail)}>add to map</ActionLink>
     }
 };

@@ -17,5 +17,5 @@ export function isResourceInMapping({
 
 export function mappingExists({id, mappings}){
     const i = _.findIndex(mappings, {id: id})
-    return i != -1 ? true : false;
+    return i !== -1 ? true : false;
 }

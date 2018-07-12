@@ -36,11 +36,5 @@ export function parseNodeElementsFromResources(resourceArray){
 }
 
 export function filterResourcesByIds({ids, resources}){
-   let filtered = [];
-   filtered = resources.filter(r => {
-       if (_.indexOf(ids, r.name) !== -1){
-           return r;
-       }
-   })
-   return filtered; 
+   return resources.filter(r => (_.indexOf(ids, r.name) !== -1))
 }

@@ -1,4 +1,5 @@
 
 export const MAPPING = "MAPPING";
 export const RESOURCE = "RESOURCE";
-export const CATEGORY = "CATEGORY";
+export const TAG = "TAG";
+export const EMPTY = "EMPTY";

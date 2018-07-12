@@ -1,6 +1,5 @@
 import GwClientApi from '../api/gwClientApi';
 import * as types from './actionTypes';
-import { mappingExists } from '../common/resource-helpers';
 
 export function loadAllMappings() {
     return function(dispatch) {
@@ -52,18 +51,69 @@ export function loadActiveMapping(mapping){
     }
 }
 
-export function postMapping({name, description, resources, categories}){
+export function postMapping({name, description, resources, tags}){
 
     return function(dispatch) {
         // if mapping already exist update mapping
-        dispatch(addMapping({name, description, resources, categories}))
-        return GwClientApi.postMapping({name, description, resources, categories}).then(response =>{
+        dispatch(addMapping({name, description, resources, tags}));
+        return GwClientApi.postMapping({name, description, resources, tags}).then(response =>{
             dispatch(postMappingSuccess(response));
+            // return the response to caller
+            return response;
         }).catch(error => {
             throw(error);
         });
     }
 }
+
+/*************** MAPPING *************/
+
+export function updateMapping(mapping){
+    console.info("updateMapping(mapping);");
+    console.info(mapping);
+    return function(dispatch) {
+        return GwClientApi.putMapping(mapping)
+            .then(response => {
+                console.info("updateMapping.then()");
+                console.info(response);
+                dispatch(updateMappingSuccess({mapping: response.data}));
+                return response;
+            }).catch(error => {
+                throw(error);
+        })
+    }
+}
+
+function updateMappingSuccess({mapping}){
+    console.info("updateMappingSuccess");
+    return {type: types.UPDATE_MAPPING_SUCCESS, mapping};
+}
+
+
+/*************** UPDATE **************/
+
+
+/*************** DELETE **************/
+
+export function deleteMapping({name}){
+    console.info("deletemapping("+name+")");
+    return function(dispatch){
+        return GwClientApi.deleteMapping({name})
+            .then(response => {
+                dispatch(deleteMappingSuccess({removed: name}));
+                return response;
+            }).catch(error => {
+                throw(error);
+            })
+    }
+}
+
+export function deleteMappingSuccess({removed}) {
+    console.info('Delete mapping success.');
+    return {type: types.DELETE_MAPPING_SUCCESS, removed};
+}
+
+/*********************************************** */
 
 export function postResource(name){
     return function(dispatch) {
@@ -72,11 +122,10 @@ export function postResource(name){
                 // handle error
                 console.debug('error posting resourcee');
             } else {
-                // if success response is the resource object!
-                console.debug('success posting resourcee');
-                console.debug(response);
-                dispatch(postResourceSuccess(response));
-                dispatch(addResource(response))
+                // if no errors add the resource to store
+                //
+
+                dispatch(postResourceSuccess(response.data));
             }
             return response;
         }).catch(error => {
@@ -110,10 +159,10 @@ export function addResourceToMapping({nameMapping, nameResource}){
 
 }
 
-export function loadAllCategories() {
+export function loadAllTags() {
     return function(dispatch) {
-        return GwClientApi.getCategories().then(categories=>{
-            dispatch(loadCategoriesSuccess(categories));
+        return GwClientApi.getCategories().then(tags =>{
+            dispatch(loadTagsSuccess(tags));
         }).catch(error => {
             throw(error);
         });
@@ -151,19 +200,23 @@ export function addResource(resource){
 }
 
 export function postMappingSuccess(response) {
+    console.info('Post mapping success.');
     return {type: types.POST_MAPPING_SUCCESS, response}
 }
 
-export function postResourceSuccess(response) {
-    return {type: types.POST_MAPPING_SUCCESS, response}
+
+
+export function postResourceSuccess(resource) {
+    console.info("Post resource success:");;
+    return {type: types.POST_RESOURCE_SUCCESS, resource}
 }
 
 export function postTagSuccess(response){
     return {type: types.ADD_TAG_SUCCESS, response}
 }
 
-export function loadCategoriesSuccess(categories) {
-    return {type: types.LOAD_CATEGORIES_SUCCESS, categories}
+export function loadTagsSuccess(tags) {
+    return {type: types.LOAD_CATEGORIES_SUCCESS, tags}
 }
 
 export function loadMappingsSuccess(mappings){
@@ -202,6 +255,3 @@ export function addActiveMappingConnections(connections){
     return {type: types.ADD_ACTIVE_MAPPING_CONNECTIONS, connections}
 }
 
-export function saveActiveMappingLocally(){
-    return {type: types.SAVE_ACTIVE_MAPPING_CHANGES_LOCALLY}
-}

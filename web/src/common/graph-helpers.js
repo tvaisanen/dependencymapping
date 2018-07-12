@@ -1,6 +1,9 @@
-import _ from 'lodash';
 
 const required = () => {throw new Error('Missing parameter')};
+
+export function nodeElementsFromResources(resources = required()){
+
+}
 
 export function nodeElementFromResource(resource = required()){
     return {'group': 'nodes', data: {id:resource.name}};

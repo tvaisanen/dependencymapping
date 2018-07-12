@@ -13,14 +13,26 @@ export default function graphReducer(state = initialState.graphs, action){
 
         case types.SAVE_MAPPING:
             const updatedMapping = action.mapping;
-            return state.map( (mapping, index) => {
+            return state.map(mapping => {
                 if (mapping.name !== updatedMapping.name){
                     return mapping;
                 } 
                 return {
                     ...updatedMapping
                 }
-            })
+            });
+
+        case types.UPDATE_MAPPING_SUCCESS:
+            console.info("reducer update mapping success");
+            console.info(action);
+            const removeUpdated = state.filter(m => m.name !== action.mapping.name);
+
+            return [...removeUpdated, action.mapping];
+
+        case types.DELETE_MAPPING_SUCCESS:
+            console.info(action);
+            const filtered = state.filter(m => m.name !== action.removed);
+            return filtered;
         default:
             return state;
     }

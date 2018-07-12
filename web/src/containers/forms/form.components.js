@@ -62,30 +62,10 @@ export const SelectionList = styled.select`
     background: rgba(255,255,255,.4);
 `;
 
-export const FormSelectionItems = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
 
-`;
 
-export const FormSelection = styled.div`
-    display: flex;
-    justify-content: center;
-    margin: 4px;
-    flex-grow: 1;
-    border: 2px solid black;
-    border-radius: 3px;
-    padding: 4px;
-    width: 100%; 
-    color: black;
-    cursor: pointer;
-    :hover {
-      background: rgba(100,100,100,0.3);
-    }
-`;
 
-export const ButtonRow = ({cancel, save, check}) => (
+export const ButtonRow = ({cancel, save, check, remove}) => (
     <Container row>
         <ButtonBox>
         <Button
@@ -96,8 +76,12 @@ export const ButtonRow = ({cancel, save, check}) => (
             onClick={save}>
             save
         </Button>
+        <Button onClick={remove}>
+            delete
+        </Button>
         <Button onClick={check}>
-            check</Button>
+            check
+        </Button>
     </ButtonBox>
     </Container>
 )

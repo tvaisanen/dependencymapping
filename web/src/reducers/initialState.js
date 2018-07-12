@@ -2,6 +2,6 @@ export default {
     graphs: [],
     dependencies: [],
     resources: [],
-    categories: [],
+    tags: [],
     activeMapping: {name: 'none', resources:[], connections:[]},
 }

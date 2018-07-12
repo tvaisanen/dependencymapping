@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import * as l from '../components/layout';
 import styled from 'styled-components';
 import MappingForm from './forms/MappingForm';
 import ResourceForm from './forms/ResourceForm';
 import CategoryForm from './forms/TagForm';
-import ResourceDetail from './ResourceDetail';
 import ResourceBrowserContainer from './ResourceBrowserContainer';
 import FormsContainer from './forms/FormsContainer';
 
@@ -13,10 +11,10 @@ class BottomPanelContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            view: 0, // 0: detail, 1,2,3 forms:mapping,resource,category
-            edit: false,
+            view: 0,        // 0: detail, 1,2,3 forms: mapping, resource, category
+            edit: false,    // "edit-mode"
 
-        }
+        };
 
         this.views = [
             {header: "detail", component: ResourceBrowserContainer, type: ""},
@@ -26,7 +24,7 @@ class BottomPanelContainer extends Component {
             {header: "category", component: CategoryForm, type: "CATEGORY"},
         ];
 
-        this.editResource = this.editResource.bind(this);
+        this.editDetail = this.editDetail.bind(this);
         this.cancelEdit = this.cancelEdit.bind(this);
         this.setView = this.setView.bind(this);
 
@@ -41,10 +39,16 @@ class BottomPanelContainer extends Component {
     }
 
 
-    editResource({resource, type}) {
+    editDetail({resource, type}) {
+        /**
+         * Panel container has the information about, which
+         * detail is selected and if it is in "edit-mode".
+         * This will tell the form if the detail is needed
+         * to be loaded.
+         * */
         console.debug("Edit " + type);
         console.debug(resource);
-        this.setState({edit: true})
+        this.setState({edit: true});
         // get proper component from the views
         switch (type) {
             case "MAPPING":
@@ -56,43 +60,30 @@ class BottomPanelContainer extends Component {
             case "CATEGORY":
                 this.setState({view: 4})
                 break
+            default:
+                break;
         }
     }
 
     render() {
 
         const view = this.views[this.state.view];
+        console.info(this.props);
         return (
             <BottomPanel id="bottom-panel-container">
 
-                {/*         todo: refactor to a component        */}
-
-                <PanelNavigation>
-                    <div>
-                        {/* Left Block*/}
-                        <PanelNavItem
-                            selected={this.state.view === 0}
-                            onClick={() => this.setState({view: 0})}
-                            largePadding
-                        >Resources
-                        </PanelNavItem>
-                        <PanelNavItem
-                            selected={this.state.view === 1}
-                            onClick={() => this.setState({view: 1})}
-                            largePadding
-                        >Create
-                        </PanelNavItem>
-                    </div>
-                </PanelNavigation>
-
-                {/* ############################################## */}
+                <PanelNavTabs
+                    selectedView={this.state.view}
+                    setView={this.setView}
+                    tabItems={tabItems}
+                />
 
                 <PanelContent id="panel-content">
                     <view.component
                         edit={this.state.edit}
                         detail={this.props.detail}          // current selected resource
                         type={this.props.detailType}        // type of the viewed resource
-                        editResource={this.editResource}    // function to change to edit view
+                        editDetail={this.editDetail}        // function to change to edit view
                         cancel={this.cancelEdit}
                         setDetail={this.props.setDetail}
                         setView={this.setView}
@@ -110,6 +101,29 @@ BottomPanelContainer.propTypes = {
 
 export default BottomPanelContainer;
 
+const tabItems = [
+    {label: 'Resources', viewId: 0},
+    {label: 'Create', viewId: 1},
+];
+
+const PanelNavTabs = ({selectedView, tabItems, setView}) => (
+    <PanelNavigation>
+        <div>
+            {
+                tabItems.map((tab,i) => (
+                    <PanelNavTab
+                        key={i}
+                        selected={selectedView === tab.viewId}
+                        onClick={() => setView(tab.viewId)}
+                        largePadding
+                    >{tab.label}
+                    </PanelNavTab>
+                ))
+            }
+        </div>
+    </PanelNavigation>
+);
+
 const BottomPanel = styled.div`
     max-width: 100vw;
     flex-grow: 1;
@@ -119,6 +133,7 @@ const BottomPanel = styled.div`
     padding: 12px; 
     transform: ${props => props.collapsed ? 'scaleY(0)' : 'scaleY(1)'};
     background: ${props => props.collapsed ? 'white' : null};
+    color: rgba(255,255,255,0.8);
 `;
 
 const PanelNavigation = styled.div`
@@ -131,12 +146,16 @@ const PanelNavigation = styled.div`
 `;
 
 
-const PanelNavItem = styled.span`
-    background: ${props => props.selected ? 'rgba(255,255,255,.8)' : 'rgba(255,255,255,0.5)'};
+const PanelNavTab = styled.span`
+    font-size: small;
+    font-weight: bold;
+    color: ${props => props.selected ? 'rgba(255,255,255,.9)' : 'rgba(255,255,255,0.5)'};
+    background: ${props => props.selected ? 'rgba(255,255,255,.3)' : 'rgba(255,255,255,0.25)'};
     padding: ${props => props.largePadding ? '0 16px' : '0 4px'};
     border-radius: 3px 3px 0px 0px;
     margin: 2px;
     cursor: pointer;
+    box-shadow: ${props => props.selected ? '0px -1px 2px rgba(255,255,255,.7)' : null};
 `;
 
 const PanelContent = styled.div`
@@ -148,6 +167,5 @@ const PanelContent = styled.div`
     height: 88%;
     max-height: 33vh;
     padding: 12px;
-    border: 2px dashed green;
 `;
 

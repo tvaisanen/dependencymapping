@@ -138,5 +138,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
-    'UNICODE_JSON': False
+    'UNICODE_JSON': False,
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',)
 }
