@@ -6,6 +6,7 @@ import ResourceForm from './forms/ResourceForm';
 import CategoryForm from './forms/TagForm';
 import ResourceBrowserContainer from './ResourceBrowserContainer';
 import FormsContainer from './forms/FormsContainer';
+import * as types from '../constants/types';
 
 class BottomPanelContainer extends Component {
     constructor(props) {
@@ -51,13 +52,13 @@ class BottomPanelContainer extends Component {
         this.setState({edit: true});
         // get proper component from the views
         switch (type) {
-            case "MAPPING":
+            case types.MAPPING:
                 this.setState({view: 2})
                 break;
-            case "RESOURCE":
+            case types.RESOURCE:
                 this.setState({view: 3})
                 break;
-            case "CATEGORY":
+            case types.TAG:
                 this.setState({view: 4})
                 break
             default:
@@ -68,7 +69,6 @@ class BottomPanelContainer extends Component {
     render() {
 
         const view = this.views[this.state.view];
-        console.info(this.props);
         return (
             <BottomPanel id="bottom-panel-container">
 

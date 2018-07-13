@@ -1,82 +1,50 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import BaseForm from './BaseForm';
 import * as form from './form.components';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux';
 import * as actionCreators from '../../actions/graphActions';
 import * as validators from '../../common/validators';
-import {getSelected, selectOptionsInList} from './form.helpers';
+import {resourceExists} from '../../common/resource-helpers';
+import * as types from '../../constants/types';
 
+class ResourceForm extends BaseForm {
 
-class MappingForm extends Component {
-    constructor(props) {
+    constructor(props){
         super(props);
-        this.onSave = this.onSave.bind(this);
-        this.state = {
-            name: "",
-            description: ""
-        }
+        this.setState({
+            type: types.RESOURCE
+        });
     }
 
-    componentDidMount() {
-        if (this.props.edit) {
-            // if form is opened to edit a resource
-            // map the resource properties to starting values
-            this.setState({
-                name: this.props.detail.name,
-                description: this.props.detail.description
-            });
-
-
-            // if mapping has resources map the selection
-            if (this.props.detail.resources) {
-                const resourceNameList = this.props.detail.resources.map(
-                    r => r.name
-                );
-                const resourceOptions = this.inputResources.options;
-                selectOptionsInList({
-                    list: resourceNameList,
-                    options: resourceOptions
-                });
-            }
-
-            // if mapping has categories map the selection
-            if (this.props.detail.tags) {
-                const tagNameList = this.props.detail.tags.map(
-                    t => t.name
-                );
-                const tagOptions = this.inputTags.options;
-                selectOptionsInList({
-                    list: tagNameList,
-                    options: tagOptions
-                });
-            }
-        }
+    exists({id, set}){
+        return resourceExists({id, resources: set});
     }
 
-    toggleValidation() {
-        // show the validity of inputs
-        this.setState({check: true});
+    actionPost(form){
+        console.info("post resrouce");
+        console.info(form);
+        console.info({
+            ...form, connected_to: form.resources
+
+        });
+        return this.props.postResource({
+            ...form, connected_to: form.resources
+
+        });
     }
 
-    areArgumentsValid() {
-        const nameValid = validators.validMappingName(this.state.name);
-        const descriptionValid = validators.validDescription(this.state.description);
-        return nameValid && descriptionValid;
+    actionUpdate(form){
+        return this.props.updateResource({
+            ...form, connected_to: form.resources
+        });
     }
 
-
-    onSave() {
-        if (this.areArgumentsValid()) {
-            const name = this.state.name;
-            const description = this.state.description;
-            const resources = getSelected(this.inputResources.options);
-            const tags = getSelected(this.inputTags.options);
-            this.props.postResource({name, description, connected_to: resources, tags});
-        } else {
-            this.toggleValidation() // if not ok
-        }
+    actionDelete({name}){
+        return this.props.deleteResource({name})
     }
+
 
     render() {
 
@@ -123,16 +91,19 @@ class MappingForm extends Component {
 
                 </form.Container>
                 <form.ButtonRow
-                    check={() => this.setState({check: true})} // debugging
+                    edit={this.props.edit}
                     save={this.onSave}
+                    remove={() => this.onDelete({name: this.state.name})}
                     cancel={this.props.cancel}/>
             </form.Container>
         );
     }
 }
 
-MappingForm.propTypes = {
+ResourceForm.propTypes = {
     cancel: PropTypes.func.isRequired,
+    tags: PropTypes.array.isRequired,
+    updateResource: PropTypes.func.isRequired
 
 };
 
@@ -147,5 +118,7 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({...actionCreators}, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MappingForm);
+
+export default connect(mapStateToProps, mapDispatchToProps)(ResourceForm);
+
 

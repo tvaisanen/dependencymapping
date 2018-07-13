@@ -220,7 +220,7 @@ class App extends Component {
   }
 
   addResourceToMapping(nameResource){
-    // create post the mapping
+    // create actionPost the mapping
     // this adds the resource to db
     const resource = this.props.postResource(nameResource); 
 

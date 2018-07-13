@@ -16,12 +16,12 @@ export const SelectForm = ({openForm}) => (
     <l.LayoutCol align={'center'} id="form-selection-container">
         <Title>Create new</Title>
         <FormSelectionItems id="form-selection-items">
-            {formMapping.map((f,i)=> (
-               <FormSelection
-                   key={i}
-                   id="form-selection-item"
-                   onClick={() => openForm({viewId: f.viewId})}
-               >{f.label}
+            {formMapping.map((f, i) => (
+                <FormSelection
+                    key={i}
+                    id="form-selection-item"
+                    onClick={() => openForm({viewId: f.viewId})}
+                >{f.label}
                 </FormSelection>
             ))}
         </FormSelectionItems>
@@ -38,7 +38,7 @@ class FormsContainer extends Component {
 
         this.openForm = this.openForm.bind(this);
         this.cancelForm = this.cancelForm.bind(this);
-
+        this.formProps = {}
         this.formViews = [
             {component: SelectForm, props: {id: 0, openForm: this.openForm, cancel: this.cancelForm}},
             {
@@ -51,8 +51,25 @@ class FormsContainer extends Component {
                     setDetail: this.props.setDetail
                 }
             },
-            {component: ResourceForm, props: {id: 2, onClick: this.openForm, cancel: this.cancelForm}},
-            {component: TagForm, props: {id: 3, onClick: this.openForm, cancel: this.cancelForm}}
+            {
+                component: ResourceForm,
+                props: {
+                    id: 2,
+                    onClick: this.openForm,
+                    cancel: this.cancelForm,
+                    setView: this.props.setView,
+                    setDetail: this.props.setDetail
+                }
+            },
+            {
+                component: TagForm, props: {
+                    id: 3,
+                    onClick: this.openForm,
+                    cancel: this.cancelForm,
+                    setView: this.props.setView,
+                    setDetail: this.props.setDetail
+                }
+            }
         ];
 
     }
@@ -68,7 +85,6 @@ class FormsContainer extends Component {
 
     render() {
         const view = this.formViews[this.state.view];
-        console.info(this.props);
         return (
             <FormBlock>
                 <view.component {...view.props} />

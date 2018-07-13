@@ -5,50 +5,34 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux';
 import * as actionCreators from '../../actions/graphActions';
 import * as validators from '../../common/validators';
+import BaseForm from './BaseForm';
+import * as types from '../../constants/types';
 
+import {tagExists} from '../../common/resource-helpers';
 
-class TagForm extends Component {
+class TagForm extends BaseForm {
     constructor(props) {
         super(props);
         this.state = {
-            name: "",
-            description: "",
-            check: false,
+            type: types.TAG,
+            selections: false
         };
-
-        this.onSave = this.onSave.bind(this);
     }
 
-    componentDidMount() {
-        if (this.props.edit) {
-            // if form is opened to edit a resource
-            // map the resource properties to starting values
-            this.setState({
-                name: this.props.detail.name,
-                description: this.props.detail.description
-            });
-        }
+    exists({id, set}){
+        return tagExists({id: id, tags: set});
     }
 
-    onSave() {
-        if (this.areArgumentsValid()) {
-            const name = this.state.name;
-            const description = this.state.description;
-
-            this.props.postTag({name, description});
-        } else {
-            this.toggleValidation();
-        }
+    actionPost(form){
+        return this.props.postTag(form);
     }
 
-    toggleValidation() {
-        this.setState({check: true});
+    actionUpdate(form){
+        return this.props.updateTag(form);
     }
 
-    areArgumentsValid() {
-        const nameValid = validators.validMappingName(this.state.name);
-        const descriptionValid = validators.validDescription(this.state.description);
-        return nameValid && descriptionValid;
+    actionDelete({name}) {
+        return this.props.deleteTag({name});
     }
 
 
@@ -83,7 +67,8 @@ class TagForm extends Component {
 
                 </form.Container>
                 <form.ButtonRow
-                    check={() => this.setState({check: true})} // debugging
+                    edit={this.props.edit}
+                    remove={() => this.onDelete({name: this.state.name})}
                     save={this.onSave}
                     cancel={this.props.cancel}/>
             </form.Container>
@@ -92,7 +77,9 @@ class TagForm extends Component {
 }
 
 TagForm.propTypes = {
-    postTag: PropTypes.func.isRequired
+    postTag: PropTypes.func.isRequired,
+    updateTag: PropTypes.func.isRequired,
+    deleteTag: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state, ownProps = {}) => {

@@ -2,9 +2,19 @@ import axios from 'axios';
 
 const API_URL = 'http://127.0.0.1:8000/';
 const MAPPINGS_URL = `${API_URL}mappings/`;
+const TAGS_URL = `${API_URL}tags/`;
+const RESOURCES_URL = `${API_URL}resources/`;
+
+function tagDetailUrl({name}) {
+    return `${TAGS_URL}${encodeURI(name)}/`;
+}
 
 function mappingsDetailUrl({name}) {
     return `${MAPPINGS_URL}${encodeURI(name)}/`;
+}
+
+function resourceDetailUrl({name}) {
+    return `${RESOURCES_URL}${encodeURI(name)}/`;
 }
 
 class GwClientApi {
@@ -99,6 +109,11 @@ class GwClientApi {
 
 
     /** ***********************************************************/
+
+    static deleteResource({name}) {
+        return axios.delete(`http://127.0.0.1:8000/resources/${encodeURI(name)}`);
+    }
+
     static postResource({name, description, connected_to, tags}) {
         return axios.post('http://127.0.0.1:8000/resources/',
             {
@@ -108,9 +123,32 @@ class GwClientApi {
                 tags: JSON.stringify(tags)
             })
     }
+    static putResource({name, description, connected_to, tags}) {
+        console.info("GWClientPutResource");
+        console.info(connected_to)
+        return axios.put(
+            resourceDetailUrl({name}),
+            {
+                name: name,
+                description: description,
+                connected_to: JSON.stringify(connected_to),
+                tags: JSON.stringify(tags)
+            }
+        );
+    }
 
     static postTag({name, description}) {
         return axios.post('http://127.0.0.1:8000/tags/', {name, description})
+    }
+
+    static putTag({name, description}) {
+        return axios.put(
+            tagDetailUrl({name}),
+            {name, description})
+    }
+
+    static deleteTag({name, description}) {
+        return axios.delete(tagDetailUrl({name}));
     }
 }
 

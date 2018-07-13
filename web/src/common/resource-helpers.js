@@ -19,3 +19,13 @@ export function mappingExists({id, mappings}){
     const i = _.findIndex(mappings, {id: id})
     return i !== -1 ? true : false;
 }
+
+export function resourceExists({id, resources}){
+    const i = _.findIndex(resources, {id: id});
+    return i !== -1 ? true : false;
+}
+
+export function tagExists({id, tags}){
+    const i = _.findIndex(tags, {id: id});
+    return i !== -1 ? true : false;
+}

@@ -6596,7 +6596,7 @@ sw-precache@^5.1.1:
     mkdirp "^0.5.1"
     pretty-bytes "^4.0.2"
     sw-toolbox "^3.4.0"
-    update-notifier "^2.3.0"
+    actionUpdate-notifier "^2.3.0"
 
 sw-toolbox@^3.4.0:
   version "3.6.0"
@@ -6874,7 +6874,7 @@ upath@^1.0.0:
 
 update-notifier@^2.3.0:
   version "2.3.0"
-  resolved "https://registry.yarnpkg.com/update-notifier/-/update-notifier-2.3.0.tgz#4e8827a6bb915140ab093559d7014e3ebb837451"
+  resolved "https://registry.yarnpkg.com/actionUpdate-notifier/-/actionUpdate-notifier-2.3.0.tgz#4e8827a6bb915140ab093559d7014e3ebb837451"
   dependencies:
     boxen "^1.2.1"
     chalk "^2.0.1"

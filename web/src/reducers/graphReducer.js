@@ -23,7 +23,7 @@ export default function graphReducer(state = initialState.graphs, action){
             });
 
         case types.UPDATE_MAPPING_SUCCESS:
-            console.info("reducer update mapping success");
+            console.info("reducer actionUpdate mapping success");
             console.info(action);
             const removeUpdated = state.filter(m => m.name !== action.mapping.name);
 

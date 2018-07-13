@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User, Group
-from application.models import  DependencyMap, Tag, Resource
+from application.models import DependencyMap, Tag, Resource
 from rest_framework import serializers
 from rest_framework.parsers import JSONParser
 import json
@@ -31,17 +31,48 @@ class TagSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ResourceSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Resource
         fields = '__all__'
         depth = 2
+
     def create(self, validated_data):
-        print("####### serializer create ##########\n")
-
-        resource_names = json.loads(self.initial_data['connected_to'])
+        print("####### resource serializer create ##########\n")
         tag_names = json.loads(self.initial_data['tags'])
+        resource_data = json.loads(self.initial_data['connected_to'])
 
+        resource_names = [r['name'] for r in resource_data]
+        resources = list(
+            filter(
+                lambda r: r.name in resource_names,
+                Resource.objects.all()
+            )
+        )
+
+        tags = list(
+            filter(
+                lambda t: t.name in tag_names,
+                Tag.objects.all()
+            )
+        )
+
+        [print(r) for r in resources]
+
+        new_resource = Resource(**validated_data)
+        new_resource.save()
+        new_resource.connected_to.add(*resources)
+        new_resource.tags.add(*tags)
+        print("####################################")
+        return new_resource
+
+    def update(self, instance, validated_data):
+        print("####### serializer actionUpdate ##########\n")
+
+        resource_data = json.loads(self.initial_data['connected_to'])
+        tag_names = json.loads(self.initial_data['tags'])
+        print(tag_names)
+
+        resource_names = [r['name'] for r in resource_data]
 
         resources = list(
             filter(
@@ -57,16 +88,16 @@ class ResourceSerializer(serializers.ModelSerializer):
             )
         )
 
-        new_resource = Resource(**validated_data)
-        new_resource.save()
-        new_resource.connected_to.add(*resources)
-        new_resource.tags.add(*tags)
+        instance.connected_to.clear()
+        instance.tags.clear()
+
+        instance.connected_to.add(*resources)
+        instance.tags.add(*tags)
         print("####################################")
-        return new_resource
+        return super(ResourceSerializer, self).update(instance, validated_data)
 
 
 class DependencyMapSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = DependencyMap
         fields = ('name', 'description', 'resources', 'tags')
@@ -95,7 +126,6 @@ class DependencyMapSerializer(serializers.ModelSerializer):
             )
         )
 
-
         new_dependency_map = DependencyMap(**validated_data)
         new_dependency_map.save()
         new_dependency_map.resources.add(*resources)
@@ -104,7 +134,7 @@ class DependencyMapSerializer(serializers.ModelSerializer):
         return new_dependency_map
 
     def update(self, instance, validated_data):
-        print("####### serializer update ##########\n")
+        print("####### serializer actionUpdate ##########\n")
 
         resource_data = json.loads(self.initial_data['resources'])
         tag_names = json.loads(self.initial_data['tags'])

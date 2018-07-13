@@ -6,8 +6,8 @@ const cInvalid = "rgba(255,0,0,0.3)";
 
 export const Container = styled.div`
     display: flex;
-    flex-direction: ${props=>props.column? 'column':'row'};
-    background: ${props=>props.bg};
+    flex-direction: ${props => props.column ? 'column' : 'row'};
+    background: ${props => props.bg};
     justify-content: center;
     align-items: center;
     height: inherit;
@@ -27,16 +27,16 @@ export const Button = styled.button``;
 
 export const Input = styled.input`
     width: inherit;
-    background-color: ${ props => 
-        props.check ? (props.valid ? cValid : cInvalid) : null
+    background-color: ${ props =>
+    props.check ? (props.valid ? cValid : cInvalid) : null
     };
 `;
 
 export const TextArea = styled.textarea`
     width: inherit;
     min-width: 200px;
-    background-color: ${ props => 
-        props.check ? (props.valid ? cValid : cInvalid) : null
+    background-color: ${ props =>
+    props.check ? (props.valid ? cValid : cInvalid) : null
     };
 `;
 
@@ -63,25 +63,28 @@ export const SelectionList = styled.select`
 `;
 
 
+export const ErrorMsg = styled.span`
+  color: rgba(255,50,50,0.8);
+  font-size: smaller;
+  height: 1rem;
+`;
 
-
-export const ButtonRow = ({cancel, save, check, remove}) => (
+export const ButtonRow = ({cancel, save, remove, edit}) => (
     <Container row>
         <ButtonBox>
-        <Button
-            onClick={cancel}>
-            cancel
-        </Button>
-        <Button
-            onClick={save}>
-            save
-        </Button>
-        <Button onClick={remove}>
-            delete
-        </Button>
-        <Button onClick={check}>
-            check
-        </Button>
-    </ButtonBox>
+            <Button
+                onClick={cancel}>
+                cancel
+            </Button>
+            <Button
+                onClick={save}>
+                save
+            </Button>
+            {
+                edit ?
+                    <Button onClick={remove}>delete</Button>
+                    : null
+            }
+        </ButtonBox>
     </Container>
 )
