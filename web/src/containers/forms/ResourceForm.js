@@ -4,7 +4,7 @@ import BaseForm from './BaseForm';
 import * as form from './form.components';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux';
-import * as actionCreators from '../../actions/graphActions';
+import * as actionCreators from '../../actions/index';
 import * as validators from '../../common/validators';
 import {resourceExists} from '../../common/resource-helpers';
 import * as types from '../../constants/types';

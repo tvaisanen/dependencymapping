@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import * as form from './form.components';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux';
-import * as actionCreators from '../../actions/graphActions';
+import * as actionCreators from '../../actions/index';
 import {mappingExists} from '../../common/resource-helpers';
 import * as validators from '../../common/validators';
 import BaseForm from './BaseForm';

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux';
-import * as actionCreators from '../actions/graphActions';
+import * as actionCreators from '../actions/index';
 import styled from 'styled-components';
 import * as l from '../components/layout';
 import * as types from '../constants/types';

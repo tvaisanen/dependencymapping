@@ -17,13 +17,15 @@ import SideTabMenuContainer from './SideTabMenuContainer';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import { addElement, addElements, updateLayout, clearGraph } from '../common/graph-helpers';
-import * as actionCreators from '../actions/graphActions';
+import * as actionCreators from '../actions/index';
 import * as parser from '../common/parser';
 import _ from 'lodash';
 import * as constants from '../constants/';
 import BottomPaneContainer from './BottomPanelContainer';
 import dagre from 'cytoscape-dagre';
 import * as texts from '../data/text';
+import CtrlData from '../controllers/CtrlData';
+
 
 cytoscape.use( dagre );
 cytoscape.use( cola );
@@ -237,7 +239,6 @@ class App extends Component {
     const mappings = this.props.graphs.map(m => m.name ).sort();
     const tags = this.props.tags.map(c=>c.name).sort();
     const activeResources = getResourceNameList(this.props.activeMapping.resources);
-
     const { cy } = this.state;
 
     return (
