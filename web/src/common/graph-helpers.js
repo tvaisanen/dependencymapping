@@ -1,4 +1,5 @@
 
+import _ from 'lodash';
 const required = () => {throw new Error('Missing parameter')};
 
 export function nodeElementsFromResources(resources = required()){
@@ -30,6 +31,7 @@ export function removeElement(cy = required(), id = required()){
 
 export function addElements(cy = required(), elements = required()) {
     try {
+
         cy.add(elements);
     } catch (e) {
         console.error(e);
@@ -62,3 +64,13 @@ export function clearGraph(cy = required()){
     }
 }
 
+export function createEdgeElementsBetween({source,targets}){
+    const edges = targets.map( target =>(
+        {group: 'edges', data: {id: `${source}-${target}`, source: source, target: target}}
+    ));
+    return _.flatten(edges);
+}
+
+export function createNodeElements({ids}){
+    return ids.map(id => ({group:'nodes', data: {id: id}}));
+}

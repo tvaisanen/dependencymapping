@@ -29,3 +29,7 @@ export function tagExists({id, tags}){
     const i = _.findIndex(tags, {id: id});
     return i !== -1 ? true : false;
 }
+
+export function getResourceById({id, resources}){
+    return resources.filter(r => r.name === id)[0]
+}

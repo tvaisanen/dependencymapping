@@ -1,0 +1,1 @@
+export const required = () => {throw new Error('Missing parameter')};

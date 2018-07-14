@@ -2,16 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54a515f1-0b9b-4e65-b211-4d44822d847b" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/web/src/actions/activemapping.actions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/src/actions/mapping.actions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/src/actions/resource.actions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/src/actions/tag.actions.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/src/controllers/CtrlData.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/common/graph.events.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/common/required.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dependencymapping/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/dependencymapping/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/actions/graphActions.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/actions/graphActions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/common/graph-helpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/common/graph-helpers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/common/resource-helpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/common/resource-helpers.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/containers/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/reducers/resourceReducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/reducers/resourceReducer.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -24,115 +20,85 @@
     <favorites_list name="dependencymapping" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="graphActions.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/src/actions/graphActions.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="14" selection-start-line="14" selection-end-line="14" />
-              <folding>
-                <element signature="e#0#45#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="activemapping.actions.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/src/actions/activemapping.actions.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="532">
-              <caret line="28" column="65" selection-start-line="28" selection-start-column="65" selection-end-line="28" selection-end-column="65" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tag.actions.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/src/actions/tag.actions.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="855">
-              <caret line="72" selection-start-line="72" selection-end-line="72" />
-              <folding>
-                <element signature="e#0#45#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tag.reducer.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/src/reducers/tag.reducer.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="399">
-              <caret line="22" selection-start-line="22" selection-end-line="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="resource.actions.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/src/actions/resource.actions.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="874">
-              <caret line="117" selection-start-line="117" selection-end-line="117" />
-              <folding>
-                <element signature="e#0#45#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="mapping.actions.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/web/src/actions/mapping.actions.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="969">
-              <caret line="97" column="1" selection-start-line="97" selection-start-column="1" selection-end-line="97" selection-end-column="1" />
-              <folding>
-                <element signature="e#0#45#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="configureStore.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/src/store/configureStore.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <folding>
-                <element signature="e#0#51#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="rootReducer.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/src/reducers/rootReducer.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="38">
-              <caret line="2" column="29" selection-start-line="2" selection-start-column="29" selection-end-line="2" selection-end-column="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="resourceReducer.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/src/reducers/resourceReducer.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="57">
-              <caret line="3" column="66" selection-start-line="3" selection-start-column="66" selection-end-line="3" selection-end-column="66" />
-              <folding>
-                <element signature="e#0#48#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="initialState.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/web/src/reducers/initialState.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="57">
-              <caret line="3" column="4" selection-start-line="3" selection-start-column="4" selection-end-line="3" selection-end-column="4" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.4069705">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="required.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/web/src/common/required.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state>
+                  <caret column="7" selection-start-column="7" selection-end-column="7" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="graph.events.js" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/web/src/common/graph.events.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="418">
+                  <caret line="22" column="23" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
+                  <folding>
+                    <element signature="e#0#38#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="graph-helpers.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/web/src/common/graph-helpers.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="898">
+                  <caret line="74" column="57" selection-start-line="74" selection-start-column="57" selection-end-line="74" selection-end-column="57" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="graph.events.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/web/src/common/graph.events.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="19">
+                  <caret line="1" selection-start-line="1" selection-end-line="1" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="App.js" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/web/src/containers/App.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="399">
+                  <caret line="119" column="19" selection-start-line="119" selection-start-column="19" selection-end-line="119" selection-end-column="19" />
+                  <folding>
+                    <element signature="e#0#39#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="BottomPanelContainer.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/web/src/containers/BottomPanelContainer.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="19">
+                  <caret line="1" column="30" lean-forward="true" selection-start-line="1" selection-start-column="30" selection-end-line="1" selection-end-column="30" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="resource-helpers.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/web/src/common/resource-helpers.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state>
+                  <caret column="19" lean-forward="true" selection-start-column="19" selection-end-column="19" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -168,14 +134,12 @@
         <option value="$PROJECT_DIR$/web/src/reducers/activeMapping.js" />
         <option value="$PROJECT_DIR$/web/src/constants/types.js" />
         <option value="$PROJECT_DIR$/web/src/reducers/graphReducer.js" />
-        <option value="$PROJECT_DIR$/web/src/common/graph-helpers.js" />
         <option value="$PROJECT_DIR$/web/src/containers/SideTabMenuContainer.js" />
         <option value="$PROJECT_DIR$/web/src/containers/ResourceDetail.js" />
         <option value="$PROJECT_DIR$/web/src/containers/forms/form.components.js" />
         <option value="$PROJECT_DIR$/web/src/containers/forms/FormsContainer.js" />
         <option value="$PROJECT_DIR$/web/src/containers/forms/response.handlers.js" />
         <option value="$PROJECT_DIR$/dependencymapping/application/serializers.py" />
-        <option value="$PROJECT_DIR$/web/src/common/resource-helpers.js" />
         <option value="$PROJECT_DIR$/web/src/containers/forms/ResourceForm.js" />
         <option value="$PROJECT_DIR$/web/src/containers/forms/MappingForm.js" />
         <option value="$PROJECT_DIR$/web/src/containers/BottomPanelContainer.js" />
@@ -186,13 +150,17 @@
         <option value="$PROJECT_DIR$/web/src/api/gwClientApi.js" />
         <option value="$PROJECT_DIR$/web/src/containers/forms/BaseForm.js" />
         <option value="$PROJECT_DIR$/web/src/controllers/CtrlData.js" />
-        <option value="$PROJECT_DIR$/web/src/containers/App.js" />
         <option value="$PROJECT_DIR$/web/src/reducers/resourceReducer.js" />
         <option value="$PROJECT_DIR$/web/src/actions/activemapping.actions.js" />
-        <option value="$PROJECT_DIR$/web/src/actions/tag.actions.js" />
+        <option value="$PROJECT_DIR$/web/src/actions/mapping.actions.js" />
         <option value="$PROJECT_DIR$/web/src/actions/resource.actions.js" />
         <option value="$PROJECT_DIR$/web/src/actions/graphActions.js" />
-        <option value="$PROJECT_DIR$/web/src/actions/mapping.actions.js" />
+        <option value="$PROJECT_DIR$/web/src/actions/tag.actions.js" />
+        <option value="$PROJECT_DIR$/web/src/common/required.js" />
+        <option value="$PROJECT_DIR$/web/src/common/resource-helpers.js" />
+        <option value="$PROJECT_DIR$/web/src/common/graph-helpers.js" />
+        <option value="$PROJECT_DIR$/web/src/containers/App.js" />
+        <option value="$PROJECT_DIR$/web/src/common/graph.events.js" />
       </list>
     </option>
   </component>
@@ -264,7 +232,14 @@
               <item name="dependencymapping" type="462c0819:PsiDirectoryNode" />
               <item name="web" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="store" type="462c0819:PsiDirectoryNode" />
+              <item name="common" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dependencymapping" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dependencymapping" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="containers" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -316,7 +291,7 @@
       <window_info anchor="bottom" id="Python Console" order="7" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4980916" visible="true" weight="0.112600535" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4980916" weight="0.16729222" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="right" id="SciView" order="3" />
@@ -408,16 +383,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/web/src/reducers/cytoscape.reducer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="1" selection-start-line="1" selection-end-line="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/containers/MenuHeaderWithForm.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/src/containers/MenuItemContainer.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -494,13 +459,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/common/parser.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="760">
-          <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/dependencymapping/dependencymapping/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="860">
@@ -529,13 +487,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="20" lean-forward="true" selection-start-column="20" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/common/graph-helpers.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="4" selection-start-line="4" selection-end-line="4" />
         </state>
       </provider>
     </entry>
@@ -607,16 +558,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/containers/BottomPanelContainer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="9" selection-start-line="9" selection-end-line="9" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/src/containers/forms/ResourceForm.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
@@ -664,13 +605,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/common/resource-helpers.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="532">
-          <caret line="28" column="29" selection-start-line="28" selection-start-column="29" selection-end-line="28" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/src/containers/forms/MappingForm.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="57">
@@ -702,30 +636,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/containers/App.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="241" selection-start-line="241" selection-end-line="241" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-            <element signature="n#!!block;n#componentDidMount#0;n#App#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/src/actions/actionTypes.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="570">
           <caret line="30" column="40" selection-start-line="30" selection-start-column="40" selection-end-line="30" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/store/configureStore.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#51#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -753,10 +667,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/reducers/tag.reducer.js">
+    <entry file="file://$PROJECT_DIR$/web/src/actions/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="399">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
+        <state relative-caret-position="76">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
         </state>
       </provider>
     </entry>
@@ -767,30 +681,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/actions/tag.actions.js">
+    <entry file="file://$PROJECT_DIR$/web/src/reducers/tag.reducer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="855">
-          <caret line="72" selection-start-line="72" selection-end-line="72" />
-          <folding>
-            <element signature="e#0#45#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="399">
+          <caret line="22" selection-start-line="22" selection-end-line="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/src/actions/resource.actions.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="874">
-          <caret line="117" selection-start-line="117" selection-end-line="117" />
-          <folding>
-            <element signature="e#0#45#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/actions/graphActions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="14" selection-start-line="14" selection-end-line="14" />
+        <state relative-caret-position="950">
+          <caret line="121" column="1" selection-start-line="121" selection-start-column="1" selection-end-line="121" selection-end-column="1" />
           <folding>
             <element signature="e#0#45#0" expanded="true" />
           </folding>
@@ -803,6 +704,78 @@
           <caret line="97" column="1" selection-start-line="97" selection-start-column="1" selection-end-line="97" selection-end-column="1" />
           <folding>
             <element signature="e#0#45#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/store/configureStore.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="10" selection-start-line="10" selection-end-line="10" />
+          <folding>
+            <element signature="e#0#51#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/actions/tag.actions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1501">
+          <caret line="79" column="4" selection-start-line="79" selection-start-column="4" selection-end-line="79" selection-end-column="4" />
+          <folding>
+            <element signature="e#0#45#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/containers/BottomPanelContainer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="1" column="30" lean-forward="true" selection-start-line="1" selection-start-column="30" selection-end-line="1" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/common/parser.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="38">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/common/resource-helpers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="19" lean-forward="true" selection-start-column="19" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/common/required.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="7" selection-start-column="7" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/common/graph-helpers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="898">
+          <caret line="74" column="57" selection-start-line="74" selection-start-column="57" selection-end-line="74" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/common/graph.events.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/containers/App.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="119" column="19" selection-start-line="119" selection-start-column="19" selection-end-line="119" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
           </folding>
         </state>
       </provider>
