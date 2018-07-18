@@ -53,7 +53,7 @@ class ResourceBrowserContainer extends Component {
         const {filterValue} = this.state;
         const isResourceInMap = isResourceInMapping({
             mapping: this.props.activeMapping,
-            resourceId: this.props.detail.name
+            resourceId: this.props.activeDetail.name
         })
 
         const resourceItems = this.filterResources({resources, filterValue});
@@ -71,12 +71,12 @@ class ResourceBrowserContainer extends Component {
 
                         <ResourceList>
                             {
-                                resourceItems.map((r,i) => (
+                                resourceItems.map((resource, i) => (
                                         <ResourceListItem
                                             key={i}
-                                            selected={r.name === this.props.detail.name}
-                                            onClick={() => this.props.setDetail({detail: r.name, type: types.RESOURCE})}
-                                        >{r.name}
+                                            selected={resource.name === this.props.detail.name}
+                                            onClick={() => this.props.setActiveDetail({data: resource, type: types.RESOURCE})}
+                                        >{resource.name}
                                         </ResourceListItem>
                                     )
                                 )
@@ -85,7 +85,7 @@ class ResourceBrowserContainer extends Component {
 
                     <ResourceDetail
                         editDetail={this.props.editDetail}
-                        detailType={this.props.type}
+                        detailType={this.props.activeDetail.type}
                         detail={this.props.detail}
                         setDetail={this.props.setDetail}
                         setResourceDetail={this.props.setResourceDetail}
@@ -111,9 +111,10 @@ ResourceBrowserContainer.propTypes = {
 const mapStateToProps = (state, ownProps = {}) => {
     return {
         resources: state.resources,
-        activeMapping: state.activeMapping
+        activeMapping: state.activeMapping,
+        activeDetail: state.activeDetail.data
     }
-}
+};
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({...actionCreators}, dispatch)

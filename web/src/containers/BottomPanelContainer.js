@@ -7,6 +7,10 @@ import CategoryForm from './forms/TagForm';
 import ResourceBrowserContainer from './ResourceBrowserContainer';
 import FormsContainer from './forms/FormsContainer';
 import * as types from '../constants/types';
+import {connect} from 'react-redux'
+import * as actionCreators from '../actions/index';
+import {bindActionCreators} from 'redux';
+
 
 class BottomPanelContainer extends Component {
     constructor(props) {
@@ -69,6 +73,7 @@ class BottomPanelContainer extends Component {
     render() {
 
         const view = this.views[this.state.view];
+        console.info(this.props)
         return (
             <BottomPanel id="bottom-panel-container">
 
@@ -81,7 +86,7 @@ class BottomPanelContainer extends Component {
                 <PanelContent id="panel-content">
                     <view.component
                         edit={this.state.edit}
-                        detail={this.props.detail}          // current selected resource
+                        detail={this.props.activeDetail}          // current selected resource
                         type={this.props.detailType}        // type of the viewed resource
                         editDetail={this.editDetail}        // function to change to edit view
                         cancel={this.cancelEdit}
@@ -99,7 +104,18 @@ BottomPanelContainer.propTypes = {
     detail: PropTypes.object.isRequired,
 };
 
-export default BottomPanelContainer;
+const mapStateToProps = (state, ownProps = {}) => {
+    return {
+        activeDetail: state.activeDetail.data
+
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({...actionCreators}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BottomPanelContainer);
 
 const tabItems = [
     {label: 'Resources', viewId: 0},

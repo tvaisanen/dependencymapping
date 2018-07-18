@@ -17,7 +17,7 @@ import GraphContainer from './GraphContainer';
 import SideTabMenuContainer from './SideTabMenuContainer';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux';
-import {addElement, addElements, updateLayout, clearGraph} from '../common/graph-helpers';
+import {addElement, addElements, updateLayout, clearGraph, nodeElementFromResource} from '../common/graph-helpers';
 import {getResourceById} from "../common/resource-helpers";
 import * as actionCreators from '../actions/index';
 import * as parser from '../common/parser';
@@ -27,6 +27,7 @@ import BottomPaneContainer from './BottomPanelContainer';
 import dagre from 'cytoscape-dagre';
 import * as texts from '../data/text';
 import * as events from '../common/graph.events';
+import { graphStyle } from '../configs/configs.cytoscape';
 
 
 cytoscape.use(dagre);
@@ -39,6 +40,7 @@ class App extends Component {
         super(props);
         this.state = {
             cy: null,
+            vis: null,
             resourceCategories: [],
             showGraphButtons: true,
             detail: texts.landingDetail,
@@ -62,6 +64,13 @@ class App extends Component {
                 name: LAYOUT,
             }
         });
+
+        /** Add vis.js */
+
+
+
+
+        /*************** */
 
         cy.on('tap', 'node', this.onNodeClick);
         cy.on('mouseover', 'node', events.onNodeMouseOver);
@@ -99,13 +108,10 @@ class App extends Component {
             id: resourceName,
             resources: this.props.resources
         });
-        const clickedIsConnectedTo = parser.parseEdgeElementsFromResource(clickedResource);
-
 
         // the active mapping state needs to be updated by
         // adding the resources of the expanded node.
         this.props.addActiveMappingResources(clickedResource.connected_to);
-
 
         // required parameters for handling the graph update are
         // to have the reference of cy, target and the resource name
@@ -156,21 +162,26 @@ class App extends Component {
         const edges = parser.parseEdgeElementsFromResources(resources);
 
 
-        const nodes = resources.map(i => ({group: "nodes", data: {id: i.name}}));
+        const nodes = resources.map(resource => nodeElementFromResource(resource));
         addElements(this.state.cy, nodes);
         addElements(this.state.cy, edges);
 
+        this.props.setActiveDetail({data: mapping, type: constants.MAPPING});
+
+
+        // this will be obsolete after refactoring is complete
         this.setState({detail: mapping, detailType: constants.MAPPING})
 
         this.updateLayout();
     };
 
-    setDetail({detail, type}) {
-        // todo: refactor to store?
+    setDetail({detail, type, detailObject}) {
+        // todo: refactor to store? CLEAN!
         console.info("App.setDetail({detail, type});");
         console.info(detail);
         console.info(type);
-
+        console.info(detailObject);
+        this.props.setActiveDetail({data: detail, type});
         if (detail === constants.EMPTY) {
             clearGraph(this.state.cy);
             this.setState({detail: {name: "no selection", description: "no selection"}});
@@ -194,15 +205,16 @@ class App extends Component {
 
 
     setResourceDetail(resourceId) {
-        const clickedResource = this.props.resources.filter(r => r.name === resourceId)[0];
+        const clickedResource = getResourceById({id: resourceId, resources: this.props.resources});
         // add attribute type to the object
         // this is needed when edit is used from detailview
-
+        this.props.setActiveDetail({data: clickedResource, type: constants.RESOURCE});
         this.setState({detail: clickedResource, detailType: constants.RESOURCE});
     }
 
     setCategoryDetail(categoryId) {
         const clickedTag = this.props.tags.filter(r => r.name === categoryId)[0];
+        this.props.setActiveDetail({data: clickedTag, type: constants.TAG});
         this.setState({detail: clickedTag, detailType: constants.TAG})
     }
 
@@ -262,7 +274,7 @@ class App extends Component {
                             />
 
                             <SideTabMenuContainer
-                                title="Categories"
+                                title="Tags"
                                 listItems={tags}
                                 onItemClick={this.setCategoryDetail}
                                 onCreateNewItem={({id}) => this.props.postMapping({mappingName: id})}
@@ -324,47 +336,6 @@ const getResourceNameList = (resources) => {
 };
 
 
-const graphStyle = [ // the stylesheet for the graph
-    {
-        selector: 'node',
-        style: {
-            'content': 'data(id)',
-            'text-valign': 'center',
-            'color': 'white',
-            'text-outline-width': 1,
-            'line-color': '#4d4c4c',
-            'background-color': 'rgb(54, 48, 54)',
-        }
-    },
-
-    {
-        selector: 'edge',
-        style: {
-            'curve-style': 'unbundled-bezier(multiple)',
-            'width': 3,
-            'line-color': '#eee',
-            'target-arrow-color': '#ccc',
-            'target-arrow-shape': 'triangle'
-        }
-    },
-
-    {
-        selector: 'node.highlight',
-        style: {
-            'background-color': 'rgb(96, 80, 96)',
-            'label': 'data(id)'
-        }
-    },
-    {
-        selector: 'edge.highlight',
-        style: {
-            'width': 4,
-            'line-color': '#ccc',
-            'target-arrow-color': '#ccc',
-            'target-arrow-shape': 'triangle'
-        }
-    },
-];
 
 App.propTypes = {
     addActiveMappingResources: PropTypes.func.isRequired,

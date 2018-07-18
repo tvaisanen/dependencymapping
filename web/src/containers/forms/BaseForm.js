@@ -83,6 +83,8 @@ class BaseForm extends Component {
             const error = handledResponse? handledResponse.error : false;
             if (error) {
                 this.setState({error: handledResponse.error});
+            } else {
+                this.props.setDetail({detail: response.data.name, type: this.state.type})
             }
         }).catch(error => {
             console.warn(error);

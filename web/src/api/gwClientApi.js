@@ -18,6 +18,7 @@ function resourceDetailUrl({name}) {
 }
 
 class GwClientApi {
+    // todo: refactor to getMappings
     static getGraphs() {
         return axios.get('http://127.0.0.1:8000/mappings/')
             .then(response => {
@@ -51,14 +52,7 @@ class GwClientApi {
             });
     }
 
-    static getDependencies() {
-        return fetch('http://127.0.0.1:8000/dependencies/')
-            .then(response => {
-                return response.json();
-            }).catch(error => {
-                return error;
-            });
-    }
+
 
     static getCategories() {
         return fetch('http://127.0.0.1:8000/tags/')
