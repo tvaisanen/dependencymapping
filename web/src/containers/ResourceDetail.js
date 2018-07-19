@@ -181,12 +181,12 @@ const ResourceDetail = ({
                                     <ListLabel>Connections</ListLabel>
                                     <List>
                                         {
-                                            detail.connected_to.map((r,i) => <ListItem
+                                            detail.connected_to.map((resource, i) => <ListItem
                                                 key={i}
                                                 onClick={() => setDetail({
-                                                        detail: r.name,
+                                                        data: resource,
                                                         type: detailType
-                                            })}>{r.name}
+                                            })}>{resource.name}
                                         </ListItem>)}
                                     </List>
                                 </React.Fragment>

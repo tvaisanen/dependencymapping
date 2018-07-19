@@ -49,12 +49,12 @@ class ResourceBrowserContainer extends Component {
     }
 
     render() {
-        const {resources} = this.props;
+        const { activeDetail, activeMapping, resources } = this.props;
         const {filterValue} = this.state;
         const isResourceInMap = isResourceInMapping({
             mapping: this.props.activeMapping,
             resourceId: this.props.activeDetail.name
-        })
+        });
 
         const resourceItems = this.filterResources({resources, filterValue});
         return (
@@ -63,31 +63,33 @@ class ResourceBrowserContainer extends Component {
                 <l.LayoutRow justify={'center'}>
 
                     <ResourceBrowser>
-
                         <FilterInput
                             type="text"
                             placeholder="filter..."
                             onChange={this.onFilterChange}/>
-
                         <ResourceList>
                             {
                                 resourceItems.map((resource, i) => (
                                         <ResourceListItem
                                             key={i}
                                             selected={resource.name === this.props.detail.name}
-                                            onClick={() => this.props.setActiveDetail({data: resource, type: types.RESOURCE})}
+                                            onClick={() => this.props.setActiveDetail({
+                                                data: resource,
+                                                type: types.RESOURCE
+                                            })}
                                         >{resource.name}
                                         </ResourceListItem>
                                     )
                                 )
-                            }</ResourceList>
+                            }
+                        </ResourceList>
                     </ResourceBrowser>
 
                     <ResourceDetail
                         editDetail={this.props.editDetail}
-                        detailType={this.props.activeDetail.type}
+                        detailType={this.props.activeDetailType}
                         detail={this.props.detail}
-                        setDetail={this.props.setDetail}
+                        setDetail={this.props.setActiveDetail}
                         setResourceDetail={this.props.setResourceDetail}
                         isResourceInMap={isResourceInMap}
                         addResourceToActiveMapping={this.addResourceToMapping}
@@ -112,7 +114,8 @@ const mapStateToProps = (state, ownProps = {}) => {
     return {
         resources: state.resources,
         activeMapping: state.activeMapping,
-        activeDetail: state.activeDetail.data
+        activeDetail: state.activeDetail.data,
+        activeDetailType: state.activeDetail.type
     }
 };
 

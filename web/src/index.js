@@ -15,7 +15,7 @@ store.dispatch(actions.loadAllMappings());
 store.dispatch(actions.loadAllResources());
 store.dispatch(actions.loadAllTags());
 
-
+console.info(process.env);
 
 ReactDOM.render(
     <Provider store={store}>

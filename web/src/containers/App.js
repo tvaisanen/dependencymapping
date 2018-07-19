@@ -342,6 +342,9 @@ App.propTypes = {
 }
 
 const mapStateToProps = (state, ownProps = {}) => {
+    console.info("DBUG");
+    console.info(state);
+
     return {
         graphs: state.graphs,
         resources: state.resources,

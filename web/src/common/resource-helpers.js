@@ -3,10 +3,7 @@ import _ from 'lodash';
 
 const required = () => {throw new Error('Missing parameter')};
 
-export function isResourceInMapping({ 
-                                        resourceId = required(), 
-                                        mapping = required()
-                                    }){
+export function isResourceInMapping({resourceId, mapping}){
     /**
      *  @return bool true if resource with given id in mapping
      */

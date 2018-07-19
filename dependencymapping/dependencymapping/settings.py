@@ -15,7 +15,7 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
+STATIC_ROOT= os.path.join(BASE_DIR,'static')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
@@ -32,7 +32,8 @@ ALLOWED_HOSTS = [
     '127.0.0.1:9000',
     'localhost:3000',
     'localhost:8000',
-    'localhost'
+    'localhost',
+    '0.0.0.0'
 ]
 
 CORS_ORIGIN_WHITELIST = (
@@ -72,7 +73,9 @@ ROOT_URLCONF = 'dependencymapping.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, '../static'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -94,7 +97,7 @@ WSGI_APPLICATION = 'dependencymapping.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, '../db.sqlite3'),
     }
 }
 
@@ -135,7 +138,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 STATIC_URL = '/static/'
+
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, '../static'),
+]
 
 REST_FRAMEWORK = {
     'UNICODE_JSON': False,

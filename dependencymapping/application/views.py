@@ -1,8 +1,14 @@
 from django.contrib.auth.models import User, Group
 from application.models import Tag, Resource, DependencyMap
 from rest_framework import viewsets
-from application.serializers import DependencyMapSerializer, UserSerializer, GroupSerializer, TagSerializer, ResourceSerializer
+from application.serializers import DependencyMapSerializer, UserSerializer, GroupSerializer, TagSerializer, \
+    ResourceSerializer
 from rest_framework.permissions import AllowAny
+from django.views.generic import View
+from django.http import HttpResponse
+from django.conf import settings
+import os
+
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -27,8 +33,9 @@ class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
 
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
     allowed_methods = ['get', 'post', 'put', 'delete']
+
 
 class ResourceViewSet(viewsets.ModelViewSet):
     """
@@ -52,7 +59,7 @@ class DependencyMapViewSet(viewsets.ModelViewSet):
     API endpoint that allows groups to be viewed or edited.
     """
 
-    permission_classes = (AllowAny, )
+    permission_classes = (AllowAny,)
     queryset = DependencyMap.objects.all()
     serializer_class = DependencyMapSerializer
     allowed_methods = ['get', 'post', 'put', 'delete']
@@ -67,19 +74,15 @@ class DependencyMapViewSet(viewsets.ModelViewSet):
         print(data['resources'])
         print("end bug \n")
 
-
         print("name: {} description: {}".format(data['name'], data['description']))
         print("resources count: {}.".format(data['resources']))
-
 
         print("\n#################################")
 
         return super(DependencyMapViewSet, self).create(request, args, kwargs)
-    
+
     def destroy(self, request, *args, **kwargs):
         print('destroy')
         return super(DependencyMapViewSet, self).destroy(request, *args, **kwargs)
-
-
 
 

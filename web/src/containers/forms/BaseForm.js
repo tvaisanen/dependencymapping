@@ -84,7 +84,8 @@ class BaseForm extends Component {
             if (error) {
                 this.setState({error: handledResponse.error});
             } else {
-                this.props.setDetail({detail: response.data.name, type: this.state.type})
+                // this is set with bind action creators
+                this.props.setActiveDetail({data: response.data, type: this.state.type})
             }
         }).catch(error => {
             console.warn(error);

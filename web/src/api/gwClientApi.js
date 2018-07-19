@@ -20,7 +20,7 @@ function resourceDetailUrl({name}) {
 class GwClientApi {
     // todo: refactor to getMappings
     static getGraphs() {
-        return axios.get('http://127.0.0.1:8000/mappings/')
+        return axios.get(MAPPINGS_URL)
             .then(response => {
                 return response.data;
             }).catch(error => {
@@ -29,7 +29,7 @@ class GwClientApi {
     }
 
     static getResources() {
-        return fetch('http://127.0.0.1:8000/resources/')
+        return fetch(RESOURCES_URL)
             .then(response => {
                 return response.json();
             }).catch(error => {
@@ -44,7 +44,7 @@ class GwClientApi {
     }
 
     static getResource(id) {
-        return fetch(`http://127.0.0.1:8000/resources/${id}`)
+        return fetch(resourceDetailUrl({name:id}))
             .then(response => {
                 return response.json();
             }).catch(error => {
@@ -55,11 +55,11 @@ class GwClientApi {
 
 
     static getCategories() {
-        return fetch('http://127.0.0.1:8000/tags/')
+        return fetch(TAGS_URL)
             .then(response => {
                 return response.json();
             }).catch(error => {
-                return fetch('http://192.168.1.127:8000/semantic-categories/')
+                return fetch('http://192.168.1.127:8000/api/semantic-categories/')
                     .then(response => {
                         return response.json();
 
