@@ -61,7 +61,7 @@ class BottomPanelContainer extends Component {
                 break;
             case types.TAG:
                 this.setState({view: 4})
-                break
+                break;
             default:
                 break;
         }

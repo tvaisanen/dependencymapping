@@ -1,19 +1,24 @@
-
 import _ from 'lodash';
-const required = () => {throw new Error('Missing parameter')};
+import {nodeStyles} from "../configs/graph.styles";
 
-export function nodeElementsFromResources(resources = required()){
+const required = () => {
+    throw new Error('Missing parameter')
+};
+
+export function nodeElementsFromResources(resources = required()) {
 
 }
 
-function getEdgeId(source=required(), target=required()) { return `${source}_to_${target}`;}
-
-export function nodeElementFromResource(resource = required()){
-    return {'group': 'nodes', data: {id:resource.name}};
+function getEdgeId(source = required(), target = required()) {
+    return `${source}_to_${target}`;
 }
 
-export function edgeElementFromResource(sourceId = required(), targetId = required()){
-    return {'group': 'edges', data: {id:getEdgeId(sourceId, targetId), source:sourceId, target: targetId}};
+export function nodeElementFromResource(resource = required()) {
+    return {'group': 'nodes', data: {id: resource.name}};
+}
+
+export function edgeElementFromResource(sourceId = required(), targetId = required()) {
+    return {'group': 'edges', data: {id: getEdgeId(sourceId, targetId), source: sourceId, target: targetId}};
 }
 
 
@@ -27,7 +32,7 @@ export function addElement(cy = required(), element = required()) {
     }
 }
 
-export function removeElement(cy = required(), id = required()){
+export function removeElement(cy = required(), id = required()) {
     try {
         const element = cy.getElementById(id);
         cy.remove(element);
@@ -45,25 +50,25 @@ export function addElements(cy = required(), elements = required()) {
     }
 }
 
-export function updateLayout(cy = required()){
+export function updateLayout(cy = required()) {
     try {
         console.debug(cy);
-        const layout = cy.layout({ name: 'cola' });
+        const layout = cy.layout({name: 'cola'});
         layout.run();
-    } catch (e){
+    } catch (e) {
         console.error(e);
     }
 }
 
-export function toggleElementVisibility(cy = required(), elementId = required()){
+export function toggleElementVisibility(cy = required(), elementId = required()) {
     try {
 
-    } catch (e){
-        
+    } catch (e) {
+
     }
 }
 
-export function clearGraph(cy = required()){
+export function clearGraph(cy = required()) {
     try {
         cy.elements().remove()
     } catch (e) {
@@ -71,42 +76,76 @@ export function clearGraph(cy = required()){
     }
 }
 
-export function createEdgeElementsBetween({source,targets}){
-    const edges = targets.map( target =>(
+export function createEdgeElementsBetween({source, targets}) {
+    const edges = targets.map(target => (
         {group: 'edges', data: {id: `${source}-${target}`, source: source, target: target}}
     ));
     return _.flatten(edges);
 }
 
-export function createNodeElements({ids}){
-    return ids.map(id => ({group:'nodes', data: {id: id}}));
+export function createNodeElements({ids}) {
+    return ids.map(id => ({group: 'nodes', data: {id: id}}));
 }
+
 
 export function hoverIndicationOn(cy = required(), id) {
     const el = cy.getElementById(id);
     console.info(el);
     el.animate({
-        style: {backgroundColor: 'rgb(154, 148, 154)'}
+        style: {
+            height: "50px",
+            width: "50px",
+            backgroundColor: 'rgb(154, 148, 154)'
+        }
     }, {
-        duration: 300
+        duration: 50
     });
     el.neighborhood()
-        .forEach(e => e.animate({
-            style:{
-                backgroundColor:'rgb(148, 154, 148)'}
-                },
-            {duration:300})
-        );
+        .forEach(e => {
+                if (e.id() == id) {
+                    return null;
+                }
+                else if (e.isNode()) {
+                    e.animate({
+                            style: nodeStyles.expandedNeighbor,
+                        },
+                        {
+                            duration: 50
+                        }
+                    )
+                } else {
+
+                }
+            }
+        )
+    ;
 }
 
 export function hoverIndicationOff(cy = required(), id) {
     const el = cy.getElementById(id);
     console.info(el);
     el.animate({
-        style: {backgroundColor: 'rgb(54, 48, 54)'}
+        style: nodeStyles.passive
     }, {
-        duration: 300
+        duration: 50
     });
+    console.info(el.neighborhood().nodes());
     el.neighborhood()
-        .forEach(e => e.animate({style:{backgroundColor:'rgb(54, 48, 54)'}},{duration:300}));
+        .forEach(e => {
+            if (e.id() == id) {
+                return null;
+            }
+            else if (e.isNode()) {
+                e.animate({
+                        style: nodeStyles.passive,
+                    },
+                    {
+                        duration: 50
+                    }
+                )
+            } else {
+
+            }
+
+        });
 }

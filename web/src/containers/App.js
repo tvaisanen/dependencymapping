@@ -17,8 +17,10 @@ import GraphContainer from './GraphContainer';
 import {Menu} from './SideTabMenuContainer';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux';
-import {addElement, addElements, updateLayout, clearGraph, nodeElementFromResource,
-        hoverIndicationOff, hoverIndicationOn} from '../common/graph-helpers';
+import {
+    addElement, addElements, updateLayout, clearGraph, nodeElementFromResource,
+    hoverIndicationOff, hoverIndicationOn
+} from '../common/graph-helpers';
 import {getResourceById} from "../common/resource-helpers";
 import * as actionCreators from '../actions/index';
 import * as parser from '../common/parser';
@@ -30,6 +32,7 @@ import * as texts from '../data/text';
 import * as events from '../common/graph.events';
 import {graphStyle} from '../configs/configs.cytoscape';
 import * as types from '../constants/types';
+import styled from 'styled-components';
 
 cytoscape.use(dagre);
 cytoscape.use(cola);
@@ -253,19 +256,19 @@ class App extends Component {
         downloadLink.click();
     }
 
-    hoverResourceOn(id){
+    hoverResourceOn(id) {
         console.info("mouseover")
         hoverIndicationOn(this.state.cy, id);
     }
 
-    hoverResourceOff(id){
+    hoverResourceOff(id) {
         console.info("mouseout")
         hoverIndicationOff(this.state.cy, id);
     }
 
     render() {
         console.info(this.props);
-        const { type, data } = this.props.activeDetail;
+        const {type, data} = this.props.activeDetail;
         const activeDetailName = data.name;
         const mappings = this.props.graphs.map(m => m.name).sort();
         const tags = this.props.tags.map(c => c.name).sort();
@@ -278,16 +281,16 @@ class App extends Component {
                 <LayoutCol id="container-top" height={"60vh"}>
                     <TopBar>
                         <span></span>
-                        <span>
-            {/*<small>
+                        {/*<small>
               layout: 
                 <span onClick={()=>this.setLayout('random')}>random</span>
                 <span onClick={()=>this.setLayout('cola')}>physics</span>
                 <span onClick={()=>this.setLayout('circle')}>circle</span>
                 <span onClick={()=>this.setLayout('breadthfirst')}>r>breadthfirst</span>
           </small>*/}
-          <small onClick={this.toggleFloatingButtons}>...</small>
-          </span>
+                        <MenuToggle onClick={this.toggleFloatingButtons}>
+                            &#9776;
+                        </MenuToggle>
                     </TopBar>
                     <LayoutRow>
 
@@ -298,7 +301,7 @@ class App extends Component {
                                 onItemClick={this.loadDependencyMap}
                                 selected={
                                     type === types.MAPPING ?
-                                    activeDetailName : false
+                                        activeDetailName : false
                                 }
                             />
 
@@ -308,7 +311,7 @@ class App extends Component {
                                 onItemClick={this.setCategoryDetail}
                                 selected={
                                     type === types.TAG ?
-                                    activeDetailName : false
+                                        activeDetailName : false
                                 }
                             />
                         </SidePanel>
@@ -323,7 +326,7 @@ class App extends Component {
                                 onMouseOut={this.hoverResourceOff}
                                 selected={
                                     type === types.RESOURCE ?
-                                    activeDetailName : false
+                                        activeDetailName : false
                                 }
                             />
 
@@ -390,3 +393,18 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+const MenuToggle = styled.div`
+    padding: 3px;
+    margin-bottom: 2p;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    :hover {
+      border-color: white;
+    }    
+    transition: all .3s ease-in-out;
+`;
+

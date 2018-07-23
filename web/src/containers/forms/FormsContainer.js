@@ -9,7 +9,7 @@ import MappingForm from './MappingForm';
 const formMapping = [
     {label: "Mapping", viewId: 1},
     {label: "Resource", viewId: 2},
-    {label: "Category", viewId: 3},
+    {label: "Tag", viewId: 3},
 ]
 
 export const SelectForm = ({openForm}) => (

@@ -30,7 +30,8 @@ export const Menu = (
                         {item}
                     </ListItem>)
                 )
-                : null}
+                : null
+            }
 
         </SidePanelContentContainer>
     </SidePanelMenu>
