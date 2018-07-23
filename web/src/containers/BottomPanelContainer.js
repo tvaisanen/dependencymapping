@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import MappingForm from './forms/MappingForm';
 import ResourceForm from './forms/ResourceForm';
-import CategoryForm from './forms/TagForm';
+import TagForm from './forms/TagForm';
 import ResourceBrowserContainer from './ResourceBrowserContainer';
 import FormsContainer from './forms/FormsContainer';
 import * as types from '../constants/types';
 import {connect} from 'react-redux'
 import * as actionCreators from '../actions/index';
 import {bindActionCreators} from 'redux';
-
 
 class BottomPanelContainer extends Component {
     constructor(props) {
@@ -24,9 +23,9 @@ class BottomPanelContainer extends Component {
         this.views = [
             {header: "detail", component: ResourceBrowserContainer, type: ""},
             {header: "forms", component: FormsContainer, type: "FORMS"},
-            {header: "mapping", component: MappingForm, type: "MAPPING"},
-            {header: "resource", component: ResourceForm, type: "RESOURCE"},
-            {header: "category", component: CategoryForm, type: "CATEGORY"},
+            {header: "mapping", component: MappingForm, type: types.MAPPING},
+            {header: "resource", component: ResourceForm, type: types.RESOURCE},
+            {header: "tag", component: TagForm, type: types.TAG},
         ];
 
         this.editDetail = this.editDetail.bind(this);
@@ -51,8 +50,6 @@ class BottomPanelContainer extends Component {
          * This will tell the form if the detail is needed
          * to be loaded.
          * */
-        console.debug("Edit " + type);
-        console.debug(resource);
         this.setState({edit: true});
         // get proper component from the views
         switch (type) {
@@ -86,6 +83,7 @@ class BottomPanelContainer extends Component {
                 <PanelContent id="panel-content">
                     <view.component
                         edit={this.state.edit}
+                        formType={view.type}
                         detail={this.props.activeDetail}          // current selected resource
                         type={this.props.detailType}        // type of the viewed resource
                         editDetail={this.editDetail}        // function to change to edit view

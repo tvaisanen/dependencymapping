@@ -39,4 +39,12 @@ export const graphStyle = [ // the stylesheet for the graph
             'target-arrow-shape': 'triangle'
         }
     },
+    {
+        selector: 'node.flash-shadow',
+        style: {
+            'box-shadow': '30px 30px 30px green',
+            'background-color': 'rgb(244,0,0)',
+            'transition': 'all .1s ease-in-out'
+        }
+    }
 ];

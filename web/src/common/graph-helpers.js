@@ -6,9 +6,16 @@ export function nodeElementsFromResources(resources = required()){
 
 }
 
+function getEdgeId(source=required(), target=required()) { return `${source}_to_${target}`;}
+
 export function nodeElementFromResource(resource = required()){
     return {'group': 'nodes', data: {id:resource.name}};
 }
+
+export function edgeElementFromResource(sourceId = required(), targetId = required()){
+    return {'group': 'edges', data: {id:getEdgeId(sourceId, targetId), source:sourceId, target: targetId}};
+}
+
 
 export function addElement(cy = required(), element = required()) {
     try {
@@ -73,4 +80,33 @@ export function createEdgeElementsBetween({source,targets}){
 
 export function createNodeElements({ids}){
     return ids.map(id => ({group:'nodes', data: {id: id}}));
+}
+
+export function hoverIndicationOn(cy = required(), id) {
+    const el = cy.getElementById(id);
+    console.info(el);
+    el.animate({
+        style: {backgroundColor: 'rgb(154, 148, 154)'}
+    }, {
+        duration: 300
+    });
+    el.neighborhood()
+        .forEach(e => e.animate({
+            style:{
+                backgroundColor:'rgb(148, 154, 148)'}
+                },
+            {duration:300})
+        );
+}
+
+export function hoverIndicationOff(cy = required(), id) {
+    const el = cy.getElementById(id);
+    console.info(el);
+    el.animate({
+        style: {backgroundColor: 'rgb(54, 48, 54)'}
+    }, {
+        duration: 300
+    });
+    el.neighborhood()
+        .forEach(e => e.animate({style:{backgroundColor:'rgb(54, 48, 54)'}},{duration:300}));
 }

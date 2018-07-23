@@ -25,7 +25,7 @@ class BaseForm extends Component {
             resources: [],
             categories: [],
             error: {},
-            type: types.EMPTY,
+            type: props.formType,
             selections: true // if there's the selects
         }
     }

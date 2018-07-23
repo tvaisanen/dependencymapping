@@ -14,10 +14,11 @@ import {
     FloatingButton,
 } from '../components/';
 import GraphContainer from './GraphContainer';
-import SideTabMenuContainer from './SideTabMenuContainer';
+import {Menu} from './SideTabMenuContainer';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux';
-import {addElement, addElements, updateLayout, clearGraph, nodeElementFromResource} from '../common/graph-helpers';
+import {addElement, addElements, updateLayout, clearGraph, nodeElementFromResource,
+        hoverIndicationOff, hoverIndicationOn} from '../common/graph-helpers';
 import {getResourceById} from "../common/resource-helpers";
 import * as actionCreators from '../actions/index';
 import * as parser from '../common/parser';
@@ -27,8 +28,8 @@ import BottomPaneContainer from './BottomPanelContainer';
 import dagre from 'cytoscape-dagre';
 import * as texts from '../data/text';
 import * as events from '../common/graph.events';
-import { graphStyle } from '../configs/configs.cytoscape';
-
+import {graphStyle} from '../configs/configs.cytoscape';
+import * as types from '../constants/types';
 
 cytoscape.use(dagre);
 cytoscape.use(cola);
@@ -53,6 +54,9 @@ class App extends Component {
         this.toggleFloatingButtons = this.toggleFloatingButtons.bind(this);
         this.setCategoryDetail = this.setCategoryDetail.bind(this);
         this.setDetail = this.setDetail.bind(this);
+        this.saveMapping = this.saveMapping.bind(this);
+        this.hoverResourceOff = this.hoverResourceOff.bind(this);
+        this.hoverResourceOn = this.hoverResourceOn.bind(this);
     }
 
     componentDidMount() {
@@ -64,13 +68,6 @@ class App extends Component {
                 name: LAYOUT,
             }
         });
-
-        /** Add vis.js */
-
-
-
-
-        /*************** */
 
         cy.on('tap', 'node', this.onNodeClick);
         cy.on('mouseover', 'node', events.onNodeMouseOver);
@@ -240,13 +237,42 @@ class App extends Component {
         }
     }
 
+    saveMapping() {
+        console.info("App.saveMapping()");
+        console.info(this.props.activeMapping);
+        const {description, tags} = this.props.graphs.filter(g => g.name == this.props.activeMapping.name)[0];
+        console.info(description);
+        console.info(tags);
+        this.props.updateMapping({...this.props.activeMapping, description, tags});
+    }
+
+    downloadImage(cy) {
+        let downloadLink = document.createElement('a')
+        downloadLink.href = cy.png({bg: 'white'});
+        downloadLink.download = "mapping.png";
+        downloadLink.click();
+    }
+
+    hoverResourceOn(id){
+        console.info("mouseover")
+        hoverIndicationOn(this.state.cy, id);
+    }
+
+    hoverResourceOff(id){
+        console.info("mouseout")
+        hoverIndicationOff(this.state.cy, id);
+    }
+
     render() {
         console.info(this.props);
+        const { type, data } = this.props.activeDetail;
+        const activeDetailName = data.name;
         const mappings = this.props.graphs.map(m => m.name).sort();
         const tags = this.props.tags.map(c => c.name).sort();
         const activeResources = getResourceNameList(this.props.activeMapping.resources);
         const {cy} = this.state;
-
+        console.info(type);
+        console.info(data);
         return (
             <Layout>
                 <LayoutCol id="container-top" height={"60vh"}>
@@ -260,38 +286,45 @@ class App extends Component {
                 <span onClick={()=>this.setLayout('circle')}>circle</span>
                 <span onClick={()=>this.setLayout('breadthfirst')}>r>breadthfirst</span>
           </small>*/}
-                            <small onClick={this.toggleFloatingButtons}>...</small>
+          <small onClick={this.toggleFloatingButtons}>...</small>
           </span>
                     </TopBar>
                     <LayoutRow>
 
                         <SidePanel id="sidepanel">
-                            <SideTabMenuContainer
+                            <Menu
                                 title="Mappings "
                                 listItems={mappings}
                                 onItemClick={this.loadDependencyMap}
-                                onCreateNewItem={this.props.postMapping}
+                                selected={
+                                    type === types.MAPPING ?
+                                    activeDetailName : false
+                                }
                             />
 
-                            <SideTabMenuContainer
+                            <Menu
                                 title="Tags"
                                 listItems={tags}
                                 onItemClick={this.setCategoryDetail}
-                                onCreateNewItem={({id}) => this.props.postMapping({mappingName: id})}
+                                selected={
+                                    type === types.TAG ?
+                                    activeDetailName : false
+                                }
                             />
                         </SidePanel>
 
-                        <SidePanel id="mapping" wide>
-
-                            <MenuHeader>{this.props.activeMapping.name ? this.props.activeMapping.name : 'Select Mapping'}</MenuHeader>
-
-                            <SideTabMenuContainer
-                                noHeaderBlock
-                                resources
-                                title="Resources"
+                        <SidePanel id="active-resources-list" wide>
+                            <Menu
+                                darkButtons
+                                title={this.props.activeMapping.name ? this.props.activeMapping.name : 'Select Mapping'}
                                 listItems={activeResources}
                                 onItemClick={this.setResourceDetail}
-                                onCreateNewItem={this.addResourceToMapping}
+                                onMouseOver={this.hoverResourceOn}
+                                onMouseOut={this.hoverResourceOff}
+                                selected={
+                                    type === types.RESOURCE ?
+                                    activeDetailName : false
+                                }
                             />
 
                         </SidePanel>
@@ -302,10 +335,8 @@ class App extends Component {
                         <ButtonPanel buttons visible={this.state.showGraphButtons}>
                             <FloatingButton onClick={() => updateLayout(cy)}>refresh</FloatingButton>
                             <FloatingButton onClick={this.clearGraphSelection}>clear</FloatingButton>
-                            <FloatingButton
-                                onClick={() => this.props.saveMapping(this.props.activeMapping)}>save</FloatingButton>
-                            <FloatingButton onClick={() => updateLayout(cy)}>download</FloatingButton>
-                            <FloatingButton onClick={() => updateLayout(cy)}>foobar</FloatingButton>
+                            <FloatingButton onClick={this.saveMapping}>save</FloatingButton>
+                            <FloatingButton onClick={() => this.downloadImage(cy)}>download</FloatingButton>
                         </ButtonPanel>
 
                     </LayoutRow>
@@ -336,7 +367,6 @@ const getResourceNameList = (resources) => {
 };
 
 
-
 App.propTypes = {
     addActiveMappingResources: PropTypes.func.isRequired,
 }
@@ -351,6 +381,7 @@ const mapStateToProps = (state, ownProps = {}) => {
         dependencies: state.dependencies,
         tags: state.tags,
         activeMapping: state.activeMapping,
+        activeDetail: state.activeDetail
     }
 }
 

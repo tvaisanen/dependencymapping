@@ -6,12 +6,12 @@ import * as actionCreators from '../actions/index';
 import styled from 'styled-components';
 import * as l from '../components/layout';
 import * as types from '../constants/types';
-import {isResourceInMapping} from '../common/resource-helpers';
+import {isResourceInMapping, resourceExists} from '../common/resource-helpers';
 import {
-    addElement, nodeElementFromResource,
+    addElement, nodeElementFromResource, edgeElementFromResource,
     removeElement, updateLayout
 } from "../common/graph-helpers";
-
+import * as _ from 'lodash';
 import ResourceDetail from './ResourceDetail';
 
 class ResourceBrowserContainer extends Component {
@@ -28,9 +28,38 @@ class ResourceBrowserContainer extends Component {
     }
 
     addResourceToMapping(resource) {
-        this.props.addResourceToActiveMapping(resource);
+
+        /*
+         * Create node element from the resource and
+         * get the edge elements to represent the connections
+         * between source and source.connected_to resources
+         *
+         */
         const node = nodeElementFromResource(resource);
+        const edgeElements = resource.connected_to.map(r => edgeElementFromResource(resource.name, r.name));
+
+        /*
+         * Get resources from active mapping that are connected
+         * to the resource, which is added to the active mapping.
+         * For creating edges in the graph.
+         */
+        const resourcesConnectingInto = this.props.activeMapping
+                .resources.map(r => {
+                    const booleans = r.connected_to.map(res => (resource.name == res.name));
+                    if (_.findIndex(booleans, true)){
+                        return r;
+                    }
+            })
+        ;
+
+        const edgesTargetingResource = resourcesConnectingInto.map(r => edgeElementFromResource(r.name, resource.name));
+
+        console.info(edgesTargetingResource);
+
+        this.props.addResourceToActiveMapping(resource);
         addElement(this.props.cyRef, node);
+        addElement(this.props.cyRef, edgeElements);
+        addElement(this.props.cyRef, edgesTargetingResource);
         updateLayout(this.props.cyRef);
     }
 
@@ -107,7 +136,8 @@ ResourceBrowserContainer.propTypes = {
     removeResourceFromActiveMapping: PropTypes.func.isRequired,
     setDetail: PropTypes.func.isRequired,
     editDetail: PropTypes.func.isRequired,
-    type: PropTypes.string.isRequired
+    type: PropTypes.string.isRequired,
+    activeMapping: PropTypes.array.isRequired
 };
 
 const mapStateToProps = (state, ownProps = {}) => {

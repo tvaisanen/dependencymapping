@@ -14,9 +14,6 @@ import * as types from '../../constants/types';
 class MappingForm extends BaseForm {
     constructor(props){
         super(props);
-        this.setState({
-            type: types.MAPPING
-        });
     }
 
    exists({id, set}){
