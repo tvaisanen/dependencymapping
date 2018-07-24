@@ -40,13 +40,15 @@ const nodesStylePassive = {
     height: sizes.passive,
     backgroundColor: color.passive,
 
+    'ghost': 'yes',
 };
 
 const nodeStyleExpanded = {
     fontSize: 100,
     height: sizes.expanded,
     width: sizes.expanded,
-    backgroundColor: color.dark
+    backgroundColor: color.expanded,
+
 };
 
 const nodeStyleNeighbor = {

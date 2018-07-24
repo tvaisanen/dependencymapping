@@ -6,12 +6,13 @@ import * as types from '../constants/types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actionCreators from '../actions/index';
+import {getAllResourcesWithTag} from "../common/resource-helpers";
 
 const detailListFragment = ({label, items, type, onClick}) => (
     <React.Fragment>
         <ListLabel>{label}</ListLabel>
         <List>
-            { items ?
+            {items ?
                 items.map((item, i) => <ListItem
                         key={i}
                         onClick={() => onClick({
@@ -19,46 +20,39 @@ const detailListFragment = ({label, items, type, onClick}) => (
                             type: type
                         })}>{item.name}
                     </ListItem>
-                ): null
+                ) : null
             }
         </List>
     </React.Fragment>);
 
-const detailView = {
-    [types.MAPPING]: {
-        listBlock: (lists) => <React.Fragment>{
-            lists.map(list => detailListFragment({...list}))
-        }</React.Fragment>
-    },
-    [types.TAG]: {},
-    [types.RESOURCE]: {
-        listBlock: <React.Fragment>
 
-        </React.Fragment>
-    },
-    [types.EMPTY]: {}
-};
-
-const extractInfo = {
-    /** Define what keys are listed in the detail view */
+const listCompositionInstructions = {
+    /**
+     * Define what keys are listed in the detail view
+     *
+     * label: List title
+     * key: { key: [...values] }
+     * type: type of the listed items
+     * */
     [types.RESOURCE]: [
         {label: "Tags", key: "tags", type: types.TAG},
         {label: "Connections", key: "connected_to", type: types.RESOURCE}
     ],
     [types.MAPPING]: [
-
         {label: "Tags", key: "tags", type: types.TAG},
         {label: "Resources", key: "resources", type: types.RESOURCE}
     ],
-    [types.TAG]: [],
+    [types.TAG]: [
+        {label: "Resources", key: false, type: types.RESOURCE}
+    ],
     [types.EMPTY]: [],
 };
 
-const getLists = ({detail, detailType, setDetail}) => {
-    return extractInfo[detailType].map(data => ({
+const getLists = ({detail, detailType, setDetail, items}) => {
+    return listCompositionInstructions[detailType].map(data => ({
             label: data.label,
             onClick: setDetail,
-            items: detail[data.key],
+            items: data.key ? detail[data.key] : items,
             type: data.type
         })
     );
@@ -69,8 +63,6 @@ class ResourceDetail extends Component {
     render() {
         const {
             isResourceInMap,
-            addResourceToActiveMapping,
-            removeResourceFromActiveMapping,
             editDetail,
             detailType,
             detail,
@@ -79,8 +71,29 @@ class ResourceDetail extends Component {
 
         console.info(detail)
 
-        const lists = getLists({detail, detailType, setDetail: setDetail});
-        console.info(lists);
+
+        // get the list composition information
+        // if detail type is TAG a derived set of
+        // list items is requierd.
+        // variable items is ignored in other case.
+        const items = detailType === types.TAG ?
+            getAllResourcesWithTag({tagId: detail.name, resources: this.props.resources})
+            : false
+        ;
+
+        const lists = getLists({detail, detailType, setDetail, items});
+
+
+        // render the lists to list fragments if there's a list and
+        // there's at least one element
+        const listFragments = lists && lists.length >= 1 ?
+            lists.map(list => detailListFragment({...list}))
+            : null
+        ;
+
+        // if detailType is TAG derived resource list is required
+        //const resourcesWithTag = getAllResourcesWithTag(detail.name);
+
         return (
             <Detail id="resource-detail-container">
                 {/* column with two three rows */}
@@ -110,17 +123,17 @@ class ResourceDetail extends Component {
                 <Row header>
                     <DetailHeader>{detail.name}</DetailHeader>
                 </Row>
+
                 <DetailBlock>
-
-
                     {/* Render markdown description */}
                     <DetailDescription>
                         <MarkDownRenderer markdown={detail.description}/>
                     </DetailDescription>
 
-                    {/** REFACTORING */}
                     <ListBlock>
-                        {lists && lists.length >= 1 ? lists.map(list => detailListFragment({...list})) : null}
+                        { //render the derived list fragments here:
+                            listFragments
+                        }
                     </ListBlock>
 
                 </DetailBlock>

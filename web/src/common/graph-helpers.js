@@ -114,7 +114,7 @@ export function hoverIndicationOn(cy = required(), id) {
                         }
                     )
                 } else if (e.isEdge()) {
-                    e.animate({
+                    e.delay(40).animate({
                         style: edgeStyles.expanded
                     });
                 }
@@ -138,7 +138,7 @@ export function hoverIndicationOff(cy = required(), id) {
                 return null;
             }
             else if (e.isNode()) {
-                e.delay(200).animate(
+                e.delay(130).animate(
                     {style: nodeStyles.passive},
                     {duration: 300}
                 )

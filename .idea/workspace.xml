@@ -2,17 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54a515f1-0b9b-4e65-b211-4d44822d847b" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dependencymapping/application/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/dependencymapping/application/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/common/graph-helpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/common/graph-helpers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/common/resource-helpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/common/resource-helpers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/common/validators.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/common/validators.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/configs/configs.cytoscape.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/configs/configs.cytoscape.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/configs/graph.styles.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/configs/graph.styles.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/containers/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/containers/ResourceBrowserContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/ResourceBrowserContainer.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/containers/ResourceDetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/ResourceDetail.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/containers/forms/BaseForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/forms/BaseForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/containers/forms/FormsContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/forms/FormsContainer.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -39,7 +33,7 @@
     <favorites_list name="dependencymapping" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="vertical" split-proportion="0.5">
+    <splitter split-orientation="horizontal" split-proportion="0.5">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="SideTabMenuContainer.js" pinned="false" current-in-tab="false">
@@ -51,13 +45,14 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="App.js" pinned="false" current-in-tab="false">
+          <file leaf-file-name="App.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/web/src/containers/App.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="2052">
-                  <caret line="312" column="31" selection-start-line="312" selection-start-column="31" selection-end-line="312" selection-end-column="31" />
+                <state relative-caret-position="357">
+                  <caret line="181" column="8" selection-start-line="181" selection-start-column="8" selection-end-line="181" selection-end-column="8" />
                   <folding>
                     <element signature="e#0#39#0" expanded="true" />
+                    <element signature="e#3024#3994#0" />
                     <element signature="e#4032#5840#0" />
                     <element signature="n#!!block;n#setDetail#0;n#App#0" />
                     <element signature="n#!!block;n#setResourceDetail#0;n#App#0" />
@@ -100,8 +95,8 @@
           <file leaf-file-name="graph-helpers.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/web/src/common/graph-helpers.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="152">
-                  <caret line="102" column="33" selection-start-line="102" selection-start-column="33" selection-end-line="102" selection-end-column="33" />
+                <state relative-caret-position="240">
+                  <caret line="140" column="26" selection-start-line="140" selection-start-column="26" selection-end-line="140" selection-end-column="26" />
                   <folding>
                     <element signature="e#0#23#0" expanded="true" />
                   </folding>
@@ -109,11 +104,20 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="configs.cytoscape.js" pinned="false" current-in-tab="true">
+          <file leaf-file-name="configs.cytoscape.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/web/src/configs/configs.cytoscape.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state>
-                  <caret column="41" selection-start-column="41" selection-end-column="41" />
+                <state relative-caret-position="152">
+                  <caret line="23" column="30" selection-start-line="23" selection-start-column="30" selection-end-line="23" selection-end-column="30" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/dependencymapping/application/models.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="425">
+                  <caret line="51" selection-start-line="51" selection-end-line="51" />
                 </state>
               </provider>
             </entry>
@@ -133,8 +137,11 @@
           <file leaf-file-name="ResourceDetail.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/web/src/containers/ResourceDetail.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-1387">
-                  <caret line="21" column="22" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
+                <state relative-caret-position="209">
+                  <caret line="73" selection-start-line="73" selection-end-line="73" />
+                  <folding>
+                    <element signature="e#0#39#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -143,35 +150,14 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="App.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/web/src/containers/App.js">
+          <file leaf-file-name="ResourceDetail.js" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/web/src/containers/ResourceDetail.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state>
-                  <caret line="156" column="13" selection-start-line="156" selection-start-column="13" selection-end-line="156" selection-end-column="13" />
+                <state relative-caret-position="612">
+                  <caret line="51" column="37" selection-start-line="51" selection-start-column="37" selection-end-line="51" selection-end-column="37" />
                   <folding>
                     <element signature="e#0#39#0" expanded="true" />
-                    <element signature="n#!!block;n#setDetail#0;n#App#0" />
-                    <element signature="n#!!block;n#setResourceDetail#0;n#App#0" />
-                    <element signature="n#!!block;n#setCategoryDetail#0;n#App#0" />
                   </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="resource-helpers.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/web/src/common/resource-helpers.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="190">
-                  <caret line="31" column="1" selection-start-line="31" selection-start-column="1" selection-end-line="31" selection-end-column="1" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="graph.styles.js" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/web/src/configs/graph.styles.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="38">
-                  <caret line="2" column="14" selection-start-line="2" selection-start-column="14" selection-end-line="2" selection-end-column="14" />
                 </state>
               </provider>
             </entry>
@@ -199,7 +185,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/web/src/containers/forms/form.components.js" />
         <option value="$PROJECT_DIR$/web/src/containers/forms/response.handlers.js" />
         <option value="$PROJECT_DIR$/dependencymapping/application/serializers.py" />
         <option value="$PROJECT_DIR$/web/src/containers/forms/ResourceForm.js" />
@@ -243,13 +228,14 @@
         <option value="$PROJECT_DIR$/web/src/containers/ResourceBrowserContainer.js" />
         <option value="$PROJECT_DIR$/web/src/common/validators.js" />
         <option value="$PROJECT_DIR$/web/src/common/resource-helpers.js" />
-        <option value="$PROJECT_DIR$/web/src/containers/App.js" />
         <option value="$PROJECT_DIR$/web/src/containers/forms/BaseForm.js" />
         <option value="$PROJECT_DIR$/web/src/containers/forms/FormsContainer.js" />
-        <option value="$PROJECT_DIR$/web/src/containers/ResourceDetail.js" />
-        <option value="$PROJECT_DIR$/web/src/common/graph-helpers.js" />
         <option value="$PROJECT_DIR$/web/src/configs/configs.cytoscape.js" />
+        <option value="$PROJECT_DIR$/dependencymapping/application/models.py" />
+        <option value="$PROJECT_DIR$/web/src/common/graph-helpers.js" />
         <option value="$PROJECT_DIR$/web/src/configs/graph.styles.js" />
+        <option value="$PROJECT_DIR$/web/src/containers/App.js" />
+        <option value="$PROJECT_DIR$/web/src/containers/ResourceDetail.js" />
       </list>
     </option>
   </component>
@@ -267,8 +253,7 @@
       <path value="$PROJECT_DIR$/web/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="ProjectFrameBounds" extendedState="4">
-    <option name="x" value="960" />
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="y" value="30" />
     <option name="width" value="960" />
     <option name="height" value="1170" />
@@ -285,6 +270,17 @@
             <path>
               <item name="dependencymapping" type="b2602c69:ProjectViewProjectNode" />
               <item name="dependencymapping" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dependencymapping" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dependencymapping" type="462c0819:PsiDirectoryNode" />
+              <item name="dependencymapping" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dependencymapping" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dependencymapping" type="462c0819:PsiDirectoryNode" />
+              <item name="dependencymapping" type="462c0819:PsiDirectoryNode" />
+              <item name="application" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="dependencymapping" type="b2602c69:ProjectViewProjectNode" />
@@ -365,8 +361,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="960" y="30" width="960" height="1170" extended-state="4" />
-    <editor active="true" />
+    <frame x="0" y="30" width="1920" height="1170" extended-state="6" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
@@ -475,13 +470,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/web/src/common/required.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="7" selection-start-column="7" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/src/containers/forms/response.handlers.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="38">
@@ -737,29 +725,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/containers/ResourceDetail.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1387">
-          <caret line="21" column="22" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/src/containers/forms/FormsContainer.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="608">
           <caret line="71" column="51" selection-start-line="71" selection-start-column="51" selection-end-line="71" selection-end-column="51" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/common/graph-helpers.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="102" column="33" selection-start-line="102" selection-start-column="33" selection-end-line="102" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -781,6 +752,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/dependencymapping/application/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="51" selection-start-line="51" selection-end-line="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/common/graph-helpers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="140" column="26" selection-start-line="140" selection-start-column="26" selection-end-line="140" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/configs/configs.cytoscape.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="23" column="30" selection-start-line="23" selection-start-column="30" selection-end-line="23" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/configs/graph.styles.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="418">
+          <caret line="49" column="34" selection-start-line="49" selection-start-column="34" selection-end-line="49" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/web/src/common/resource-helpers.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="190">
@@ -790,10 +792,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web/src/containers/App.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="156" column="13" selection-start-line="156" selection-start-column="13" selection-end-line="156" selection-end-column="13" />
+        <state relative-caret-position="357">
+          <caret line="181" column="8" selection-start-line="181" selection-start-column="8" selection-end-line="181" selection-end-column="8" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
+            <element signature="e#3024#3994#0" />
+            <element signature="e#4032#5840#0" />
             <element signature="n#!!block;n#setDetail#0;n#App#0" />
             <element signature="n#!!block;n#setResourceDetail#0;n#App#0" />
             <element signature="n#!!block;n#setCategoryDetail#0;n#App#0" />
@@ -801,17 +805,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/configs/configs.cytoscape.js">
+    <entry file="file://$PROJECT_DIR$/web/src/containers/ResourceDetail.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="41" selection-start-column="41" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/configs/graph.styles.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="2" column="14" selection-start-line="2" selection-start-column="14" selection-end-line="2" selection-end-column="14" />
+        <state relative-caret-position="612">
+          <caret line="51" column="37" selection-start-line="51" selection-start-column="37" selection-end-line="51" selection-end-column="37" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
