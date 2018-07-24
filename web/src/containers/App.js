@@ -21,7 +21,7 @@ import {
     addElement, addElements, updateLayout, clearGraph, nodeElementFromResource,
     hoverIndicationOff, hoverIndicationOn
 } from '../common/graph-helpers';
-import {getResourceById} from "../common/resource-helpers";
+import {getResourceById, getAllResourcesWithTag} from "../common/resource-helpers";
 import * as actionCreators from '../actions/index';
 import * as parser from '../common/parser';
 import _ from 'lodash';
@@ -46,10 +46,11 @@ class App extends Component {
             cy: null,
             vis: null,
             resourceCategories: [],
-            showGraphButtons: true,
+            showGraphButtons: false,
             detail: texts.landingDetail,
             detailType: "",
-            layout: LAYOUT
+            layout: LAYOUT,
+            info: "I'm an info panel"
         };
 
         this.clearGraphSelection = this.clearGraphSelection.bind(this);
@@ -60,6 +61,7 @@ class App extends Component {
         this.saveMapping = this.saveMapping.bind(this);
         this.hoverResourceOff = this.hoverResourceOff.bind(this);
         this.hoverResourceOn = this.hoverResourceOn.bind(this);
+        this.loadMappingOfTaggedResources = this.loadMappingOfTaggedResources.bind(this);
     }
 
     componentDidMount() {
@@ -175,6 +177,20 @@ class App extends Component {
         this.updateLayout();
     };
 
+    loadMappingOfTaggedResources = (tagId) => {
+        this.setCategoryDetail(tagId);
+        clearGraph(this.state.cy);
+        const resources = getAllResourcesWithTag({tagId, resources: this.props.resources});
+        const connections = parser.getConnectionsFromResources(resources);
+        const edges = parser.parseEdgeElementsFromResources(resources);
+        const nodes = resources.map(resource => nodeElementFromResource(resource));
+        addElements(this.state.cy, nodes);
+        addElements(this.state.cy, edges);
+
+        this.setState({info: "Mapping of resources containing tag: " + tagId + ", " + resources.length + " found."})
+        this.updateLayout();
+    };
+
     setDetail({detail, type, detailObject}) {
         // todo: refactor to store? CLEAN!
         console.info("App.setDetail({detail, type});");
@@ -274,13 +290,12 @@ class App extends Component {
         const tags = this.props.tags.map(c => c.name).sort();
         const activeResources = getResourceNameList(this.props.activeMapping.resources);
         const {cy} = this.state;
-        console.info(type);
-        console.info(data);
         return (
             <Layout>
                 <LayoutCol id="container-top" height={"60vh"}>
                     <TopBar>
-                        <span></span>
+                        <span>Dependency Mapper</span>
+                        <span style={{fontSize: 'small'}}>{this.state.info}</span>
                         {/*<small>
               layout: 
                 <span onClick={()=>this.setLayout('random')}>random</span>
@@ -308,7 +323,7 @@ class App extends Component {
                             <Menu
                                 title="Tags"
                                 listItems={tags}
-                                onItemClick={this.setCategoryDetail}
+                                onItemClick={this.loadMappingOfTaggedResources}
                                 selected={
                                     type === types.TAG ?
                                         activeDetailName : false
@@ -326,7 +341,7 @@ class App extends Component {
                                 onMouseOut={this.hoverResourceOff}
                                 selected={
                                     type === types.RESOURCE ?
-                                        activeDetailName : false
+                                        activeDetailName: false
                                 }
                             />
 
@@ -375,9 +390,6 @@ App.propTypes = {
 }
 
 const mapStateToProps = (state, ownProps = {}) => {
-    console.info("DBUG");
-    console.info(state);
-
     return {
         graphs: state.graphs,
         resources: state.resources,

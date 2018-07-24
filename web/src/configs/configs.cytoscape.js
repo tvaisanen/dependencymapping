@@ -1,15 +1,9 @@
+import {nodeStyles} from './graph.styles';
 
 export const graphStyle = [ // the stylesheet for the graph
     {
         selector: 'node',
-        style: {
-            'content': 'data(id)',
-            'text-valign': 'center',
-            'color': 'white',
-            'text-outline-width': 1,
-            'line-color': '#4d4c4c',
-            'background-color': 'rgb(54, 48, 54)',
-        }
+        style: nodeStyles.passive
     },
 
     {
@@ -18,7 +12,7 @@ export const graphStyle = [ // the stylesheet for the graph
             'curve-style': 'unbundled-bezier(multiple)',
             'width': 3,
             'line-color': '#eee',
-            'target-arrow-color': '#ccc',
+            'target-arrow-color': '#85cc57',
             'target-arrow-shape': 'triangle'
         }
     },
@@ -33,8 +27,8 @@ export const graphStyle = [ // the stylesheet for the graph
     {
         selector: 'edge.highlight',
         style: {
-            'width': 4,
-            'line-color': '#ccc',
+            'width': 10,
+            'line-color': '#ccb8b8',
             'target-arrow-color': '#ccc',
             'target-arrow-shape': 'triangle'
         }

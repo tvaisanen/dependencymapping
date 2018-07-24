@@ -5,7 +5,7 @@ import * as l from '../../components/layout';
 import TagForm from './TagForm';
 import ResourceForm from './ResourceForm';
 import MappingForm from './MappingForm';
-
+import * as types from '../../constants/types';
 const formMapping = [
     {label: "Mapping", viewId: 1},
     {label: "Resource", viewId: 2},
@@ -48,7 +48,8 @@ class FormsContainer extends Component {
                     onClick: this.openForm,
                     cancel: this.cancelForm,
                     setView: this.props.setView,
-                    setDetail: this.props.setDetail
+                    setDetail: this.props.setDetail,
+                    formType: types.MAPPING
                 }
             },
             {
@@ -58,7 +59,8 @@ class FormsContainer extends Component {
                     onClick: this.openForm,
                     cancel: this.cancelForm,
                     setView: this.props.setView,
-                    setDetail: this.props.setDetail
+                    setDetail: this.props.setDetail,
+                    formType: types.RESOURCE
                 }
             },
             {
@@ -67,7 +69,8 @@ class FormsContainer extends Component {
                     onClick: this.openForm,
                     cancel: this.cancelForm,
                     setView: this.props.setView,
-                    setDetail: this.props.setDetail
+                    setDetail: this.props.setDetail,
+                    formType: types.TAG
                 }
             }
         ];

@@ -28,7 +28,7 @@ class ResourceBrowserContainer extends Component {
     }
 
     addResourceToMapping(resource) {
-
+        alert('here')
         /*
          * Create node element from the resource and
          * get the edge elements to represent the connections
@@ -57,6 +57,8 @@ class ResourceBrowserContainer extends Component {
         console.info(edgesTargetingResource);
 
         this.props.addResourceToActiveMapping(resource);
+        console.info(this.props.cyRef);
+        console.info(node);
         addElement(this.props.cyRef, node);
         addElement(this.props.cyRef, edgeElements);
         addElement(this.props.cyRef, edgesTargetingResource);
@@ -115,13 +117,15 @@ class ResourceBrowserContainer extends Component {
                     </ResourceBrowser>
 
                     <ResourceDetail
+                        addToMap={this.addResourceToMapping}
+                        removeFromMap={this.removeResourceFromMapping}
                         editDetail={this.props.editDetail}
                         detailType={this.props.activeDetailType}
                         detail={this.props.detail}
                         setDetail={this.props.setActiveDetail}
                         setResourceDetail={this.props.setResourceDetail}
                         isResourceInMap={isResourceInMap}
-                        addResourceToActiveMapping={this.addResourceToMapping}
+                        addResourceToMapping={this.addResourceToMapping}
                         removeResourceFromActiveMapping={this.removeResourceFromMapping}
                     />
                 </l.LayoutRow>
@@ -134,7 +138,7 @@ ResourceBrowserContainer.propTypes = {
     cyRef: PropTypes.object.isRequired,
     addResourceToActiveMapping: PropTypes.func.isRequired,
     removeResourceFromActiveMapping: PropTypes.func.isRequired,
-    setDetail: PropTypes.func.isRequired,
+    setActiveDetail: PropTypes.func.isRequired,
     editDetail: PropTypes.func.isRequired,
     type: PropTypes.string.isRequired,
     activeMapping: PropTypes.array.isRequired
@@ -149,9 +153,7 @@ const mapStateToProps = (state, ownProps = {}) => {
     }
 };
 
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({...actionCreators}, dispatch)
-}
+const mapDispatchToProps = dispatch => bindActionCreators({...actionCreators}, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResourceBrowserContainer);
 

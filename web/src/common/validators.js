@@ -19,7 +19,7 @@ export function validMappingName (name){
 
 export function validDescription (description){
     if (_.isString(description)){
-        if (description.length >= 15){
+        if (description.length >= 0){
             return true;
         }
     }

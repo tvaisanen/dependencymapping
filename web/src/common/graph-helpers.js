@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import {nodeStyles} from "../configs/graph.styles";
+import { edgeStyles, nodeStyles } from "../configs/graph.styles";
 
 const required = () => {
     throw new Error('Missing parameter')
@@ -98,23 +98,25 @@ export function hoverIndicationOn(cy = required(), id) {
             backgroundColor: 'rgb(154, 148, 154)'
         }
     }, {
-        duration: 50
+        duration: 300
     });
-    el.neighborhood()
+    el.neighborhood().clearQueue()
         .forEach(e => {
                 if (e.id() == id) {
                     return null;
                 }
                 else if (e.isNode()) {
-                    e.animate({
+                    e.delay(50).animate({
                             style: nodeStyles.expandedNeighbor,
                         },
                         {
-                            duration: 50
+                            duration: 300
                         }
                     )
-                } else {
-
+                } else if (e.isEdge()) {
+                    e.animate({
+                        style: edgeStyles.expanded
+                    });
                 }
             }
         )
@@ -127,23 +129,24 @@ export function hoverIndicationOff(cy = required(), id) {
     el.animate({
         style: nodeStyles.passive
     }, {
-        duration: 50
+        duration: 250
     });
     console.info(el.neighborhood().nodes());
-    el.neighborhood()
+    el.neighborhood().clearQueue()
         .forEach(e => {
             if (e.id() == id) {
                 return null;
             }
             else if (e.isNode()) {
-                e.animate({
-                        style: nodeStyles.passive,
-                    },
-                    {
-                        duration: 50
-                    }
+                e.delay(200).animate(
+                    {style: nodeStyles.passive},
+                    {duration: 300}
                 )
-            } else {
+            } else if (e.isEdge()) {
+                e.delay(40).animate(
+                    {style: edgeStyles.passive},
+                    {duration: 250});
+
 
             }
 

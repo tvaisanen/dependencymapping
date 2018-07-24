@@ -184,7 +184,8 @@ BaseForm.propTypes = {
     updateMapping: PropTypes.func.isRequired,
     detail: PropTypes.object,
     cancel: PropTypes.func.isRequired,
-    setView: PropTypes.func.isRequired
+    setView: PropTypes.func.isRequired,
+    formType: PropTypes.string
 };
 
 

@@ -30,3 +30,14 @@ export function tagExists({id, tags}){
 export function getResourceById({id, resources}){
     return resources.filter(r => r.name === id)[0]
 }
+
+export function getAllResourcesWithTag({tagId, resources}){
+    return resources.filter(resource => {
+        const index = _.findIndex(resource.tags, (t) => t.name === tagId);
+        console.info(index);
+        if (index > -1){
+            return true;
+        }
+        return false;
+    })
+}

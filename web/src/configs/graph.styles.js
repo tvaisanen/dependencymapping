@@ -1,21 +1,41 @@
 const sizes = {
-    expanded: 70,
+    expanded: 80,
     neighbor: 40,
-    passive: 40,
+    passive: 20,
 };
 
 const color = {
-    passive: 'rgba(54,48,54)',
-    expanded: 'rgba(174,168,174)',
+    passive: 'rgba(200,190,200)',
+    expanded: 'rgba(174,200,174)',
     expandedNeighbor: 'rgb(168, 174, 168)',
 };
 
+const edgeStylePassive = {
+            'width': 4,
+            'line-color': '#eee',
+            'target-arrow-color': '#ccc',
+            'target-arrow-shape': 'triangle'
+        };
+
+const edgeStyleExpanded = {
+    'width': 10,
+    'line-color': '#ccb8b8',
+    'target-arrow-color': '#ccc',
+    'target-arrow-shape': 'triangle'
+};
+
+
 const nodesStylePassive = {
     'content': 'data(id)',
-    'text-valign': 'center',
-    'color': 'white',
-    'text-outline-width': 1,
-    'line-color': '#4d4c4c',
+    shape: 'roundrectangle',
+    'text-halign': 'top',
+    'color': '#818181',
+    'text-border-width': 1,
+    'text-border-color': '#b3b3b3',
+    'text-border-opacity': 0,
+    'text-wrap': 'wrap',
+    'text-max-width': '13em',
+    padding: "20%",
     width: sizes.passive,
     height: sizes.passive,
     backgroundColor: color.passive,
@@ -41,3 +61,7 @@ export const nodeStyles = {
     expandedNeighbor: nodeStyleNeighbor
 };
 
+export const edgeStyles = {
+    passive: edgeStylePassive,
+    expanded: edgeStyleExpanded
+}
