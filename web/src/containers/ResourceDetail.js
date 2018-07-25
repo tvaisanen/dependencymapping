@@ -33,6 +33,7 @@ const listCompositionInstructions = {
      * label: List title
      * key: { key: [...values] }
      * type: type of the listed items
+     *
      * */
     [types.RESOURCE]: [
         {label: "Tags", key: "tags", type: types.TAG},

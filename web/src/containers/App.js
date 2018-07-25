@@ -180,7 +180,6 @@ class App extends Component {
     loadMappingOfTaggedResources = (tagId) => {
 
         this.setCategoryDetail(tagId);
-        /*
         clearGraph(this.state.cy);
         const resources = getAllResourcesWithTag({tagId, resources: this.props.resources});
         const connections = parser.getConnectionsFromResources(resources);
@@ -191,7 +190,6 @@ class App extends Component {
 
         this.setState({info: "Mapping of resources containing tag: " + tagId + ", " + resources.length + " found."})
         this.updateLayout();
-        */
     };
 
     setDetail({detail, type, detailObject}) {
