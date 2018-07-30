@@ -60,7 +60,7 @@ class FormsContainer extends Component {
                     cancel: this.cancelForm,
                     setView: this.props.setView,
                     setDetail: this.props.setDetail,
-                    formType: types.RESOURCE
+                    formType: types.ASSET
                 }
             },
             {

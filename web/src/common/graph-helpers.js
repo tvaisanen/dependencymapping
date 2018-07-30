@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { edgeStyles, nodeStyles } from "../configs/graph.styles";
+import { layoutOptions } from "../configs/configs.cytoscape";
 
 const required = () => {
     throw new Error('Missing parameter')
@@ -52,8 +53,8 @@ export function addElements(cy = required(), elements = required()) {
 
 export function updateLayout(cy = required()) {
     try {
-        console.debug(cy);
-        const layout = cy.layout({name: 'cola'});
+        const options = layoutOptions.cola;
+        const layout = cy.layout({name: 'cola', ...options});
         layout.run();
     } catch (e) {
         console.error(e);

@@ -14,7 +14,7 @@ class ResourceForm extends BaseForm {
     constructor(props){
         super(props);
         this.setState({
-            type: types.RESOURCE
+            type: types.ASSET
         });
     }
 
@@ -74,7 +74,7 @@ class ResourceForm extends BaseForm {
                     </form.Container>
                     <form.Container id="form-col-two" column>
                         {/* Selectable resource list */}
-                        <form.Label>Related to</form.Label>
+                        <form.Label>connected / dependency</form.Label>
                         <form.SelectionList multiple
                                             innerRef={ref => this.inputResources = ref}>
                             {resourceNameList.map((r, i) => <option key={i}>{r}</option>)}

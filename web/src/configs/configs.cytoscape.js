@@ -42,3 +42,9 @@ export const graphStyle = [ // the stylesheet for the graph
         }
     }
 ];
+
+export const layoutOptions = {
+    cola: {
+        nodeDimensionsIncludeLabels: true,
+    }
+}

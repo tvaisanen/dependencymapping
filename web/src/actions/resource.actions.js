@@ -2,7 +2,7 @@ import GwClientApi from '../api/gwClientApi';
 import * as types from './actionTypes';
 
 
-/************* RESOURCE       ************* */
+/************* ASSET       ************* */
 
 export function postResource(name) {
     return function (dispatch) {
@@ -29,7 +29,7 @@ export function postResourceSuccess(resource) {
     return {type: types.POST_RESOURCE_SUCCESS, resource}
 }
 
-/****************  RESOURCE UPDATE   ****************/
+/****************  ASSET UPDATE   ****************/
 export function updateResource(resource) {
     console.info("updateResource(resource);");
     console.info(resource);

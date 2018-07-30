@@ -38,30 +38,36 @@ class ResourceSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         print("####### resource serializer create ##########\n")
-        tag_names = json.loads(self.initial_data['tags'])
-        resource_data = json.loads(self.initial_data['connected_to'])
-
-        resource_names = [r['name'] for r in resource_data]
-        resources = list(
-            filter(
-                lambda r: r.name in resource_names,
-                Resource.objects.all()
-            )
-        )
-
-        tags = list(
-            filter(
-                lambda t: t.name in tag_names,
-                Tag.objects.all()
-            )
-        )
-
-        [print(r) for r in resources]
 
         new_resource = Resource(**validated_data)
         new_resource.save()
-        new_resource.connected_to.add(*resources)
-        new_resource.tags.add(*tags)
+
+        try:
+            tag_names = json.loads(self.initial_data['tags'])
+            resource_data = json.loads(self.initial_data['connected_to'])
+
+            resource_names = [r['name'] for r in resource_data]
+
+            resources = list(
+                filter(
+                    lambda r: r.name in resource_names,
+                    Resource.objects.all()
+                )
+            )
+
+            tags = list(
+                filter(
+                    lambda t: t.name in tag_names,
+                    Tag.objects.all()
+                )
+            )
+
+            [print(r) for r in resources]
+            new_resource.connected_to.add(*resources)
+            new_resource.tags.add(*tags)
+        except Exception as ex:
+            print(ex)
+
         print("####################################")
         return new_resource
 
@@ -74,25 +80,33 @@ class ResourceSerializer(serializers.ModelSerializer):
 
         resource_names = [r['name'] for r in resource_data]
 
-        resources = list(
-            filter(
-                lambda r: r.name in resource_names,
-                Resource.objects.all()
+        try:
+            resources = list(
+                filter(
+                    lambda r: r.name in resource_names,
+                    Resource.objects.all()
+                )
             )
-        )
 
-        tags = list(
-            filter(
-                lambda t: t.name in tag_names,
-                Tag.objects.all()
+            instance.connected_to.clear()
+            instance.connected_to.add(*resources)
+        except Exception as ex:
+            print(ex)
+
+        try:
+            tags = list(
+                filter(
+                    lambda t: t.name in tag_names,
+                    Tag.objects.all()
+                )
             )
-        )
+            instance.tags.clear()
+            instance.tags.add(*tags)
+        except Exception as ex:
+            print(ex)
 
-        instance.connected_to.clear()
-        instance.tags.clear()
 
-        instance.connected_to.add(*resources)
-        instance.tags.add(*tags)
+
         print("####################################")
         return super(ResourceSerializer, self).update(instance, validated_data)
 

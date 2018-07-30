@@ -33,6 +33,7 @@ import * as events from '../common/graph.events';
 import {graphStyle} from '../configs/configs.cytoscape';
 import * as types from '../constants/types';
 import styled from 'styled-components';
+import { layoutOptions } from "../configs/configs.cytoscape";
 
 cytoscape.use(dagre);
 cytoscape.use(cola);
@@ -87,7 +88,8 @@ class App extends Component {
     }
 
     updateLayout() {
-        const layout = this.state.cy.layout({name: this.state.layout});
+        const options = layoutOptions.cola;
+        const layout = this.state.cy.layout({name: this.state.layout, ...options});
         layout.run();
     }
 
@@ -106,6 +108,8 @@ class App extends Component {
         // target resource is connected to.
 
         const resourceName = evt.target.id();
+
+        this.setResourceDetail(resourceName);
         const clickedResource = getResourceById({
             id: resourceName,
             resources: this.props.resources
@@ -209,7 +213,7 @@ class App extends Component {
             case constants.MAPPING:
                 this.loadDependencyMap(detail);
                 break;
-            case constants.RESOURCE:
+            case constants.ASSET:
                 this.setResourceDetail(detail);
                 break;
             case constants.TAG:
@@ -225,8 +229,8 @@ class App extends Component {
         const clickedResource = getResourceById({id: resourceId, resources: this.props.resources});
         // add attribute type to the object
         // this is needed when edit is used from detailview
-        this.props.setActiveDetail({data: clickedResource, type: constants.RESOURCE});
-        this.setState({detail: clickedResource, detailType: constants.RESOURCE});
+        this.props.setActiveDetail({data: clickedResource, type: constants.ASSET});
+        this.setState({detail: clickedResource, detailType: constants.ASSET});
     }
 
     setCategoryDetail(categoryId) {
@@ -321,15 +325,7 @@ class App extends Component {
                                 }
                             />
 
-                            <Menu
-                                title="Tags"
-                                listItems={tags}
-                                onItemClick={this.loadMappingOfTaggedResources}
-                                selected={
-                                    type === types.TAG ?
-                                        activeDetailName : false
-                                }
-                            />
+
                         </SidePanel>
 
                         <SidePanel id="active-resources-list" wide>
@@ -341,7 +337,7 @@ class App extends Component {
                                 onMouseOver={this.hoverResourceOn}
                                 onMouseOut={this.hoverResourceOff}
                                 selected={
-                                    type === types.RESOURCE ?
+                                    type === types.ASSET ?
                                         activeDetailName: false
                                 }
                             />
@@ -351,6 +347,7 @@ class App extends Component {
                             <GraphContainer elements={this.state.elements}/>
                         </ContentWindow>
 
+                        {/* todo: refactor tool buttons  */}
                         <ButtonPanel buttons visible={this.state.showGraphButtons}>
                             <FloatingButton onClick={() => updateLayout(cy)}>refresh</FloatingButton>
                             <FloatingButton onClick={this.clearGraphSelection}>clear</FloatingButton>

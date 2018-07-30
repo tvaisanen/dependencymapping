@@ -1,5 +1,5 @@
 const sizes = {
-    expanded: 80,
+    expanded: 40,
     neighbor: 30,
     passive: 20,
 };

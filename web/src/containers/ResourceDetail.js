@@ -35,16 +35,16 @@ const listCompositionInstructions = {
      * type: type of the listed items
      *
      * */
-    [types.RESOURCE]: [
+    [types.ASSET]: [
         {label: "Tags", key: "tags", type: types.TAG},
-        {label: "Connections", key: "connected_to", type: types.RESOURCE}
+        {label: "Connections", key: "connected_to", type: types.ASSET}
     ],
     [types.MAPPING]: [
         {label: "Tags", key: "tags", type: types.TAG},
-        {label: "Resources", key: "resources", type: types.RESOURCE}
+        {label: "Resources", key: "resources", type: types.ASSET}
     ],
     [types.TAG]: [
-        {label: "Resources", key: false, type: types.RESOURCE}
+        {label: "Resources", key: false, type: types.ASSET}
     ],
     [types.EMPTY]: [],
 };
@@ -167,7 +167,7 @@ ResourceDetail.propTypes = {
 
 const RenderToggleButton = ({detailType, inMap, addToMap, removeFromMap, detail}) => {
 
-    if (detailType === types.RESOURCE) {
+    if (detailType === types.ASSET) {
         return (
             <ResourceInMappingToggleButton
                 inMap={inMap}

@@ -48,6 +48,7 @@ export const LayoutCol = styled.div`
 
 
 export const SidePanel = styled.div`
+    background: rgba(200,200,200,0.8);
     background: ${mediumDark};
     display: flex;
     flex-direction: column;

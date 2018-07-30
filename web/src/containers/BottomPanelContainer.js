@@ -24,7 +24,7 @@ class BottomPanelContainer extends Component {
             {header: "detail", component: ResourceBrowserContainer, type: ""},
             {header: "forms", component: FormsContainer, type: "FORMS"},
             {header: "mapping", component: MappingForm, type: types.MAPPING},
-            {header: "resource", component: ResourceForm, type: types.RESOURCE},
+            {header: "asset", component: ResourceForm, type: types.ASSET},
             {header: "tag", component: TagForm, type: types.TAG},
         ];
 
@@ -56,7 +56,7 @@ class BottomPanelContainer extends Component {
             case types.MAPPING:
                 this.setState({view: 2})
                 break;
-            case types.RESOURCE:
+            case types.ASSET:
                 this.setState({view: 3})
                 break;
             case types.TAG:
@@ -116,9 +116,11 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(BottomPanelContainer);
 
 const tabItems = [
-    {label: 'Resources', viewId: 0},
+    {label: 'Resource Browser', viewId: 0},
     {label: 'Create', viewId: 1},
 ];
+
+const BROWSER_HEADER = "Resource Browser"
 
 const PanelNavTabs = ({selectedView, tabItems, setView}) => (
     <PanelNavigation>

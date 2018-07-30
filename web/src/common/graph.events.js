@@ -2,8 +2,7 @@ import { required } from './required';
 import * as helpers from './graph-helpers';
 
 export function onNodeMouseOver(event){
-    event.target.neighborhood()
-        .forEach(e => e.toggleClass('highlight', true));
+    helpers.hoverIndicationOn(event.target.cy(), event.target.id());
 }
 
 export function onEdgeHover(event) {
@@ -11,8 +10,7 @@ export function onEdgeHover(event) {
 }
 
 export function onNodeMouseOut(event) {
-     event.target.neighborhood()
-        .forEach(e => e.toggleClass('highlight', false));
+    helpers.hoverIndicationOff(event.target.cy(), event.target.id());
 }
 
 export function onNodeClick({target, cy, targetNames}) {

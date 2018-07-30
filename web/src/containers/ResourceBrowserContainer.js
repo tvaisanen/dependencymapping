@@ -18,7 +18,8 @@ class ResourceBrowserContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            filterValue: ""
+            filterValue: "",
+            resourceTypes: types.ASSET
         };
 
         this.addResourceToMapping = this.addResourceToMapping.bind(this);
@@ -28,7 +29,6 @@ class ResourceBrowserContainer extends Component {
     }
 
     addResourceToMapping(resource) {
-        alert('here')
         /*
          * Create node element from the resource and
          * get the edge elements to represent the connections
@@ -80,20 +80,38 @@ class ResourceBrowserContainer extends Component {
     }
 
     render() {
-        const { activeDetail, activeMapping, resources } = this.props;
-        const {filterValue} = this.state;
+        const { activeDetail, activeMapping, resources, tags } = this.props;
+        const {filterValue, resourceTypes} = this.state;
         const isResourceInMap = isResourceInMapping({
             mapping: this.props.activeMapping,
             resourceId: this.props.activeDetail.name
         });
 
-        const resourceItems = this.filterResources({resources, filterValue});
+
+        console.group("Filter debug");
+        console.info(resources);
+        console.info(tags);
+        console.groupEnd()
+
+        const resourceItems = resourceTypes === types.ASSET ?
+            this.filterResources({resources: resources, filterValue})
+            : this.filterResources({resources: tags, filterValue})
+         ;
+
         return (
 
             <ResourceBrowserLayout>
                 <l.LayoutRow justify={'center'}>
 
                     <ResourceBrowser>
+                        <ResourceSwitch>
+                            <ResourceListItem
+                                onClick={() => this.setState({resourceTypes: types.ASSET})}
+                                selected={resourceTypes === types.ASSET}>Assets</ResourceListItem>
+                            <ResourceListItem
+                                onClick={() => this.setState({resourceTypes: types.TAG})}
+                                selected={resourceTypes === types.TAG}>Tags</ResourceListItem>
+                        </ResourceSwitch>
                         <FilterInput
                             type="text"
                             placeholder="filter..."
@@ -106,7 +124,7 @@ class ResourceBrowserContainer extends Component {
                                             selected={resource.name === this.props.detail.name}
                                             onClick={() => this.props.setActiveDetail({
                                                 data: resource,
-                                                type: types.RESOURCE
+                                                type: resourceTypes
                                             })}
                                         >{resource.name}
                                         </ResourceListItem>
@@ -147,6 +165,7 @@ ResourceBrowserContainer.propTypes = {
 const mapStateToProps = (state, ownProps = {}) => {
     return {
         resources: state.resources,
+        tags: state.tags,
         activeMapping: state.activeMapping,
         activeDetail: state.activeDetail.data,
         activeDetailType: state.activeDetail.type
@@ -156,6 +175,15 @@ const mapStateToProps = (state, ownProps = {}) => {
 const mapDispatchToProps = dispatch => bindActionCreators({...actionCreators}, dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(ResourceBrowserContainer);
+
+const ResourceSwitch = styled.div`
+    display: flex;
+    flex-direction: row;
+    background: transparent;
+    width: inherit;
+    
+`;
+
 
 const FilterInput = styled.input`
   background-color: transparent;
