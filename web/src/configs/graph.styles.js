@@ -1,6 +1,6 @@
 const sizes = {
-    expanded: 40,
-    neighbor: 30,
+    expanded: 24,
+    neighbor: 22,
     passive: 20,
 };
 

@@ -41,3 +41,14 @@ export function getAllResourcesWithTag({tagId, resources}){
         return false;
     })
 }
+
+export function isResourceConnectedToId({resource, id}) {
+    console.group("isResourceConnectedToId("+resource.name+", "+id+");");
+    const bools = resource.connected_to.map(r => r.name === id);
+
+    const i = _.includes(bools, true);
+    console.info(bools);
+    console.info(i);
+    console.groupEnd();
+    return i;
+}

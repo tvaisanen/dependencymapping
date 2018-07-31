@@ -6,7 +6,7 @@ import * as actionCreators from '../actions/index';
 import styled from 'styled-components';
 import * as l from '../components/layout';
 import * as types from '../constants/types';
-import {isResourceInMapping, resourceExists} from '../common/resource-helpers';
+import {isResourceInMapping, resourceExists, isResourceConnectedToId} from '../common/resource-helpers';
 import {
     addElement, nodeElementFromResource, edgeElementFromResource,
     removeElement, updateLayout
@@ -44,18 +44,14 @@ class ResourceBrowserContainer extends Component {
          * For creating edges in the graph.
          */
         const resourcesConnectingInto = this.props.activeMapping
-                .resources.map(r => {
-                    const booleans = r.connected_to.map(res => (resource.name == res.name));
-                    if (_.findIndex(booleans, true)){
-                        return r;
-                    }
-            })
+                .resources.filter(r => isResourceConnectedToId({resource: r, id: resource.name}))
         ;
 
+        console.info(resourcesConnectingInto);
+
         const edgesTargetingResource = resourcesConnectingInto.map(r => edgeElementFromResource(r.name, resource.name));
-
         console.info(edgesTargetingResource);
-
+        console.info(edgeElements);
         this.props.addResourceToActiveMapping(resource);
         console.info(this.props.cyRef);
         console.info(node);

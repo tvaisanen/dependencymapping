@@ -70,7 +70,7 @@ class ResourceDetail extends Component {
             setDetail
         } = this.props;
 
-        console.info(detail)
+        console.info(this.props)
 
 
         // get the list composition information
@@ -286,7 +286,10 @@ const ListItem = styled.div`
             }
             transition: all .15s ease-in-out;
             cursor: pointer;
-            `;
+            overflow: hidden;
+            text-overflow: ellipsis;
+`;
+
 
 const ActionLink = styled.span`
             width: 100px;

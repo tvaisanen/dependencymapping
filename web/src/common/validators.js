@@ -8,7 +8,7 @@ export function validMappingName (name){
     if (_.isString(name)) { // name is string
 
         // name is at least 3 characters long
-        if (name.length >= 3){
+        if (name.length >= 3 && name.length <= 100){
            return true;
         }
 
