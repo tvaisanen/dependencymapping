@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54a515f1-0b9b-4e65-b211-4d44822d847b" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/common/resource-helpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/common/resource-helpers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/common/validators.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/common/validators.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/configs/graph.styles.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/configs/graph.styles.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/containers/ResourceBrowserContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/ResourceBrowserContainer.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/containers/ResourceDetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/ResourceDetail.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/containers/forms/BaseForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/forms/BaseForm.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -39,7 +35,7 @@
       <file leaf-file-name="App.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/src/containers/App.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="551">
+            <state relative-caret-position="19">
               <caret line="113" column="28" selection-start-line="113" selection-start-column="28" selection-end-line="113" selection-end-column="28" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
@@ -51,14 +47,41 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ResourceDetail.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ResourceDetail.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/src/containers/ResourceDetail.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="570">
-              <caret line="289" column="34" selection-start-line="289" selection-start-column="34" selection-end-line="289" selection-end-column="34" />
+            <state relative-caret-position="-1292">
+              <caret line="22" column="23" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BaseForm.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/web/src/containers/forms/BaseForm.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="494">
+              <caret line="48" column="46" selection-start-line="48" selection-start-column="46" selection-end-line="48" selection-end-column="46" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ResourceForm.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/src/containers/forms/ResourceForm.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-266">
+              <caret line="25" column="28" selection-start-line="25" selection-start-column="28" selection-end-line="25" selection-end-column="28" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="gwClientApi.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/src/api/gwClientApi.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="703">
+              <caret line="94" column="41" selection-start-line="94" selection-start-column="41" selection-end-line="94" selection-end-column="41" />
             </state>
           </provider>
         </entry>
@@ -84,7 +107,7 @@
       <file leaf-file-name="ResourceBrowserContainer.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/src/containers/ResourceBrowserContainer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="456">
+            <state relative-caret-position="874">
               <caret line="60" column="38" selection-start-line="60" selection-start-column="38" selection-end-line="60" selection-end-column="38" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
@@ -96,7 +119,7 @@
       <file leaf-file-name="resource-helpers.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/web/src/common/resource-helpers.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="836">
+            <state relative-caret-position="912">
               <caret line="48" column="36" selection-start-line="48" selection-start-column="36" selection-end-line="48" selection-end-column="36" />
             </state>
           </provider>
@@ -159,7 +182,6 @@
         <option value="$PROJECT_DIR$/dependencymapping/dependencymapping/settings.py" />
         <option value="$PROJECT_DIR$/web/src/containers/forms/MappingForm.js" />
         <option value="$PROJECT_DIR$/web/src/containers/SideTabMenuContainer.js" />
-        <option value="$PROJECT_DIR$/web/src/containers/forms/BaseForm.js" />
         <option value="$PROJECT_DIR$/web/src/containers/forms/FormsContainer.js" />
         <option value="$PROJECT_DIR$/dependencymapping/application/models.py" />
         <option value="$PROJECT_DIR$/web/src/components/layout.js" />
@@ -175,6 +197,7 @@
         <option value="$PROJECT_DIR$/web/src/common/resource-helpers.js" />
         <option value="$PROJECT_DIR$/web/src/containers/ResourceBrowserContainer.js" />
         <option value="$PROJECT_DIR$/web/src/containers/ResourceDetail.js" />
+        <option value="$PROJECT_DIR$/web/src/containers/forms/BaseForm.js" />
       </list>
     </option>
   </component>
@@ -231,7 +254,7 @@
               <item name="dependencymapping" type="462c0819:PsiDirectoryNode" />
               <item name="web" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
+              <item name="containers" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="dependencymapping" type="b2602c69:ProjectViewProjectNode" />
@@ -239,6 +262,7 @@
               <item name="web" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="containers" type="462c0819:PsiDirectoryNode" />
+              <item name="forms" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -304,7 +328,7 @@
       <window_info anchor="bottom" id="Python Console" order="7" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4980916" weight="0.22447917" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4980916" visible="true" weight="0.22447917" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" weight="0.3296875" />
       <window_info anchor="right" id="SciView" order="3" />
@@ -323,24 +347,24 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
       <window_info anchor="bottom" id="Inspection" order="11" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="10" weight="0.25" />
+      <window_info id="Favorites" order="0" side_tool="true" />
       <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.2783019" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="2" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="12" />
-      <window_info anchor="bottom" id="Version Control" order="1" />
       <window_info anchor="bottom" id="Run" order="8" />
-      <window_info anchor="bottom" id="Python Console" order="3" />
-      <window_info anchor="bottom" id="Message" order="6" />
+      <window_info anchor="bottom" id="Find" order="7" />
       <window_info anchor="bottom" id="Debug" order="9" weight="0.4" />
       <window_info anchor="right" id="Database" order="1" />
       <window_info anchor="bottom" id="Terminal" order="4" />
       <window_info anchor="bottom" id="Event Log" order="5" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="2" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Cvs" order="10" weight="0.25" />
+      <window_info anchor="bottom" id="Version Control" order="1" />
       <window_info anchor="right" id="SciView" order="0" />
-      <window_info anchor="bottom" id="Find" order="7" />
-      <window_info id="Favorites" order="0" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="6" />
+      <window_info anchor="bottom" id="Python Console" order="3" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -516,13 +540,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/api/gwClientApi.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="2" column="37" selection-start-line="2" selection-start-column="37" selection-end-line="2" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/dependencymapping/manage.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -575,20 +592,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/containers/forms/BaseForm.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3401">
-          <caret line="186" column="38" selection-start-line="186" selection-start-column="38" selection-end-line="186" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/containers/forms/ResourceForm.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="25" column="28" selection-start-line="25" selection-start-column="28" selection-end-line="25" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/src/reducers/active-mapping.reducer.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -617,9 +620,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="209">
           <caret line="12" column="68" selection-start-line="12" selection-start-column="68" selection-end-line="12" selection-end-column="68" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -644,13 +644,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/build/static/js/main.d613e6b5.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="329">
-          <caret column="394531" selection-start-column="394531" selection-end-column="394531" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/web/build/static/js/main.d613e6b5.js" />
     <entry file="file://$PROJECT_DIR$/web/src/configs/graph.styles.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="19">
@@ -662,9 +656,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="494">
           <caret line="26" column="8" selection-start-line="26" selection-start-column="8" selection-end-line="26" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -679,19 +670,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="361">
           <caret line="19" selection-start-line="19" selection-end-line="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/containers/App.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="551">
-          <caret line="113" column="28" selection-start-line="113" selection-start-column="28" selection-end-line="113" selection-end-column="28" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-            <element signature="n#!!block;n#setDetail#0;n#App#0" />
-            <element signature="n#!!block;n#setResourceDetail#0;n#App#0" />
-            <element signature="n#!!block;n#setCategoryDetail#0;n#App#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -711,14 +689,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/web/src/common/resource-helpers.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="836">
+        <state relative-caret-position="912">
           <caret line="48" column="36" selection-start-line="48" selection-start-column="36" selection-end-line="48" selection-end-column="36" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/src/containers/ResourceBrowserContainer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="456">
+        <state relative-caret-position="874">
           <caret line="60" column="38" selection-start-line="60" selection-start-column="38" selection-end-line="60" selection-end-column="38" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
@@ -726,13 +704,47 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/containers/App.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="113" column="28" selection-start-line="113" selection-start-column="28" selection-end-line="113" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+            <element signature="n#!!block;n#setDetail#0;n#App#0" />
+            <element signature="n#!!block;n#setResourceDetail#0;n#App#0" />
+            <element signature="n#!!block;n#setCategoryDetail#0;n#App#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/api/gwClientApi.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="703">
+          <caret line="94" column="41" selection-start-line="94" selection-start-column="41" selection-end-line="94" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/web/src/containers/ResourceDetail.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="289" column="34" selection-start-line="289" selection-start-column="34" selection-end-line="289" selection-end-column="34" />
+        <state relative-caret-position="-1292">
+          <caret line="22" column="23" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/containers/forms/ResourceForm.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-266">
+          <caret line="25" column="28" selection-start-line="25" selection-start-column="28" selection-end-line="25" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/containers/forms/BaseForm.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="494">
+          <caret line="48" column="46" selection-start-line="48" selection-start-column="46" selection-end-line="48" selection-end-column="46" />
         </state>
       </provider>
     </entry>

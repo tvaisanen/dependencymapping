@@ -263,7 +263,7 @@ const List = styled.div`
             max-width: 200px;
             overflow-y: scroll;
             margin: 0 4px;
-
+            min-height: 2em;
             `;
 
 const ListLabel = styled.div`
@@ -288,6 +288,7 @@ const ListItem = styled.div`
             cursor: pointer;
             overflow: hidden;
             text-overflow: ellipsis;
+            min-height: 1em;
 `;
 
 

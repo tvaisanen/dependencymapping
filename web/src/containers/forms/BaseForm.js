@@ -46,6 +46,7 @@ class BaseForm extends Component {
                     r => r.name
                 );
                 const resourceOptions = this.inputResources.options;
+                console.info(resourceNameList);
                 selectOptionsInList({
                     list: resourceNameList,
                     options: resourceOptions
@@ -57,10 +58,10 @@ class BaseForm extends Component {
                 const categoryNameList = this.props.detail.categories.map(
                     c => c.name
                 );
-                const categoryOptions = this.inputCategories.options;
+                const tagOptions = this.inputTags.options;
                 selectOptionsInList({
                     list: categoryNameList,
-                    options: categoryOptions
+                    options: tagOptions
                 });
             }
         }
