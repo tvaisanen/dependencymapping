@@ -28,7 +28,6 @@ const edgeStyleExpanded = {
 const nodesStylePassive = {
     'content': 'data(id)',
     shape: 'roundrectangle',
-    'text-halign': 'top',
     'color': '#818181',
     'text-border-width': 1,
     'text-border-color': '#b3b3b3',

@@ -120,7 +120,6 @@ const tabItems = [
     {label: 'Create', viewId: 1},
 ];
 
-const BROWSER_HEADER = "Resource Browser"
 
 const PanelNavTabs = ({selectedView, tabItems, setView}) => (
     <PanelNavigation>

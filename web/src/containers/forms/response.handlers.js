@@ -1,4 +1,3 @@
-import * as types from '../../constants/types';
 
 export function handleResponse({response, setDetail, detailType, setView, closeForm}) {
 

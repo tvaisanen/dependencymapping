@@ -9,7 +9,6 @@ import {
     LayoutCol,
     SidePanel,
     ContentWindow,
-    MenuHeader,
     TopBar,
     FloatingButton,
 } from '../components/';
@@ -33,10 +32,13 @@ import * as events from '../common/graph.events';
 import {graphStyle} from '../configs/configs.cytoscape';
 import * as types from '../constants/types';
 import styled from 'styled-components';
-import { layoutOptions } from "../configs/configs.cytoscape";
+import {layoutOptions} from "../configs/configs.cytoscape";
+import cxtmenu from 'cytoscape-cxtmenu';
+import defaults from '../configs/cytoscape-ctxmenu.config';
 
 cytoscape.use(dagre);
 cytoscape.use(cola);
+cytoscape.use(cxtmenu);
 
 const LAYOUT = 'cola';
 
@@ -75,9 +77,24 @@ class App extends Component {
             }
         });
 
+
+        cy.cxtmenu(defaults);
+        cy.cxtmenu({
+            selector: 'core',
+
+            commands: [
+                {
+                    content: 'create asset',
+                    select: function () {
+                        console.log('bg1');
+                    }
+                }
+            ]
+        });
         cy.on('tap', 'node', this.onNodeClick);
         cy.on('mouseover', 'node', events.onNodeMouseOver);
         cy.on('mouseout', 'node', events.onNodeMouseOut);
+        cy.on('cxttap', 'node', events.onCtxClick);
 
         const layout = cy.layout({name: LAYOUT});
         layout.run();
@@ -186,7 +203,6 @@ class App extends Component {
         this.setCategoryDetail(tagId);
         clearGraph(this.state.cy);
         const resources = getAllResourcesWithTag({tagId, resources: this.props.resources});
-        const connections = parser.getConnectionsFromResources(resources);
         const edges = parser.parseEdgeElementsFromResources(resources);
         const nodes = resources.map(resource => nodeElementFromResource(resource));
         addElements(this.state.cy, nodes);
@@ -262,11 +278,7 @@ class App extends Component {
     }
 
     saveMapping() {
-        console.info("App.saveMapping()");
-        console.info(this.props.activeMapping);
-        const {description, tags} = this.props.graphs.filter(g => g.name == this.props.activeMapping.name)[0];
-        console.info(description);
-        console.info(tags);
+        const {description, tags} = this.props.graphs.filter(g => g.name === this.props.activeMapping.name)[0];
         this.props.updateMapping({...this.props.activeMapping, description, tags});
     }
 
@@ -338,7 +350,7 @@ class App extends Component {
                                 onMouseOut={this.hoverResourceOff}
                                 selected={
                                     type === types.ASSET ?
-                                        activeDetailName: false
+                                        activeDetailName : false
                                 }
                             />
 
@@ -406,7 +418,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(App);
 
 const MenuToggle = styled.div`
     padding: 3px;
-    margin-bottom: 2p;
+    margin-bottom: 2px;
     width: 20px;
     height: 20px;
     cursor: pointer;

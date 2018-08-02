@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {handleResponse, handleError} from "./response.handlers";
+import {handleResponse} from "./response.handlers";
 import {getSelected, selectOptionsInList} from './form.helpers';
 import * as validators from '../../common/validators';
 

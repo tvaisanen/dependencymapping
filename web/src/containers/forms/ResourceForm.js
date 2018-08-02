@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import BaseForm from './BaseForm';
 import * as form from './form.components';

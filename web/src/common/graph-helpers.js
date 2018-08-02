@@ -103,7 +103,7 @@ export function hoverIndicationOn(cy = required(), id) {
     });
     el.neighborhood().clearQueue()
         .forEach(e => {
-                if (e.id() == id) {
+                if (e.id() === id) {
                     return null;
                 }
                 else if (e.isNode()) {
@@ -135,7 +135,7 @@ export function hoverIndicationOff(cy = required(), id) {
     console.info(el.neighborhood().nodes());
     el.neighborhood().clearQueue()
         .forEach(e => {
-            if (e.id() == id) {
+            if (e.id() === id) {
                 return null;
             }
             else if (e.isNode()) {

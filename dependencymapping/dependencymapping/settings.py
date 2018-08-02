@@ -40,7 +40,8 @@ CORS_ORIGIN_WHITELIST = (
     'localhost:8000',
     '127.0.0.1:9000',
     'localhost:3000',
-    '192.168.1.127:3000'
+    '192.168.1.127:3000',
+    '127.0.1.1:5000'
 )
 
 # Application definition

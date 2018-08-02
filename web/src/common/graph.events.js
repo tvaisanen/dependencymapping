@@ -1,4 +1,3 @@
-import { required } from './required';
 import * as helpers from './graph-helpers';
 
 export function onNodeMouseOver(event){
@@ -36,4 +35,10 @@ export function onNodeClick({target, cy, targetNames}) {
 
 export function onEdgeClick(event) {
     console.info("")
+}
+
+export function onCtxClick(event) {
+    console.info("right button click");
+    console.info(event);
+
 }

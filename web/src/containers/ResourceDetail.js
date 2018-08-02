@@ -8,8 +8,8 @@ import {bindActionCreators} from 'redux';
 import * as actionCreators from '../actions/index';
 import {getAllResourcesWithTag} from "../common/resource-helpers";
 
-const detailListFragment = ({label, items, type, onClick}) => (
-    <React.Fragment>
+const detailListFragment = ({label, items, type, onClick, i}) => (
+    <React.Fragment key={i}>
         <ListLabel>{label}</ListLabel>
         <List>
             {items ?
@@ -88,7 +88,7 @@ class ResourceDetail extends Component {
         // render the lists to list fragments if there's a list and
         // there's at least one element
         const listFragments = lists && lists.length >= 1 ?
-            lists.map(list => detailListFragment({...list}))
+            lists.map((list,i) => detailListFragment({...list,i}))
             : null
         ;
 

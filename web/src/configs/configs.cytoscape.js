@@ -9,7 +9,7 @@ export const graphStyle = [ // the stylesheet for the graph
     {
         selector: 'edge',
         style: {
-            'curve-style': 'unbundled-bezier(multiple)',
+            'curve-style': 'auto',
             'width': 3,
             'line-color': '#eee',
             'target-arrow-color': '#85cc57',
@@ -36,9 +36,7 @@ export const graphStyle = [ // the stylesheet for the graph
     {
         selector: 'node.flash-shadow',
         style: {
-            'box-shadow': '30px 30px 30px green',
             'background-color': 'rgb(244,0,0)',
-            'transition': 'all .1s ease-in-out'
         }
     }
 ];
