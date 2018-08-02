@@ -39,11 +39,21 @@ class BaseForm extends Component {
                 description: this.props.detail.description
             });
 
+            console.group("Selection debug");
+
+            console.info(this.props)
+
 
             // if mapping has resources map the selection
-            if (this.props.detail.resources) {
-                const resourceNameList = this.props.detail.resources.map(
-                    r => r.name
+
+            const assets = this.state.type === types.ASSET ?
+                this.props.detail.connected_to
+                : this.props.detail.resources
+            ;
+
+            if (assets) {
+                const resourceNameList = assets.map(
+                    asset => asset.name
                 );
                 const resourceOptions = this.inputResources.options;
                 console.info(resourceNameList);
@@ -54,16 +64,18 @@ class BaseForm extends Component {
             }
 
             // if mapping has categories map the selection
-            if (this.props.detail.categories) {
-                const categoryNameList = this.props.detail.categories.map(
-                    c => c.name
+            if (this.props.detail.tags) {
+                const tagNameList = this.props.detail.tags.map(
+                    tag => tag.name
                 );
                 const tagOptions = this.inputTags.options;
                 selectOptionsInList({
-                    list: categoryNameList,
+                    list: tagNameList,
                     options: tagOptions
                 });
             }
+
+            console.groupEnd();
         }
     }
 

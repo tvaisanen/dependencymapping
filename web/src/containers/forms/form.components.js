@@ -13,8 +13,7 @@ export const Container = styled.div`
     height: inherit;
     width: 100%;
     flex-grow: 1;
-    padding: 0 12px;
-    
+    padding: 0 12px;  
 `;
 
 export const Header = styled.h2`

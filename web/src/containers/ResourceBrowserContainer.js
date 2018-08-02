@@ -83,12 +83,6 @@ class ResourceBrowserContainer extends Component {
             resourceId: this.props.activeDetail.name
         });
 
-
-        console.group("Filter debug");
-        console.info(resources);
-        console.info(tags);
-        console.groupEnd()
-
         const resourceItems = resourceTypes === types.ASSET ?
             this.filterResources({resources: resources, filterValue})
             : this.filterResources({resources: tags, filterValue})
