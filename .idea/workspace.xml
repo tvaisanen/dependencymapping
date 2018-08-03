@@ -2,20 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54a515f1-0b9b-4e65-b211-4d44822d847b" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/web/src/actions/graph.actions.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/reducers/mapping.reducer.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dependencymapping/dependencymapping/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/dependencymapping/dependencymapping/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/common/graph-helpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/common/graph-helpers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/common/graph.events.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/common/graph.events.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/configs/configs.cytoscape.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/configs/configs.cytoscape.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/configs/graph.styles.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/configs/graph.styles.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/actions/actionTypes.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/actions/actionTypes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/actions/active-mapping.actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/actions/active-mapping.actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/actions/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/actions/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/containers/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/src/containers/BottomPanelContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/BottomPanelContainer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/containers/ResourceDetail.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/ResourceDetail.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/containers/forms/BaseForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/forms/BaseForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/containers/forms/ResourceForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/forms/ResourceForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/containers/forms/TagForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/forms/TagForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/containers/forms/response.handlers.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/forms/response.handlers.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/containers/GraphContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/GraphContainer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/containers/ResourceBrowserContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/ResourceBrowserContainer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/reducers/graph.reducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/reducers/graph.reducer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/reducers/initialState.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/reducers/initialState.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/reducers/root.reducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/reducers/root.reducer.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -42,19 +42,94 @@
     <favorites_list name="dependencymapping" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
+    <splitter split-orientation="horizontal" split-proportion="0.5364583">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="App.js" pinned="false" current-in-tab="true">
+          <file leaf-file-name="App.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/web/src/containers/App.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1444">
-                  <caret line="406" column="20" lean-forward="true" selection-start-line="406" selection-start-column="20" selection-end-line="406" selection-end-column="20" />
+                <state relative-caret-position="-374">
+                  <caret line="237" column="39" selection-start-line="237" selection-start-column="39" selection-end-line="237" selection-end-column="39" />
                   <folding>
                     <element signature="e#0#39#0" expanded="true" />
-                    <element signature="n#!!block;n#setDetail#0;n#App#0" />
-                    <element signature="n#!!block;n#setResourceDetail#0;n#App#0" />
-                    <element signature="n#!!block;n#setCategoryDetail#0;n#App#0" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ResourceDetail.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/web/src/containers/ResourceDetail.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="-1121">
+                  <caret line="11" column="25" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="25" />
+                  <folding>
+                    <element signature="e#0#39#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="BottomPanelContainer.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/web/src/containers/BottomPanelContainer.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="1791">
+                  <caret line="106" column="45" selection-start-line="106" selection-start-column="45" selection-end-line="106" selection-end-column="45" />
+                  <folding>
+                    <element signature="e#0#39#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="ResourceBrowserContainer.js" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/web/src/containers/ResourceBrowserContainer.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="893">
+                  <caret line="47" column="16" selection-start-line="47" selection-start-column="16" selection-end-line="47" selection-end-column="16" />
+                  <folding>
+                    <element signature="e#0#39#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="initialState.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/web/src/reducers/initialState.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="266">
+                  <caret line="14" column="9" selection-start-line="14" selection-start-column="9" selection-end-line="14" selection-end-column="9" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="graph.reducer.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/web/src/reducers/graph.reducer.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="95">
+                  <caret line="5" column="33" selection-start-line="5" selection-start-column="33" selection-end-line="5" selection-end-column="33" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="active-mapping.actions.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/web/src/actions/active-mapping.actions.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="475">
+                  <caret line="47" column="55" selection-start-line="47" selection-start-column="55" selection-end-line="47" selection-end-column="55" />
+                  <folding>
+                    <element signature="e#0#39#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="graph.actions.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/web/src/actions/graph.actions.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="513">
+                  <caret line="27" column="28" selection-start-line="27" selection-start-column="28" selection-end-line="27" selection-end-column="28" />
+                  <folding>
+                    <element signature="e#0#56#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -64,11 +139,44 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="graph.events.js" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/web/src/common/graph.events.js">
+          <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/web/src/actions/index.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="798">
-                  <caret line="42" selection-start-line="42" selection-end-line="42" />
+                <state relative-caret-position="95">
+                  <caret line="5" column="43" selection-start-line="5" selection-start-column="43" selection-end-line="5" selection-end-column="43" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="graph.reducer.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/web/src/reducers/graph.reducer.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="418">
+                  <caret line="22" column="32" selection-start-line="22" selection-start-column="32" selection-end-line="22" selection-end-column="32" />
+                  <folding>
+                    <element signature="e#0#48#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="actionTypes.js" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/web/src/actions/actionTypes.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="665">
+                  <caret line="35" column="24" selection-start-line="35" selection-start-column="24" selection-end-line="35" selection-end-column="24" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="active-mapping.actions.js" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/web/src/actions/active-mapping.actions.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="627">
+                  <caret line="33" selection-start-line="33" selection-end-line="33" />
+                  <folding>
+                    <element signature="e#0#39#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -97,20 +205,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/web/src/reducers/resourceReducer.js" />
-        <option value="$PROJECT_DIR$/web/src/actions/activemapping.actions.js" />
-        <option value="$PROJECT_DIR$/web/src/actions/mapping.actions.js" />
-        <option value="$PROJECT_DIR$/web/src/actions/resource.actions.js" />
-        <option value="$PROJECT_DIR$/web/src/actions/graphActions.js" />
-        <option value="$PROJECT_DIR$/web/src/actions/tag.actions.js" />
-        <option value="$PROJECT_DIR$/web/src/common/required.js" />
         <option value="$PROJECT_DIR$/web/src/containers/SidePanelContainer.js" />
         <option value="$PROJECT_DIR$/web/src/reducers/activeDetail.reducer.js" />
         <option value="$PROJECT_DIR$/web/src/reducers/rootReducer.js" />
-        <option value="$PROJECT_DIR$/web/src/actions/actionTypes.js" />
-        <option value="$PROJECT_DIR$/web/src/actions/index.js" />
         <option value="$PROJECT_DIR$/web/src/common/store.helpers.js" />
-        <option value="$PROJECT_DIR$/web/src/reducers/initialState.js" />
         <option value="$PROJECT_DIR$/web/src/reducers/active-detail.reducer.js" />
         <option value="$PROJECT_DIR$/web/src/actions/active-detail.actions.js" />
         <option value="$PROJECT_DIR$/requirements.txt" />
@@ -135,19 +233,29 @@
         <option value="$PROJECT_DIR$/web/src/common/validators.js" />
         <option value="$PROJECT_DIR$/web/src/common/resource-helpers.js" />
         <option value="$PROJECT_DIR$/web/src/containers/forms/form.components.js" />
-        <option value="$PROJECT_DIR$/web/src/containers/ResourceBrowserContainer.js" />
         <option value="$PROJECT_DIR$/dependencymapping/dependencymapping/settings.py" />
         <option value="$PROJECT_DIR$/web/src/configs/graph.styles.js" />
         <option value="$PROJECT_DIR$/web/src/containers/ResourceDetail.js" />
         <option value="$PROJECT_DIR$/web/src/common/graph-helpers.js" />
-        <option value="$PROJECT_DIR$/web/src/containers/BottomPanelContainer.js" />
         <option value="$PROJECT_DIR$/web/src/containers/forms/BaseForm.js" />
         <option value="$PROJECT_DIR$/web/src/containers/forms/response.handlers.js" />
         <option value="$PROJECT_DIR$/web/src/containers/forms/TagForm.js" />
         <option value="$PROJECT_DIR$/web/src/containers/forms/ResourceForm.js" />
         <option value="$PROJECT_DIR$/web/src/configs/configs.cytoscape.js" />
         <option value="$PROJECT_DIR$/web/src/common/graph.events.js" />
+        <option value="$PROJECT_DIR$/web/src/configs/cytoscape-ctxmenu.config.js" />
+        <option value="$PROJECT_DIR$/web/src/reducers/mapping.reducer.js" />
+        <option value="$PROJECT_DIR$/web/src/actions/index.js" />
+        <option value="$PROJECT_DIR$/web/src/reducers/initialState.js" />
+        <option value="$PROJECT_DIR$/web/src/reducers/root.reducer.js" />
+        <option value="$PROJECT_DIR$/web/src/containers/GraphContainer.js" />
+        <option value="$PROJECT_DIR$/web/src/containers/BottomPanelContainer.js" />
         <option value="$PROJECT_DIR$/web/src/containers/App.js" />
+        <option value="$PROJECT_DIR$/web/src/actions/actionTypes.js" />
+        <option value="$PROJECT_DIR$/web/src/reducers/graph.reducer.js" />
+        <option value="$PROJECT_DIR$/web/src/actions/graph.actions.js" />
+        <option value="$PROJECT_DIR$/web/src/actions/active-mapping.actions.js" />
+        <option value="$PROJECT_DIR$/web/src/containers/ResourceBrowserContainer.js" />
       </list>
     </option>
   </component>
@@ -167,8 +275,8 @@
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="y" value="30" />
-    <option name="width" value="1229" />
-    <option name="height" value="1162" />
+    <option name="width" value="960" />
+    <option name="height" value="1170" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -176,6 +284,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -183,11 +292,56 @@
               <item name="dependencymapping" type="b2602c69:ProjectViewProjectNode" />
               <item name="dependencymapping" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="dependencymapping" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dependencymapping" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dependencymapping" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dependencymapping" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dependencymapping" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dependencymapping" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="actions" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dependencymapping" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dependencymapping" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="common" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dependencymapping" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dependencymapping" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="configs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dependencymapping" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dependencymapping" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="containers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dependencymapping" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dependencymapping" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="reducers" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -247,7 +401,7 @@
       <window_info anchor="bottom" id="Python Console" order="7" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4980916" visible="true" weight="0.14947917" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4980916" weight="0.175" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" weight="0.3296875" />
       <window_info anchor="right" id="SciView" order="3" />
@@ -263,27 +417,27 @@
       <window_info anchor="bottom" id="Find" order="1" weight="0.32919848" />
     </layout>
     <layout-to-restore>
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Docker" order="0" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Inspection" order="11" weight="0.4" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.2783019" />
-      <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="2" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
-      <window_info anchor="bottom" id="TODO" order="12" />
-      <window_info anchor="bottom" id="Version Control" order="1" />
-      <window_info anchor="bottom" id="Run" order="8" />
-      <window_info anchor="bottom" id="Python Console" order="3" />
-      <window_info anchor="bottom" id="Message" order="6" />
-      <window_info anchor="bottom" id="Debug" order="9" weight="0.4" />
-      <window_info anchor="right" id="Database" order="1" />
-      <window_info anchor="bottom" id="Terminal" order="4" />
-      <window_info anchor="bottom" id="Event Log" order="5" side_tool="true" />
-      <window_info anchor="bottom" id="Database Changes" order="2" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Cvs" order="10" weight="0.25" />
-      <window_info anchor="right" id="SciView" order="0" />
-      <window_info anchor="bottom" id="Find" order="7" />
-      <window_info id="Favorites" order="0" side_tool="true" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4980916" visible="true" weight="0.175" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="3" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32919848" />
+      <window_info anchor="bottom" id="Python Console" order="10" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="right" id="Database" order="4" weight="0.3296875" />
+      <window_info anchor="bottom" id="Terminal" order="11" />
+      <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" weight="0.32919848" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info id="Favorites" order="2" sideWeight="0.5019084" side_tool="true" weight="0.112600535" />
     </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -339,78 +493,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/web/src/data/text.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="1" column="29" selection-start-line="1" selection-start-column="29" selection-end-line="1" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/actions/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="4" column="39" selection-start-line="4" selection-start-column="39" selection-end-line="4" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/reducers/root.reducer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="13" column="2" selection-start-line="13" selection-start-column="2" selection-end-line="13" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/actions/actionTypes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="608">
-          <caret line="32" column="52" selection-start-line="32" selection-start-column="52" selection-end-line="32" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/common/store.helpers.js" />
-    <entry file="file://$PROJECT_DIR$/web/src/reducers/initialState.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/reducers/active-detail.reducer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="114">
-          <caret line="7" column="37" selection-start-line="7" selection-start-column="37" selection-end-line="7" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Dockerfile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="7" column="15" selection-start-line="7" selection-start-column="15" selection-end-line="7" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dependencymapping/application/templates/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="4" column="6" selection-start-line="4" selection-start-column="6" selection-end-line="4" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dependencymapping/webapp/index.html" />
-    <entry file="file://$PROJECT_DIR$/requirements.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/docker-compose.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="12" column="12" selection-start-line="12" selection-start-column="12" selection-end-line="12" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/dependencymapping/webclient/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="171">
@@ -426,13 +508,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/static/js/hello.js" />
-    <entry file="file://$PROJECT_DIR$/web/src/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="12" column="34" selection-start-line="12" selection-start-column="34" selection-end-line="12" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/dependencymapping/dependencymapping/urls.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="646">
@@ -442,20 +517,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/dependencymapping/manage.py">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/actions/mapping.actions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1539">
-          <caret line="97" column="1" selection-start-line="97" selection-start-column="1" selection-end-line="97" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/actions/active-mapping.actions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="10" selection-start-line="10" selection-end-line="10" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/src/actions/active-detail.actions.js">
       <provider selected="true" editor-type-id="text-editor">
@@ -563,16 +624,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="570">
           <caret line="33" column="39" selection-start-line="33" selection-start-column="39" selection-end-line="33" selection-end-column="39" />
-          <folding>
-            <element signature="e#0#26#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/containers/BottomPanelContainer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="2" column="38" selection-start-line="2" selection-start-column="38" selection-end-line="2" selection-end-column="38" />
         </state>
       </provider>
     </entry>
@@ -587,13 +638,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="190">
           <caret line="10" column="2" selection-start-line="10" selection-start-column="2" selection-end-line="10" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/common/graph-helpers.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="684">
-          <caret line="137" column="25" selection-start-line="137" selection-start-column="25" selection-end-line="137" selection-end-column="25" />
         </state>
       </provider>
     </entry>
@@ -626,30 +670,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/containers/ResourceDetail.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="11" column="25" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/src/containers/forms/TagForm.js">
       <provider selected="true" editor-type-id="text-editor">
         <state>
           <caret column="11" selection-start-column="11" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/containers/ResourceBrowserContainer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="85" selection-start-line="85" selection-end-line="85" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -667,15 +691,173 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/configs/cytoscape-ctxmenu.config.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="15" selection-start-column="15" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="5" column="41" selection-start-line="5" selection-start-column="41" selection-end-line="5" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/store/configureStore.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="1" column="14" selection-start-line="1" selection-start-column="14" selection-end-line="1" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/reducers/mapping.reducer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="57">
+          <caret line="3" column="31" selection-start-line="3" selection-start-column="31" selection-end-line="3" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#48#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/common/graph-helpers.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="2" column="61" lean-forward="true" selection-start-line="2" selection-start-column="61" selection-end-line="2" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/reducers/initialState.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="14" column="9" selection-start-line="14" selection-start-column="9" selection-end-line="14" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/reducers/root.reducer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="14" column="8" selection-start-line="14" selection-start-column="8" selection-end-line="14" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#40#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/reducers/resource.reducer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#48#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/containers/GraphContainer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/actions/mapping.actions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="979">
+          <caret line="97" column="1" selection-start-line="97" selection-start-column="1" selection-end-line="97" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/web/src/containers/App.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1444">
-          <caret line="406" column="20" lean-forward="true" selection-start-line="406" selection-start-column="20" selection-end-line="406" selection-end-column="20" />
+        <state relative-caret-position="-374">
+          <caret line="237" column="39" selection-start-line="237" selection-start-column="39" selection-end-line="237" selection-end-column="39" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
-            <element signature="n#!!block;n#setDetail#0;n#App#0" />
-            <element signature="n#!!block;n#setResourceDetail#0;n#App#0" />
-            <element signature="n#!!block;n#setCategoryDetail#0;n#App#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/containers/ResourceDetail.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1121">
+          <caret line="11" column="25" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/containers/BottomPanelContainer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1791">
+          <caret line="106" column="45" selection-start-line="106" selection-start-column="45" selection-end-line="106" selection-end-column="45" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/actions/resource.actions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#45#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/actions/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="5" column="43" selection-start-line="5" selection-start-column="43" selection-end-line="5" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/reducers/graph.reducer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="5" column="33" selection-start-line="5" selection-start-column="33" selection-end-line="5" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/actions/actionTypes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="665">
+          <caret line="35" column="24" selection-start-line="35" selection-start-column="24" selection-end-line="35" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/actions/graph.actions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="513">
+          <caret line="27" column="28" selection-start-line="27" selection-start-column="28" selection-end-line="27" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/actions/active-mapping.actions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="475">
+          <caret line="47" column="55" selection-start-line="47" selection-start-column="55" selection-end-line="47" selection-end-column="55" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/containers/ResourceBrowserContainer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="893">
+          <caret line="47" column="16" selection-start-line="47" selection-start-column="16" selection-end-line="47" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
           </folding>
         </state>
       </provider>

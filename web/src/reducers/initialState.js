@@ -1,5 +1,5 @@
 export default {
-    graphs: [],
+    mappings: [],
     dependencies: [],
     resources: [],
     tags: [],
@@ -11,5 +11,7 @@ export default {
             type: ""
         },
         type: "EMPTY"
-    }
+    },
+    graph: "THIS WILL BE CY INSTANCE",
+
 }

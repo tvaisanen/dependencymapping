@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
-import cytoscape from 'cytoscape';
-import cola from 'cytoscape-cola';
 import PropTypes from 'prop-types';
+
+import {connect} from 'react-redux'
+import {bindActionCreators} from 'redux';
+
 import {
     Layout,
     ButtonPanel,
@@ -14,8 +16,6 @@ import {
 } from '../components/';
 import GraphContainer from './GraphContainer';
 import {Menu} from './SideTabMenuContainer';
-import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux';
 import {
     addElement, addElements, updateLayout, clearGraph, nodeElementFromResource,
     hoverIndicationOff, hoverIndicationOn
@@ -26,19 +26,13 @@ import * as parser from '../common/parser';
 import _ from 'lodash';
 import * as constants from '../constants/';
 import BottomPaneContainer from './BottomPanelContainer';
-import dagre from 'cytoscape-dagre';
 import * as texts from '../data/text';
 import * as events from '../common/graph.events';
-import {graphStyle} from '../configs/configs.cytoscape';
 import * as types from '../constants/types';
 import styled from 'styled-components';
 import {layoutOptions} from "../configs/configs.cytoscape";
-import cxtmenu from 'cytoscape-cxtmenu';
-import defaults from '../configs/cytoscape-ctxmenu.config';
 
-cytoscape.use(dagre);
-cytoscape.use(cola);
-cytoscape.use(cxtmenu);
+
 
 const LAYOUT = 'cola';
 
@@ -68,45 +62,22 @@ class App extends Component {
     }
 
     componentDidMount() {
-        const cy = cytoscape({
-            container: document.getElementById('cy'), // container to render in
-            elements: this.state.elements,
-            style: graphStyle,
-            layout: {
-                name: LAYOUT,
+        this.props.initGraph({
+            eventHandlers: {
+                tap: ['node', this.onNodeClick],
+                mouseover: ['node', events.onNodeMouseOver],
+                mouseout: ['node', events.onNodeMouseOut],
+                cxttap: ['node', events.onCtxClick]
             }
         });
-
-
-        cy.cxtmenu(defaults);
-        cy.cxtmenu({
-            selector: 'core',
-
-            commands: [
-                {
-                    content: 'create asset',
-                    select: function () {
-                        console.log('bg1');
-                    }
-                }
-            ]
-        });
-        cy.on('tap', 'node', this.onNodeClick);
-        cy.on('mouseover', 'node', events.onNodeMouseOver);
-        cy.on('mouseout', 'node', events.onNodeMouseOut);
-        cy.on('cxttap', 'node', events.onCtxClick);
-
-        const layout = cy.layout({name: LAYOUT});
-        layout.run();
-        this.setState({cy: cy});
-
-        this.addResourceToMapping = this.addResourceToMapping.bind(this);
 
     }
 
     updateLayout() {
         const options = layoutOptions.cola;
-        const layout = this.state.cy.layout({name: this.state.layout, ...options});
+        //const layout = this.state.cy.layout({name: this.state.layout, ...options});
+
+        const layout = this.props.cy.layout({name: this.state.layout, ...options});
         layout.run();
     }
 
@@ -150,9 +121,9 @@ class App extends Component {
         console.info('GwClientApi.getDependencyMap("' + mapId + '");');
 
         // current state of cy graph needs to be cleared
-        clearGraph(this.state.cy);
+        clearGraph(this.props.cy);
 
-        const mapping = this.props.graphs.filter(g => g.name === mapId)[0];
+        const mapping = this.props.mappings.filter(g => g.name === mapId)[0];
 
         // By default this is an array of objects.
         let resources = mapping ? mapping.resources : [];
@@ -186,8 +157,8 @@ class App extends Component {
 
 
         const nodes = resources.map(resource => nodeElementFromResource(resource));
-        addElements(this.state.cy, nodes);
-        addElements(this.state.cy, edges);
+        addElements(this.props.cy, nodes);
+        addElements(this.props.cy, edges);
 
         this.props.setActiveDetail({data: mapping, type: constants.MAPPING});
 
@@ -260,7 +231,7 @@ class App extends Component {
     }
 
     clearGraphSelection() {
-        clearGraph(this.state.cy)
+        clearGraph(this.props.cy)
         this.props.clearActiveMappingSelection();
     }
 
@@ -278,11 +249,12 @@ class App extends Component {
     }
 
     saveMapping() {
-        const {description, tags} = this.props.graphs.filter(g => g.name === this.props.activeMapping.name)[0];
+        const {description, tags} = this.props.mappings.filter(g => g.name === this.props.activeMapping.name)[0];
         this.props.updateMapping({...this.props.activeMapping, description, tags});
     }
 
     downloadImage(cy) {
+        // todo: cross-browser
         let downloadLink = document.createElement('a')
         downloadLink.href = cy.png({bg: 'white'});
         downloadLink.download = "mapping.png";
@@ -291,22 +263,22 @@ class App extends Component {
 
     hoverResourceOn(id) {
         console.info("mouseover")
-        hoverIndicationOn(this.state.cy, id);
+        hoverIndicationOn(this.props.cy, id);
     }
 
     hoverResourceOff(id) {
         console.info("mouseout")
-        hoverIndicationOff(this.state.cy, id);
+        hoverIndicationOff(this.props.cy, id);
     }
 
     render() {
         console.info(this.props);
         const {type, data} = this.props.activeDetail;
         const activeDetailName = data.name;
-        const mappings = this.props.graphs.map(m => m.name).sort();
+        const mappings = this.props.mappings.map(m => m.name).sort();
         const tags = this.props.tags.map(c => c.name).sort();
         const activeResources = getResourceNameList(this.props.activeMapping.resources);
-        const {cy} = this.state;
+        const {cy} = this.props.cy;
         return (
             <Layout>
                 <LayoutCol id="container-top" height={"60vh"}>
@@ -380,7 +352,7 @@ class App extends Component {
                         detailType={this.state.detailType}
                         setResourceDetail={this.setResourceDetail}
                         setDetail={this.setDetail}
-                        cy={this.state.cy}
+                        cy={this.props.cy}
                     />
                     {/*<PreviewAndFormsContainer detail={this.state.detail}/>*/}
                 </LayoutCol>
@@ -400,13 +372,16 @@ App.propTypes = {
 }
 
 const mapStateToProps = (state, ownProps = {}) => {
+    console.info(state);
     return {
-        graphs: state.graphs,
+        mappings: state.mappings,
         resources: state.resources,
         dependencies: state.dependencies,
         tags: state.tags,
         activeMapping: state.activeMapping,
-        activeDetail: state.activeDetail
+        activeDetail: state.activeDetail,
+        debug: state.debug,
+        cy: state.graph
     }
 }
 

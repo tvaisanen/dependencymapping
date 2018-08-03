@@ -1,27 +1,35 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-class GraphContainer extends Component {
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux'
+import { initGraph } from "../actions";
 
-    constructor(){
-        super();
-        this.state = {
-            cy: null
-        }
-    }
+/**
+ *  Container for the canvas required for graphing.
+ *
+ *
+ */
 
-    componentDidMount(){
 
-    }
+const GraphContainer = (props) => {
+    return <GraphCanvasContainer id="cy"/>
+};
 
-    
-    render() {
-        return (
-              <GraphCanvasContainer id="cy" />
-        );
-    }
+GraphContainer.propTypes = {
+    initGraph: PropTypes.func.isRequired
 }
 
-export default GraphContainer;
+const mapStateToProps = (state) => {
+    return state.cy;
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+       initGraph: (container) => dispatch(initGraph(container))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(GraphContainer);
 
 export const GraphCanvasContainer = styled.div`
     position: relative;

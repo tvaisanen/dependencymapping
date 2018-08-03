@@ -104,8 +104,8 @@ BottomPanelContainer.propTypes = {
 
 const mapStateToProps = (state, ownProps = {}) => {
     return {
-        activeDetail: state.activeDetail.data
-
+        activeDetail: state.activeDetail.data,
+        cy: state.graph
     }
 }
 

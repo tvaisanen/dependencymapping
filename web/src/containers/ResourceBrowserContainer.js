@@ -7,11 +7,7 @@ import styled from 'styled-components';
 import * as l from '../components/layout';
 import * as types from '../constants/types';
 import {isResourceInMapping, resourceExists, isResourceConnectedToId} from '../common/resource-helpers';
-import {
-    addElement, nodeElementFromResource, edgeElementFromResource,
-    removeElement, updateLayout
-} from "../common/graph-helpers";
-import * as _ from 'lodash';
+import { removeElement, updateLayout } from "../common/graph-helpers";
 import ResourceDetail from './ResourceDetail';
 
 class ResourceBrowserContainer extends Component {
@@ -29,35 +25,8 @@ class ResourceBrowserContainer extends Component {
     }
 
     addResourceToMapping(resource) {
-        /*
-         * Create node element from the resource and
-         * get the edge elements to represent the connections
-         * between source and source.connected_to resources
-         *
-         */
-        const node = nodeElementFromResource(resource);
-        const edgeElements = resource.connected_to.map(r => edgeElementFromResource(resource.name, r.name));
-
-        /*
-         * Get resources from active mapping that are connected
-         * to the resource, which is added to the active mapping.
-         * For creating edges in the graph.
-         */
-        const resourcesConnectingInto = this.props.activeMapping
-                .resources.filter(r => isResourceConnectedToId({resource: r, id: resource.name}))
-        ;
-
-        console.info(resourcesConnectingInto);
-
-        const edgesTargetingResource = resourcesConnectingInto.map(r => edgeElementFromResource(r.name, resource.name));
-        console.info(edgesTargetingResource);
-        console.info(edgeElements);
-        this.props.addResourceToActiveMapping(resource);
-        console.info(this.props.cyRef);
-        console.info(node);
-        addElement(this.props.cyRef, node);
-        addElement(this.props.cyRef, edgeElements);
-        addElement(this.props.cyRef, edgesTargetingResource);
+        const { activeMapping } = this.props;
+        this.props.addResourceToActiveMapping(resource, activeMapping);
         updateLayout(this.props.cyRef);
     }
 
@@ -76,7 +45,7 @@ class ResourceBrowserContainer extends Component {
     }
 
     render() {
-        const { activeDetail, activeMapping, resources, tags } = this.props;
+        const { resources, tags } = this.props;
         const {filterValue, resourceTypes} = this.state;
         const isResourceInMap = isResourceInMapping({
             mapping: this.props.activeMapping,
