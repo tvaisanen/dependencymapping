@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux';
-
+import { TopBar } from '../components/layout-segment';
 import {
     Layout,
     ButtonPanel,
@@ -11,7 +11,6 @@ import {
     LayoutCol,
     SidePanel,
     ContentWindow,
-    TopBar,
     FloatingButton,
 } from '../components/';
 import GraphContainer from './GraphContainer';
@@ -282,20 +281,7 @@ class App extends Component {
         return (
             <Layout>
                 <LayoutCol id="container-top" height={"60vh"}>
-                    <TopBar>
-                        <span>Dependency Mapper</span>
-                        <span style={{fontSize: 'small'}}>{this.state.info}</span>
-                        {/*<small>
-              layout: 
-                <span onClick={()=>this.setLayout('random')}>random</span>
-                <span onClick={()=>this.setLayout('cola')}>physics</span>
-                <span onClick={()=>this.setLayout('circle')}>circle</span>
-                <span onClick={()=>this.setLayout('breadthfirst')}>r>breadthfirst</span>
-          </small>*/}
-                        <MenuToggle onClick={this.toggleFloatingButtons}>
-                            &#9776;
-                        </MenuToggle>
-                    </TopBar>
+                    <TopBar info={this.state.info} menuToggleHandler={this.toggleFloatingButtons}/>
                     <LayoutRow>
 
                         <SidePanel id="sidepanel">
@@ -391,17 +377,5 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
 
-const MenuToggle = styled.div`
-    padding: 3px;
-    margin-bottom: 2px;
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    :hover {
-      border-color: white;
-    }    
-    transition: all .3s ease-in-out;
-`;
+
 

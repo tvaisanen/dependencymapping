@@ -1,5 +1,14 @@
 import styled from 'styled-components';
 
+
+export const ListBlock = styled.div`
+            display: flex;
+            margin: 12px;
+            flex-direction: column;
+            flex-grow: 8;
+            width: 30%;
+            height: inherit;
+            `;
 export const DetailHeader = styled.h2`
             margin: 4px 0;
             color: rgba(255,255,255,0.9);
@@ -79,3 +88,19 @@ export const ActionLink = styled.span`
             }
             cursor: pointer;
          `;
+
+export const DetailDescription = styled.div`
+            background: rgba(255,255,255,.2);
+            border-radius: 3px;
+            overflow-y: scroll;
+            border: 1px solid gray;
+            margin-top: 12px;
+            height: inherit;
+            width: 70%;
+            max-width: 70%;
+            flex-grow: 2;
+            padding: 5px 30px;
+            text-align: justify;
+            text-justify: inter-character;
+            box-shadow: 0 0 20px rgba(255,255,255,0.2);
+            `;

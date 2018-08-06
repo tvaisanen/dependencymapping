@@ -9,6 +9,7 @@ import * as actionCreators from '../../actions/index';
 import {mappingExists} from '../../common/resource-helpers';
 import * as validators from '../../common/validators';
 import BaseForm from './BaseForm';
+import mappingFormCtrl from '../../controllers/mapping-form.controller';
 import * as types from '../../constants/types';
 
 class MappingForm extends BaseForm {
@@ -38,8 +39,8 @@ class MappingForm extends BaseForm {
     }
 
     render() {
-        const tagNameList = this.props.tags.map(c => c.name);
-        const resourceNameList = this.props.resources.map(r => r.name);
+        console.info(this.props);
+        const { tagNameList, resourceNameList } = this.props;
         const nameValid = validators.validMappingName(this.state.name);
         const descriptionValid = validators.validDescription(this.state.description);
         return (
@@ -101,7 +102,15 @@ class MappingForm extends BaseForm {
 }
 
 MappingForm.propTypes = {
+    // mappingFormCtrl.getMappingFormProps(state)
+    tagNameList: PropTypes.array,
+    resourceNameList: PropTypes.array,
+    // mappingFormCtrl.getDispatchedTransactions(dispatch)
     updateMapping: PropTypes.func.isRequired,
+    postMapping: PropTypes.func.isRequired,
+    deleteMapping: PropTypes.func.isRequired,
+    setActiveDetail: PropTypes.func.isRequired,
+    // refactor to store ?
     detail: PropTypes.object,
     cancel: PropTypes.func.isRequired,
     setView: PropTypes.func.isRequired
@@ -110,6 +119,7 @@ MappingForm.propTypes = {
 const
     mapStateToProps = (state, ownProps = {}) => {
         return {
+            ...mappingFormCtrl.getMappingFormProps(state),
             resources: state.resources,
             tags: state.tags,
             mappings: state.graphs
@@ -120,5 +130,8 @@ function mapDispatchToProps(dispatch) {
     return bindActionCreators({...actionCreators}, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MappingForm);
+export default connect(
+    mappingFormCtrl.getMappingFormProps,
+    mappingFormCtrl.getDispatchedTransactions
+)(MappingForm);
 

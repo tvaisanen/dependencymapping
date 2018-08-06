@@ -14,18 +14,7 @@ export const Layout = styled.div`
     overflow: hidden;
 `;
 
-export const TopBar = styled.div`
-    background: ${colorDark};
-    display: flex;
-    flex-direction: row;
-   
-    color: #FAFAFA;
-    font-size: larger;
-    font-weight: bold;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 24px;
-`;
+
 
 export const LayoutRow = styled.div`
     display: flex;

@@ -16,9 +16,7 @@ function getResourceDetailProps(state) {
         getAllResourcesWithTag({tagId: activeDetail.data.name, resources: state.resources})
         : false;
 
-
     const lists = getLists({activeDetail, detailType, setDetail, items});
-
 
     return {...state, lists}
 }

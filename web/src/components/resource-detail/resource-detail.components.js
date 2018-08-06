@@ -1,4 +1,5 @@
 import React from 'react';
+import MarkDownRenderer from 'react-markdown-renderer';
 import * as types from '../../constants/types';
 import * as s from './resource-detail.styled'
 
@@ -25,7 +26,9 @@ const ResourceInMappingToggleButton = ({inMap, addToMap, removeFromMap, detail})
 
 export const DetailLists = ({lists, setActiveDetail}) => {
     return lists && lists.length >= 1 ?
-        lists.map((list, i) => detailListFragment({...list, setActiveDetail, i}))
+        <s.ListBlock>
+            {lists.map((list, i) => detailListFragment({...list, setActiveDetail, i}))}
+        </s.ListBlock>
         : null;
 };
 
@@ -33,12 +36,12 @@ export const ListItems = ({items, type, clickHandler}) => {
     return items ?
         items.map((item, i) => (
             <s.ListItem
-            key={i}
-            onClick={() => clickHandler({
-                data: item,
-                type: type
-            })}>{item.name}
-        </s.ListItem>)) : null;
+                key={i}
+                onClick={() => clickHandler({
+                    data: item,
+                    type: type
+                })}>{item.name}
+            </s.ListItem>)) : null;
 };
 
 export const detailListFragment = ({label, items, type, setActiveDetail, i}) => (
@@ -83,3 +86,9 @@ export const ResourceDetailHeader = ({activeDetail, isResourceInMap, editDetail,
         <s.DetailHeader>{activeDetail.data.name}</s.DetailHeader>
     </s.Col>
 };
+export const DetailDescription = (props) => (
+    <s.DetailDescription>
+        <MarkDownRenderer markdown={props.description ? props.description : null}/>
+    </s.DetailDescription>
+);
+

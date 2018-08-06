@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {handleResponse} from "./response.handlers";
 import {getSelected, selectOptionsInList} from './form.helpers';
@@ -8,7 +8,7 @@ import * as types from '../../constants/types';
 import * as parser from '../../common/parser';
 
 class BaseForm extends Component {
-        constructor(props) {
+    constructor(props) {
         super(props);
         this.onSave = this.onSave.bind(this);
         this.onDelete = this.onDelete.bind(this);
@@ -39,71 +39,60 @@ class BaseForm extends Component {
                 description: this.props.detail.description
             });
 
-            console.group("Selection debug");
-
-            console.info(this.props)
-
-
             // if mapping has resources map the selection
-
+            // fixme: smells
+            const tags = this.props.detail.tags;
             const assets = this.state.type === types.ASSET ?
                 this.props.detail.connected_to
                 : this.props.detail.resources
             ;
 
-            if (assets) {
-                const resourceNameList = assets.map(
-                    asset => asset.name
-                );
-                const resourceOptions = this.inputResources.options;
-                console.info(resourceNameList);
+            assets ? // map detail assets to selected options
                 selectOptionsInList({
-                    list: resourceNameList,
-                    options: resourceOptions
-                });
-            }
+                    list: assets.map(m => m.name),
+                    options: this.inputResources.options
+                })
+                : null
+            ;
 
-            // if mapping has categories map the selection
-            if (this.props.detail.tags) {
-                const tagNameList = this.props.detail.tags.map(
-                    tag => tag.name
-                );
-                const tagOptions = this.inputTags.options;
+            tags ? // map detail tags to selected options
                 selectOptionsInList({
-                    list: tagNameList,
-                    options: tagOptions
-                });
-            }
+                    list: tags.map(t => t.name),
+                    options: this.inputTags.options
+                })
+                : null
+            ;
 
-            console.groupEnd();
+
         }
     }
 
 
-
     handleResponsePromise(promise) {
-        const response = promise.then((response) => {
+        promise.then((response) => {
             /** todo: refactor to more logical */
 
-            // this is empty if no error
+                // this is empty if no error
             const handledResponse = handleResponse({
-                response,
-                setDetail: this.props.setDetail,
-                detailType: this.state.type,
-                setView: this.props.setView,
-                closeForm: this.props.cancel
-            });
-            const error = handledResponse? handledResponse.error : false;
+                    response,
+                    setDetail: this.props.setDetail,
+                    detailType: this.state.type,
+                    setView: this.props.setView,
+                    closeForm: this.props.cancel
+                });
+            const error = handledResponse ? handledResponse.error : false;
             if (error) {
                 this.setState({error: handledResponse.error});
             } else {
                 // this is set with bind action creators
-                this.props.setActiveDetail({data: response.data, type: this.state.type})
+                this.props.setActiveDetail({
+                    data: response.data,
+                    type: response.data !== "" ? this.state.type : "EMPTY"
+                })
             }
         }).catch(error => {
             console.warn(error);
             throw new Error('Unhandled error!');
-            alert('unhandled error!');
         });
 
     }
@@ -113,7 +102,7 @@ class BaseForm extends Component {
         const description = this.state.description;
 
 
-        if (this.state.selections){
+        if (this.state.selections) {
             const resourceIds = getSelected(this.inputResources.options);
             const tags = getSelected(this.inputTags.options);
             const resources = parser.filterResourcesByIds({
@@ -133,20 +122,20 @@ class BaseForm extends Component {
         this.setState({error: {}});
     }
 
-    exists({id, set}){
-            throw new Error('Implement notExist');
+    exists({id, set}) {
+        throw new Error('Implement notExist');
     }
 
-    actionPost(form){
-            throw new Error('Implement actionPost');
+    actionPost(form) {
+        throw new Error('Implement actionPost');
     }
 
-    actionUpdate(form){
-            throw new Error('Implement actionUpdate');
+    actionUpdate(form) {
+        throw new Error('Implement actionUpdate');
     }
 
-    actionDelete(form){
-            throw new Error('Implement remove')
+    actionDelete(form) {
+        throw new Error('Implement remove')
     }
 
     onSave() {
@@ -200,7 +189,6 @@ BaseForm.propTypes = {
     setView: PropTypes.func.isRequired,
     formType: PropTypes.string
 };
-
 
 
 export default BaseForm;

@@ -1,4 +1,9 @@
 export default {
+    app: {
+        bottomPanel: {
+            view: 1
+        }
+    },
     mappings: [],
     dependencies: [],
     resources: [],

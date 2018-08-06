@@ -8,7 +8,7 @@ import * as l from '../components/layout';
 import * as types from '../constants/types';
 import {isResourceInMapping, resourceExists, isResourceConnectedToId} from '../common/resource-helpers';
 import { removeElement, updateLayout } from "../common/graph-helpers";
-import ResourceDetail from './ResourceDetail';
+import ResourceDetail from './ResourceDetailContainer';
 
 class ResourceBrowserContainer extends Component {
     constructor(props) {
