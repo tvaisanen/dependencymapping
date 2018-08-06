@@ -17,9 +17,6 @@ export default function graphReducer(cy = initialState.graph, action){
             return newGraphInstance({...action}); // action.eventHandlers
 
         case types.ADD_ELEMENTS_TO_GRAPH:
-           console.info('add');
-           console.info(cy);
-           console.info(action.elements);
            cy.add(action.elements);
            return cy;
 
@@ -29,7 +26,6 @@ export default function graphReducer(cy = initialState.graph, action){
 }
 
 const newGraphInstance = ({eventHandlers}) => {
-    console.info(eventHandlers);
     const cy = cytoscape({
         container: document.getElementById('cy'),
         elements: [],

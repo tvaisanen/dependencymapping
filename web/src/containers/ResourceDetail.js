@@ -6,16 +6,16 @@ import * as types from '../constants/types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actionCreators from '../actions/index';
-import {getAllResourcesWithTag} from "../common/resource-helpers";
+import {resourceCtrl} from "../controllers/resource.controller";
 
-const detailListFragment = ({label, items, type, onClick, i}) => (
+const detailListFragment = ({label, items, type, setActiveDetail, i}) => (
     <React.Fragment key={i}>
         <ListLabel>{label}</ListLabel>
         <List>
             {items ?
                 items.map((item, i) => <ListItem
                         key={i}
-                        onClick={() => onClick({
+                        onClick={() => setActiveDetail({
                             data: item,
                             type: type
                         })}>{item.name}
@@ -26,69 +26,21 @@ const detailListFragment = ({label, items, type, onClick, i}) => (
     </React.Fragment>);
 
 
-const listCompositionInstructions = {
-    /**
-     * Define what keys are listed in the detail view
-     *
-     * label: List title
-     * key: { key: [...values] }
-     * type: type of the listed items
-     *
-     * */
-    [types.ASSET]: [
-        {label: "Tags", key: "tags", type: types.TAG},
-        {label: "Connections", key: "connected_to", type: types.ASSET}
-    ],
-    [types.MAPPING]: [
-        {label: "Tags", key: "tags", type: types.TAG},
-        {label: "Resources", key: "resources", type: types.ASSET}
-    ],
-    [types.TAG]: [
-        {label: "Resources", key: false, type: types.ASSET}
-    ],
-    [types.EMPTY]: [],
-};
-
-const getLists = ({detail, detailType, setDetail, items}) => {
-    return listCompositionInstructions[detailType].map(data => ({
-            label: data.label,
-            onClick: setDetail,
-            items: data.key ? detail[data.key] : items,
-            type: data.type
-        })
-    );
-};
-
 class ResourceDetail extends Component {
 
     render() {
         const {
             isResourceInMap,
             editDetail,
-            detailType,
-            detail,
-            setDetail
+            activeDetail,
+            lists,
+            setActiveDetail
         } = this.props;
-
-        console.info(this.props)
-
-
-        // get the list composition information
-        // if detail type is TAG a derived set of
-        // list items is requierd.
-        // variable items is ignored in other case.
-        const items = detailType === types.TAG ?
-            getAllResourcesWithTag({tagId: detail.name, resources: this.props.resources})
-            : false
-        ;
-
-        const lists = getLists({detail, detailType, setDetail, items});
-
 
         // render the lists to list fragments if there's a list and
         // there's at least one element
         const listFragments = lists && lists.length >= 1 ?
-            lists.map((list,i) => detailListFragment({...list,i}))
+            lists.map((list, i) => detailListFragment({...list, setActiveDetail, i}))
             : null
         ;
 
@@ -99,36 +51,38 @@ class ResourceDetail extends Component {
             <Detail id="resource-detail-container">
                 {/* column with two three rows */}
                 <Row>
-                    {detailType ?
+                    {activeDetail.type ?
                         <React.Fragment>
-                            <small>{detailType}</small>
+                            <small>{activeDetail.type}</small>
                             <div>
                             </div>
                             <span>
                 <RenderToggleButton
+                    activeDetail={activeDetail}
                     inMap={isResourceInMap}
                     addToMap={this.props.addToMap}
                     removeFromMap={this.props.removeFromMap}
-                    detail={detail}
-                    detailType={detailType}
+                    detail={activeDetail.data}
+                    detailType={activeDetail.type}
                 />
                 <ActionLink
-                    onClick={() => editDetail({resource: detail, type: detailType})}>
-                    edit
-                </ActionLink>
+                    onClick={() => editDetail({
+                        resource: activeDetail.data, type: activeDetail.type
+                    })}
+                > edit </ActionLink>
             </span>
                         </React.Fragment>
                         : null
                     }
                 </Row>
                 <Row header>
-                    <DetailHeader>{detail.name}</DetailHeader>
+                    <DetailHeader>{activeDetail.data.name}</DetailHeader>
                 </Row>
 
                 <DetailBlock>
                     {/* Render markdown description */}
                     <DetailDescription>
-                        <MarkDownRenderer markdown={detail.description}/>
+                        <MarkDownRenderer markdown={activeDetail.data.description}/>
                     </DetailDescription>
 
                     <ListBlock>
@@ -144,8 +98,10 @@ class ResourceDetail extends Component {
 }
 
 const mapStateToProps = (state, ownProps = {}) => {
+    const detailProps = resourceCtrl.getResourceDetailProps(state, ownProps);
+    console.info(detailProps);
     return {
-        ...state, ...ownProps
+        ...detailProps
     }
 };
 
@@ -154,26 +110,29 @@ const mapDispatchToProps = dispatch => bindActionCreators({...actionCreators}, d
 export default connect(mapStateToProps, mapDispatchToProps)(ResourceDetail);
 
 ResourceDetail.propTypes = {
-    detail: PropTypes.object,
     editDetail: PropTypes.func,
-    type: PropTypes.string,
     setActiveDetail: PropTypes.func,
     isResourceInMap: PropTypes.bool,
     addResourceToActiveMapping: PropTypes.func,
     detailType: PropTypes.string,
     removeResourceFromActiveMapping: PropTypes.func,
+    lists: PropTypes.arrayOf(PropTypes.shape({
+        label: PropTypes.string,
+        key: PropTypes.string,
+        type: PropTypes.string
+    })).isRequired
 };
 
 
-const RenderToggleButton = ({detailType, inMap, addToMap, removeFromMap, detail}) => {
+const RenderToggleButton = ({activeDetail, inMap, addToMap, removeFromMap, detail}) => {
 
-    if (detailType === types.ASSET) {
+    if (activeDetail.type === types.ASSET) {
         return (
             <ResourceInMappingToggleButton
                 inMap={inMap}
                 addToMap={addToMap}
                 removeFromMap={removeFromMap}
-                detail={detail}
+                detail={activeDetail.data}
             />);
     } else {
         return null;

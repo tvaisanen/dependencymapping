@@ -24,9 +24,9 @@ export function loadActiveMappingResources(mapping) {
 }
 
 export function addResourceToActiveMapping(resource, activeMapping) {
-    return function (dispatch) {
+    return function (dispatch, getState) {
         console.info('add resource to active mapping action');
-
+        console.info(getState().activeMapping);
         // todo: refactor
         const edgeElements = resource.connected_to.map(
             r => graphHelpers.edgeElementFromResource(resource.name, r.name)
