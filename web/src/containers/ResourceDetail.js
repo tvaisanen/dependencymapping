@@ -7,61 +7,24 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actionCreators from '../actions/index';
 import {resourceCtrl} from "../controllers/resource.controller";
-
-const detailListFragment = ({label, items, type, setActiveDetail, i}) => (
-    <React.Fragment key={i}>
-        <ListLabel>{label}</ListLabel>
-        <List>
-            {items ?
-                items.map((item, i) => <ListItem
-                        key={i}
-                        onClick={() => setActiveDetail({
-                            data: item,
-                            type: type
-                        })}>{item.name}
-                    </ListItem>
-                ) : null
-            }
-        </List>
-    </React.Fragment>);
+import { DetailLists } from "../components/resource-detail.components";
 
 
-class ResourceDetail extends Component {
 
-    render() {
-        const {
-            isResourceInMap,
-            editDetail,
-            activeDetail,
-            lists,
-            setActiveDetail
-        } = this.props;
 
-        // render the lists to list fragments if there's a list and
-        // there's at least one element
-        const listFragments = lists && lists.length >= 1 ?
-            lists.map((list, i) => detailListFragment({...list, setActiveDetail, i}))
-            : null
-        ;
-
-        // if detailType is TAG derived resource list is required
-        //const resourcesWithTag = getAllResourcesWithTag(detail.name);
-
-        return (
-            <Detail id="resource-detail-container">
-                {/* column with two three rows */}
-                <Row>
-                    {activeDetail.type ?
-                        <React.Fragment>
-                            <small>{activeDetail.type}</small>
-                            <div>
-                            </div>
-                            <span>
+const ResourceDetailHeader = ({activeDetail, isResourceInMap, editDetail, addToMap, removeFromMap}) => {
+    return <Col>
+        {activeDetail.type ?
+            <Row>
+                <small>{activeDetail.type}</small>
+                <div>
+                </div>
+                <span>
                 <RenderToggleButton
                     activeDetail={activeDetail}
                     inMap={isResourceInMap}
-                    addToMap={this.props.addToMap}
-                    removeFromMap={this.props.removeFromMap}
+                    addToMap={addToMap}
+                    removeFromMap={removeFromMap}
                     detail={activeDetail.data}
                     detailType={activeDetail.type}
                 />
@@ -71,13 +34,39 @@ class ResourceDetail extends Component {
                     })}
                 > edit </ActionLink>
             </span>
-                        </React.Fragment>
-                        : null
-                    }
-                </Row>
-                <Row header>
+            </Row>
+            : null
+        }
                     <DetailHeader>{activeDetail.data.name}</DetailHeader>
-                </Row>
+    </Col>
+};
+
+
+
+class ResourceDetail extends Component {
+
+    render() {
+        const {
+            addToMap,
+            removeFromMap,
+            isResourceInMap,
+            editDetail,
+            activeDetail,
+            lists,
+            setActiveDetail
+        } = this.props;
+
+
+        return (
+            <Detail id="resource-detail-container">
+                {/* column with two three rows */}
+                <ResourceDetailHeader
+                    activeDetail={activeDetail}
+                    isResourceInMap={isResourceInMap}
+                    editDetail={editDetail}
+                    addToMap={addToMap}
+                    removeFromMap={removeFromMap}
+                />
 
                 <DetailBlock>
                     {/* Render markdown description */}
@@ -86,9 +75,11 @@ class ResourceDetail extends Component {
                     </DetailDescription>
 
                     <ListBlock>
-                        { //render the derived list fragments here:
-                            listFragments
-                        }
+                        <DetailLists
+                            lists={lists}
+                            setActiveDetail={setActiveDetail}
+                        />
+
                     </ListBlock>
 
                 </DetailBlock>
@@ -110,6 +101,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({...actionCreators}, d
 export default connect(mapStateToProps, mapDispatchToProps)(ResourceDetail);
 
 ResourceDetail.propTypes = {
+    activeDetail: PropTypes.object.isRequired,
     editDetail: PropTypes.func,
     setActiveDetail: PropTypes.func,
     isResourceInMap: PropTypes.bool,
@@ -126,17 +118,13 @@ ResourceDetail.propTypes = {
 
 const RenderToggleButton = ({activeDetail, inMap, addToMap, removeFromMap, detail}) => {
 
-    if (activeDetail.type === types.ASSET) {
-        return (
+        return activeDetail.type === types.ASSET ?
             <ResourceInMappingToggleButton
                 inMap={inMap}
                 addToMap={addToMap}
                 removeFromMap={removeFromMap}
                 detail={activeDetail.data}
-            />);
-    } else {
-        return null;
-    }
+            /> : null;
 }
 
 const ResourceInMappingToggleButton = ({inMap, addToMap, removeFromMap, detail}) => {
@@ -146,6 +134,12 @@ const ResourceInMappingToggleButton = ({inMap, addToMap, removeFromMap, detail})
         return <ActionLink onClick={() => addToMap(detail)}>add to map</ActionLink>
     }
 };
+
+const Col = styled.div`
+
+  display: flex;
+  flex-direction: column;
+`;
 
 const Row = styled.div`
             display: flex;
@@ -218,22 +212,6 @@ const ListBlock = styled.div`
             height: inherit;
             `;
 
-const List = styled.div`
-            max-width: 200px;
-            overflow-y: scroll;
-            margin: 0 4px;
-            min-height: 2em;
-            `;
-
-const ListLabel = styled.div`
-            text-align: center;
-            font-weight: bold;
-            color: rgba(255,255,255,0.9);
-            margin: 4px 0;
-            border-bottom: 1px solid rgba(255,255,255,.5);
-            padding-left: 3px;
-            max-width: 200px;
-            `;
 
 const ListItem = styled.div`
             font-size: small;
