@@ -1,8 +1,7 @@
 import React from 'react';
-import ReactTestUtils, {Simulate} from 'react-dom/test-utils';
 import TestRenderer from 'react-test-renderer';
-import {ListItem} from '../components/resource-detail.styled';
-import {ListItems} from '../components/resource-detail.components';
+import {ListItem} from './resource-detail.styled';
+import {ListItems} from './resource-detail.components';
 
 const clickHandler = ({item, type}) => ({item, type})
 
@@ -41,8 +40,6 @@ it('ListItems should render list of list items', () => {
             clickHandler={clickHandler}
         />
     )
-
-    const testInstance = testRenderer.root;
 
     const json = testRenderer.toJSON();
     expect(json[0].children[0]).toEqual(items[0].name);
