@@ -28,9 +28,8 @@ import BottomPaneContainer from './BottomPanelContainer';
 import * as texts from '../data/text';
 import * as events from '../common/graph.events';
 import * as types from '../constants/types';
-import styled from 'styled-components';
 import {layoutOptions} from "../configs/configs.cytoscape";
-
+import MappingMenuContainer from './MappingMenuContainer';
 
 
 const LAYOUT = 'cola';
@@ -284,35 +283,8 @@ class App extends Component {
                     <TopBar info={this.state.info} menuToggleHandler={this.toggleFloatingButtons}/>
                     <LayoutRow>
 
-                        <SidePanel id="sidepanel">
-                            <Menu
-                                title="Mappings "
-                                listItems={mappings}
-                                onItemClick={this.loadDependencyMap}
-                                selected={
-                                    type === types.MAPPING ?
-                                        activeDetailName : false
-                                }
-                            />
+                      <MappingMenuContainer loadDependencyMap={this.loadDependencyMap}/>
 
-
-                        </SidePanel>
-
-                        <SidePanel id="active-resources-list" wide>
-                            <Menu
-                                darkButtons
-                                title={this.props.activeMapping.name ? this.props.activeMapping.name : 'Select Mapping'}
-                                listItems={activeResources}
-                                onItemClick={this.setResourceDetail}
-                                onMouseOver={this.hoverResourceOn}
-                                onMouseOut={this.hoverResourceOff}
-                                selected={
-                                    type === types.ASSET ?
-                                        activeDetailName : false
-                                }
-                            />
-
-                        </SidePanel>
                         <ContentWindow>
                             <GraphContainer elements={this.state.elements}/>
                         </ContentWindow>

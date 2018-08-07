@@ -19,9 +19,7 @@ const Panels = (props) => (
     <React.Fragment>
         panelInstructions.map((data,i) => (
             <s.SidePanel>
-                <Menu
-                    props
-                />
+                <Menu props />
             </s.SidePanel>
         )
     </React.Fragment>

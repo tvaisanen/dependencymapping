@@ -32,13 +32,11 @@ export const Menu = (
                 )
                 : null
             }
-
         </SidePanelContentContainer>
     </SidePanelMenu>
 );
 
-export const PanelHeaderTitle = styled.div`
-    
+export const PanelHeaderTitle = styled.div` 
     text-center: center;
     text-transform: capitalize;
     border-bottom: solid 2px transparent;

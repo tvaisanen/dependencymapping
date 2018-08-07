@@ -139,7 +139,6 @@ export const PanelTitle = styled.label`
 
 export const SidePanelMenu = styled.div`
     resize: vertical;
-
     `;
 
 

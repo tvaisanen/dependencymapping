@@ -4,26 +4,35 @@
 import {
     hoverIndicationOff, hoverIndicationOn
 } from '../common/graph-helpers';
+
 import * as actions from '../actions';
 
 export default {
-    getMappingMenuProps: (props) => getMappingMenuProps(props),
-    getActiveMappingResourceMenuProps: (props) => getActiveMappingResourceMenuProps(props),
+    stateToProps: (props) => getMappingMenuProps(props),
+    dispatchToProps: (props) => dispatchToProps(props),
 }
 
-function dispatchMappingMenuTransactions(dispatch){
+function dispatchToProps(dispatch){
     return {
+        setActiveDetail: (activeDetail) => dispatch(actions.setActiveDetail(activeDetail)),
         loadActiveMapping: (mapping) => dispatch(actions.loadActiveMapping(mapping)),
     }
 }
 
 function getMappingMenuProps(props){
-    return {...props};
+    console.info(props);
+    return {
+        mappings: props.mappings,
+        activeMapping: props.activeMapping,
+        activeDetail: props.activeDetail,
+        mappingNameList: props.mappings.map(m => m.name),
+        activeResourceNameList: props.activeMapping.resources.map(r => r.name),
+        hoverResourceOn: (id) => hoverIndicationOn(props.graph, id),
+        hoverResourceOff: (id) => hoverIndicationOff(props.graph, id),
+    };
 }
 
-function getActiveMappingResourceMenuProps(props){
-    return {...props};
-}
+
 
 
 const panelInstructions = [
