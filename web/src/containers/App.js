@@ -1,20 +1,14 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-
+import styled from 'styled-components';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux';
-import { TopBar } from '../components/layout-segment';
+import {TopBar} from '../components/layout-segment';
 import {
     Layout,
-    ButtonPanel,
-    LayoutRow,
     LayoutCol,
-    SidePanel,
-    ContentWindow,
-    FloatingButton,
 } from '../components/';
 import GraphContainer from './GraphContainer';
-import {Menu} from './SideTabMenuContainer';
 import {
     addElement, addElements, updateLayout, clearGraph, nodeElementFromResource,
     hoverIndicationOff, hoverIndicationOn
@@ -27,9 +21,9 @@ import * as constants from '../constants/';
 import BottomPaneContainer from './BottomPanelContainer';
 import * as texts from '../data/text';
 import * as events from '../common/graph.events';
-import * as types from '../constants/types';
 import {layoutOptions} from "../configs/configs.cytoscape";
 import MappingMenuContainer from './MappingMenuContainer';
+import CollapseMenuContainer from '../components/collapse-menu/CollapseMenuContainer';
 
 
 const LAYOUT = 'cola';
@@ -39,7 +33,6 @@ class App extends Component {
         super(props);
         this.state = {
             cy: null,
-            vis: null,
             resourceCategories: [],
             showGraphButtons: false,
             detail: texts.landingDetail,
@@ -272,32 +265,16 @@ class App extends Component {
     render() {
         console.info(this.props);
         const {type, data} = this.props.activeDetail;
-        const activeDetailName = data.name;
-        const mappings = this.props.mappings.map(m => m.name).sort();
-        const tags = this.props.tags.map(c => c.name).sort();
-        const activeResources = getResourceNameList(this.props.activeMapping.resources);
         const {cy} = this.props.cy;
         return (
             <Layout>
                 <LayoutCol id="container-top" height={"60vh"}>
                     <TopBar info={this.state.info} menuToggleHandler={this.toggleFloatingButtons}/>
-                    <LayoutRow>
-
-                      <MappingMenuContainer loadDependencyMap={this.loadDependencyMap}/>
-
-                        <ContentWindow>
-                            <GraphContainer elements={this.state.elements}/>
-                        </ContentWindow>
-
-                        {/* todo: refactor tool buttons  */}
-                        <ButtonPanel buttons visible={this.state.showGraphButtons}>
-                            <FloatingButton onClick={() => updateLayout(cy)}>refresh</FloatingButton>
-                            <FloatingButton onClick={this.clearGraphSelection}>clear</FloatingButton>
-                            <FloatingButton onClick={this.saveMapping}>save</FloatingButton>
-                            <FloatingButton onClick={() => this.downloadImage(cy)}>download</FloatingButton>
-                        </ButtonPanel>
-
-                    </LayoutRow>
+                    <MappingContent>
+                        <MappingMenuContainer loadDependencyMap={this.loadDependencyMap}/>
+                        <GraphContainer elements={this.state.elements}/>
+                        <CollapseMenuContainer visible={this.state.showGraphButtons}/>
+                    </MappingContent>
                 </LayoutCol>
                 <LayoutCol
                     id="container-bottom"
@@ -351,3 +328,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(App);
 
 
 
+export const MappingContent = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: ${props=>props.justify};
+    align-items: ${props=>props.align};
+    height: ${props=>props.height? props.height: 'inherit'};
+`;

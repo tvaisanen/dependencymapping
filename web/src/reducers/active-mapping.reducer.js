@@ -6,7 +6,7 @@ export default function activeMappingReducer(state = initialState.activeMapping,
     switch(action.type) {
         case types.LOAD_ACTIVE_MAPPING_RESOURCES:
             const mapping = action.mapping
-            return {name: mapping.name, resources: mapping.resources}
+            return {...mapping}
 
         case types.SET_ACTIVE_MAPPING_CONNECTIONS:
             return {...state, connections: action.connections}

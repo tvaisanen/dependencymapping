@@ -2,16 +2,12 @@ import * as types from '../constants';
 import { getAllResourcesWithTag } from "../common/resource-helpers";
 
 function getResourceDetailProps(state) {
-    console.info("get resource detail props");
-    console.info(state);
     const {
         detailType,
         activeDetail,
         setDetail
     } = state;
 
-    console.info(JSON.stringify(activeDetail));
-    console.info(types.TAG);
     const items = activeDetail.type === types.TAG ?
         getAllResourcesWithTag({tagId: activeDetail.data.name, resources: state.resources})
         : false;
@@ -23,7 +19,7 @@ function getResourceDetailProps(state) {
 
 export const resourceCtrl = {
     getResourceDetailProps: (state, props) => getResourceDetailProps(state, props)
-}
+};
 
 const getLists = ({activeDetail, setDetail, items}) => {
     return listCompositionInstructions[activeDetail.type].map(data => ({

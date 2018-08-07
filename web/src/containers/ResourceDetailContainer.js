@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actionCreators from '../actions/index';
-import {resourceCtrl} from "../controllers/resource.controller";
+import {resourceCtrl} from "../controllers/resource-detail.controller";
 import {
     DetailDescription,
     DetailLists,

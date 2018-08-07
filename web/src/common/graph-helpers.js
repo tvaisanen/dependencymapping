@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import { edgeStyles, nodeStyles } from "../configs/graph.styles";
-import { layoutOptions } from "../configs/configs.cytoscape";
+import {edgeStyles, nodeStyles} from "../configs/graph.styles";
+import {layoutOptions} from "../configs/configs.cytoscape";
 
 const required = () => {
     throw new Error('Missing parameter')
@@ -152,4 +152,13 @@ export function hoverIndicationOff(cy = required(), id) {
             }
 
         });
+}
+
+export function downloadPng(cy = required()) {
+    alert('download')
+    // todo: cross-browser
+    let downloadLink = document.createElement('a')
+    downloadLink.href = cy.png({bg: 'white'});
+    downloadLink.download = "mapping.png";
+    downloadLink.click();
 }

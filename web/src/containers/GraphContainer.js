@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux'
-import { initGraph } from "../actions";
+import {initGraph} from "../actions";
 
 /**
  *  Container for the canvas required for graphing.
@@ -12,7 +12,10 @@ import { initGraph } from "../actions";
 
 
 const GraphContainer = (props) => {
-    return <GraphCanvasContainer id="cy"/>
+    return (
+        <GraphCanvasInflater>
+            <GraphCanvasContainer id="cy"/>
+        </GraphCanvasInflater>);
 };
 
 GraphContainer.propTypes = {
@@ -25,13 +28,13 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-       initGraph: (container) => dispatch(initGraph(container))
+        initGraph: (container) => dispatch(initGraph(container))
     }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GraphContainer);
 
-export const GraphCanvasContainer = styled.div`
+export const GraphCanvasContainer = styled.div` 
     position: relative;
     min-height:400px;
     min-width: 400px;
@@ -47,4 +50,11 @@ export const GraphCanvasContainer = styled.div`
     & > div > canvas {
         height: 100%;
     }
+`;
+
+const GraphCanvasInflater = styled.div`
+width: 100%;
+    height: 100%;
+    background-color: white;
+
 `;

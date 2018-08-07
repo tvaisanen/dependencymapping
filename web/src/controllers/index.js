@@ -4,6 +4,6 @@
  * give a filtered or reduced state*
  */
 
-export { resourceCtrl } from './resource.controller';
+export { resourceCtrl } from './resource-detail.controller';
 
 

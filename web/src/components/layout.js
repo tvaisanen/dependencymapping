@@ -71,17 +71,7 @@ export const ButtonPanel = styled.div`
 
 `;
 
-export const FloatingButton = styled.button`
-    border-radius: 3px;
-    border: none;
-    padding: 0.25em;
-    background: rgba(36,36,42, 0.5);
-    margin: .5em;
-    cursor: pointer;
-    color: white;
-    font-weight: bold;
-    font-size: smaller;
-`;
+
 
 export const SidePanelTabs = styled.div`
     display: flex;
