@@ -24,5 +24,6 @@ export function validDescription (description){
         }
     }
 
-    return false;
+    // todo implement validators
+    return true;
 }

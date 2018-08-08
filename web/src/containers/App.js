@@ -3,26 +3,25 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux';
-import {TopBar} from '../components/layout-segment';
+import TopBarContainer from '../components/top-bar/TopBarContainer';
 import {
     Layout,
     LayoutCol,
 } from '../components/';
 import GraphContainer from './GraphContainer';
 import {
-    addElement, addElements, updateLayout, clearGraph, nodeElementFromResource,
-    hoverIndicationOff, hoverIndicationOn
+    addElement, addElements, clearGraph, nodeElementFromResource,
 } from '../common/graph-helpers';
 import {getResourceById, getAllResourcesWithTag} from "../common/resource-helpers";
 import * as actionCreators from '../actions/index';
 import * as parser from '../common/parser';
 import _ from 'lodash';
 import * as constants from '../constants/';
-import BottomPaneContainer from './BottomPanelContainer';
+import BottomPaneContainer from '../components/bottom-panel/BottomPanelContainer';
 import * as texts from '../data/text';
 import * as events from '../common/graph.events';
 import {layoutOptions} from "../configs/configs.cytoscape";
-import MappingMenuContainer from './MappingMenuContainer';
+import MappingMenuContainer from '../components/mapping-menu/MappingMenuContainer';
 import CollapseMenuContainer from '../components/collapse-menu/CollapseMenuContainer';
 
 
@@ -41,15 +40,10 @@ class App extends Component {
             info: "I'm an info panel"
         };
 
-        this.clearGraphSelection = this.clearGraphSelection.bind(this);
         this.setResourceDetail = this.setResourceDetail.bind(this);
         this.toggleFloatingButtons = this.toggleFloatingButtons.bind(this);
         this.setCategoryDetail = this.setCategoryDetail.bind(this);
         this.setDetail = this.setDetail.bind(this);
-        this.saveMapping = this.saveMapping.bind(this);
-        this.hoverResourceOff = this.hoverResourceOff.bind(this);
-        this.hoverResourceOn = this.hoverResourceOn.bind(this);
-        this.loadMappingOfTaggedResources = this.loadMappingOfTaggedResources.bind(this);
     }
 
     componentDidMount() {
@@ -153,26 +147,13 @@ class App extends Component {
 
         this.props.setActiveDetail({data: mapping, type: constants.MAPPING});
 
-
         // this will be obsolete after refactoring is complete
         this.setState({detail: mapping, detailType: constants.MAPPING})
 
         this.updateLayout();
     };
 
-    loadMappingOfTaggedResources = (tagId) => {
 
-        this.setCategoryDetail(tagId);
-        clearGraph(this.state.cy);
-        const resources = getAllResourcesWithTag({tagId, resources: this.props.resources});
-        const edges = parser.parseEdgeElementsFromResources(resources);
-        const nodes = resources.map(resource => nodeElementFromResource(resource));
-        addElements(this.state.cy, nodes);
-        addElements(this.state.cy, edges);
-
-        this.setState({info: "Mapping of resources containing tag: " + tagId + ", " + resources.length + " found."})
-        this.updateLayout();
-    };
 
     setDetail({detail, type, detailObject}) {
         // todo: refactor to store? CLEAN!
@@ -221,11 +202,6 @@ class App extends Component {
         this.setState({showGraphButtons: !this.state.showGraphButtons});
     }
 
-    clearGraphSelection() {
-        clearGraph(this.props.cy)
-        this.props.clearActiveMappingSelection();
-    }
-
     addResourceToMapping(nameResource) {
         // create actionPost the mapping
         // this adds the resource to db
@@ -239,28 +215,7 @@ class App extends Component {
         }
     }
 
-    saveMapping() {
-        const {description, tags} = this.props.mappings.filter(g => g.name === this.props.activeMapping.name)[0];
-        this.props.updateMapping({...this.props.activeMapping, description, tags});
-    }
 
-    downloadImage(cy) {
-        // todo: cross-browser
-        let downloadLink = document.createElement('a')
-        downloadLink.href = cy.png({bg: 'white'});
-        downloadLink.download = "mapping.png";
-        downloadLink.click();
-    }
-
-    hoverResourceOn(id) {
-        console.info("mouseover")
-        hoverIndicationOn(this.props.cy, id);
-    }
-
-    hoverResourceOff(id) {
-        console.info("mouseout")
-        hoverIndicationOff(this.props.cy, id);
-    }
 
     render() {
         console.info(this.props);
@@ -269,7 +224,7 @@ class App extends Component {
         return (
             <Layout>
                 <LayoutCol id="container-top" height={"60vh"}>
-                    <TopBar info={this.state.info} menuToggleHandler={this.toggleFloatingButtons}/>
+                    <TopBarContainer info={this.state.info} menuToggleHandler={this.toggleFloatingButtons}/>
                     <MappingContent>
                         <MappingMenuContainer loadDependencyMap={this.loadDependencyMap}/>
                         <GraphContainer elements={this.state.elements}/>

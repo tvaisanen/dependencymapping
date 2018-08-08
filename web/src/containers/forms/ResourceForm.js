@@ -55,7 +55,7 @@ class ResourceForm extends BaseForm {
         return (
             <form.Container column>
                 <form.Container row id="form-col-one">
-                    <form.Container column>
+                    <form.Container column top>
 
                         <form.Label>Name</form.Label>
                         <form.Input
@@ -80,12 +80,15 @@ class ResourceForm extends BaseForm {
                             {resourceNameList.map((r, i) => <option key={i}>{r}</option>)}
                         </form.SelectionList>
 
+                        <small>hold ctrl to select multiple</small>
                     </form.Container>
                     <form.Container id="form-col-three" column>
                         <form.Label>Tags</form.Label>
                         <form.SelectionList multiple innerRef={ref => this.inputTags = ref}>
                             {tagNameList.map((t, i) => <option key={i}>{t}</option>)}
+
                         </form.SelectionList>
+                        <small>hold ctrl to select multiple</small>
                     </form.Container>
 
 

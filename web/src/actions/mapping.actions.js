@@ -1,6 +1,6 @@
 import GwClientApi from '../api/gwClientApi';
 import * as types from './actionTypes';
-
+import * as graphHelpers from '../common/graph-helpers';
 /*************** MAPPING *************/
 
 export function postMapping({name, description, resources, tags}) {
@@ -59,10 +59,11 @@ function updateMappingSuccess({mapping}) {
 
 export function deleteMapping({name}) {
     console.info("deletemapping(" + name + ")");
-    return function (dispatch) {
+    return function (dispatch, getState) {
         return GwClientApi.deleteMapping({name})
             .then(response => {
                 dispatch(deleteMappingSuccess({removed: name}));
+                graphHelpers.clearGraph(getState().graph);
                 return response;
             }).catch(error => {
                 return error;

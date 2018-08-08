@@ -8,7 +8,7 @@ import MappingForm from './MappingForm';
 import * as types from '../../constants/types';
 const formMapping = [
     {label: "Mapping", viewId: 1},
-    {label: "Resource", viewId: 2},
+    {label: "Asset", viewId: 2},
     {label: "Tag", viewId: 3},
 ]
 

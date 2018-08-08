@@ -80,13 +80,15 @@ class MappingForm extends BaseForm {
                         <form.SelectionList multiple innerRef={ref => this.inputResources = ref}>
                             {resourceNameList.map((r, i) => <option key={i}>{r}</option>)}
                         </form.SelectionList>
-
+                        <small>hold ctrl to select multiple</small>
                     </form.Container>
                     <form.Container id="form-col-three" column>
                         <form.Label>Tags</form.Label>
                         <form.SelectionList multiple innerRef={ref => this.inputTags = ref}>
                             {tagNameList.map((c, i) => <option key={i}>{c}</option>)}
                         </form.SelectionList>
+
+                        <small>hold ctrl to select multiple</small>
                     </form.Container>
 
                 </form.Container>

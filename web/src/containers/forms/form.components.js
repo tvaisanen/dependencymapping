@@ -8,10 +8,12 @@ export const Container = styled.div`
     display: flex;
     flex-direction: ${props => props.column ? 'column' : 'row'};
     background: ${props => props.bg};
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     height: inherit;
     width: 100%;
+    height: 100%;
+    
     flex-grow: 1;
     padding: 0 12px;  
 `;
@@ -69,7 +71,7 @@ export const ErrorMsg = styled.span`
 `;
 
 export const ButtonRow = ({cancel, save, remove, edit}) => (
-    <Container row>
+
         <ButtonBox>
             <Button
                 onClick={cancel}>
@@ -85,5 +87,4 @@ export const ButtonRow = ({cancel, save, remove, edit}) => (
                     : null
             }
         </ButtonBox>
-    </Container>
 )
