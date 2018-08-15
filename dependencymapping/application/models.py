@@ -12,6 +12,7 @@ class Tag(models.Model):
 class Resource(models.Model):
     name = models.CharField(max_length=100, primary_key=True)
     description = models.TextField(blank=True)
+    # todo: dependencies through="Dependency"
     connected_to = models.ManyToManyField("Resource", blank=True)
     tags = models.ManyToManyField("Tag", blank=True)
 

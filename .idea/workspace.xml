@@ -2,30 +2,22 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="54a515f1-0b9b-4e65-b211-4d44822d847b" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/failure-detection/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/failure-detection/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/failure-detection/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/failure-detection/src/server.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/middleware/failure-detection.service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dependencymapping/application/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/dependencymapping/application/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/actions/mapping.actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/actions/mapping.actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/common/validators.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/common/validators.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/components/layout-segment/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/components/layout-segment/layout-segment.components.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/components/layout-segment/layout-segment.styled.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/top-bar/TopBarContainer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/containers/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/containers/BottomPanelContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/bottom-panel/BottomPanelContainer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/containers/GraphContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/GraphContainer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/containers/MappingMenuContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/mapping-menu/MappingMenuContainer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/containers/MenuHeaderWithForm.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/containers/MenuItemContainer.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/containers/ResourceBrowserContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/resource-browser/ResourceBrowserContainer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/containers/ResourceDetailContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/resource-detail/ResourceDetailContainer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/containers/SidePanelContainer.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/containers/SideTabMenuContainer.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/containers/forms/FormsContainer.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/forms/FormsContainer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/containers/forms/MappingForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/forms/MappingForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/containers/forms/ResourceForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/forms/ResourceForm.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/containers/forms/form.components.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/containers/forms/form.components.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/controllers/mapping-menu.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/mapping-menu/mapping-menu.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/src/controllers/resource-detail.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/components/resource-detail/resource-detail.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dependencymapping/application/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/dependencymapping/application/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dependencymapping/application/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/dependencymapping/application/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dependencymapping/dependencymapping/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/dependencymapping/dependencymapping/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dependencymapping/dependencymapping/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/dependencymapping/dependencymapping/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/pip-selfcheck.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/pip-selfcheck.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/src/store/configureStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/src/store/configureStore.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -52,177 +44,117 @@
     <favorites_list name="dependencymapping" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.51415986">
-      <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="ResourceDetailContainer.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/web/src/components/resource-detail/ResourceDetailContainer.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="133">
-                  <caret line="16" column="28" selection-start-line="16" selection-start-column="28" selection-end-line="16" selection-end-column="28" />
-                  <folding>
-                    <element signature="e#0#26#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="resource-detail.components.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/web/src/components/resource-detail/resource-detail.components.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="1615">
-                  <caret line="88" column="13" selection-start-line="88" selection-start-column="13" selection-end-line="88" selection-end-column="13" />
-                  <folding>
-                    <element signature="e#0#26#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="MappingForm.js" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/web/src/containers/forms/MappingForm.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="954">
-                  <caret line="90" column="35" selection-start-line="90" selection-start-column="35" selection-end-line="90" selection-end-column="35" />
-                  <folding>
-                    <element signature="e#16#55#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="ResourceForm.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/web/src/containers/forms/ResourceForm.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="912">
-                  <caret line="57" column="46" selection-start-line="57" selection-start-column="46" selection-end-line="57" selection-end-column="46" />
-                  <folding>
-                    <element signature="e#0#26#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="active-mapping.actions.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/web/src/actions/active-mapping.actions.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="475">
-                  <caret line="28" column="46" selection-start-line="28" selection-start-column="46" selection-end-line="28" selection-end-column="46" />
-                  <folding>
-                    <element signature="e#0#39#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="App.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/web/src/containers/App.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="361">
-                  <caret line="19" column="58" selection-start-line="19" selection-start-column="58" selection-end-line="19" selection-end-column="58" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="BottomPanelContainer.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/web/src/components/bottom-panel/BottomPanelContainer.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="190">
-                  <caret line="10" column="47" selection-start-line="10" selection-start-column="47" selection-end-line="10" selection-end-column="47" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="TopBarContainer.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/web/src/components/top-bar/TopBarContainer.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="247">
-                  <caret line="16" column="30" selection-start-line="16" selection-start-column="30" selection-end-line="16" selection-end-column="30" />
-                  <folding>
-                    <element signature="e#0#26#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="ResourceBrowserContainer.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/web/src/components/resource-browser/ResourceBrowserContainer.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="133">
-                  <caret line="7" column="81" selection-start-line="7" selection-start-column="81" selection-end-line="7" selection-end-column="81" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="form.components.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/web/src/components/form.components.js">
-              <provider selected="true" editor-type-id="text-editor" />
-            </entry>
-          </file>
-          <file leaf-file-name="FormsContainer.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/web/src/containers/forms/FormsContainer.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="57">
-                  <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
-                  <folding>
-                    <element signature="e#0#39#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="validators.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/web/src/common/validators.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="513">
-                  <caret line="27" column="14" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="collapse-menu.styled.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/web/src/components/collapse-menu/collapse-menu.styled.js">
-              <provider selected="true" editor-type-id="text-editor" />
-            </entry>
-          </file>
-          <file leaf-file-name="form.components.js" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/web/src/containers/forms/form.components.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="171">
-                  <caret line="10" column="31" selection-start-line="10" selection-start-column="31" selection-end-line="10" selection-end-column="31" />
-                  <folding>
-                    <element signature="e#0#26#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="resource-detail.controller.js" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/web/src/components/resource-detail/resource-detail.controller.js">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="456">
-                  <caret line="24" selection-start-line="24" selection-end-line="24" />
-                  <folding>
-                    <element signature="e#0#43#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/failure-detection/package.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="171">
+              <caret line="9" selection-start-line="9" selection-end-line="9" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Dockerfile" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/failure-detection/Dockerfile">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="133">
+              <caret line="7" selection-start-line="7" selection-end-line="7" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/failure-detection/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="FIRST">
+              <first_editor relative-caret-position="38">
+                <caret line="2" selection-start-line="2" selection-end-line="2" />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="failure-detection.service.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/src/middleware/failure-detection.service.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="361">
+              <caret line="19" column="17" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="17" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dependencymapping/application/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="266">
+              <caret line="14" column="45" selection-start-line="14" selection-start-column="45" selection-end-line="14" selection-end-column="45" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/dependencymapping/application/views.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="342">
+              <caret line="18" selection-start-line="18" selection-end-line="29" selection-end-column="31" />
+              <folding>
+                <element signature="e#0#50#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="settings.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dependencymapping/dependencymapping/settings.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="152">
+              <caret line="125" column="21" selection-start-line="125" selection-start-column="21" selection-end-line="125" selection-end-column="21" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/dependencymapping/dependencymapping/urls.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="741">
+              <caret line="45" column="33" selection-start-line="45" selection-start-column="33" selection-end-line="45" selection-end-column="33" />
+              <folding>
+                <element signature="e#664#696#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="configureStore.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/web/src/store/configureStore.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="57">
+              <caret line="3" column="77" selection-start-line="3" selection-start-column="77" selection-end-line="3" selection-end-column="77" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="server.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/failure-detection/src/server.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="133">
+              <caret line="7" column="31" selection-start-line="7" selection-start-column="31" selection-end-line="7" selection-end-column="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="HTML File" />
-        <option value="JavaScript File" />
         <option value="Python Script" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -238,17 +170,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/web/src/containers/BottomPanelContainer.js" />
-        <option value="$PROJECT_DIR$/web/src/reducers/root.reducer.js" />
-        <option value="$PROJECT_DIR$/web/src/reducers/app.reducer.js" />
-        <option value="$PROJECT_DIR$/web/src/reducers/initialState.js" />
-        <option value="$PROJECT_DIR$/web/src/controllers/mapping-form.controller.js" />
-        <option value="$PROJECT_DIR$/web/src/store/configureStore.js" />
-        <option value="$PROJECT_DIR$/web/src/containers/forms/BaseForm.js" />
-        <option value="$PROJECT_DIR$/web/src/components/layout-components/index.js" />
-        <option value="$PROJECT_DIR$/web/src/components/layout-components/layout-components.js" />
-        <option value="$PROJECT_DIR$/web/src/components/layout-segments/layout-components.js" />
-        <option value="$PROJECT_DIR$/web/src/components/layout-segments/layout-segments.styled.js" />
         <option value="$PROJECT_DIR$/web/src/components/layout-segment/layout-components.js" />
         <option value="$PROJECT_DIR$/web/src/components/layout-segment/index.js" />
         <option value="$PROJECT_DIR$/web/src/constants/colors.js" />
@@ -289,6 +210,17 @@
         <option value="$PROJECT_DIR$/web/src/containers/forms/ResourceForm.js" />
         <option value="$PROJECT_DIR$/web/src/containers/forms/form.components.js" />
         <option value="$PROJECT_DIR$/web/src/components/resource-detail/resource-detail.controller.js" />
+        <option value="$PROJECT_DIR$/failure-detection/server.js" />
+        <option value="$PROJECT_DIR$/failure-detection/package.json" />
+        <option value="$PROJECT_DIR$/failure-detection/src/server.js" />
+        <option value="$PROJECT_DIR$/failure-detection/Dockerfile" />
+        <option value="$PROJECT_DIR$/failure-detection/README.md" />
+        <option value="$PROJECT_DIR$/web/src/store/configureStore.js" />
+        <option value="$PROJECT_DIR$/web/src/middleware/failure-detection.service.js" />
+        <option value="$PROJECT_DIR$/dependencymapping/application/models.py" />
+        <option value="$PROJECT_DIR$/dependencymapping/dependencymapping/settings.py" />
+        <option value="$PROJECT_DIR$/dependencymapping/application/views.py" />
+        <option value="$PROJECT_DIR$/dependencymapping/dependencymapping/urls.py" />
       </list>
     </option>
   </component>
@@ -303,13 +235,14 @@
   </component>
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths>
+      <path value="$PROJECT_DIR$/failure-detection/package.json" />
       <path value="$PROJECT_DIR$/web/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="808" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="992" />
     <option name="y" value="30" />
-    <option name="width" value="1112" />
+    <option name="width" value="992" />
     <option name="height" value="1170" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -317,11 +250,41 @@
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="dependencymapping" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dependencymapping" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dependencymapping" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dependencymapping" type="462c0819:PsiDirectoryNode" />
+              <item name="dependencymapping" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dependencymapping" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dependencymapping" type="462c0819:PsiDirectoryNode" />
+              <item name="dependencymapping" type="462c0819:PsiDirectoryNode" />
+              <item name="application" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="dependencymapping" type="b2602c69:ProjectViewProjectNode" />
+              <item name="dependencymapping" type="462c0819:PsiDirectoryNode" />
+              <item name="web" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+      <pane id="Scope" />
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="com.intellij.database.dataSource.DataSourceTemplate" value="Sqlite (Xerial)" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -329,15 +292,15 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/dependencymapping/dependencymapping/templates" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/failure-detection/src" />
+      <recent name="$PROJECT_DIR$/failure-detection" />
       <recent name="$PROJECT_DIR$/web/src/components/resource-browser" />
       <recent name="$PROJECT_DIR$/web/src/components/bottom-panel" />
       <recent name="$PROJECT_DIR$/web/src/components/mapping-menu" />
-      <recent name="$PROJECT_DIR$/web/src/components/resource-detail" />
-      <recent name="$PROJECT_DIR$/web/src/components/collapse-menu" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/dependencymapping/dependencymapping/templates" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -366,7 +329,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="30" width="1920" height="1170" extended-state="6" />
+    <frame x="992" y="30" width="992" height="1170" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -376,7 +339,7 @@
       <window_info anchor="bottom" id="Python Console" order="7" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32919848" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4980916" weight="0.17239584" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4980916" visible="true" weight="0.2530242" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" weight="0.3296875" />
       <window_info anchor="right" id="SciView" order="3" />
@@ -468,91 +431,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/web/src/components/bottom-panel/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="41" selection-start-column="41" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/reducers/graph.reducer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="19" column="32" selection-start-line="19" selection-start-column="32" selection-end-line="19" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/reducers/root.reducer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="10" column="7" selection-start-line="10" selection-start-column="7" selection-end-line="10" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/reducers/app.reducer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/components/bottom-panel/bottom-panel.components.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="19" column="1" selection-start-line="19" selection-start-column="1" selection-end-line="19" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/reducers/mapping.reducer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="57">
-          <caret line="3" column="31" selection-start-line="3" selection-start-column="31" selection-end-line="3" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/store/configureStore.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/actions/active-detail.actions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="38">
-          <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/controllers/mapping-form.controller.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="11" column="32" selection-start-line="11" selection-start-column="32" selection-end-line="11" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/reducers/initialState.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/containers/forms/BaseForm.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1259">
-          <caret line="113" column="29" selection-start-line="113" selection-start-column="29" selection-end-line="113" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="10" column="17" lean-forward="true" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/components/top-bar/index.js" />
     <entry file="file://$PROJECT_DIR$/web/src/components/toolbar.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -640,13 +518,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/src/containers/SidePanelContainer.js" />
-    <entry file="file://$PROJECT_DIR$/web/src/components/mapping-menu/mapping-menu.components.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="24" column="33" selection-start-line="24" selection-start-column="33" selection-end-line="24" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/src/components/top-bar/layout-segment.styled.js" />
     <entry file="file://$PROJECT_DIR$/web/src/components/collapse-menu/collapse-menu.styled.js">
       <provider selected="true" editor-type-id="text-editor" />
@@ -663,27 +534,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/web/src/containers/MenuItemContainer.js" />
-    <entry file="file://$PROJECT_DIR$/web/src/containers/App.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="361">
-          <caret line="19" column="58" selection-start-line="19" selection-start-column="58" selection-end-line="19" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/components/bottom-panel/BottomPanelContainer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="10" column="47" selection-start-line="10" selection-start-column="47" selection-end-line="10" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/components/resource-browser/ResourceBrowserContainer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="7" column="81" selection-start-line="7" selection-start-column="81" selection-end-line="7" selection-end-column="81" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/src/components/form.components.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -691,9 +541,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="57">
           <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -725,16 +572,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/actions/active-mapping.actions.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="475">
-          <caret line="28" column="46" selection-start-line="28" selection-start-column="46" selection-end-line="28" selection-end-column="46" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/web/src/components/resource-detail/ResourceDetailContainer.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="133">
@@ -755,20 +592,75 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/containers/forms/form.components.js">
+    <entry file="file://$PROJECT_DIR$/web/src/components/resource-detail/resource-detail.components.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="10" column="31" selection-start-line="10" selection-start-column="31" selection-end-line="10" selection-end-column="31" />
+        <state relative-caret-position="1615">
+          <caret line="88" column="13" selection-start-line="88" selection-start-column="13" selection-end-line="88" selection-end-column="13" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/components/resource-detail/resource-detail.components.js">
+    <entry file="file://$PROJECT_DIR$/web/src/containers/forms/MappingForm.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1615">
-          <caret line="88" column="13" selection-start-line="88" selection-start-column="13" selection-end-line="88" selection-end-column="13" />
+        <state relative-caret-position="1520">
+          <caret line="90" column="35" selection-start-line="90" selection-start-column="35" selection-end-line="90" selection-end-column="35" />
+          <folding>
+            <element signature="e#16#55#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/actions/active-mapping.actions.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="26" column="31" selection-start-line="26" selection-start-column="31" selection-end-line="26" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/components/bottom-panel/bottom-panel.components.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="19" column="1" selection-start-line="19" selection-start-column="1" selection-end-line="19" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/components/bottom-panel/BottomPanelContainer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="10" column="47" selection-start-line="10" selection-start-column="47" selection-end-line="10" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/components/mapping-menu/mapping-menu.components.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="24" column="33" selection-start-line="24" selection-start-column="33" selection-end-line="24" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/components/resource-browser/ResourceBrowserContainer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="19">
+          <caret line="7" column="81" selection-start-line="7" selection-start-column="81" selection-end-line="7" selection-end-column="81" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/containers/App.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="19" column="58" selection-start-line="19" selection-start-column="58" selection-end-line="19" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/containers/forms/form.components.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="10" column="31" selection-start-line="10" selection-start-column="31" selection-end-line="10" selection-end-column="31" />
           <folding>
             <element signature="e#0#26#0" expanded="true" />
           </folding>
@@ -785,12 +677,94 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/web/src/containers/forms/MappingForm.js">
+    <entry file="file://$PROJECT_DIR$/web/src/api/gwClientApi.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="954">
-          <caret line="90" column="35" selection-start-line="90" selection-start-column="35" selection-end-line="90" selection-end-column="35" />
+        <state relative-caret-position="361">
+          <caret line="67" column="22" selection-start-line="67" selection-start-column="22" selection-end-line="67" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/failure-detection/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/failure-detection/Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/failure-detection/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="FIRST">
+          <first_editor relative-caret-position="38">
+            <caret line="2" selection-start-line="2" selection-end-line="2" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/store/configureStore.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="57">
+          <caret line="3" column="77" selection-start-line="3" selection-start-column="77" selection-end-line="3" selection-end-column="77" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/failure-detection/src/server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="133">
+          <caret line="7" column="31" selection-start-line="7" selection-start-column="31" selection-end-line="7" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/web/src/middleware/failure-detection.service.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="19" column="17" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="17" />
           <folding>
-            <element signature="e#16#55#0" expanded="true" />
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/f8d8527d-773a-46e3-84f4-e78f39527874/console.sql">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dependencymapping/application/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="266">
+          <caret line="14" column="45" selection-start-line="14" selection-start-column="45" selection-end-line="14" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dependencymapping/dependencymapping/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="741">
+          <caret line="45" column="33" selection-start-line="45" selection-start-column="33" selection-end-line="45" selection-end-column="33" />
+          <folding>
+            <element signature="e#664#696#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dependencymapping/dependencymapping/settings.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="152">
+          <caret line="125" column="21" selection-start-line="125" selection-start-column="21" selection-end-line="125" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dependencymapping/application/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="18" selection-start-line="18" selection-end-line="29" selection-end-column="31" />
+          <folding>
+            <element signature="e#0#50#0" expanded="true" />
           </folding>
         </state>
       </provider>

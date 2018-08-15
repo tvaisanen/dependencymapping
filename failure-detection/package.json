@@ -1,0 +1,10 @@
+{
+  "name": "failure_detection_socket_server",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "ws": "latest"
+  }
+}
