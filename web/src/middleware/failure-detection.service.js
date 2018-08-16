@@ -9,11 +9,15 @@
 
 import * as types from '../actions/actionTypes';
 
-let socket = new WebSocket("ws://localhost:3001");
+let socket = null;
 
 const sendAction = ({socket, action}) => socket.send(JSON.stringify(action));
 
 const failureDetectionService = store => next => action => {
+    try {
+    if ( !socket ){
+        socket = new WebSocket("ws://localhost:3001");
+    }
     switch (socket.readyState) {
         case socket.OPEN:
             sendAction({socket, action});
@@ -24,6 +28,10 @@ const failureDetectionService = store => next => action => {
             break;
         default:
             return next(action);
+    }}
+    catch (e){
+        console.error(e);
+        return next(action);
     }
 };
 

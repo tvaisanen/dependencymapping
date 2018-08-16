@@ -10,7 +10,6 @@ export default function configureStore() {
 
       applyMiddleware(
           thunk,
-          failureDetectionService
       ),
   );
 }

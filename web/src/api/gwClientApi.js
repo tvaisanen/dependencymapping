@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://127.0.0.1:8000/';
+const API_URL = 'http://localhost:8000/';
 const MAPPINGS_URL = `${API_URL}mappings/`;
 const TAGS_URL = `${API_URL}tags/`;
 const RESOURCES_URL = `${API_URL}resources/`;
@@ -22,6 +22,9 @@ class GwClientApi {
     static getGraphs() {
         return axios.get(MAPPINGS_URL)
             .then(response => {
+                console.group("Returning Graphs");
+                console.info(response.data);
+                console.groupEnd();
                 return response.data;
             }).catch(error => {
 
