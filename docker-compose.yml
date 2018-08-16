@@ -13,8 +13,8 @@ services:
         build: ./web
         volumes:    
             # todo: refactor to .env
-            - /home/tvaisanen/OUSPG/dependencymapping/web/:/usr/webapp/src
-              
+            #- /home/tvaisanen/OUSPG/dependencymapping/web/:/usr/webapp/src
+            - "${PWD}/web/:/usr/webapp/src"
         networks:
             - overlay
         command: bash docker-entrypoint.sh 
@@ -24,7 +24,8 @@ services:
         build: ./dependencymapping 
         volumes:
             # todo: refactor to .env
-            - /home/tvaisanen/OUSPG/dependencymapping/dependencymapping/:/usr/api/src
+            # - /home/tvaisanen/OUSPG/dependencymapping/dependencymapping/:/usr/api/src"
+            - "${PWD}/dependencymapping/:/usr/api/src"
         ports:
             - "8000:8000"
         command: bash docker-entrypoint.sh 
@@ -32,8 +33,6 @@ services:
             - overlay
         depends_on:
             - db
-
-
 volumes:
    psgl-dm:
            
