@@ -3,6 +3,8 @@ FROM node:latest
 WORKDIR /usr/webapp/src
 VOLUME ["/usr/webapp/src"]
 COPY ./package*.json ./
+# if run with compose use docker-entrypoint.sh
+# to install node_modules
 RUN npm install
 EXPOSE 3000
 CMD ["npm", "start"] 

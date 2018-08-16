@@ -11,10 +11,10 @@ services:
             - "5432:5432"
     web: 
         build: ./web
+        image: tvaisanen/dependency-mapper-webapp
         volumes:    
-            # todo: refactor to .env
-            #- /home/tvaisanen/OUSPG/dependencymapping/web/:/usr/webapp/src
-            - "${PWD}/web/:/usr/webapp/src"
+            - /home/tvaisanen/OUSPG/dependencymapping/web/:/usr/webapp/src
+              
         networks:
             - overlay
         command: bash docker-entrypoint.sh 
@@ -22,10 +22,10 @@ services:
             - "3000:3000"
     api: 
         build: ./dependencymapping 
+        image: tvaisanen/dependency-mapper-api
         volumes:
             # todo: refactor to .env
-            # - /home/tvaisanen/OUSPG/dependencymapping/dependencymapping/:/usr/api/src"
-            - "${PWD}/dependencymapping/:/usr/api/src"
+            - /home/tvaisanen/OUSPG/dependencymapping/dependencymapping/:/usr/api/src
         ports:
             - "8000:8000"
         command: bash docker-entrypoint.sh 
