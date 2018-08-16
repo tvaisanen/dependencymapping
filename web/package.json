@@ -9,7 +9,8 @@
     "fetch-mock": "^6.3.0",
     "react-scripts": "^1.1.4",
     "react-test-renderer": "^16.4.2",
-    "redux-mock-store": "^1.5.1"
+    "redux-mock-store": "^1.5.1",
+    "webpack-dev-server": "3.1.5"
   },
   "dependencies": {
     "axios": "^0.18.0",
