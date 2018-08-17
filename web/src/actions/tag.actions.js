@@ -45,7 +45,7 @@ export function updateTag(tag) {
     }
 }
 
-function updateTagSuccess({tag}) {
+export function updateTagSuccess({tag}) {
     console.info("updateTagSuccess");
     return {type: types.UPDATE_TAG_SUCCESS, tag};
 }
@@ -57,7 +57,7 @@ export function deleteTag({name}) {
     return function (dispatch) {
         return GwClientApi.deleteTag({name})
             .then(response => {
-                dispatch(deleteTagSuccess({removed: name}));
+                dispatch(deleteTagSuccess({tagName: name}));
                 return response;
             }).catch(error => {
                 return error.response;
@@ -65,9 +65,9 @@ export function deleteTag({name}) {
     }
 }
 
-export function deleteTagSuccess({removed}) {
+export function deleteTagSuccess({tagName}) {
     console.info('Delete tagg success.');
-    return {type: types.DELETE_TAG_SUCCESS, removed};
+    return {type: types.DELETE_TAG_SUCCESS, tagName};
 }
 
 export function loadAllTags() {

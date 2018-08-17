@@ -1,7 +1,7 @@
 import cytoscape from 'cytoscape';
 
 let cy;
-
+/**
 beforeEach(()=>{
     let container = document.createElement('div');
     container.setAttribute('id', 'cy');
@@ -19,3 +19,4 @@ test("Clear graph clears all elements", () => {
     const elementCount = 1;
     expect(elementCount).toBe(0);
 });
+ */

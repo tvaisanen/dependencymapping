@@ -3,7 +3,7 @@ import * as graphActions from './graph.actions';
 import * as graphHelpers from '../common/graph-helpers';
 import * as resourceHelpers from '../common/resource-helpers';
 
-export function clearActiveMappingSelection(data) {
+export function clearActiveMappingSelection() {
     return {type: types.CLEAR_ACTIVE_MAPPING_SELECTION}
 }
 
