@@ -1,4 +1,5 @@
 import data from './data';
+import _ from 'lodash';
 /*
 {
   // `data` is the response that was provided by the server
@@ -66,9 +67,7 @@ class GwClientApi {
     }
 
 
-    static getCategories() {
 
-    }
 
     /********************** MAPPING METHODS **********************/
 
@@ -93,14 +92,63 @@ class GwClientApi {
     static putResource({name, description, connected_to, tags}) {
 
     }
-
+    static getTags() {
+        return new Promise((resolve, reject) => {
+            process.nextTick(
+                () =>
+                    data.tags
+                        ? resolve(getResponse({data: data.tags}))
+                        : reject({
+                            error: 'User with ' + userID + ' not found.',
+                        }),
+            );
+        });
+    }
     static postTag({name, description}) {
+        const responseData = {name, description}
+
+        const tagIndex = _.findIndex(data.tags, (t) => {
+            return t.name === name;
+        });
+        const tagDoNotExist = tagIndex === -1;
+
+
+        const alreadyExistsError = {
+            name: ["tag with this name already exists."]
+        };
+
+
+        return new Promise((resolve, reject) => {
+            process.nextTick(
+                () =>
+                    tagDoNotExist
+                        ? resolve(
+                            getResponse({
+                                data: responseData,
+                                status: 201,
+                                statusText: 'CREATED'
+                            }))
+                        : reject({
+                            error: alreadyExistsError,
+                        }),
+            );
+        });
     }
 
     static putTag({name, description}) {
     }
 
     static deleteTag({name, description}) {
+        return new Promise((resolve, reject) => {
+            process.nextTick(
+                () =>
+                    data.tags
+                        ? resolve(getResponse({status: 204}))
+                        : reject({
+                            error: 'User with ' + userID + ' not found.',
+                        }),
+            );
+        });
     }
 }
 

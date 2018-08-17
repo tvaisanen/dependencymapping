@@ -61,8 +61,21 @@ const assets =[
     }
 ];
 
+const tags = [
+    {
+        "description": "describing tag one",
+        "name": "Tag one"
+    },
+    {
+        "description": "describing tag two",
+        "name": "Tag two"
+    }
+];
+
+
 
 export default {
     mappings: mappings,
-    assets: assets
+    assets: assets,
+    tags: tags
 }
