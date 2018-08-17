@@ -7,9 +7,7 @@ const gwClientApi = require.requireMock('gwClientApi').default;
  * be found from '../__mocks__/data.js'.
  */
 
-const alreadyExistsError = {
-    name: ["tag with this name already exists."]
-}
+const alreadyExistsError = {name: ["tag with this name already exists."]};
 
 it('getGraphs should return the data with status: 200 "OK"', () => {
     expect.assertions(3);
@@ -76,13 +74,42 @@ it('postTag should return 201 with OK when post successful', () => {
     });
 });
 
-it('postTag should return ? with ? when post not', () => {
+it('postTag should return error when when tag already exists', () => {
     const newTag = {
         name: mockData.tags[0].name,
         description: mockData.tags[0].description
     };
     expect.assertions(1);
     return gwClientApi.postTag(newTag).catch(e =>
+
         expect(e).toEqual({error: alreadyExistsError}),
     );
 });
+
+it('putTag should return 200 with OK when tag exists', () => {
+    const newTag = {
+        name: mockData.tags[0].name,
+        description: "edited"
+    };
+    expect.assertions(3);
+    return gwClientApi.putTag({
+        ...newTag
+    }).then(response => {
+        const {data, status, statusText} = response;
+        expect(status).toEqual(200);
+        expect(data).toEqual(newTag);
+        expect(statusText).toEqual('OK');
+    });
+});
+/*
+it('putTag should return 200 with OK when tag exists', () => {
+    const newTag = {
+        name: mockData.tags[0].name,
+        description: mockData.tags[0].description
+    };
+    expect.assertions(1);
+    return gwClientApi.putTag(newTag).catch(e =>
+        expect(e).toEqual({error: alreadyExistsError}),
+    );
+});
+*/

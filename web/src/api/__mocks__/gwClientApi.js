@@ -1,5 +1,6 @@
 import data from './data';
 import _ from 'lodash';
+
 /*
 {
   // `data` is the response that was provided by the server
@@ -26,13 +27,13 @@ import _ from 'lodash';
 
  */
 
-function getResponse({data, status=200, statusText='OK', headers}){
-   return {
-       data,
-       status,
-       statusText,
-       headers
-   }
+function getResponse({data, status = 200, statusText = 'OK', headers}) {
+    return {
+        data,
+        status,
+        statusText,
+        headers
+    }
 }
 
 class GwClientApi {
@@ -56,6 +57,8 @@ class GwClientApi {
                     data.assets
                         ? resolve(getResponse({data: data.assets}))
                         : reject({
+                            status: 400,
+                            statusText: "Bad request",
                             error: 'User with ' + userID + ' not found.',
                         }),
             );
@@ -65,8 +68,6 @@ class GwClientApi {
     static getResource(id) {
 
     }
-
-
 
 
     /********************** MAPPING METHODS **********************/
@@ -92,6 +93,7 @@ class GwClientApi {
     static putResource({name, description, connected_to, tags}) {
 
     }
+
     static getTags() {
         return new Promise((resolve, reject) => {
             process.nextTick(
@@ -104,6 +106,7 @@ class GwClientApi {
             );
         });
     }
+
     static postTag({name, description}) {
         const responseData = {name, description}
 
@@ -123,11 +126,11 @@ class GwClientApi {
                 () =>
                     tagDoNotExist
                         ? resolve(
-                            getResponse({
-                                data: responseData,
-                                status: 201,
-                                statusText: 'CREATED'
-                            }))
+                        getResponse({
+                            data: responseData,
+                            status: 201,
+                            statusText: 'CREATED'
+                        }))
                         : reject({
                             error: alreadyExistsError,
                         }),
@@ -136,20 +139,43 @@ class GwClientApi {
     }
 
     static putTag({name, description}) {
-    }
 
-    static deleteTag({name, description}) {
+        const tagIndex = _.findIndex(data.tags, (t) => {
+            return t.name === name;
+        });
+        const tagExists = tagIndex !== -1;
         return new Promise((resolve, reject) => {
             process.nextTick(
                 () =>
-                    data.tags
-                        ? resolve(getResponse({status: 204}))
+                    tagExists
+                        ? resolve(
+                        getResponse({
+                            data: {name,description},
+                            status: 200,
+                            statusText: 'OK'
+                        }))
                         : reject({
-                            error: 'User with ' + userID + ' not found.',
+                            error:"helo" ,
                         }),
             );
         });
     }
-}
 
-export default GwClientApi;
+        static deleteTag({name, description})
+        {
+            return new Promise((resolve, reject) => {
+                process.nextTick(
+                    () =>
+                        data.tags
+                            ? resolve(getResponse({status: 204}))
+                            : reject({
+                                error: 'User with ' + userID + ' not found.',
+                            }),
+                );
+            });
+        }
+    }
+
+    export
+    default
+    GwClientApi;
