@@ -1,7 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { colorDark, mediumDark } from "../../constants/colors";
+import { colorDark } from "../../constants/colors";
 
 const TopBarContainer = ({menuToggleHandler, info}) => (
     <TopBar>
@@ -44,18 +43,3 @@ const MenuToggle = styled.div`
     transition: all .3s ease-in-out;
 `;
 
-const SidePanel = styled.div`
-    background: rgba(200,200,200,0.8);
-    background: ${mediumDark};
-    display: flex;
-    flex-direction: column;
-    width: 320px;
-    min-height: inherit;
-    min-width: 20vw;
-    max-width: ${props=>props.max};
-    height: auto;
-    overflow: ${props => props.buttons ? 
-        'hidden' : 'scroll'
-    };
-    overflow-x: hidden;
-`;

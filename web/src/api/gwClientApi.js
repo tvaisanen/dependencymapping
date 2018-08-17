@@ -22,9 +22,6 @@ class GwClientApi {
     static getGraphs() {
         return axios.get(MAPPINGS_URL)
             .then(response => {
-                console.group("Returning Graphs");
-                console.info(response.data);
-                console.groupEnd();
                 return response.data;
             }).catch(error => {
 
@@ -57,7 +54,7 @@ class GwClientApi {
 
 
 
-    static getCategories() {
+    static getTags() {
         return fetch(TAGS_URL)
             .then(response => {
                 return response.json();
@@ -88,7 +85,6 @@ class GwClientApi {
     }
 
     static putMapping({name, description, resources, tags}) {
-        console.info("GWClientPutMapping");
         return axios.put(
             mappingsDetailUrl({name}),
             {
@@ -121,8 +117,6 @@ class GwClientApi {
             })
     }
     static putResource({name, description, connected_to, tags}) {
-        console.info("GWClientPutResource");
-        console.info(connected_to)
         return axios.put(
             resourceDetailUrl({name}),
             {

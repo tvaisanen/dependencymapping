@@ -1,6 +1,6 @@
 import cytoscape from 'cytoscape';
 
-let cy;
+it("todo: find out how to run the cy with app tests",()=>{});
 /**
 beforeEach(()=>{
     let container = document.createElement('div');

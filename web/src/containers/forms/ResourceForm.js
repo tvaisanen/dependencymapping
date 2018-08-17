@@ -11,37 +11,31 @@ import * as types from '../../constants/types';
 
 class ResourceForm extends BaseForm {
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.setState({
             type: types.ASSET
         });
     }
 
-    exists({id, set}){
+    exists({id, set}) {
         return resourceExists({id, resources: set});
     }
 
-    actionPost(form){
-        console.info("post resrouce");
-        console.info(form);
-        console.info({
-            ...form, connected_to: form.resources
-
-        });
+    actionPost(form) {
         return this.props.postResource({
             ...form, connected_to: form.resources
 
         });
     }
 
-    actionUpdate(form){
+    actionUpdate(form) {
         return this.props.updateResource({
             ...form, connected_to: form.resources
         });
     }
 
-    actionDelete({name}){
+    actionDelete({name}) {
         return this.props.deleteResource({name})
     }
 
@@ -59,6 +53,8 @@ class ResourceForm extends BaseForm {
 
                         <form.Label>Name</form.Label>
                         <form.Input
+                            lock={this.props.edit}
+                            readOnly={this.props.edit}
                             valid={nameValid}
                             check={this.state.check}
                             value={this.state.name}

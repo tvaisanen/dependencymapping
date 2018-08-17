@@ -1,6 +1,6 @@
 // Mappingform
 
-import React, {Component} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import * as form from './form.components';
 import {connect} from 'react-redux'
@@ -10,27 +10,23 @@ import {mappingExists} from '../../common/resource-helpers';
 import * as validators from '../../common/validators';
 import BaseForm from './BaseForm';
 import mappingFormCtrl from '../../controllers/mapping-form.controller';
-import * as types from '../../constants/types';
 
 class MappingForm extends BaseForm {
-    constructor(props){
-        super(props);
+
+    exists({id, set}) {
+        return mappingExists({id: id, mappings: set});
     }
 
-   exists({id, set}){
-       return mappingExists({id: id, mappings: set});
-   }
-
     actionDelete({name}) {
-        console.info("actionDeleteMapping("+name+")");
+        console.info("actionDeleteMapping(" + name + ")");
         return this.props.deleteMapping({name});
     }
 
-    actionPost(mapping){
+    actionPost(mapping) {
         return this.props.postMapping(mapping);
     }
 
-    actionUpdate(mapping){
+    actionUpdate(mapping) {
         return this.props.updateMapping(mapping);
     }
 
@@ -40,7 +36,7 @@ class MappingForm extends BaseForm {
 
     render() {
         console.info(this.props);
-        const { tagNameList, resourceNameList } = this.props;
+        const {tagNameList, resourceNameList} = this.props;
         const nameValid = validators.validMappingName(this.state.name);
         const descriptionValid = validators.validDescription(this.state.description);
         return (
@@ -50,6 +46,8 @@ class MappingForm extends BaseForm {
 
                         <form.Label>Name</form.Label>
                         <form.Input
+                            lock={this.props.edit}
+                            readOnly={this.props.edit}
                             value={this.state.name}
                             valid={nameValid}
                             check={this.state.check}
@@ -118,19 +116,6 @@ MappingForm.propTypes = {
     setView: PropTypes.func.isRequired
 };
 
-const
-    mapStateToProps = (state, ownProps = {}) => {
-        return {
-            ...mappingFormCtrl.getMappingFormProps(state),
-            resources: state.resources,
-            tags: state.tags,
-            mappings: state.graphs
-        }
-    }
-
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({...actionCreators}, dispatch)
-}
 
 export default connect(
     mappingFormCtrl.getMappingFormProps,

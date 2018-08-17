@@ -9,7 +9,6 @@ export const graphStyle = [ // the stylesheet for the graph
     {
         selector: 'edge',
         style: {
-            'curve-style': 'auto',
             'width': 3,
             'line-color': '#eee',
             'target-arrow-color': '#85cc57',

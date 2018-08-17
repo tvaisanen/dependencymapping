@@ -27,6 +27,9 @@ export const Label = styled.label``;
 export const Button = styled.button``;
 
 export const Input = styled.input`
+    text-align: center;
+    font-style: ${p=>p.lock?'italic':null};
+    color: ${p=>p.lock?'grey':null};
     width: inherit;
     background-color: ${ props =>
     props.check ? (props.valid ? cValid : cInvalid) : null

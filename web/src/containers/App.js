@@ -10,9 +10,9 @@ import {
 } from '../components/';
 import GraphContainer from './GraphContainer';
 import {
-    addElement, addElements, clearGraph, nodeElementFromResource,
+     addElements, clearGraph, nodeElementFromResource,
 } from '../common/graph-helpers';
-import {getResourceById, getAllResourcesWithTag} from "../common/resource-helpers";
+import {getResourceById} from "../common/resource-helpers";
 import * as actionCreators from '../actions/index';
 import * as parser from '../common/parser';
 import _ from 'lodash';
@@ -103,7 +103,6 @@ class App extends Component {
 
     loadDependencyMap = (mapId) => {
         // load graph resources to the active mapping
-        console.info('GwClientApi.getDependencyMap("' + mapId + '");');
 
         // current state of cy graph needs to be cleared
         clearGraph(this.props.cy);
@@ -157,10 +156,6 @@ class App extends Component {
 
     setDetail({detail, type, detailObject}) {
         // todo: refactor to store? CLEAN!
-        console.info("App.setDetail({detail, type});");
-        console.info(detail);
-        console.info(type);
-        console.info(detailObject);
         this.props.setActiveDetail({data: detail, type});
         if (detail === constants.EMPTY) {
             clearGraph(this.state.cy);
@@ -202,25 +197,7 @@ class App extends Component {
         this.setState({showGraphButtons: !this.state.showGraphButtons});
     }
 
-    addResourceToMapping(nameResource) {
-        // create actionPost the mapping
-        // this adds the resource to db
-        const resource = this.props.postResource(nameResource);
-
-        if (resource.error) {
-            // if there's an error while doing so handle ui
-        } else {
-            // add the element to the visualization
-            addElement({group: 'nodes', data: {id: resource.name}})
-        }
-    }
-
-
-
     render() {
-        console.info(this.props);
-        const {type, data} = this.props.activeDetail;
-        const {cy} = this.props.cy;
         return (
             <Layout>
                 <LayoutCol id="container-top" height={"60vh"}>
@@ -251,10 +228,7 @@ class App extends Component {
     }
 }
 
-const getResourceNameList = (resources) => {
-    //return resources.map(r=>r.url.split('/')[4]);
-    return resources.map(r => r.name);
-};
+
 
 
 App.propTypes = {
@@ -262,7 +236,6 @@ App.propTypes = {
 }
 
 const mapStateToProps = (state, ownProps = {}) => {
-    console.info(state);
     return {
         mappings: state.mappings,
         resources: state.resources,

@@ -7,7 +7,6 @@ import { devPaths } from '../api/api.config';
 import GwClientApi from '../api/gwClientApi';
 
 const middlewares = [thunk];
-const mockStore = configureMockStore(middlewares);
 
 test('todo',()=>expect(1).toBe(1));
 /*

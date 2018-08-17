@@ -1,15 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import collapseMenuCtrl from './collapse-menu.controller';
 
 const CollapseMenuContainer = props => (
     <CollapseMenu visible={props.visible}>
-        {console.info(props)}
-    <FloatingButton onClick={props.updateLayout}>refresh</FloatingButton>
-    <FloatingButton onClick={props.clearGraphSelection}>clear</FloatingButton>
-    <FloatingButton onClick={(() => props.saveMapping(props.activeMapping))}>save</FloatingButton>
-    <FloatingButton onClick={props.downloadImage}>download</FloatingButton>
+        <FloatingButton onClick={props.updateLayout}>refresh</FloatingButton>
+        <FloatingButton onClick={props.clearGraphSelection}>clear</FloatingButton>
+        <FloatingButton onClick={(() => props.saveMapping(props.activeMapping))}>save</FloatingButton>
+        <FloatingButton onClick={props.downloadImage}>download</FloatingButton>
     </CollapseMenu>
 )
 
@@ -22,8 +21,8 @@ export const CollapseMenu = styled.div`
     position: fixed;
     display: flex;
     flex-direction: column;
-    opacity: ${props=>props.visible?1:0};
-    transform: ${props=>props.visible? 'scaleY(1)' : 'scaleY(0)'};
+    opacity: ${props => props.visible ? 1 : 0};
+    transform: ${props => props.visible ? 'scaleY(1)' : 'scaleY(0)'};
     transform-origin: top center;
     right: 12px;
     background: transparent;

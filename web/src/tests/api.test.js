@@ -9,9 +9,9 @@ const mockData = [
 ]
 
 test('api test needs to be done', () => {
-    const result = fetch().then().catch();
+    //const result = fetch().then().catch();
 });
 
 test('api test needs to be done', () => {
-    const result = fetch().then().catch();
+    //const result = fetch().then().catch();
 });

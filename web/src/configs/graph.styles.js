@@ -1,7 +1,7 @@
 const sizes = {
-    expanded: 24,
-    neighbor: 22,
-    passive: 20,
+    expanded: 42,
+    neighbor: 41,
+    passive: 40,
 };
 
 const color = {
@@ -29,6 +29,7 @@ const nodesStylePassive = {
     'content': 'data(id)',
     shape: 'roundrectangle',
     'color': '#818181',
+    fontSize: '1em',
     'text-border-width': 1,
     'text-border-color': '#b3b3b3',
     'text-border-opacity': 0,
@@ -43,7 +44,6 @@ const nodesStylePassive = {
 };
 
 const nodeStyleExpanded = {
-    fontSize: 100,
     height: sizes.expanded,
     width: sizes.expanded,
     backgroundColor: color.expanded,
@@ -65,4 +65,4 @@ export const nodeStyles = {
 export const edgeStyles = {
     passive: edgeStylePassive,
     expanded: edgeStyleExpanded
-}
+};

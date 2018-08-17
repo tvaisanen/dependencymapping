@@ -4,8 +4,6 @@ import cytoscape from 'cytoscape';
 import {graphStyle} from '../configs/configs.cytoscape';
 import cxtmenu from 'cytoscape-cxtmenu';
 import cola from 'cytoscape-cola';
-import defaults from '../configs/cytoscape-ctxmenu.config';
-
 
 cytoscape.use(cola);
 cytoscape.use(cxtmenu);
@@ -38,7 +36,6 @@ const newGraphInstance = ({eventHandlers}) => {
     Object.keys(eventHandlers).map(key => {
        const selector = eventHandlers[key][0];
        const handler = eventHandlers[key][1];
-       console.info(`${key}, ${selector}, ${handler}`)
        cy.on(key, selector, handler);
     });
 

@@ -4,8 +4,6 @@ import initialState from './initialState';
 export default function mappingReducer(state = initialState.mappings, action){
     switch(action.type) {
         case types.LOAD_MAPPINGS_SUCCESS:
-            console.debug('LOAD_GRAPHS_SUCCESS');
-            console.debug(action);
             return action.mappings;
 
         case types.ADD_MAPPING:

@@ -23,10 +23,11 @@ export function loadActiveMappingResources(mapping) {
     return {type: types.LOAD_ACTIVE_MAPPING_RESOURCES, mapping}
 }
 
-export function addResourceToActiveMapping(resource, activeMapping) {
+export function addResourceToActiveMapping(resource) {
     return function (dispatch, getState) {
         console.info('add resource to active mapping action');
         console.info(getState().activeMapping);
+        const activeMapping = getState().activeMapping
         // todo: refactor
         const edgeElements = resource.connected_to.map(
             r => graphHelpers.edgeElementFromResource(resource.name, r.name)
@@ -53,6 +54,13 @@ export function addResourceToActiveMapping(resource, activeMapping) {
 }
 
 export function removeResourceFromActiveMapping(resource) {
+    return function(dispatch, getState){
+       dispatch(removeAsset(resource))
+        graphHelpers.removeElement(getState().graph, resource.name);
+    }
+}
+
+function removeAsset(resource){
     return {type: types.REMOVE_ACTIVE_MAPPING_RESOURCE, resource};
 
 }

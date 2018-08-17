@@ -19,15 +19,15 @@ class TagForm extends BaseForm {
         };
     }
 
-    exists({id, set}){
+    exists({id, set}) {
         return tagExists({id: id, tags: set});
     }
 
-    actionPost(form){
+    actionPost(form) {
         return this.props.postTag(form);
     }
 
-    actionUpdate(form){
+    actionUpdate(form) {
         return this.props.updateTag(form);
     }
 
@@ -47,6 +47,8 @@ class TagForm extends BaseForm {
                     <form.Container column>
                         <form.Label>Name</form.Label>
                         <form.Input
+                            lock={this.props.edit}
+                            readOnly={this.props.edit}
                             value={this.state.name}
                             valid={nameValid}
                             check={this.state.check}

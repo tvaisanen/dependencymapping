@@ -1,4 +1,3 @@
-import * as types from './actionTypes';
 import * as graphHelpers from '../common/graph-helpers';
 import * as activeMappingActions from './active-mapping.actions';
 

@@ -42,9 +42,37 @@ export function removeElement(cy = required(), id = required()) {
     }
 }
 
+export function updateResourceEdges(cy = required(), resource = required()){
+    /**
+     *  Update graph after resource/asset update. It is required that
+     *  the graph shows current situation of the connections of a node.
+     *  So, if node has updated the connected_to list. It needs to be
+     *  mapped again.
+     */
+    try {
+        const edgesThaShouldExist = resource.connected_to.forEach((r) => {
+            return edgeElementFromResource(resource.name, r.name);
+        });
+
+        // remove edges that are not listed in connections
+        const removeTheseEdges = cy.getElementById(resource.name).neighborhood('edge')
+        cy.remove(removeTheseEdges);
+
+        // add edges that should be listed
+        edgesThaShouldExist.forEach(edge => cy.add(edge));
+        console.group("Edge drawing debug");
+        console.info('remove');
+        console.info(removeTheseEdges);
+        console.info('add');
+        console.info(edgesThaShouldExist);
+        console.groupEnd();
+    } catch (e){
+        console.error(e);
+    }
+}
+
 export function addElements(cy = required(), elements = required()) {
     try {
-
         cy.add(elements);
     } catch (e) {
         console.error(e);
@@ -93,11 +121,7 @@ export function hoverIndicationOn(cy = required(), id) {
     const el = cy.getElementById(id);
     console.info(el);
     el.animate({
-        style: {
-            height: "50px",
-            width: "50px",
-            backgroundColor: 'rgb(154, 148, 154)'
-        }
+        style: nodeStyles.expanded
     }, {
         duration: 300
     });

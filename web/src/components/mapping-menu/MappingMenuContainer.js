@@ -14,7 +14,6 @@ import { Menu } from './mapping-menu.components';
 
 const MappingMenuContainer = props => (
     <React.Fragment>
-        {console.info(props)}
         <MenuColumn id="sidepanel">
             <Menu
                 title="Mappings "
@@ -61,7 +60,6 @@ MappingMenuContainer.propTypes = {
     activeMapping: PropTypes.object.isRequired,
     activeResourceNameList: PropTypes.array,
     loadDependencyMap: PropTypes.func.isRequired,
-    setResourceDetail: PropTypes.func.isRequired,
     hoverResourceOn: PropTypes.func.isRequired,
     hoverResourceOff: PropTypes.func.isRequired,
     setActiveDetail: PropTypes.func.isRequired,

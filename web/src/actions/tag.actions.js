@@ -33,7 +33,6 @@ export function postTagSuccess(response) {
 /*************** TAG UPDATE **************/
 
 export function updateTag(tag) {
-    console.info("updatetag")
     return function (dispatch) {
         return GwClientApi.putTag(tag)
             .then(response => {
@@ -46,14 +45,12 @@ export function updateTag(tag) {
 }
 
 export function updateTagSuccess({tag}) {
-    console.info("updateTagSuccess");
     return {type: types.UPDATE_TAG_SUCCESS, tag};
 }
 
 /*************** DELETE **************/
 
 export function deleteTag({name}) {
-    console.info("deleteTag(" + name + ")");
     return function (dispatch) {
         return GwClientApi.deleteTag({name})
             .then(response => {
@@ -66,13 +63,12 @@ export function deleteTag({name}) {
 }
 
 export function deleteTagSuccess({tagName}) {
-    console.info('Delete tagg success.');
     return {type: types.DELETE_TAG_SUCCESS, tagName};
 }
 
 export function loadAllTags() {
     return function (dispatch) {
-        return GwClientApi.getCategories().then(tags => {
+        return GwClientApi.getTags().then(tags => {
             dispatch(loadTagsSuccess(tags));
         }).catch(error => {
             throw(error);

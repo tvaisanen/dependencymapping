@@ -27,12 +27,12 @@ class ResourceBrowserContainer extends Component {
     addResourceToMapping(resource) {
         const { activeMapping } = this.props;
         this.props.addResourceToActiveMapping(resource, activeMapping);
-        updateLayout(this.props.cyRef);
+        updateLayout(this.props.cy);
     }
 
     removeResourceFromMapping(resource) {
         this.props.removeResourceFromActiveMapping(resource);
-        removeElement(this.props.cyRef, resource.name);
+        removeElement(this.props.cy, resource.name);
     }
 
     filterResources({resources, filterValue}) {
@@ -112,17 +112,18 @@ class ResourceBrowserContainer extends Component {
 }
 
 ResourceBrowserContainer.propTypes = {
-    cyRef: PropTypes.object.isRequired,
+    cy: PropTypes.object.isRequired,
     addResourceToActiveMapping: PropTypes.func.isRequired,
     removeResourceFromActiveMapping: PropTypes.func.isRequired,
     setActiveDetail: PropTypes.func.isRequired,
     editDetail: PropTypes.func.isRequired,
     type: PropTypes.string.isRequired,
-    activeMapping: PropTypes.array.isRequired
+    activeMapping: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state, ownProps = {}) => {
     return {
+        cy: state.graph,
         resources: state.resources,
         tags: state.tags,
         activeMapping: state.activeMapping,

@@ -17,6 +17,6 @@ export default {
         },
         type: "EMPTY"
     },
-    graph: "THIS WILL BE CY INSTANCE",
+    graph: {},
 
 }

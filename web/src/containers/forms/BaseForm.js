@@ -91,7 +91,6 @@ class BaseForm extends Component {
                 })
             }
         }).catch(error => {
-            console.warn(error);
             throw new Error('Unhandled error!');
         });
 
@@ -111,7 +110,6 @@ class BaseForm extends Component {
             });
 
             const form = {name, description, resources, tags};
-            console.info(form)
             return form;
         }
 

@@ -6,8 +6,6 @@ export function initGraph({eventHandlers}){
 }
 
 export function addElementsToGraph(elements){
-    console.info("graph.actions.addElementToGraph("+JSON.stringify(elements)+")");
-
     return {
         type: types.ADD_ELEMENTS_TO_GRAPH,
         elements: elements

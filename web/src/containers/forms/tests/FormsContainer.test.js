@@ -6,7 +6,10 @@ import FormsContainer, { SelectForm } from '../FormsContainer';
 it('FormsContainer renders correctly', () =>{
     const div = document.createElement('div');
     ReactDOM.render(
-        <FormsContainer/>
+        <FormsContainer
+            setView={()=>null}
+            setDetail={()=>null}
+        />
     , div);
     ReactDOM.unmountComponentAtNode(div);
 })

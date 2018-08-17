@@ -1,6 +1,6 @@
 import GwClientApi from '../api/gwClientApi';
 import * as types from './actionTypes';
-
+import * as graphHelpers from '../common/graph-helpers';
 
 /************* ASSET       ************* */
 
@@ -31,16 +31,24 @@ export function postResourceSuccess(resource) {
 
 /****************  ASSET UPDATE   ****************/
 export function updateResource(resource) {
-    console.info("updateResource(resource);");
-    console.info(resource);
-    return function (dispatch) {
+
+    // updates asset/resource to the database
+    // and refreshes the nodes edges in the graph
+    return function (dispatch, getState) {
+
+        // send the request
         return GwClientApi.putResource(resource)
             .then(response => {
-                console.info("updateResource.then()");
-                console.info(response);
+
+                // replace the updated version of the asset/resource
                 dispatch(updateResourceSuccess({resource: response.data}));
+
+                // redraw the edges in the graph
+                graphHelpers.updateResourceEdges(getState().graph, response.data);
+
                 return response;
             }).catch(error => {
+                console.log(error)
                 return error.response;
             })
     }

@@ -11,9 +11,11 @@ function stateToProps(state) {
     } = state;
 
     const items = activeDetail.type === types.TAG ?
-        resourceHelpers.
-            getAllResourcesWithTag({tagId: activeDetail.data.name, resources: state.resources})
-        : false;
+        resourceHelpers
+            .getAllResourcesWithTag({
+                tagId: activeDetail.data.name,
+                resources: state.resources
+            }) : false;
 
     const lists = getLists({activeDetail, detailType, setDetail, items});
 

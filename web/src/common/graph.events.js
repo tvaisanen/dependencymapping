@@ -25,10 +25,13 @@ export function onNodeClick({target, cy, targetNames}) {
         targets: targetNames
     });
 
-    console.info(edgesToCreate);
     helpers.addElements(cy, nodesToCreate);
     helpers.addElements(cy, edgesToCreate);
-    helpers.updateLayout(cy);
+
+    if (nodesToCreate.length > 0){
+        // nodes are created, update the layout
+        helpers.updateLayout(cy);
+    }
 
 
 }

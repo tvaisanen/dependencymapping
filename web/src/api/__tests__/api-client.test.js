@@ -101,7 +101,9 @@ it('putTag should return 200 with OK when tag exists', () => {
         expect(statusText).toEqual('OK');
     });
 });
+
 /*
+
 it('putTag should return 200 with OK when tag exists', () => {
     const newTag = {
         name: mockData.tags[0].name,
@@ -112,4 +114,5 @@ it('putTag should return 200 with OK when tag exists', () => {
         expect(e).toEqual({error: alreadyExistsError}),
     );
 });
+
 */

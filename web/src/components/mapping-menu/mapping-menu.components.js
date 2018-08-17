@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import * as s from './mapping-menu.styled'
 
 export const Menu = (

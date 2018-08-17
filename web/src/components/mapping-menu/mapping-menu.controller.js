@@ -20,7 +20,6 @@ function dispatchToProps(dispatch){
 }
 
 function getMappingMenuProps(props){
-    console.info(props);
     return {
         mappings: props.mappings,
         activeMapping: props.activeMapping,
@@ -33,23 +32,3 @@ function getMappingMenuProps(props){
 }
 
 
-
-
-const panelInstructions = [
-    {
-        title: "Mappings",
-        items: {} ,//mappings,
-        onItemClick: {},//loadDependencyMapping,{}
-        onMouseOver:{},// null,
-        onMouseOut:{},// null,
-        selected: {},//type === types.MAPPING ? activeDetail.data.name : false
-    },
-    {
-        title:{},// activeMapping.name ? this.props.activeMapping.name : 'Select Mapping',
-        items:{},// activeMapping.resources,
-        onItemClick:{},// setResourceDetail,
-        onMouseOver: (cy, id) => hoverIndicationOn(cy, id),
-        onMouseOut: (cy, id) => hoverIndicationOff(cy, id),
-        selected: {},//type === types.MAPPING ? activeDetail.data.name : false
-    },
-]
