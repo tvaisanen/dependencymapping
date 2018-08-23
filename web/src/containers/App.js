@@ -67,7 +67,7 @@ class App extends Component {
     }
 
     setLayout(layout) {
-        this.setState({layout: layout})
+        this.setState({layout: layout});
         this.updateLayout();
     }
 

@@ -8,6 +8,8 @@ import * as types from './../../constants/types';
 import {isResourceInMapping, resourceExists, isResourceConnectedToId} from './../../common/resource-helpers';
 import { removeElement, updateLayout } from "./../../common/graph-helpers";
 import ResourceDetail from '../resource-detail/ResourceDetailContainer';
+import { FilterInputField } from '../common.components';
+
 
 import {bindActionCreators} from 'redux';
 class ResourceBrowserContainer extends Component {
@@ -71,7 +73,7 @@ class ResourceBrowserContainer extends Component {
                                 onClick={() => this.setState({resourceTypes: types.TAG})}
                                 selected={resourceTypes === types.TAG}>Tags</ResourceListItem>
                         </ResourceSwitch>
-                        <FilterInput
+                        <FilterInputField
                             type="text"
                             placeholder="filter..."
                             onChange={this.onFilterChange}/>
@@ -145,20 +147,7 @@ const ResourceSwitch = styled.div`
 `;
 
 
-const FilterInput = styled.input`
-  background-color: transparent;
-  text-align: center;
-  max-width: 200px;
-  width: 80%;
-  border: none; 
-  border-bottom: 1px solid grey; 
-  margin: 0 8px 8px 0;
-  color: rgba(255,255,255,0.6);
 
-  :focus::placeholder{
-    color: transparent;
-  }
-`;
 
 
 const ResourceBrowserLayout = styled.div`

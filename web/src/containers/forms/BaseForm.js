@@ -91,6 +91,7 @@ class BaseForm extends Component {
                 })
             }
         }).catch(error => {
+            console.info(error);
             throw new Error('Unhandled error!');
         });
 

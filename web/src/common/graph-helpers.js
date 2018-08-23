@@ -42,33 +42,43 @@ export function removeElement(cy = required(), id = required()) {
     }
 }
 
-export function updateResourceEdges(cy = required(), resource = required()){
+export function drawResourceEdges(cy = required(), resource = required()){
+    console.group("Draw resource edges")
+
+    try {
+        const edges = resource.connected_to.map(r => edgeElementFromResource(resource.name, r.name))
+        cy.add(edges)
+    } catch (e){
+
+    }
+    console.groupEnd();
+}
+
+
+export function removeResourceEdges(cy = required(), resource = required()){
     /**
      *  Update graph after resource/asset update. It is required that
      *  the graph shows current situation of the connections of a node.
      *  So, if node has updated the connected_to list. It needs to be
      *  mapped again.
      */
+
+    console.group("Debug me");
     try {
-        const edgesThaShouldExist = resource.connected_to.forEach((r) => {
-            return edgeElementFromResource(resource.name, r.name);
-        });
 
         // remove edges that are not listed in connections
-        const removeTheseEdges = cy.getElementById(resource.name).neighborhood('edge')
-        cy.remove(removeTheseEdges);
+        const removeTheseEdges = cy.getElementById(resource.name).neighborhood('edge');
+        const outGoingEdges = removeTheseEdges.filter(el => {
+           return el.source().id() === resource.name;
+        });
+        console.info(outGoingEdges);
+        cy.remove(outGoingEdges);
 
-        // add edges that should be listed
-        edgesThaShouldExist.forEach(edge => cy.add(edge));
-        console.group("Edge drawing debug");
-        console.info('remove');
-        console.info(removeTheseEdges);
-        console.info('add');
-        console.info(edgesThaShouldExist);
-        console.groupEnd();
+
     } catch (e){
         console.error(e);
     }
+    console.groupEnd();
 }
 
 export function addElements(cy = required(), elements = required()) {

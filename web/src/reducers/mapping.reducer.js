@@ -4,7 +4,7 @@ import initialState from './initialState';
 export default function mappingReducer(state = initialState.mappings, action){
     switch(action.type) {
         case types.LOAD_MAPPINGS_SUCCESS:
-            return action.mappings;
+            return action.mappings === 'undefined' ? [] : action.mappings;
 
         case types.ADD_MAPPING:
             return [...state, action.mapping];

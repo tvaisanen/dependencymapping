@@ -1,3 +1,24 @@
+const instructions = "\
+Please fill out the survey after finishing the task [Survey](https://in.hotjar.com/s?siteId=986690&surveyId=103836)\n\
+\n\
+# create resource\n\
+\n\
+* Click 'create' tab in the browser view\n\
+* Select resource type, fill the form.\n\
+* Press save.\n\
+\n\
+# edit resource / create connection / add tag\n\
+\n\
+* Select resource from the list \n\
+* Press edit from the top right corner of the detail view\n\
+* Select connected assets from the list\n\
+* Select tags\n\
+\n\
+# edit mapping\n\
+\n\
+* Click the mapping item in top left mappings list\n\
+* Click the edit in the top right corner of the detail view."
+
 export default {
     app: {
         bottomPanel: {
@@ -12,7 +33,7 @@ export default {
     activeDetail: {
         data: {
             name: 'Welcome from store',
-            description: "Welcome back! To start working select a mapping to work with or start a new one by clicking this [NEW].",
+            description: instructions,
             type: ""
         },
         type: "EMPTY"
@@ -20,3 +41,4 @@ export default {
     graph: {},
 
 }
+

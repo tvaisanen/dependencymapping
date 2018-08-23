@@ -44,7 +44,8 @@ export function updateResource(resource) {
                 dispatch(updateResourceSuccess({resource: response.data}));
 
                 // redraw the edges in the graph
-                graphHelpers.updateResourceEdges(getState().graph, response.data);
+                graphHelpers.removeResourceEdges(getState().graph, response.data);
+                graphHelpers.drawResourceEdges(getState().graph, response.data);
 
                 return response;
             }).catch(error => {

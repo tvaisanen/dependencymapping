@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8000/';
+// this is defined in proxy configs
+const API_URL = 'http://188.166.33.248:8000/';
 const MAPPINGS_URL = `${API_URL}mappings/`;
 const TAGS_URL = `${API_URL}tags/`;
 const RESOURCES_URL = `${API_URL}resources/`;
@@ -73,7 +74,7 @@ class GwClientApi {
 
     static postMapping({name, description, resources, tags}) {
 
-        return axios.post('http://127.0.0.1:8000/mappings/',
+        return axios.post(MAPPINGS_URL,
             {
                 name: name,
                 description: description,
@@ -97,18 +98,18 @@ class GwClientApi {
     }
 
     static deleteMapping({name}) {
-        return axios.delete(`http://127.0.0.1:8000/mappings/${encodeURI(name)}`)
+        return axios.delete(mappingsDetailUrl({name}));
     }
 
 
     /** ***********************************************************/
 
     static deleteResource({name}) {
-        return axios.delete(`http://127.0.0.1:8000/resources/${encodeURI(name)}`);
+        return axios.delete(resourceDetailUrl({name}));
     }
 
     static postResource({name, description, connected_to, tags}) {
-        return axios.post('http://127.0.0.1:8000/resources/',
+        return axios.post(RESOURCES_URL,
             {
                 name: name,
                 description: description,
@@ -129,7 +130,7 @@ class GwClientApi {
     }
 
     static postTag({name, description}) {
-        return axios.post('http://127.0.0.1:8000/tags/', {name, description})
+        return axios.post(TAGS_URL, {name, description})
     }
 
     static putTag({name, description}) {

@@ -6,7 +6,7 @@
  * separately from the django application.
  */
 
-
+/*
 import * as types from '../actions/actionTypes';
 
 let socket = null;
@@ -36,3 +36,4 @@ const failureDetectionService = store => next => action => {
 };
 
 export default failureDetectionService;
+*/

@@ -21,5 +21,20 @@ function getTransactions(dispatch){
         updateMapping: (mapping) => dispatch(actions.updateMapping(mapping)),
         postMapping: (mapping) => dispatch(actions.postMapping(mapping)),
         deleteMapping: (mapping) => dispatch(actions.deleteMapping(mapping)),
+        createTag: (tagName) => {
+            return dispatch(actions.postTag({
+                name: tagName,
+                description: "",
+
+            }))
+        },
+        createAsset: (assetName) => {
+            return dispatch(actions.postResource({
+                name: assetName,
+                description: "",
+                connected_to: [],
+                tags: []
+            }))
+        }
     }
 }
