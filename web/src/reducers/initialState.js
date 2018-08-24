@@ -1,3 +1,6 @@
+import * as types from '../constants/types';
+import * as views from '../constants/views';
+
 const instructions = "\
 Please fill out the survey after finishing the task [Survey](https://in.hotjar.com/s?siteId=986690&surveyId=103836)\n\
 \n\
@@ -22,14 +25,22 @@ Please fill out the survey after finishing the task [Survey](https://in.hotjar.c
 export default {
     app: {
         bottomPanel: {
-            view: 1
+            view: views.BROWSE,
+            tabItems: [
+                {label: 'Resource Browser', view: views.BROWSE},
+                {label: 'Create', view: views.CREATE},
+            ]
+        },
+        form: {
+            edit: false,
+            type: types.MAPPING
         }
     },
     mappings: [],
     dependencies: [],
-    resources: [],
+    resources: [],
     tags: [],
-    activeMapping: {name: 'none', resources:[], connections:[]},
+    activeMapping: {name: 'none', resources: [], connections: []},
     activeDetail: {
         data: {
             name: 'Welcome from store',

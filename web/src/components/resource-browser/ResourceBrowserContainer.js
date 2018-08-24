@@ -77,7 +77,7 @@ class ResourceBrowserContainer extends Component {
                                 resourceItems.map((resource, i) => (
                                         <ResourceListItem
                                             key={i}
-                                            selected={resource.name === this.props.detail.name}
+                                            selected={resource.name === this.props.activeDetail.name}
                                             onClick={() => this.props.setActiveDetail({
                                                 data: resource,
                                                 type: resourceTypes
@@ -114,7 +114,6 @@ ResourceBrowserContainer.propTypes = {
     removeResourceFromActiveMapping: PropTypes.func.isRequired,
     setActiveDetail: PropTypes.func.isRequired,
     editDetail: PropTypes.func.isRequired,
-    type: PropTypes.string.isRequired,
     activeMapping: PropTypes.object.isRequired
 };
 

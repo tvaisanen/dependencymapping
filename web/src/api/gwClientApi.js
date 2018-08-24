@@ -108,7 +108,13 @@ class GwClientApi {
         return axios.delete(resourceDetailUrl({name}));
     }
 
-    static postResource({name, description, connected_to, tags}) {
+    static postResource({name, description="", connected_to=[], tags=[]}) {
+        console.group("Post resource");
+        console.info(name);
+        console.info(description);
+        console.info(connected_to);
+        console.info(tags);
+        console.groupEnd();
         return axios.post(RESOURCES_URL,
             {
                 name: name,

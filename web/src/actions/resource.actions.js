@@ -1,31 +1,34 @@
 import GwClientApi from '../api/gwClientApi';
 import * as types from './actionTypes';
 import * as graphHelpers from '../common/graph-helpers';
+import * as _ from 'lodash';
 
 /************* ASSET       ************* */
 
-export function postResource(name) {
+export function postResource(asset) {
     return function (dispatch) {
-        return GwClientApi.postResource(name).then(response => {
-            if (response.error) {
-                // handle error
-                console.debug('error posting resourcee');
-            } else {
-                // if no errors add the resource to store
-                //
-
+        console.groupCollapsed("PostResource");
+        console.info(asset);
+        console.groupEnd();
+        return GwClientApi.postResource(asset).then(response => {
+            if (!response.error) {
+                console.info('set info panel to resource success');
                 dispatch(postResourceSuccess(response.data));
             }
+
+            // return response to UI
             return response;
-        }).catch(error => {
-            throw(error);
+        }).catch((error, data) => {
+            console.warn(error);
+            console.warn(data)
+            return error;
         });
+
     }
 }
 
 export function postResourceSuccess(resource) {
     console.info("Post resource success:");
-    ;
     return {type: types.POST_RESOURCE_SUCCESS, resource}
 }
 
@@ -43,9 +46,14 @@ export function updateResource(resource) {
                 // replace the updated version of the asset/resource
                 dispatch(updateResourceSuccess({resource: response.data}));
 
-                // redraw the edges in the graph
-                graphHelpers.removeResourceEdges(getState().graph, response.data);
-                graphHelpers.drawResourceEdges(getState().graph, response.data);
+                // redraw the edges in the graph if asset in map
+                const activeMapAssets = getState().activeMapping.resources;
+                const inActiveMap = -1 !== _.findIndex(activeMapAssets, (item) => item.name === resource.name);
+                if (inActiveMap) {
+                    graphHelpers.removeResourceEdges(getState().graph, response.data);
+                    graphHelpers.drawResourceEdges(getState().graph, response.data);
+                }
+
 
                 return response;
             }).catch(error => {

@@ -1,15 +1,19 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import { setBottomPanelView } from '../../actions/app.actions';
 import * as s from './bottom-panel.styled';
-
-export const PanelNavTabs = ({selectedView, tabItems, setView}) => (
+                    //selectedView={props.selectedView}
+                    //setView={this.setView}
+                    //tabItems={tabItems}
+const PanelNavTabs = ({selectedView, tabItems, setView}) => (
     <s.PanelNavigation>
         <div>
             {
                 tabItems.map((tab,i) => (
                     <s.PanelNavTab
                         key={i}
-                        selected={selectedView === tab.viewId}
-                        onClick={() => setView(tab.viewId)}
+                        selected={selectedView === tab.view}
+                        onClick={() => setView(tab.view)}
                         largePadding
                     >{tab.label}
                     </s.PanelNavTab>
@@ -18,3 +22,19 @@ export const PanelNavTabs = ({selectedView, tabItems, setView}) => (
         </div>
     </s.PanelNavigation>
 );
+
+
+const mapStateToProps = (state, props) => {
+    return {
+        selectedView: state.app.bottomPanel.view,
+        tabItems: state.app.bottomPanel.tabItems,
+    }
+};
+
+const dispatchToProps = (dispatch) => ({
+    setView: (view) => dispatch(setBottomPanelView(view))
+})
+
+export default connect(
+    mapStateToProps, dispatchToProps
+)(PanelNavTabs)
