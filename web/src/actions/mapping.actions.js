@@ -84,7 +84,7 @@ export function loadMappingsSuccess(mappings) {
 export function loadAllMappings() {
     return function (dispatch) {
         return GwClientApi.getGraphs().then(graphs => {
-            dispatch(loadMappingsSuccess(graphs));
+            dispatch(loadMappingsSuccess(graphs))
         }).catch(error => {
             throw(error);
         });

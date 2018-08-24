@@ -5,7 +5,7 @@ import * as actionCreators from './../../actions/index';
 import styled from 'styled-components';
 import * as l from '../layout';
 import * as types from './../../constants/types';
-import {isResourceInMapping, resourceExists, isResourceConnectedToId} from './../../common/resource-helpers';
+import {isResourceInMapping, filterResources } from './../../common/resource-helpers';
 import { removeElement, updateLayout } from "./../../common/graph-helpers";
 import ResourceDetail from '../resource-detail/ResourceDetailContainer';
 import { FilterInputField } from '../common.components';
@@ -22,7 +22,6 @@ class ResourceBrowserContainer extends Component {
 
         this.addResourceToMapping = this.addResourceToMapping.bind(this);
         this.removeResourceFromMapping = this.removeResourceFromMapping.bind(this);
-        this.filterResources = this.filterResources.bind(this);
         this.onFilterChange = this.onFilterChange.bind(this);
     }
 
@@ -35,10 +34,6 @@ class ResourceBrowserContainer extends Component {
     removeResourceFromMapping(resource) {
         this.props.removeResourceFromActiveMapping(resource);
         removeElement(this.props.cy, resource.name);
-    }
-
-    filterResources({resources, filterValue}) {
-        return resources.filter(r => r.name.toLowerCase().includes(filterValue));
     }
 
     onFilterChange(e) {
@@ -55,8 +50,8 @@ class ResourceBrowserContainer extends Component {
         });
 
         const resourceItems = resourceTypes === types.ASSET ?
-            this.filterResources({resources: resources, filterValue})
-            : this.filterResources({resources: tags, filterValue})
+            filterResources({resources: resources, filterValue})
+            : filterResources({resources: tags, filterValue})
          ;
 
         return (
