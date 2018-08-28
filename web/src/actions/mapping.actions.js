@@ -10,7 +10,8 @@ export function postMapping({name, description, resources, tags}) {
         return GwClientApi.postMapping({name, description, resources, tags})
             .then(response => {
                 dispatch(postMappingSuccess(response));
-                dispatch(addMapping({name, description, resources, tags}));
+                // set
+                dispatch(addMapping(response.data));
                 // return the response to caller
                 return response;
             }).catch(error => {

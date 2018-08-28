@@ -2,6 +2,7 @@ import axios from 'axios';
 
 // this is defined in proxy configs
 const API_URL = 'http://188.166.33.248:8000/';
+//const API_URL = 'http://localhost:8000/';
 const MAPPINGS_URL = `${API_URL}mappings/`;
 const TAGS_URL = `${API_URL}tags/`;
 const RESOURCES_URL = `${API_URL}resources/`;
@@ -72,9 +73,12 @@ class GwClientApi {
 
     /********************** MAPPING METHODS **********************/
 
-    static postMapping({name, description, resources, tags}) {
-
-        return axios.post(MAPPINGS_URL,
+    static postMapping({name, description=" ", resources, tags}) {
+        console.groupCollapsed("postMapping(form)");
+        console.info({name, description, resources, tags});
+        console.groupEnd();
+        return axios.post(
+            MAPPINGS_URL,
             {
                 name: name,
                 description: description,
@@ -109,11 +113,14 @@ class GwClientApi {
     }
 
     static postResource({name, description="", connected_to=[], tags=[]}) {
-        console.group("Post resource");
-        console.info(name);
-        console.info(description);
-        console.info(connected_to);
-        console.info(tags);
+        console.groupCollapsed("postMapping(form)");
+        console.info({name, description, connected_to, tags});
+        console.info({
+                name: name,
+                description: description,
+                connected_to: JSON.stringify(connected_to),
+                tags: JSON.stringify(tags)
+            });
         console.groupEnd();
         return axios.post(RESOURCES_URL,
             {

@@ -5,6 +5,7 @@ import _ from 'lodash';
 export default function activeMappingReducer(state = initialState.activeMapping, action){
     switch(action.type) {
         case types.LOAD_ACTIVE_MAPPING_RESOURCES:
+            console.info(action)
             const mapping = action.mapping
             return {...mapping}
 
@@ -41,7 +42,7 @@ export default function activeMappingReducer(state = initialState.activeMapping,
             return {...state, connections: [...action.connections, ...state.connections]}
 
         case types.CLEAR_ACTIVE_MAPPING_SELECTION:
-            return {name: "no selection", resources:[], connections: []};
+            return {name: "no selection", resources:[], tags: []};
 
         default:
             return state;

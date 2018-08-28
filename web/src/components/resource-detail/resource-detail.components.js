@@ -62,7 +62,11 @@ export const ResourceDetailHeader = ({activeDetail, isResourceInMap, editDetail,
     return <s.Col>
         {activeDetail.type ?
             <s.Row>
-                <small>{activeDetail.type}</small>
+                <small>{
+                    activeDetail.type === types.EMPTY ?
+                        null
+                        : activeDetail.type}
+                </small>
                 <div>
                 </div>
                 <span>
@@ -78,7 +82,7 @@ export const ResourceDetailHeader = ({activeDetail, isResourceInMap, editDetail,
                     onClick={() => editDetail({
                         resource: activeDetail.data, type: activeDetail.type
                     })}
-                > edit </s.ActionLink>
+                > {activeDetail.type === types.EMPTY ? null : "edit"} </s.ActionLink>
             </span>
             </s.Row>
             : null

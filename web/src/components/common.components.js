@@ -34,6 +34,7 @@ const Icon = styled.span`
   position: relative;
   height: 1em;
   width: 0;
+  bottom: 3px;
   left: -2em;
 `;
 
@@ -44,6 +45,9 @@ export const FilterInputField = ({onChange}) => {
         type="text"
         placeholder="filter..."
         onChange={onChange}
+        onKeyPress={
+               (e)=> console.info(JSON.stringify(e.key))
+           }
     />
         <Icon>&#x1f50d;</Icon>
     </Field>
@@ -51,15 +55,23 @@ export const FilterInputField = ({onChange}) => {
 
 export const AddInputField = ({addItem, placeholder}) => {
     let input;
-
+    const submit = () => {
+        addItem(input.value);
+        input.value = "";
+    };
     return <Field>
        <Input
            innerRef={ref => input = ref}
            type="text"
            placeholder={placeholder}
+           onKeyPress={
+               (e)=> e.key === "Enter" ?
+                   submit()
+                   : null
+           }
        />
        <Btn onClick={() => addItem(input.value)}>
        &#x2b;
        </Btn>
     </Field>
-}
+};

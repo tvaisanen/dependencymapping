@@ -18,7 +18,8 @@ const MappingMenuContainer = props => (
             <Menu
                 title="Mappings "
                 listItems={props.mappings}
-                onItemClick={(item) => props.loadDependencyMap(item.name)}
+                //onItemClick={(item) => props.loadDependencyMap(item.name)}
+                onItemClick={(item) => props.onMappingItemClick(item.name)}
                 selected={
                     props.activeDetail.type === types.MAPPING ?
                         props.activeDetail.data.name : false
@@ -37,7 +38,7 @@ const MappingMenuContainer = props => (
                         : 'Select Mapping'
                 }
                 listItems={props.activeMapping.resources}
-                onItemClick={(item) => props.setActiveDetail({data: item, type: types.ASSET})}
+                onItemClick={(item) => props.onActiveAssetClick({data: item, type: types.ASSET})}
                 onMouseOver={props.hoverResourceOn}
                 onMouseOut={props.hoverResourceOff}
                 selected={
@@ -59,10 +60,10 @@ MappingMenuContainer.propTypes = {
     activeDetail: PropTypes.object.isRequired,
     activeMapping: PropTypes.object.isRequired,
     activeResourceNameList: PropTypes.array,
-    loadDependencyMap: PropTypes.func.isRequired,
     hoverResourceOn: PropTypes.func.isRequired,
     hoverResourceOff: PropTypes.func.isRequired,
-    setActiveDetail: PropTypes.func.isRequired,
+    onMappingItemClick: PropTypes.func.isRequired,
+    onActiveAssetClick: PropTypes.func.isRequired,
 };
 
 export const MenuColumn = styled.div`

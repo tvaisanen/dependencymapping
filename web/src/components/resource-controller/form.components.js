@@ -18,7 +18,6 @@ export const Inflater = styled.div`
 `;
 
 
-
 export const Container = styled.div`
     max-width: 34em;
     display: flex;
@@ -27,18 +26,24 @@ export const Container = styled.div`
     justify-content: center;
     align-items: center;
     align-self: center; 
-    width: ${p=>
-        p.visible ? 
+    width: ${p =>
+        p.visible ?
             "100%"
             : "0"
+    };
+    visibility: ${p =>
+        p.visible ?
+            'visible'
+            : 'hidden'
+            
     };
     flex-grow: 1;
     padding: 0 12px;  
     border-radius: 3px;
-    transform: ${p=>
-        p.visible ?
-            "scaleX(1)"
-                : "scaleX(0)"};
+    transform: ${p =>
+    p.visible ?
+        "scaleX(1)"
+        : "scaleX(0)"};
     transition:
       transform 300ms ease-in-out,
       width 500ms ease-in-out,
@@ -54,7 +59,18 @@ export const Header = styled.h2`
 
 export const Label = styled.label``;
 
-export const Button = styled.button``;
+export const Button = styled.button`
+  margin: 4px;
+  padding: 4px;
+  border-radius: 3px;
+  font-weight: bold;
+  color: white;
+  background-color: ${p => p.cancel ?
+    'rgba(244,0,0,0.5)'
+    : 'rgba(0,244,0,0.5)'
+    };
+  cursor: pointer;
+`;
 
 export const Input = styled.input`
     text-align: center;
@@ -90,9 +106,9 @@ export const OptionItem = styled.div`
             margin: 2px 0; border-radius: 3px; box-shadow: 0 0 2px rgba(255,255,255,0.1);
             :hover {
               background-color: ${props =>
-                props.remove ? 
-                    'rgba(255,0,0,0.35)'
-                :'rgba(255,255,0,0.5)'};
+    props.remove ?
+        'rgba(255,0,0,0.35)'
+        : 'rgba(255,255,0,0.5)'};
             }
             transition: all .15s ease-in-out;
             cursor: pointer;
@@ -126,7 +142,14 @@ export const ErrorMsg = styled.span`
 export const ButtonRow = ({cancel, save, remove, edit}) => (
 
     <ButtonBox>
+                {
+            edit ?
+                <Button
+                    cancel onClick={remove}>delete</Button>
+                : null
+        }
         <Button
+            cancel
             onClick={cancel}>
             cancel
         </Button>
@@ -134,14 +157,9 @@ export const ButtonRow = ({cancel, save, remove, edit}) => (
             onClick={save}>
             save
         </Button>
-        {
-            edit ?
-                <Button onClick={remove}>delete</Button>
-                : null
-        }
+
     </ButtonBox>
 );
-
 
 
 const OptionList = styled.div`
@@ -153,12 +171,12 @@ const OptionList = styled.div`
 
 const OptionsToChooseFrom = ({options, onClick, remove}) => (
     <OptionList>
-        {options.map((option,i) => <OptionItem
+        {options.map((option, i) => <OptionItem
             key={i}
             remove={remove}
             onClick={
-            () => onClick(option)
-        }>{option}</OptionItem>)}
+                () => onClick(option)
+            }>{option}</OptionItem>)}
     </OptionList>
 );
 
@@ -186,12 +204,15 @@ export const Block = styled.div`
 `;
 
 
-export const FormSelectionBlock = ({
-                                        labelOption,
-                                       onFilterChange,
-                                       options, selected,
-                                        select, deselect, addItem
-                                   }) => (
+export const FormSelectionBlock = (
+        {
+            labelOption,
+            onFilterChange,
+            options = [], selected = [],
+            select, deselect, addItem,
+            selectedLabel
+        }
+    ) => (
     <SelectionBlock>
         <Block>
             <small>{labelOption} {options.length}</small>
@@ -206,7 +227,7 @@ export const FormSelectionBlock = ({
 
         </Block>
         <Block>
-            <small>selected: {selected.length}</small>
+            <small>{selectedLabel} {selected.length}</small>
             <AddInputField
                 addItem={addItem}
 

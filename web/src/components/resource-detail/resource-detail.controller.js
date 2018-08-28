@@ -52,12 +52,12 @@ const listCompositionInstructions = {
      *
      * */
     [types.ASSET]: [
-        {label: "Tags", key: "tags", type: types.TAG},
-        {label: "Connections", key: "connected_to", type: types.ASSET}
+        {label: "Connections", key: "connected_to", type: types.ASSET},
+        {label: "Tags", key: "tags", type: types.TAG}
     ],
     [types.MAPPING]: [
-        {label: "Tags", key: "tags", type: types.TAG},
-        {label: "Resources", key: "resources", type: types.ASSET}
+        {label: "Resources", key: "resources", type: types.ASSET},
+        {label: "Tags", key: "tags", type: types.TAG}
     ],
     [types.TAG]: [
         {label: "Resources", key: false, type: types.ASSET}

@@ -1,7 +1,5 @@
 import * as graphHelpers from '../common/graph-helpers';
 import * as activeMappingActions from './active-mapping.actions';
-import * as activeDetailActions from './active-detail.actions';
-import * as appActions from './app.actions';
 
 /**
  *  Compound actions.
@@ -14,9 +12,3 @@ export function clearGraphAndActiveMapping(){
    }
 }
 
-export function closeFormAndSetActiveDetail(activeDetail){
-    return function(dispatch){
-        dispatch(activeDetailActions.setActiveDetail(activeDetail));
-        dispatch(appActions.cancelEdit())
-    }
-}

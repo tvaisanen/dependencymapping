@@ -3,10 +3,6 @@ import * as types from '../actions/actionTypes';
 import * as resourceType from '../constants/types';
 
 export default function ( state = initialState.app, action ){
-    console.groupCollapsed("App reducer:");
-            console.info(action)
-            console.info(state);
-            console.groupEnd();
     switch(action.type){
         case types.SET_FORM_TYPE:
             return {

@@ -55,9 +55,10 @@ class ResourceControllerContainer extends Component {
                         .map(t=>t.name)
                 })
             } else if (type === types.MAPPING){
+                console.info(this.props.activeDetail);
                 this.setState({
-                    selectedResources: data.resource,
-                    selectedTags: data.tags
+                    selectedResources: data.resources.map(r=>r.name),
+                    selectedTags: data.tags.map(t=>t.name),
                 })
             }
         }
@@ -69,33 +70,39 @@ class ResourceControllerContainer extends Component {
 
     actionDelete({name}) {
         const {formType, formActions} = this.props;
-        return formActions[formType].remove({name});
+        const promise = formActions[formType].remove({name});
+        this.handlePromise(promise);
     }
 
     actionPost(form) {
+        console.group("actionPost()");
         const {formType, formActions} = this.props;
         const response = formActions[formType].post(form);
         this.handlePromise(response);
+        console.groupEnd();
     }
 
     handlePromise(promise) {
         promise.then(resolved => {
 
-            console.group("Post response");
 
             const status = resolved.status ?
                 resolved.status
                 : resolved.response.status;
 
-            if (status === 201) {
+            console.groupCollapsed(`handleResponse(${status})`);
+
+            if ((status === 200) || (status === 201)) {
+
+                //
                 this.props.closeFormAndSetActiveDetail({
                     data: resolved.data,
                     type: this.props.formType,
-                })
+                });
 
             } else if (status === 400) {
-                //only error should be if the name is already reserved
-                console.info(resolved.response);
+
+                // only error should be if the name is already reserved
                 this.setState({errors: resolved.response.data})
             }
 
@@ -104,8 +111,11 @@ class ResourceControllerContainer extends Component {
     }
 
     actionUpdate(form) {
+        console.group("actionUpdate()");
         const {formType, formActions} = this.props;
-        return formActions[formType].put(form);
+        const promise = formActions[formType].put(form);
+        this.handlePromise(promise);
+        console.groupEnd();
     }
 
     toggleValidation() {
@@ -114,31 +124,31 @@ class ResourceControllerContainer extends Component {
 
 
     createAssetAndSelect(assetName) {
-        // quick asset creation,
-        // post new asset with just a name
-        // to quicker input
-        const promise = this.props.formActions[types.ASSET].post({name: assetName})
-        promise.then(r=>{
-            console.info(r);
+
+        // quick asset creation, post new asset with just a name to quicker input
+        const promise = this.props.formActions[types.ASSET].post({name: assetName});
+
+        promise.then(r => {
+            this.setState({ selectedResources: [...this.state.selectedResources, assetName] })
         });
-        this.setState({
-            selectedResources: [...this.state.selectedResources, assetName]
-        })
     }
 
     createTagAndSelect(tagName) {
-        this.props.createTag(tagName);
-        this.setState({
-            selectedTags: [...this.state.selectedTags, tagName]
-        })
+        const promise = this.props.formActions[types.TAG].post({name: tagName});
+        promise.then(r => {
+            console.info(r);
+            this.setState({
+                selectedTags: [...this.state.selectedTags, tagName]
+            })
+        });
     }
 
     getFormData() {
         return {
-            name: this.state.name,
-            description: this.state.description,
-            resources: this.state.selectedResources.map(n => ({name: n})),
-            tags: this.state.selectedTags.map(n => ({name: n})),
+            name:           this.state.name,
+            description:    this.state.description,
+            resources:      this.state.selectedResources.map(n => ({name: n})),
+            tags:           this.state.selectedTags,
         }
     }
 
@@ -152,8 +162,9 @@ class ResourceControllerContainer extends Component {
         const {formType, formActions} = this.props;
         const parsedData = formActions[formType]
             .parseForm(this.getFormData());
-        console.groupCollapsed("On Save");
+        console.group("On Save");
         console.info(parsedData);
+        console.info(this.props.formType);
         this.props.formEdit ?
             this.actionUpdate(parsedData)
             : this.actionPost(parsedData);
@@ -163,7 +174,7 @@ class ResourceControllerContainer extends Component {
     onDelete({name}) {
         this.actionDelete({name});
         this.props.clearActiveDetail();
-        this.props.cancelEdit();
+        this.props.closeEdit();
     }
 
     onCancel() {
@@ -171,9 +182,6 @@ class ResourceControllerContainer extends Component {
     }
 
     render() {
-        console.groupCollapsed("Props");
-        console.info(this.props);
-        console.groupEnd();
         const {tagNameList, assetNameList} = this.props;
         const {
             resourceFilter, selectedResources,
@@ -206,9 +214,16 @@ class ResourceControllerContainer extends Component {
         return (
             <form.Inflater column>
                 <form.Container column visible>
-                    <ControllerNavTabs
-                        types={this.props.types}
-                        setFormType={this.props.setFormType}/>
+                    {
+                        /*
+                         * If editing, do not show the other
+                         * form options
+                         */
+                        this.props.formEdit ? null :
+                            <ControllerNavTabs
+                                types={this.props.types}
+                                setFormType={this.props.setFormType}/>
+                    }
                     <form.Label>Name</form.Label>
                     <form.Input
                         lock={this.props.formEdit}
@@ -216,8 +231,7 @@ class ResourceControllerContainer extends Component {
                         value={this.state.name}
                         valid={nameValid}
                         check={this.state.check}
-                        onChange={(e) =>
-                            this.setState({name: e.target.value})}
+                        onChange={(e) => this.setState({name: e.target.value})}
                     />
                     {this.state.errors.name ?
                         <form.ErrorMsg>{this.state.errors.name}</form.ErrorMsg>
@@ -235,11 +249,12 @@ class ResourceControllerContainer extends Component {
                         }
                     />
 
-                    <form.ButtonRow
-                        edit={this.props.formEdit}
-                        save={this.onSave}
-                        remove={() => this.onDelete({name: this.state.name})}
-                        cancel={this.props.cancelEdit}/>
+                        <form.ButtonRow
+                            edit={this.props.formEdit}
+                            save={this.onSave}
+                            remove={() => this.onDelete({name: this.state.name})}
+                            cancel={this.props.closeEdit}/>
+
 
                 </form.Container>
                 <form.Container
@@ -249,6 +264,7 @@ class ResourceControllerContainer extends Component {
                     {/* Selectable resource list */}
                     <FormSelectionBlock
                         labelOption="resources"
+                        selectedLabel={this.props.formType === types.MAPPING ? "selected" : "connected to"}
                         onFilterChange={(e) => this.setState({resourceFilter: e.target.value})}
                         options={filteredResources}
                         selected={selectedResources}
@@ -264,6 +280,7 @@ class ResourceControllerContainer extends Component {
                     {/* TAGS */}
                     <FormSelectionBlock
                         labelOption="tags"
+                        selectedLabel="selected"
                         onFilterChange={(e) => this.setState({tagFilter: e.target.value})}
                         options={filteredTags}
                         selected={selectedTags}
@@ -289,18 +306,16 @@ const formActionsShape = {
 };
 
 ResourceControllerContainer.propTypes = {
-    // mappingFormCtrl.getMappingFormProps(state)
     tagNameList: PropTypes.arrayOf(PropTypes.string),
     assetNameList: PropTypes.arrayOf(PropTypes.string),
-    // mappingFormCtrl.getDispatchedTransactions(dispatch)
     formActions: PropTypes.shape({
         [types.MAPPING]: PropTypes.shape(formActionsShape),
         [types.ASSET]: PropTypes.shape(formActionsShape),
         [types.TAG]: PropTypes.shape(formActionsShape)
     }),
     cancelEdit: PropTypes.func.isRequired,
-    // refactor to store ?
     formType: PropTypes.string.isRequired,
+    formEdit: PropTypes.bool.isRequired
 };
 
 

@@ -20,6 +20,7 @@ export function addActiveMappingConnections(connections) {
 }
 
 export function loadActiveMappingResources(mapping) {
+    console.info(mapping);
     return {type: types.LOAD_ACTIVE_MAPPING_RESOURCES, mapping}
 }
 
@@ -68,6 +69,9 @@ function removeAsset(resource){
 
 export function loadActiveMapping(mapping) {
     return function (dispatch) {
+        console.group(`loadActiveMapping(${mapping.name})`)
+        console.info(mapping);
+        console.groupEnd();
         return dispatch(loadActiveMappingResources(mapping))
     }
 }

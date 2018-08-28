@@ -23,7 +23,7 @@ import * as events from '../common/graph.events';
 import {layoutOptions} from "../configs/configs.cytoscape";
 import MappingMenuContainer from '../components/mapping-menu/MappingMenuContainer';
 import CollapseMenuContainer from '../components/collapse-menu/CollapseMenuContainer';
-
+import * as activeMappingHelpers from '../common/dependency-map.helpers';
 
 const LAYOUT = 'cola';
 
@@ -66,11 +66,6 @@ class App extends Component {
         layout.run();
     }
 
-    setLayout(layout) {
-        this.setState({layout: layout});
-        this.updateLayout();
-    }
-
 
     onNodeClick = (evt) => {
         // node click requires actions within the cy context
@@ -102,54 +97,12 @@ class App extends Component {
 
 
     loadDependencyMap = (mapId) => {
-        // load graph resources to the active mapping
-
-        // current state of cy graph needs to be cleared
-        clearGraph(this.props.cy);
-
-        const mapping = this.props.mappings.filter(g => g.name === mapId)[0];
-
-        // By default this is an array of objects.
-        let resources = mapping ? mapping.resources : [];
-
-        // Set mapping as active.
-        this.props.loadActiveMappingResources(mapping);
-
-        /**
-         * This is because at the moment there's no back end solution.
-         *  Current dev. environment returns mapping resources as objects,
-         * which is not too efficient. Preferred method would be using
-         * just an array of id's which would be used in a following manner.
-         */
-        if (_.isString(resources[0])) {
-            // if resource is a string
-            // map resource id's to resource objects
-            resources = parser.filterResourcesByIds({
-                ids: resources,
-                resources: this.props.resources
-            });
-        }
-
-        // objects for redux state
-        const connections = parser.getConnectionsFromResources(resources);
-
-        this.props.setActiveMappingConnections(connections);
-
-
-        // json for graphing
-        const edges = parser.parseEdgeElementsFromResources(resources);
-
-
-        const nodes = resources.map(resource => nodeElementFromResource(resource));
-        addElements(this.props.cy, nodes);
-        addElements(this.props.cy, edges);
-
-        this.props.setActiveDetail({data: mapping, type: constants.MAPPING});
-
-        // this will be obsolete after refactoring is complete
-        this.setState({detail: mapping, detailType: constants.MAPPING})
-
-        this.updateLayout();
+        activeMappingHelpers.loadDependencyMap(
+            mapId,
+            this.props.cy,
+            this.props.mappings,
+            this.props.resources
+        );
     };
 
 

@@ -1,12 +1,15 @@
-import * as actions from '../../actions';
+import * as actions from './resource-controller.actions';
+import * as actionsResource from '../../actions/resource.actions';
+import * as actionsMapping from '../../actions/mapping.actions';
+import * as actionsTag from '../../actions/tag.actions';
+import * as actionsActiveDetail from '../../actions/active-detail.actions';
 import * as types from '../../constants/types';
 
 const formActions = (dispatch) => ({
-    doAction: (func, args) => func(args),
     [types.ASSET]: {
-        post: (asset) => dispatch(actions.postResource(asset)),
-        put: (asset) => dispatch(actions.updateResource(asset)),
-        remove: (asset) => dispatch(actions.deleteResource(asset)),
+        post: (asset) => dispatch(actionsResource.postResource(asset)),
+        put: (asset) => dispatch(actionsResource.updateResource(asset)),
+        remove: (asset) => dispatch(actionsResource.deleteResource(asset)),
         parseForm: (form) =>({
                 name: form.name,
                 description: form.description,
@@ -15,16 +18,16 @@ const formActions = (dispatch) => ({
             })
     },
     [types.MAPPING]: {
-        post: (mapping) => dispatch(actions.postMapping(mapping)),
-        put: (mapping) => dispatch(actions.updateMapping(mapping)),
-        remove: (mapping) => dispatch(actions.deleteMapping(mapping)),
+        post: (mapping) => dispatch(actionsMapping.postMapping(mapping)),
+        put: (mapping) => dispatch(actionsMapping.updateMapping(mapping)),
+        remove: (mapping) => dispatch(actionsMapping.deleteMapping(mapping)),
         parseForm: (form) => form,
     },
 
     [types.TAG]: {
-        post: () => alert("post tag"),
-        put: () => alert("put tag"),
-        remove: () => alert("delete tag"),
+        post: (tag) => dispatch(actionsTag.postTag(tag)),
+        put: (tag) => dispatch(actionsTag.updateTag(tag)),
+        remove: (tag) => dispatch(actionsTag.deleteTag(tag)),
         parseForm: (form) => ({
             name: form.name,
             description: form.description
@@ -50,11 +53,11 @@ function mapStateToProps(state, props) {
 function dispatchToProps(dispatch) {
     return {
         formActions: formActions(dispatch),
-        clearActiveDetail: () => dispatch(actions.clearActiveDetail()),
-        cancelEdit: () => dispatch(actions.cancelEdit()),
+        clearActiveDetail: () => dispatch(actionsActiveDetail.clearActiveDetail()),
+        closeEdit: () => dispatch(actions.closeEdit()),
         closeFormAndSetActiveDetail: (detail) => dispatch(
             actions.closeFormAndSetActiveDetail(detail)
-        )
+        ),
     }
 }
 

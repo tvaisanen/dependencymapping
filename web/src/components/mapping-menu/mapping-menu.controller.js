@@ -5,7 +5,7 @@ import {
     hoverIndicationOff, hoverIndicationOn
 } from './../../common/graph-helpers';
 
-import * as actions from './../../actions';
+import * as actions from './mapping-menu.actions';
 
 export default {
     stateToProps: (props) => getMappingMenuProps(props),
@@ -15,19 +15,20 @@ export default {
 function dispatchToProps(dispatch){
     return {
         setActiveDetail: (activeDetail) => dispatch(actions.setActiveDetail(activeDetail)),
-        loadActiveMapping: (mapping) => dispatch(actions.loadActiveMapping(mapping)),
+        onActiveAssetClick: (activeDetail) => dispatch(actions.onActiveAssetClick(activeDetail)),
+        onMappingItemClick: (mapping) => dispatch(actions.onMappingItemClick(mapping)),
     }
 }
 
-function getMappingMenuProps(props){
+function getMappingMenuProps(state){
     return {
-        mappings: props.mappings,
-        activeMapping: props.activeMapping,
-        activeDetail: props.activeDetail,
-        mappingNameList: props.mappings.map(m => m.name),
-        activeResourceNameList: props.activeMapping.resources.map(r => r.name),
-        hoverResourceOn: (id) => hoverIndicationOn(props.graph, id),
-        hoverResourceOff: (id) => hoverIndicationOff(props.graph, id),
+        mappings: state.mappings,
+        activeMapping: state.activeMapping,
+        activeDetail: state.activeDetail,
+        mappingNameList: state.mappings.map(m => m.name),
+        activeResourceNameList: state.activeMapping.resources.map(r => r.name) || [],
+        hoverResourceOn: (id) => hoverIndicationOn(state.graph, id),
+        hoverResourceOff: (id) => hoverIndicationOff(state.graph, id),
     };
 }
 

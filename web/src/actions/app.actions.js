@@ -17,12 +17,7 @@ export function setEditFalse(){
     return {type: types.CANCEL_EDIT};
 }
 
-export function cancelEdit(){
-    return function(dispatch, getState) {
-        dispatch(setEditFalse());
-        dispatch(setBottomPanelView(views.BROWSE))
-    }
-}
+
 
 export function editDetail(){
     return function(dispatch, getState){

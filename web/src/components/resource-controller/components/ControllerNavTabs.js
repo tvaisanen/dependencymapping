@@ -6,9 +6,11 @@ import * as actions from '../../../actions';
 
 const NavTab = styled.span`
         text-decoration: ${p=>p.selected?'underline':null};
-        background-color: rgba(255,255,255,0.2);
+        font-weight: bold;
+        background-color: ${p=>p.selected ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.1)'};; 
+        color: ${p=>p.selected?'rgba(36,36,36,0.9)': 'rgba(255,255,255,0.2)'};
         padding: 4px 12px;
-        margin: 2px 12px; 
+        margin: 2px 6px; 
         border-radius: 3px;
         :hover {
           background-color: rgba(244,244,244,0.3);
@@ -34,7 +36,6 @@ const ControllerNavTabs = ({setFormType, formType, types}) => (
             Asset
         </NavTab>
         <NavTab
-
             selected={formType === types.MAPPING}
             onClick={() => setFormType(types.MAPPING)}>
             Mapping

@@ -75,7 +75,7 @@ export const Row = styled.div`
 
 export const ActionLink = styled.span`
             width: 100px;
-            color: rgba(255,255,255,0.3);
+            color: rgba(255,255,255,0.8);
             border-bottom: 2px solid transparent;
             padding: 0 20px;
 
