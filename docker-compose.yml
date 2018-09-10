@@ -27,7 +27,7 @@ services:
         volumes:    
             # todo: refactor to .env
             - /home/tvaisanen/OUSPG/dependencymapping/web/:/usr/webapp/src
-              
+            - ./.env:/usr/webapp/src/.env
         networks:
             - overlay
         command: bash docker-entrypoint.sh 

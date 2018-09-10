@@ -12,6 +12,13 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import os
 
+print("HERE SOME DEBUGGING")
+print("ENV: API_PATH = {}".format(os.getenv("API_PATH")))
+print("ENV: CLIENT_HOST = {}".format(os.getenv("CLIENT_HOST")))
+
+
+CLIENT_HOST = os.getenv("CLIENT_HOST")
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -33,6 +40,7 @@ ALLOWED_HOSTS = [
     'localhost:3000',
     'localhost:8000',
     'localhost',
+    '*.localhost',
     '0.0.0.0'
 ]
 
@@ -41,10 +49,19 @@ CORS_ORIGIN_WHITELIST = (
     '127.0.0.1:9000',
     'localhost:3000',
     '192.168.1.127:3000',
-    '127.0.1.1:5000'
+    '127.0.1.1:5000',
+    '*.{}'.format(CLIENT_HOST),  # allow client host request with subdomains
 )
 
-# Application definition
+CORS_ORIGIN_REGEX_WHITELIST = (
+    r'^(https?://)?.*{host}'.format(host=CLIENT_HOST),
+)
+
+print("\nMore debugging here")
+print(CORS_ORIGIN_WHITELIST)
+print(CORS_ORIGIN_REGEX_WHITELIST)
+
+# Application definitioon
 
 INSTALLED_APPS = [
     'grappelli',
