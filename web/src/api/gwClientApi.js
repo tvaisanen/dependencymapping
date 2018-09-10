@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // this is defined in proxy configs
-const API_URL = 'http://188.166.33.248:8000/';
+const API_URL = 'http://localhost:8000/';
 //const API_URL = 'http://localhost:8000/';
 const MAPPINGS_URL = `${API_URL}mappings/`;
 const TAGS_URL = `${API_URL}tags/`;

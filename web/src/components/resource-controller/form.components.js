@@ -230,7 +230,6 @@ export const FormSelectionBlock = (
             <small>{selectedLabel} {selected.length}</small>
             <AddInputField
                 addItem={addItem}
-
                 placeholder={"create new"}
             />
             <OptionsToChooseFrom

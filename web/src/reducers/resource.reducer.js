@@ -10,10 +10,10 @@ export default function resourceReducer(state = initialState.resources, action) 
             return action.resources;
 
         case types.POST_RESOURCE_SUCCESS:
-            return [...state, action.resource];
+            return [action.resource, ...state];
 
         case types.ADD_RESOURCE:
-            return [...state, action.resource];
+            return [action.resource, ...state];
 
         case types.UPDATE_RESOURCE_SUCCESS:
             const removeUpdated = state.filter(m => m.name !== action.resource.name);

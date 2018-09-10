@@ -15,7 +15,14 @@ store.dispatch(actions.loadAllMappings());
 store.dispatch(actions.loadAllResources());
 store.dispatch(actions.loadAllTags());
 
+console.group("Environment");
 console.info(process.env);
+console.info(Object.keys(process.env));
+console.info(process.env.MESSAGE)
+console.groupEnd();
+
+
+// configure application here based on the environment variables
 
 ReactDOM.render(
     <Provider store={store}>

@@ -10,4 +10,11 @@ COPY . .
 RUN npm install
 COPY docker-entrypoint.sh .
 EXPOSE 3000
+# set env variables which
+# are set by the environment
+# file passed by ../docker-compose.yaml
+# in dev and prod. (default localhost:8000)
+ENV API_PATH="localhost:8000"
+ENV MESSAGE="debuggin"
+
 CMD ["npm", "start"] 
