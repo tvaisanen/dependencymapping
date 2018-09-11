@@ -13,7 +13,7 @@ python manage.py migrate
 # username: admin
 # password: password
 echo "Create admin user"
-echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'password')" | python manage.py shell
+cat set_default_config.py | python manage.py shell
 
 echo "Starting server"
 python manage.py runserver 0.0.0.0:8000
