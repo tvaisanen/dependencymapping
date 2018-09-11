@@ -11,13 +11,17 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import socket
 
 print("HERE SOME DEBUGGING")
 print("ENV: API_PATH = {}".format(os.getenv("API_PATH")))
 print("ENV: CLIENT_HOST = {}".format(os.getenv("CLIENT_HOST")))
+print("ENV: API_HOST = {}".format(os.getenv("API_HOST")))
+print("Hostname: {}".format(socket.gethostname()))
 
-
+# variables declared in from the "root/.env"
 CLIENT_HOST = os.getenv("CLIENT_HOST")
+API_HOST = os.getenv("API_HOST")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -40,7 +44,7 @@ ALLOWED_HOSTS = [
     'localhost:3000',
     'localhost:8000',
     'localhost',
-    '*.localhost',
+    '.{}'.format(API_HOST),
     '0.0.0.0'
 ]
 
@@ -165,6 +169,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, '/static/'),
     os.path.join(BASE_DIR, '../static'),
 ]
 

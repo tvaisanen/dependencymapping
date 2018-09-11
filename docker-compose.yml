@@ -12,6 +12,9 @@ services:
             - "80:80"
         networks:
             - overlay
+        depends_on:
+          - api
+          - web
         env_file:
             - .env
     db:
@@ -30,9 +33,10 @@ services:
             - ./.env:/usr/webapp/src/.env
         networks:
             - overlay
-        command: bash docker-entrypoint.sh 
-        ports:
-            - "3000:3000"
+        command: bash docker-entrypoint.sh
+        # hide ports. access only via proxy
+        # ports:
+             #- "3000:3000"
         env_file:
             - .env
         environment:
@@ -43,8 +47,9 @@ services:
         volumes:
             # todo: refactor to .env
             - /home/tvaisanen/OUSPG/dependencymapping/dependencymapping/:/usr/api/src
-        ports:
-            - "8000:8000"
+        # hide ports. access only via proxy
+        # ports:
+             #- "8000:8000"
         command: bash docker-entrypoint.sh 
         networks:
             - overlay

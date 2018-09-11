@@ -38,13 +38,7 @@ class GwClientApi {
             .then(response => {
                 return response.json();
             }).catch(error => {
-                return fetch('http://192.168.1.127:8000/resources/')
-                    .then(response => {
-                        return response.json();
-
-                    }).catch(error => {
-                        return error;
-                    });
+                return error;
             });
     }
 
@@ -64,13 +58,7 @@ class GwClientApi {
             .then(response => {
                 return response.json();
             }).catch(error => {
-                return fetch('http://192.168.1.127:8000/api/semantic-categories/')
-                    .then(response => {
-                        return response.json();
-
-                    }).catch(error => {
-                        return error;
-                    });
+                return error;
             });
     }
 
