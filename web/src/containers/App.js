@@ -153,7 +153,7 @@ class App extends Component {
     render() {
         return (
             <Layout>
-                <LayoutCol id="container-top" height={"60vh"}>
+                <LayoutCol id="container-top" height={"60vh"} minHeight={"360px"}>
                     <TopBarContainer info={this.state.info} menuToggleHandler={this.toggleFloatingButtons}/>
                     <MappingContent>
                         <MappingMenuContainer loadDependencyMap={this.loadDependencyMap}/>
@@ -164,6 +164,7 @@ class App extends Component {
                 <LayoutCol
                     id="container-bottom"
                     height={'40vh'}
+                    minHeight={'240px'}
                     align={'center'}
                     grow={1}>
                     <BottomPaneContainer
@@ -215,4 +216,5 @@ export const MappingContent = styled.div`
     justify-content: ${props=>props.justify};
     align-items: ${props=>props.align};
     height: ${props=>props.height? props.height: 'inherit'};
+    overflow: hidden;
 `;

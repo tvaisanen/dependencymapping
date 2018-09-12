@@ -8,8 +8,10 @@ services:
             - ./proxy/default.conf:/etc/nginx/conf.d/default.conf:ro
             - ./proxy/nginx.conf:/etc/nginx/nginx.conf:ro
             - ./proxy/site-enabled/:/etc/nginx/site-enabled/:ro
+            - ./proxy/ssl/:/etc/nginx/ssl/
         ports:
             - "80:80"
+            - "443:443"
         networks:
             - overlay
         depends_on:

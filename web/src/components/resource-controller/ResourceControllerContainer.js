@@ -103,7 +103,10 @@ class ResourceControllerContainer extends Component {
             } else if (status === 400) {
 
                 // only error should be if the name is already reserved
-                this.setState({errors: resolved.response.data})
+                console.group("Debuggint response: 400");
+                console.info(resolved);
+                console.groupEnd();
+                this.setState({errors: resolved.data})
             }
 
             console.groupEnd();
@@ -212,10 +215,11 @@ class ResourceControllerContainer extends Component {
         });
 
         return (
-            <form.Inflater column>
-                <form.Container column visible>
+            <form.Inflater id="resource-controller-container" column>
+                {/**/}
+                <form.Container column visible >
                     {
-                        /*
+                        /* todo: refactor logic
                          * If editing, do not show the other
                          * form options
                          */

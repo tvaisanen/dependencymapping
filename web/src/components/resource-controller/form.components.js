@@ -12,6 +12,7 @@ export const Inflater = styled.div`
     align-items: center;
     background: rgba(255,255,255,0.1);
     width: auto;
+    height: inherit;
     padding: 2px;
     flex-grow: 1;
     border-radius: 3px;
@@ -213,26 +214,27 @@ export const FormSelectionBlock = (
             selectedLabel
         }
     ) => (
-    <SelectionBlock>
-        <Block>
+    <SelectionBlock id="selection-block">
+        <Block id="block">
             <small>{labelOption} {options.length}</small>
-            <FilterInputField
+            <FilterInputField id="filter-input-field"
                 onChange={(e) => onFilterChange(e)}
             />
-            <OptionsToChooseFrom
+            <OptionsToChooseFrom id="options-to-choose-from"
                 remove={false}
                 options={options}
                 onClick={select}
             />
 
         </Block>
-        <Block>
+        <Block id="block">
             <small>{selectedLabel} {selected.length}</small>
             <AddInputField
+                id="filter-input-field"
                 addItem={addItem}
                 placeholder={"create new"}
             />
-            <OptionsToChooseFrom
+            <OptionsToChooseFrom id="options-to-choose-from"
                 remove={true}
                 options={selected}
                 onClick={deselect}

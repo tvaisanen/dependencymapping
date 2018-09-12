@@ -10,6 +10,8 @@ export const Layout = styled.div`
     flex-direction: column;
     background: rgb(54, 48, 54);
     flex-grow: 1;
+    min-height: 600px;
+    min-width: 800px;
     height: 100vh;
     overflow: hidden;
 `;
@@ -110,7 +112,6 @@ export const SidePanelContentContainer = styled.div`
         'scale(1,0)' : 
         'scale(1,1)'
     };
-    visibility:
     transition: all 1s ease-in;
     padding: 4px 0;
     margin: 6px;

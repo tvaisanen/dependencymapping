@@ -6,11 +6,11 @@ import * as s from './bottom-panel.styled';
                     //setView={this.setView}
                     //tabItems={tabItems}
 const PanelNavTabs = ({selectedView, tabItems, setView}) => (
-    <s.PanelNavigation>
+    <s.PanelNavigation id="panel-nav-tabs">
         <div>
             {
                 tabItems.map((tab,i) => (
-                    <s.PanelNavTab
+                    <s.PanelNavTab id="panel-nav-tab"
                         key={i}
                         selected={selectedView === tab.view}
                         onClick={() => setView(tab.view)}

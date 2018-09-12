@@ -55,15 +55,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(BottomPanelContainer
 
 
 
-
-
 const BottomPanel = styled.div`
     max-width: 100vw;
     flex-grow: 1;
     width: 100vw;
-    height: inherit;
+    height: 100%;
     max-height: 40vh;
-    padding: 12px; 
+  
     transform: ${props => props.collapsed ? 'scaleY(0)' : 'scaleY(1)'};
     background: ${props => props.collapsed ? 'white' : null};
     color: rgba(255,255,255,0.8);
@@ -75,7 +73,7 @@ const PanelContent = styled.div`
     align-items: center;
     color: #fafafa;
     background: transparent;
-    height: 88%;
+    height: inherit;
     max-height: 33vh;
     padding: 12px;
 `;

@@ -17,18 +17,22 @@ export default GraphContainer;
 
 export const GraphCanvasContainer = styled.div` 
     position: relative;
-    min-height:400px;
-    min-width: 400px;
     width: inherit;
     height: inherit;
+    min-height: 360px;
+    min-width: 400px;
     background: rgba(255,255,255,.8); 
-    & > * { height: inherit; }
-    & > div > canvas { height: 100%; }
+    & > * > * { height: inherit; }
+    & > div > canvas { 
+      height: inherit; 
+    }
 `;
 
 const GraphCanvasInflater = styled.div`
     width: 100%;
     height: 100%;
-    background-color: white;
-
+    min-height: 360px;
+    background-color: transparent;
+    overflow: hidden;
+    
 `;
