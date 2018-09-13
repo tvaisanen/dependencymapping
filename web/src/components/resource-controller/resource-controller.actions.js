@@ -1,4 +1,3 @@
-import * as activeMappingActions from '../../actions/active-mapping.actions';
 import * as activeDetailActions from '../../actions/active-detail.actions';
 import * as appActions from '../../actions/app.actions';
 import * as types from '../../constants/types';
@@ -13,7 +12,7 @@ export function closeFormAndSetActiveDetail(activeDetail) {
         dispatch(activeDetailActions.setActiveDetail(activeDetail));
         dispatch(closeEdit());
         // if active detail is mapping
-        activeDetail.type === types.MAPPING ?
+        if (activeDetail.type === types.MAPPING) {
             dependencyMapHelpers.loadDependencyMap(
                 activeDetail.data.name,
                 getState().graph,
@@ -21,8 +20,8 @@ export function closeFormAndSetActiveDetail(activeDetail) {
                 getState().resources,
                 dispatch
             )
-            : null
-        ;
+        }
+
     }
 }
 

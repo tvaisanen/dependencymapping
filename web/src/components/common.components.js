@@ -49,7 +49,7 @@ export const FilterInputField = ({onChange}) => {
                (e)=> console.info(JSON.stringify(e.key))
            }
     />
-        <Icon>&#x1f50d;</Icon>
+        <Icon role="img" ariaLabel="filter">&#x1f50d;</Icon>
     </Field>
 }
 

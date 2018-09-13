@@ -1,18 +1,15 @@
 #!/bin/bash
 
-echo "Current working directory"
-echo $(pwd)
+echo "################# ${ENVIRONMENT} #################"
 
-echo "Collect static files"
-python manage.py collectstatic --noinput
+# echo "Collect static files"
+# python manage.py collectstatic --noinput
 
-echo "Apply database migrations"
-python manage.py migrate
-
+# echo "Apply database migrations"
+# python manage.py migrate
 # default login credentials
 # username: admin
 # password: password
-echo "Create admin user"
 cat set_default_config.py | python manage.py shell
 
 echo "Starting server"

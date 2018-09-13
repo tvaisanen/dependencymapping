@@ -1,11 +1,8 @@
 import axios from 'axios';
 
 const API_HOST = process.env.REACT_APP_API_HOST;
-const API_PORT = process.env.REACT_APP_API_PORT;
-
-// this is defined in proxy configs
 const API_URL = `https://${API_HOST}/`;
-//const API_URL = 'http://localhost:8000/';
+
 const MAPPINGS_URL = `${API_URL}mappings/`;
 const TAGS_URL = `${API_URL}tags/`;
 const RESOURCES_URL = `${API_URL}resources/`;

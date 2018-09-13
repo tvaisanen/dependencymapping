@@ -9,13 +9,9 @@ import {
     LayoutCol,
 } from '../components/';
 import GraphContainer from './GraphContainer';
-import {
-     addElements, clearGraph, nodeElementFromResource,
-} from '../common/graph-helpers';
+import { clearGraph } from '../common/graph-helpers';
 import {getResourceById} from "../common/resource-helpers";
 import * as actionCreators from '../actions/index';
-import * as parser from '../common/parser';
-import _ from 'lodash';
 import * as constants from '../constants/';
 import BottomPaneContainer from '../components/bottom-panel/BottomPanelContainer';
 import * as texts from '../data/text';

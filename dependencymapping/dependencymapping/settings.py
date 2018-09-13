@@ -13,11 +13,15 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import os
 import socket
 
-print("HERE SOME DEBUGGING")
-print("ENV: API_PATH = {}".format(os.getenv("API_PATH")))
-print("ENV: CLIENT_HOST = {}".format(os.getenv("CLIENT_HOST")))
-print("ENV: API_HOST = {}".format(os.getenv("API_HOST")))
-print("Hostname: {}".format(socket.gethostname()))
+ENV = os.getenv("DEVELOPMENT")
+
+if ENV == "DEVELOPMENT":
+    print("Environment: {}".format(ENV))
+    print("HERE SOME DEBUGGING")
+    print("ENV: API_PATH = {}".format(os.getenv("API_PATH")))
+    print("ENV: CLIENT_HOST = {}".format(os.getenv("CLIENT_HOST")))
+    print("ENV: API_HOST = {}".format(os.getenv("API_HOST")))
+    print("Hostname: {}".format(socket.gethostname()))
 
 # variables declared in from the "root/.env"
 CLIENT_HOST = os.getenv("CLIENT_HOST")
@@ -61,9 +65,6 @@ CORS_ORIGIN_REGEX_WHITELIST = (
     r'^(https?://)?.*{host}'.format(host=CLIENT_HOST),
 )
 
-print("\nMore debugging here")
-print(CORS_ORIGIN_WHITELIST)
-print(CORS_ORIGIN_REGEX_WHITELIST)
 
 # Application definitioon
 

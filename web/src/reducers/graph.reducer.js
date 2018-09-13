@@ -33,7 +33,7 @@ const newGraphInstance = ({eventHandlers}) => {
         }
     });
 
-    Object.keys(eventHandlers).map(key => {
+    Object.keys(eventHandlers).forEach(key => {
        const selector = eventHandlers[key][0];
        const handler = eventHandlers[key][1];
        cy.on(key, selector, handler);

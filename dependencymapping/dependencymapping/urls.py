@@ -46,11 +46,10 @@ urlpatterns = [
     url(r'^schema/', views.SwaggerSchemaView.as_view()),
     url('grappelli/', include('grappelli.urls')),
     url(r'^admin/', admin.site.urls),
-url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^swagger-docs/', schema_view),
     url(r'^docs/', include_docs_urls(title="Dependency Mapper API", public=False)),
     url(r'^', include(router.urls)),
     url(r'^api-token-auth/', rest_views.obtain_auth_token),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^app/', TemplateView.as_view(template_name='index.html'))
-]  + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
