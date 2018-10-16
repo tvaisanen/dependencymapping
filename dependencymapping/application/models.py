@@ -1,6 +1,13 @@
 from django.db import models
 
 
+class AssetState(models.Model):
+    name = models.CharField(
+        max_length=100,
+        blank=False
+    ),
+
+
 class Tag(models.Model):
     name = models.CharField(max_length=100, primary_key=True)
     description = models.CharField(max_length=300, blank=True)
@@ -9,11 +16,17 @@ class Tag(models.Model):
         return self.name
 
 
-class Resource(models.Model):
+class Asset(models.Model):
+    state = models.ForeignKey(
+        'AssetState',
+        on_delete=models.SET_NULL,
+        null=True
+    )
+
     name = models.CharField(max_length=100, primary_key=True)
     description = models.TextField(blank=True)
     # todo: dependencies through="Dependency"
-    connected_to = models.ManyToManyField("Resource", blank=True)
+    connected_to = models.ManyToManyField("Asset", blank=True)
     tags = models.ManyToManyField("Tag", blank=True)
 
     def __str__(self):
@@ -23,7 +36,7 @@ class Resource(models.Model):
 class DependencyMap(models.Model):
     name = models.CharField(max_length=100, primary_key=True)
     description = models.TextField()
-    resources = models.ManyToManyField("Resource", related_name="resources")
+    resources = models.ManyToManyField("Asset", related_name="resources")
     tags = models.ManyToManyField("Tag", related_name="tags")
 
     def __str__(self):

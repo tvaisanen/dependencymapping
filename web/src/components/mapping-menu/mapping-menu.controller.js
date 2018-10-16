@@ -12,7 +12,7 @@ export default {
     dispatchToProps: (props) => dispatchToProps(props),
 }
 
-function dispatchToProps(dispatch){
+function dispatchToProps(dispatch) {
     return {
         setActiveDetail: (activeDetail) => dispatch(actions.setActiveDetail(activeDetail)),
         onActiveAssetClick: (activeDetail) => dispatch(actions.onActiveAssetClick(activeDetail)),
@@ -20,13 +20,16 @@ function dispatchToProps(dispatch){
     }
 }
 
-function getMappingMenuProps(state){
+function getMappingMenuProps(state) {
+    const {resources} = state.activeMapping;
+    // sort resources by name
     return {
         mappings: state.mappings,
         activeMapping: state.activeMapping,
         activeDetail: state.activeDetail,
         mappingNameList: state.mappings.map(m => m.name),
-        activeResourceNameList: state.activeMapping.resources.map(r => r.name) || [],
+        activeResourceNameList: resources ? resources.map(r => r.name) : [],
+        // activeResourceNameList: state.activeMapping.resources ? state.activeMapping.resources.map(r => r.name).sort((a, b) => (a.name - b.name)) : [],
         hoverResourceOn: (id) => hoverIndicationOn(state.graph, id),
         hoverResourceOff: (id) => hoverIndicationOff(state.graph, id),
     };

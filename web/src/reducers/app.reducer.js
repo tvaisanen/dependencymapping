@@ -6,7 +6,7 @@ export default function ( state = initialState.app, action ){
     switch(action.type){
         case types.SET_FORM_TYPE:
             return {
-                bottomPanel: state.bottomPanel,
+                ...state,
                 form: {
                     ...state.form,
                     type: action.formType
@@ -37,6 +37,20 @@ export default function ( state = initialState.app, action ){
                     type: resourceType.ASSET
                 }
             };
+
+        case types.SET_GRAPH_LAYOUT:
+            return {
+                ...state,
+                graph: {
+                    selectedLayout: action.layout
+                }
+            };
+
+        case types.TOGGLE_COLLAPSE_MENU:
+            return {
+                ...state,
+                showCollapseMenu: !state.showCollapseMenu
+            }
 
         default:
             return state;

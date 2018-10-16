@@ -2,6 +2,9 @@ import _ from 'lodash';
 import {edgeStyles, nodeStyles} from "../configs/graph.styles";
 import {layoutOptions} from "../configs/configs.cytoscape";
 
+
+const LAYOUT = 'cola';
+
 const required = () => {
     throw new Error('Missing parameter')
 };
@@ -89,11 +92,17 @@ export function addElements(cy = required(), elements = required()) {
     }
 }
 
-export function updateLayout(cy = required()) {
+export function updateLayout(cy = required(), layout=required()) {
     try {
-        const options = layoutOptions.cola;
-        const layout = cy.layout({name: 'cola', ...options});
-        layout.run();
+        // if selected layout has additional options
+        const options = layoutOptions[layout] || [];
+        const selectedLayout = layout || LAYOUT;
+
+        const layoutToRun = cy.layout({
+            name: selectedLayout
+            , ...options
+        });
+        layoutToRun.run();
     } catch (e) {
         console.error(e);
     }
@@ -129,7 +138,6 @@ export function createNodeElements({ids}) {
 
 export function hoverIndicationOn(cy = required(), id) {
     const el = cy.getElementById(id);
-    console.info(el);
     el.animate({
         style: nodeStyles.expanded
     }, {
@@ -160,13 +168,11 @@ export function hoverIndicationOn(cy = required(), id) {
 
 export function hoverIndicationOff(cy = required(), id) {
     const el = cy.getElementById(id);
-    console.info(el);
     el.animate({
         style: nodeStyles.passive
     }, {
         duration: 250
     });
-    console.info(el.neighborhood().nodes());
     el.neighborhood().clearQueue()
         .forEach(e => {
             if (e.id() === id) {

@@ -58,11 +58,10 @@ const DetailBlock = styled.div`
             flex-direction: row;
             width: auto;
             flex-grow: 1;
-            align-items: center;
+            align-items: flex-start;
             height: inherit;
-            > div {
-            height: 90%;
-        }`;
+        
+`;
 
 
 

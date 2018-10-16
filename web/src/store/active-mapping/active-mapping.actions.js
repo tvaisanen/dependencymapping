@@ -1,7 +1,7 @@
-import * as types from './actionTypes';
-import * as graphActions from './graph.actions';
-import * as graphHelpers from '../common/graph-helpers';
-import * as resourceHelpers from '../common/resource-helpers';
+import * as types from './active-mapping.action-types';
+import * as graphActions from '../graph/graph.actions';
+import * as graphHelpers from '../../common/graph-helpers';
+import * as resourceHelpers from '../../common/resource-helpers';
 
 export function clearActiveMappingSelection() {
     return {type: types.CLEAR_ACTIVE_MAPPING_SELECTION}
@@ -46,11 +46,16 @@ export function addResourceToActiveMapping(resource) {
         const edgesTargetingResource = resourcesConnectingInto.map(
             r => graphHelpers.edgeElementFromResource(r.name, resource.name));
 
-
-        dispatch(graphActions.addNodeToGraph(resource));
-        dispatch(graphActions.addElementsToGraph(edgeElements));
-        dispatch(graphActions.addElementsToGraph(edgesTargetingResource));
+        const cy = getState().graph;
+        graphHelpers.addElement(cy, resource);
+        graphHelpers.addElements(cy, edgeElements);
+        graphHelpers.addElements(cy, edgesTargetingResource);
+        //dispatch(graphActions.addNodeToGraph(resource));
+        //dispatch(graphActions.addElementsToGraph(edgeElements));
+        //dispatch(graphActions.addElementsToGraph(edgesTargetingResource));
         dispatch({type: types.ADD_ACTIVE_MAPPING_RESOURCE, resource});
+        alert('addResourceToActiveMapping')
+        graphHelpers.updateLayout(cy, "cola");
     }
 }
 

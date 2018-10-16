@@ -1,28 +1,22 @@
 import GwClientApi from '../api/gwClientApi';
 import * as types from './actionTypes';
 import * as graphHelpers from '../common/graph-helpers';
+import * as activeMappingActions from '../store/active-mapping/active-mapping.actions';
+
 /*************** MAPPING *************/
 
 export function postMapping({name, description, resources, tags}) {
 
     return function (dispatch) {
-
-        return GwClientApi.postMapping({name, description, resources, tags})
-            .then(response => {
-                dispatch(postMappingSuccess(response));
-                // set
-                dispatch(addMapping(response.data));
-                // return the response to caller
-                return response;
-            }).catch(error => {
-                return error.response;
-            });
+        const resolveCallback = mapping => dispatch(postMappingSuccess(mapping));
+        const promise = GwClientApi.postMapping({name, description, resources, tags})
+        return {promise, resolveCallback};
     }
 }
 
-export function postMappingSuccess(response) {
+export function postMappingSuccess(mapping) {
     console.info('Post mapping success.');
-    return {type: types.POST_MAPPING_SUCCESS, response}
+    return {type: types.POST_MAPPING_SUCCESS, mapping}
 }
 
 export function addMapping(mapping) {
@@ -33,18 +27,11 @@ export function addMapping(mapping) {
 /*************** UPDATE **************/
 
 export function updateMapping(mapping) {
-    console.info("updateMapping(mapping);");
-    console.info(mapping);
     return function (dispatch) {
-        return GwClientApi.putMapping(mapping)
-            .then(response => {
-                console.info("updateMapping.then()");
-                console.info(response);
-                dispatch(updateMappingSuccess({mapping: response.data}));
-                return response;
-            }).catch(error => {
-                return error.response;
-            })
+        const resolveCallback = (mapping) => dispatch(updateMappingSuccess({mapping}));
+        const promise = GwClientApi.putMapping(mapping);
+        return {promise, resolveCallback};
+
     }
 }
 
@@ -54,21 +41,21 @@ function updateMappingSuccess({mapping}) {
 }
 
 
-
-
 /*************** DELETE **************/
 
 export function deleteMapping({name}) {
-    console.info("deletemapping(" + name + ")");
     return function (dispatch, getState) {
-        return GwClientApi.deleteMapping({name})
-            .then(response => {
-                dispatch(deleteMappingSuccess({removed: name}));
-                graphHelpers.clearGraph(getState().graph);
-                return response;
-            }).catch(error => {
-                return error;
-            })
+
+        const promise = GwClientApi.deleteMapping({name});
+
+        const resolveCallback = () => {
+            // no need to return responsa data
+            dispatch(deleteMappingSuccess({removed: name}));
+            dispatch(activeMappingActions.clearActiveMappingSelection());
+            graphHelpers.clearGraph(getState().graph);
+        };
+
+        return {promise, resolveCallback};
     }
 }
 
@@ -82,15 +69,19 @@ export function deleteMappingSuccess({removed}) {
 export function loadMappingsSuccess(mappings) {
     return {type: types.LOAD_MAPPINGS_SUCCESS, mappings}
 }
-export function loadAllMappings() {
+
+export function loadAllMappings(auth) {
     return function (dispatch) {
-        return GwClientApi.getGraphs().then(graphs => {
-            dispatch(loadMappingsSuccess(graphs))
+        const promise = GwClientApi.getGraphs({auth});
+
+        promise.then(response => {
+            dispatch(loadMappingsSuccess(response.data))
         }).catch(error => {
             console.error(error);
         });
     }
 }
+
 export function saveMapping(mapping) {
     // not async
     // todo: when backend

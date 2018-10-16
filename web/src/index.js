@@ -6,14 +6,25 @@ import registerServiceWorker from './registerServiceWorker';
 import configureStore from './store/configureStore';
 import { Provider } from 'react-redux';
 import * as actions from './actions/index';
+import * as storeActions from './store';
 
 
 const store = configureStore();
 
+
 // load resources and stored graphs
-store.dispatch(actions.loadAllMappings());
-store.dispatch(actions.loadAllResources());
-store.dispatch(actions.loadAllTags());
+const authStorage = localStorage.getItem('auth') || false;
+const auth = authStorage ? JSON.parse(authStorage) : false;
+console.info(auth);
+if (auth) {
+    console.info("now we are logged in -> so load the assets!");
+    store.dispatch(storeActions.loginSuccess(auth));
+    store.dispatch(actions.loadAllMappings());
+    store.dispatch(storeActions.loadAllResources());
+    store.dispatch(storeActions.loadAllTags());
+}
+
+
 
 console.group("Environment");
 console.info(process.env);

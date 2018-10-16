@@ -1,20 +1,22 @@
 import * as graphHelpers from './../../common/graph-helpers';
-import * as actions from './../../actions';
+import * as actions from './collapse-menu.actions';
 
-function stateToProps(state, props){
+
+
+function stateToProps(state, props) {
     return {
         ...props,
+        visible: state.app.showCollapseMenu,
         activeMapping: state.activeMapping,
-        downloadImage: () => graphHelpers.downloadPng(state.graph),
-        //clearGraphSelection: () => graphHelpers.clearGraph(state.graph),
-        updateLayout: () => graphHelpers.updateLayout(state.graph),
     };
 }
 
-function dispatchToProps(dispatch){
+function dispatchToProps(dispatch) {
     return {
-        saveMapping: (activeMapping) => dispatch(actions.updateMapping(activeMapping)),
-        clearGraphSelection: () => dispatch(actions.clearGraphAndActiveMapping())
+        downloadImage: () => dispatch(actions.downloadImage()),
+        saveMapping: () => dispatch(actions.saveMapping()),
+        clearGraphSelection: () => dispatch(actions.clearGraph()),
+        logout: () => dispatch(actions.logout())
     }
 }
 

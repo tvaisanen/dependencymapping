@@ -1,20 +1,24 @@
-import * as activeDetailActions from '../../actions/active-detail.actions';
+import * as activeDetailActions from '../../store/active-detail/active-detail.actions';
 import * as appActions from '../../actions/app.actions';
 import * as types from '../../constants/types';
 import * as views from '../../constants/views';
 import * as dependencyMapHelpers from "../../common/dependency-map.helpers";
 
 export function closeFormAndSetActiveDetail(activeDetail) {
-    console.groupCollapsed("closeFormAndSetActiveDetail(" + activeDetail.data.name + ")");
-    console.info(activeDetail);
-    console.groupEnd();
     return function (dispatch, getState) {
+        console.group("Debug !");
+        console.info(activeDetail);
+        console.groupEnd();
         dispatch(activeDetailActions.setActiveDetail(activeDetail));
         dispatch(closeEdit());
         // if active detail is mapping
-        if (activeDetail.type === types.MAPPING) {
+
+        const isMapping = activeDetail.type === types.MAPPING;
+
+        if ( isMapping && activeDetail.setDetail) {
+            alert("this should not happen when deleting a mapping")
             dependencyMapHelpers.loadDependencyMap(
-                activeDetail.data.name,
+                activeDetail.data.name || "None",
                 getState().graph,
                 getState().mappings,
                 getState().resources,

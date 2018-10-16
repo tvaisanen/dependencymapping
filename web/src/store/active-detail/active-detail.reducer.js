@@ -1,6 +1,6 @@
-import * as types from '../actions/actionTypes';
-import initialState from './initialState';
-import * as resourceTypes from '../constants/types';
+import * as types from './active-detail.action-types';
+import initialState from '../../reducers/initialState';
+import * as resourceTypes from '../../constants/types';
 
 export default function categoryReducer(state = initialState.activeDetail, action) {
     switch (action.type) {

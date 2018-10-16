@@ -21,7 +21,7 @@ export const GraphCanvasContainer = styled.div`
     height: inherit;
     min-height: 360px;
     min-width: 400px;
-    background: rgba(255,255,255,.8); 
+    background: rgba(255,255,255,1); 
     & > * > * { height: inherit; }
     & > div > canvas { 
       height: inherit; 

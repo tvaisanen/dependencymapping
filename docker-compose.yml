@@ -22,7 +22,7 @@ services:
     db:
         image: postgres
         volumes:
-            - psgl-dm:/var/lib/postgresql/data
+            - dmapper-data:/var/lib/postgresql/data
         networks:
             - overlay
         ports:
@@ -61,7 +61,7 @@ services:
             - .env
 
 volumes:
-   psgl-dm:
+   dmapper-data:
            
 networks:
    overlay:

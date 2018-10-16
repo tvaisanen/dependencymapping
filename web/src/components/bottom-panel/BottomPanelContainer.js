@@ -22,7 +22,6 @@ const panelViews = {
 
 const BottomPanelContainer = (props) => {
     const view = props.views[props.selectedView];
-    console.info(view);
         return (
             <BottomPanel id="bottom-panel-container">
                 <PanelNavTabs/>

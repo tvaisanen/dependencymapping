@@ -1,7 +1,7 @@
-import * as types from '../actions/actionTypes';
-import initialState from './initialState';
+import * as types from './graph.action-types';
+import initialState from '../../reducers/initialState';
 import cytoscape from 'cytoscape';
-import {graphStyle} from '../configs/configs.cytoscape';
+import {graphStyle} from '../../configs/configs.cytoscape';
 import cxtmenu from 'cytoscape-cxtmenu';
 import cola from 'cytoscape-cola';
 
@@ -13,10 +13,6 @@ export default function graphReducer(cy = initialState.graph, action){
     switch(action.type){
         case types.INIT_GRAPH:
             return newGraphInstance({...action}); // action.eventHandlers
-
-        case types.ADD_ELEMENTS_TO_GRAPH:
-           cy.add(action.elements);
-           return cy;
 
         default:
             return cy;

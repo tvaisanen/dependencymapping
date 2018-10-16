@@ -1,11 +1,14 @@
 import axios from 'axios';
+import https from 'https';
+import {connect} from 'react-redux';
 
 const API_HOST = process.env.REACT_APP_API_HOST;
 const API_URL = `https://${API_HOST}/`;
 
 const MAPPINGS_URL = `${API_URL}mappings/`;
 const TAGS_URL = `${API_URL}tags/`;
-const RESOURCES_URL = `${API_URL}resources/`;
+const RESOURCES_URL = `${API_URL}assets/`;
+const LOGIN_URL = `${API_URL}rest-auth/login/`;
 
 function tagDetailUrl({name}) {
     return `${TAGS_URL}${encodeURI(name)}/`;
@@ -19,52 +22,71 @@ function resourceDetailUrl({name}) {
     return `${RESOURCES_URL}${encodeURI(name)}/`;
 }
 
+//;
+//axios.get('https://something.com/foo', { httpsAgent: agent });
+
+console.group("Process ENVIRONMENT");
+let agent;
+if (process.env.NODE_ENV === "development") {
+    console.info("set TLS :: rejectUnauthorized = false");
+    agent = new https.Agent({
+        rejectUnauthorized: false
+    });
+} else {
+    agent = new https.Agent();
+}
+
+console.info(process.env);
+console.groupEnd();
+
+function setAuthHeader() {
+    const token = JSON.parse(localStorage.getItem('auth')).key;
+
+    axios.defaults.headers.common['Authorization'] =  `Token ${token}`;
+}
+
 class GwClientApi {
+
+    static login({email, username, password}) {
+        return axios.post(LOGIN_URL, {
+            username: username,
+            email: email,
+            password: password,
+            httpsAgent: agent
+        });
+    }
+
     // todo: refactor to getMappings
     static getGraphs() {
-        return axios.get(MAPPINGS_URL)
-            .then(response => {
-                return response.data;
-            }).catch(error => {
-
-            })
+        return axios.get(MAPPINGS_URL, {
+            Authorization: setAuthHeader()
+        });
     }
 
-    static getResources() {
-        return fetch(RESOURCES_URL)
-            .then(response => {
-                return response.json();
-            }).catch(error => {
-                return error;
-            });
+    static getAssets() {
+        return axios.get(RESOURCES_URL);
     }
+
 
     static getResource(id) {
-        return fetch(resourceDetailUrl({name:id}))
-            .then(response => {
-                return response.json();
-            }).catch(error => {
-                return error;
-            });
+        return axios.get(resourceDetailUrl({name: id}));
     }
-
 
 
     static getTags() {
-        return fetch(TAGS_URL)
-            .then(response => {
-                return response.json();
-            }).catch(error => {
-                return error;
-            });
+        return axios.get(TAGS_URL, {
+            Authorization: setAuthHeader()
+        });
     }
 
     /********************** MAPPING METHODS **********************/
 
-    static postMapping({name, description=" ", resources, tags}) {
+    static postMapping({name, description = " ", resources, tags}) {
         console.groupCollapsed("postMapping(form)");
         console.info({name, description, resources, tags});
         console.groupEnd();
+
+        setAuthHeader();
         return axios.post(
             MAPPINGS_URL,
             {
@@ -81,6 +103,7 @@ class GwClientApi {
         return axios.put(
             mappingsDetailUrl({name}),
             {
+                Authorization: setAuthHeader(),
                 name: name,
                 description: description,
                 resources: JSON.stringify(resources),
@@ -100,15 +123,15 @@ class GwClientApi {
         return axios.delete(resourceDetailUrl({name}));
     }
 
-    static postResource({name, description="", connected_to=[], tags=[]}) {
+    static postResource({name, description = "", connected_to = [], tags = []}) {
         console.groupCollapsed("postMapping(form)");
         console.info({name, description, connected_to, tags});
         console.info({
-                name: name,
-                description: description,
-                connected_to: JSON.stringify(connected_to),
-                tags: JSON.stringify(tags)
-            });
+            name: name,
+            description: description,
+            connected_to: JSON.stringify(connected_to),
+            tags: JSON.stringify(tags)
+        });
         console.groupEnd();
         return axios.post(RESOURCES_URL,
             {
@@ -118,6 +141,7 @@ class GwClientApi {
                 tags: JSON.stringify(tags)
             })
     }
+
     static putResource({name, description, connected_to, tags}) {
         return axios.put(
             resourceDetailUrl({name}),
@@ -142,6 +166,13 @@ class GwClientApi {
 
     static deleteTag({name, description}) {
         return axios.delete(tagDetailUrl({name}));
+    }
+}
+
+const mapStateToProps = state => {
+    console.info("mapped state to props in gwClientAPI")
+    return {
+        auth: state.auth
     }
 }
 

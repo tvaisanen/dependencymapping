@@ -8,20 +8,17 @@ import {
     Layout,
     LayoutCol,
 } from '../components/';
-import GraphContainer from './GraphContainer';
-import { clearGraph } from '../common/graph-helpers';
+import GraphContainer from '../components/graph-container/GraphContainer';
 import {getResourceById} from "../common/resource-helpers";
 import * as actionCreators from '../actions/index';
-import * as constants from '../constants/';
 import BottomPaneContainer from '../components/bottom-panel/BottomPanelContainer';
 import * as texts from '../data/text';
 import * as events from '../common/graph.events';
-import {layoutOptions} from "../configs/configs.cytoscape";
 import MappingMenuContainer from '../components/mapping-menu/MappingMenuContainer';
 import CollapseMenuContainer from '../components/collapse-menu/CollapseMenuContainer';
-import * as activeMappingHelpers from '../common/dependency-map.helpers';
+import LoginView from '../components/login-view/LoginView';
+import * as graphActions from '../store/graph/graph.actions';
 
-const LAYOUT = 'cola';
 
 class App extends Component {
     constructor(props) {
@@ -32,38 +29,32 @@ class App extends Component {
             showGraphButtons: false,
             detail: texts.landingDetail,
             detailType: "",
-            layout: LAYOUT,
-            info: "I'm an info panel"
+            info: ""
         };
 
-        this.setResourceDetail = this.setResourceDetail.bind(this);
-        this.toggleFloatingButtons = this.toggleFloatingButtons.bind(this);
-        this.setCategoryDetail = this.setCategoryDetail.bind(this);
-        this.setDetail = this.setDetail.bind(this);
+        this.onNodeClick = this.onNodeClick.bind(this);
     }
+
+    /**************** Todo: refactor this block **************/
 
     componentDidMount() {
-        this.props.initGraph({
-            eventHandlers: {
-                tap: ['node', this.onNodeClick],
-                mouseover: ['node', events.onNodeMouseOver],
-                mouseout: ['node', events.onNodeMouseOut],
-                cxttap: ['node', events.onCtxClick]
-            }
-        });
+        // todo: refactor to appropriate location
+        if (this.props.auth.loggedIn) {
+            this.props.initGraph({
+                eventHandlers: {
+                    tap: ['node', this.onNodeClick],
+                    mouseover: ['node', events.onNodeMouseOver],
+                    mouseout: ['node', events.onNodeMouseOut],
+                    cxttap: ['node', events.onCtxClick]
+                }
+            });
+        }
 
     }
 
-    updateLayout() {
-        const options = layoutOptions.cola;
-        //const layout = this.state.cy.layout({name: this.state.layout, ...options});
 
-        const layout = this.props.cy.layout({name: this.state.layout, ...options});
-        layout.run();
-    }
-
-
-    onNodeClick = (evt) => {
+    onNodeClick(evt) {
+        // todo: refactor to appropriate location
         // node click requires actions within the cy context
         // and also in the context of the resources
 
@@ -71,14 +62,19 @@ class App extends Component {
         // pointing and a list of resources that the
         // target resource is connected to.
 
+        // get the clicked node id
         const resourceName = evt.target.id();
 
-        this.setResourceDetail(resourceName);
+        // set store active detail
         const clickedResource = getResourceById({
             id: resourceName,
             resources: this.props.resources
         });
 
+        this.props.setActiveDetail({
+            type: 'ASSET',
+            data: clickedResource
+        });
         // the active mapping state needs to be updated by
         // adding the resources of the expanded node.
         this.props.addActiveMappingResources(clickedResource.connected_to);
@@ -88,97 +84,48 @@ class App extends Component {
         // list to the target is connected to
 
         const targetNames = clickedResource.connected_to.map(r => r.name);
-        events.onNodeClick({...evt, targetNames});
+
+        const layout = this.props.app.graph.selectedLayout;
+        events.onNodeClick({...evt, targetNames, layout});
     }
 
 
-    loadDependencyMap = (mapId) => {
-        activeMappingHelpers.loadDependencyMap(
-            mapId,
-            this.props.cy,
-            this.props.mappings,
-            this.props.resources
-        );
-    };
+    /**************************************************************/
 
 
-
-    setDetail({detail, type, detailObject}) {
-        // todo: refactor to store? CLEAN!
-        this.props.setActiveDetail({data: detail, type});
-        if (detail === constants.EMPTY) {
-            clearGraph(this.state.cy);
-            this.setState({detail: {name: "no selection", description: "no selection"}});
-            this.props.clearActiveMappingSelection();
-            return;
-        }
-        switch (type) {
-            case constants.MAPPING:
-                this.loadDependencyMap(detail);
-                break;
-            case constants.ASSET:
-                this.setResourceDetail(detail);
-                break;
-            case constants.TAG:
-                this.setCategoryDetail(detail);
-                break;
-            default:
-                break;
-        }
-    }
-
-
-    setResourceDetail(resourceId) {
-        const clickedResource = getResourceById({id: resourceId, resources: this.props.resources});
-        // add attribute type to the object
-        // this is needed when edit is used from detailview
-        this.props.setActiveDetail({data: clickedResource, type: constants.ASSET});
-        this.setState({detail: clickedResource, detailType: constants.ASSET});
-    }
-
-    setCategoryDetail(categoryId) {
-        const clickedTag = this.props.tags.filter(r => r.name === categoryId)[0];
-        this.props.setActiveDetail({data: clickedTag, type: constants.TAG});
-        this.setState({detail: clickedTag, detailType: constants.TAG})
-    }
-
-    toggleFloatingButtons() {
-        this.setState({showGraphButtons: !this.state.showGraphButtons});
-    }
 
     render() {
-        return (
-            <Layout>
-                <LayoutCol id="container-top" height={"60vh"} minHeight={"360px"}>
-                    <TopBarContainer info={this.state.info} menuToggleHandler={this.toggleFloatingButtons}/>
-                    <MappingContent>
-                        <MappingMenuContainer loadDependencyMap={this.loadDependencyMap}/>
-                        <GraphContainer elements={this.state.elements}/>
-                        <CollapseMenuContainer visible={this.state.showGraphButtons}/>
-                    </MappingContent>
-                </LayoutCol>
-                <LayoutCol
-                    id="container-bottom"
-                    height={'40vh'}
-                    minHeight={'240px'}
-                    align={'center'}
-                    grow={1}>
-                    <BottomPaneContainer
-                        id="bottom-panel"
-                        detail={this.state.detail}
-                        detailType={this.state.detailType}
-                        setResourceDetail={this.setResourceDetail}
-                        setDetail={this.setDetail}
-                        cy={this.props.cy}
-                    />
-                    {/*<PreviewAndFormsContainer detail={this.state.detail}/>*/}
-                </LayoutCol>
-            </Layout>
-        );
+
+
+        if (!this.props.auth.loggedIn) {
+            // if there's no logged in user
+            // render the login view
+            return <Layout><LoginView/></Layout>
+        } else {
+            // render main view
+            return (
+                <Layout>
+                    <LayoutCol id="container-top" height={"60vh"} minHeight={"360px"}>
+                        <TopBarContainer/>
+                        <MappingContent>
+                            <MappingMenuContainer loadDependencyMap={this.loadDependencyMap}/>
+                            <GraphContainer/>
+                            <CollapseMenuContainer/>
+                        </MappingContent>
+                    </LayoutCol>
+                    <LayoutCol
+                        id="container-bottom"
+                        height={'40vh'}
+                        minHeight={'240px'}
+                        align={'center'}
+                        grow={1}>
+                        <BottomPaneContainer id="bottom-panel"/>
+                    </LayoutCol>
+                </Layout>
+            );
+        }
     }
 }
-
-
 
 
 App.propTypes = {
@@ -187,6 +134,8 @@ App.propTypes = {
 
 const mapStateToProps = (state, ownProps = {}) => {
     return {
+        app: state.app,
+        auth: state.auth,
         mappings: state.mappings,
         resources: state.resources,
         dependencies: state.dependencies,
@@ -198,19 +147,19 @@ const mapStateToProps = (state, ownProps = {}) => {
     }
 }
 
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({...actionCreators}, dispatch)
-}
+const mapDispatchToProps = (dispatch) => ({
+    ...bindActionCreators({...actionCreators}, dispatch),
+    initGraph: ({eventHandlers}) => dispatch(graphActions.initGraph({eventHandlers}))
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
-
 
 
 export const MappingContent = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content: ${props=>props.justify};
-    align-items: ${props=>props.align};
-    height: ${props=>props.height? props.height: 'inherit'};
+    justify-content: ${props => props.justify};
+    align-items: ${props => props.align};
+    height: ${props => props.height ? props.height : 'inherit'};
     overflow: hidden;
 `;

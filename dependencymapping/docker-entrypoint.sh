@@ -5,8 +5,10 @@ echo "################# ${ENVIRONMENT} #################"
 # echo "Collect static files"
 # python manage.py collectstatic --noinput
 
-# echo "Apply database migrations"
-# python manage.py migrate
+echo "Apply database migrations"
+python manage.py migrate
+python manage.py makemigrations
+python manage.py migrate
 # default login credentials
 # username: admin
 # password: password

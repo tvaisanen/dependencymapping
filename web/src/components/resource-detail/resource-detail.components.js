@@ -92,7 +92,9 @@ export const ResourceDetailHeader = ({activeDetail, isResourceInMap, editDetail,
 };
 export const DetailDescription = (props) => (
     <s.DetailDescription>
-        <MarkDownRenderer markdown={props.description ? props.description : null}/>
+        <MarkDownRenderer
+            style={{height: '16em'}}
+            markdown={props.description ? props.description : "Edit to add description."}/>
     </s.DetailDescription>
 );
 

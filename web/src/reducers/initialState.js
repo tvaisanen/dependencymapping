@@ -5,6 +5,7 @@ import * as views from '../constants/views';
 
 export default {
     app: {
+        info: "Initial info message",
         bottomPanel: {
             view: views.BROWSE,
             tabItems: [
@@ -15,7 +16,11 @@ export default {
         form: {
             edit: false,
             type: types.MAPPING
-        }
+        },
+        graph: {
+            selectedLayout: 'cose'
+        },
+        showCollapseMenu: false,
     },
     mappings: [],
     dependencies: [],

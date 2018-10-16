@@ -10,9 +10,11 @@ export const graphStyle = [ // the stylesheet for the graph
         selector: 'edge',
         style: {
             'width': 3,
+            'curve-style': 'bezier',
             'line-color': '#eee',
-            'target-arrow-color': '#85cc57',
-            'target-arrow-shape': 'triangle'
+             'target-arrow-color': '#ccc',
+            'target-arrow-shape': 'vee',
+
         }
     },
 

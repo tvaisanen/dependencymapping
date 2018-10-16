@@ -1,17 +1,15 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux'
-import * as actionCreators from './../../actions/index';
 import styled from 'styled-components';
 import * as l from '../layout';
 import * as types from './../../constants/types';
 import {isResourceInMapping, filterResources } from './../../common/resource-helpers';
-import { removeElement, updateLayout } from "./../../common/graph-helpers";
+import * as graphHelpers from "./../../common/graph-helpers";
 import ResourceDetail from '../resource-detail/ResourceDetailContainer';
 import { FilterInputField } from '../common.components';
+import resourceBrowserCtrl from './resource-browser.controller';
 
-
-import {bindActionCreators} from 'redux';
 class ResourceBrowserContainer extends Component {
     constructor(props) {
         super(props);
@@ -26,14 +24,14 @@ class ResourceBrowserContainer extends Component {
     }
 
     addResourceToMapping(resource) {
-        const { activeMapping } = this.props;
-        this.props.addResourceToActiveMapping(resource, activeMapping);
-        updateLayout(this.props.cy);
+        this.props.addResourceToActiveMapping(
+            resource,
+            this.props.activeMapping
+        );
     }
 
     removeResourceFromMapping(resource) {
         this.props.removeResourceFromActiveMapping(resource);
-        removeElement(this.props.cy, resource.name);
     }
 
     onFilterChange(e) {
@@ -45,8 +43,8 @@ class ResourceBrowserContainer extends Component {
         const { resources, tags } = this.props;
         const {filterValue, resourceTypes} = this.state;
         const isResourceInMap = isResourceInMapping({
-            mapping: this.props.activeMapping,
-            resourceId: this.props.activeDetail.name
+            mapping: this.props.activeMapping ? this.props.activeMapping : {name:'none'},
+            resourceId: this.props.activeDetail.name || false,
         });
 
         const resourceItems = resourceTypes === types.ASSET ?
@@ -97,7 +95,6 @@ class ResourceBrowserContainer extends Component {
                         detailType={this.props.activeDetailType}
                         detail={this.props.detail}
                         setDetail={this.props.setActiveDetail}
-                        setResourceDetail={this.props.setResourceDetail}
                         isResourceInMap={isResourceInMap}
                         addResourceToMapping={this.addResourceToMapping}
                         removeResourceFromActiveMapping={this.removeResourceFromMapping}
@@ -117,20 +114,12 @@ ResourceBrowserContainer.propTypes = {
     activeMapping: PropTypes.object.isRequired
 };
 
-const mapStateToProps = (state, ownProps = {}) => {
-    return {
-        cy: state.graph,
-        resources: state.resources,
-        tags: state.tags,
-        activeMapping: state.activeMapping,
-        activeDetail: state.activeDetail.data,
-        activeDetailType: state.activeDetail.type
-    }
-};
 
-const mapDispatchToProps = dispatch => bindActionCreators({...actionCreators}, dispatch)
 
-export default connect(mapStateToProps, mapDispatchToProps)(ResourceBrowserContainer);
+export default connect(
+    resourceBrowserCtrl.mapStateToProps,
+    resourceBrowserCtrl.mapDispatchToProps
+)(ResourceBrowserContainer);
 
 const ResourceSwitch = styled.div`
     display: flex;

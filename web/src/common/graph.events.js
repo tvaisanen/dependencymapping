@@ -12,9 +12,13 @@ export function onNodeMouseOut(event) {
     helpers.hoverIndicationOff(event.target.cy(), event.target.id());
 }
 
-export function onNodeClick({target, cy, targetNames}) {
-    console.info("click")
+export function onNodeClick({target, cy, targetNames, layout}) {
+    console.group("onNodeClick({cy, target, targetNames, layout})");
+    console.info(target);
     console.info(targetNames);
+    console.info(layout);
+
+    console.groupEnd();
 
     const nodesToCreate = helpers.createNodeElements({
         ids: targetNames
@@ -30,7 +34,8 @@ export function onNodeClick({target, cy, targetNames}) {
 
     if (nodesToCreate.length > 0){
         // nodes are created, update the layout
-        helpers.updateLayout(cy);
+        alert(`helpers called: ${layout}`);
+        helpers.updateLayout(cy, layout);
     }
 
 

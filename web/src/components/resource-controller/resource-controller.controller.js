@@ -1,21 +1,22 @@
 import * as actions from './resource-controller.actions';
-import * as actionsResource from '../../actions/resource.actions';
+import * as actionsResource from '../../store/asset/asset.actions';
 import * as actionsMapping from '../../actions/mapping.actions';
-import * as actionsTag from '../../actions/tag.actions';
-import * as actionsActiveDetail from '../../actions/active-detail.actions';
+import * as actionsTag from '../../store/tag/tag.actions';
+import * as actionsActiveDetail from '../../store/active-detail/active-detail.actions';
 import * as types from '../../constants/types';
+
 
 const formActions = (dispatch) => ({
     [types.ASSET]: {
         post: (asset) => dispatch(actionsResource.postResource(asset)),
         put: (asset) => dispatch(actionsResource.updateResource(asset)),
         remove: (asset) => dispatch(actionsResource.deleteResource(asset)),
-        parseForm: (form) =>({
-                name: form.name,
-                description: form.description,
-                connected_to: form.resources,
-                tags: form.tags
-            })
+        parseForm: (form) => ({
+            name: form.name,
+            description: form.description,
+            connected_to: form.resources,
+            tags: form.tags
+        })
     },
     [types.MAPPING]: {
         post: (mapping) => dispatch(actionsMapping.postMapping(mapping)),
@@ -34,7 +35,6 @@ const formActions = (dispatch) => ({
         })
     }
 });
-
 
 
 function mapStateToProps(state, props) {
@@ -61,9 +61,6 @@ function dispatchToProps(dispatch) {
     }
 }
 
-//   updateMapping: (mapping) => dispatch(actions.updateMapping(mapping)),
-//   postMapping: (mapping) => dispatch(actions.postMapping(mapping)),
-//   deleteMapping: (mapping) => dispatch(actions.deleteMapping(mapping)),
 export default {
     mapStateToProps: (state, props) => mapStateToProps(state, props),
     dispatchToProps: (dispatch) => dispatchToProps(dispatch),

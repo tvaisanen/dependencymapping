@@ -1,10 +1,10 @@
-import * as types from '../actions/actionTypes';
-import initialState from './initialState';
+import * as types from './asset.action-types';
+import initialState from '../../reducers/initialState';
 
 export default function resourceReducer(state = initialState.resources, action) {
     switch (action.type) {
         case types.LOAD_RESOURCES_SUCCESS:
-            return action.resources;
+            return [...action.resources];
 
         case types.LOAD_RESOURCE_SUCCESS:
             return action.resources;
@@ -20,8 +20,7 @@ export default function resourceReducer(state = initialState.resources, action) 
             return [...removeUpdated, action.resource];
 
         case types.DELETE_RESOURCE_SUCCESS:
-            const filtered = state.filter(m => m.name !== action.removed);
-            return filtered;
+            return state.filter(m => m.name !== action.removed);
         default:
             return state;
     }

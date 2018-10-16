@@ -1,13 +1,13 @@
-import * as types from '../actions/actionTypes';
-import initialState from './initialState';
+import * as types from './tag.action-types';
+import initialState from '../../reducers/initialState';
 
 export default function tagReducer(state = initialState.tags, action) {
     switch (action.type) {
 
-        case types.LOAD_CATEGORIES_SUCCESS:
+        case types.LOAD_TAGS_SUCCESS:
             return action.tags;
 
-        case types.ADD_TAG:
+        case types.POST_TAG_SUCCESS:
             return [action.tag, ...state];
 
         case types.UPDATE_TAG_SUCCESS:

@@ -1,6 +1,6 @@
 import * as graphHelpers from './graph-helpers'
-import * as activeMappingActions from '../actions/active-mapping.actions'
-import * as activeDetailActions from '../actions/active-detail.actions';
+import * as activeMappingActions from '../store/active-mapping/active-mapping.actions'
+import * as activeDetailActions from '../store/active-detail/active-detail.actions';
 import * as parser from './parser';
 import * as resourceHelpers from './graph-helpers';
 import * as types from '../constants/types';
@@ -10,7 +10,7 @@ export function getMappingById(mapId, mappings){
     return mappings.filter(g => g.name === mapId)[0];
 }
 
-export function loadDependencyMap(mapId, cy, mappings, assets, dispatch){
+export function loadDependencyMap(mapId, cy, mappings, assets, dispatch, layout){
         // load graph resources to the active mapping
 
         // current state of cy graph needs to be cleared
@@ -55,10 +55,13 @@ export function loadDependencyMap(mapId, cy, mappings, assets, dispatch){
         graphHelpers.addElements(cy, nodes);
         graphHelpers.addElements(cy, edges);
 
-        dispatch(activeDetailActions.setActiveDetail({data: mapping, type: types.MAPPING}));
+        // update activeDetail store
+        dispatch(activeDetailActions.setActiveDetail({
+                data: mapping,
+                type: types.MAPPING
+            })
+        );
 
-        // this will be obsolete after refactoring is complete
-        //this.setState({detail: mapping, detailType: constants.MAPPING})
-
-        graphHelpers.updateLayout(cy);
+        // update the graph layout
+        graphHelpers.updateLayout(cy, layout);
 };

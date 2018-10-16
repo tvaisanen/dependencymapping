@@ -1,5 +1,5 @@
-import * as types from '../actions/actionTypes';
-import initialState from './initialState';
+import * as types from './active-mapping.action-types';
+import initialState from '../../reducers/initialState';
 import _ from 'lodash';
 
 export default function activeMappingReducer(state = initialState.activeMapping, action){

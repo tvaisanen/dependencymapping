@@ -5,7 +5,7 @@ const required = () => {
     throw new Error('Missing parameter')
 };
 
-export function isResourceInMapping({resourceId=required(), mapping=required()}) {
+export function isResourceInMapping({resourceId, mapping}) {
     /**
      *  @return bool true if resource with given id in mapping
      */
@@ -14,37 +14,33 @@ export function isResourceInMapping({resourceId=required(), mapping=required()})
     return i ? true : false;
 }
 
-export function mappingExists({id=required(), mappings=required()}) {
+export function mappingExists({id, mappings}) {
     const i = _.findIndex(mappings, {id: id})
     return i !== -1 ? true : false;
 }
 
-export function resourceExists({id=required(), resources=required()}) {
+export function resourceExists({id, resources}) {
     const i = _.findIndex(resources, {id: id});
     return i !== -1 ? true : false;
 }
 
-export function tagExists({id=required(), tags=required()}) {
+export function tagExists({id, tags}) {
     const i = _.findIndex(tags, {id: id});
     return i !== -1 ? true : false;
 }
 
-export function getResourceById({id=required(), resources=required()}) {
+export function getResourceById({id, resources}) {
     return resources.filter(r => r.name === id)[0]
 }
 
-export function getAllResourcesWithTag({tagId=required(), resources=required()}) {
+export function getAllResourcesWithTag({tagId, resources}) {
     return resources.filter(resource => {
         const index = _.findIndex(resource.tags, (t) => t.name === tagId);
-        console.info(index);
-        if (index > -1) {
-            return true;
-        }
-        return false;
+        return index > -1;
     })
 }
 
-export function isResourceConnectedToId({resource=required(), id=required()}) {
+export function isResourceConnectedToId({resource, id}) {
     console.group("isResourceConnectedToId(" + resource.name + ", " + id + ");");
     const bools = resource.connected_to.map(r => r.name === id);
 
@@ -55,6 +51,10 @@ export function isResourceConnectedToId({resource=required(), id=required()}) {
     return i;
 }
 
-export const filterResources = ({resources=required(), filterValue=required()}) => {
+export const filterResources = ({resources, filterValue}) => {
     return resources.filter(r => r.name.toLowerCase().includes(filterValue));
 };
+
+export const sortResources = ({resources}) => {
+    return resources.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+}

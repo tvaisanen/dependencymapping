@@ -11,6 +11,7 @@ import mappingMenuCtrl from './mapping-menu.controller';
 import { mediumDark } from "./../../constants/colors";
 import * as types from './../../constants'
 import { Menu } from './mapping-menu.components';
+import * as resourceHelpers from '../../common/resource-helpers';
 
 const MappingMenuContainer = props => (
     <React.Fragment>
@@ -37,7 +38,11 @@ const MappingMenuContainer = props => (
                         props.activeMapping.name
                         : 'Select Mapping'
                 }
-                listItems={props.activeMapping.resources}
+                listItems={
+                    props.activeMapping.resources ?
+                        resourceHelpers.sortResources({resources: props.activeMapping.resources})
+                        : []
+                }
                 onItemClick={(item) => props.onActiveAssetClick({data: item, type: types.ASSET})}
                 onMouseOver={props.hoverResourceOn}
                 onMouseOut={props.hoverResourceOff}

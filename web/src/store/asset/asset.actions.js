@@ -1,29 +1,17 @@
-import GwClientApi from '../api/gwClientApi';
-import * as types from './actionTypes';
-import * as graphHelpers from '../common/graph-helpers';
+import GwClientApi from '../../api/gwClientApi';
+import * as types from './asset.action-types';
+import * as graphHelpers from '../../common/graph-helpers';
 import * as _ from 'lodash';
 
 /************* ASSET       ************* */
 
 export function postResource(asset) {
     return function (dispatch) {
-        console.groupCollapsed("PostResource");
-        console.info(asset);
-        console.groupEnd();
-        return GwClientApi.postResource(asset).then(response => {
-            if (!response.error) {
-                console.info('set info panel to resource success');
-                dispatch(postResourceSuccess(response.data));
-            }
+        const promise = GwClientApi.postResource(asset);
 
-            // return response to UI
-            return response;
-        }).catch((error, data) => {
-            console.warn(error);
-            console.warn(data)
-            return error;
-        });
-
+        // resolving a request is done in form container
+        const resolveCallback = (resource) => dispatch(postResourceSuccess(resource))
+        return {promise, resolveCallback};
     }
 }
 
@@ -38,28 +26,20 @@ export function updateResource(resource) {
     // updates asset/resource to the database
     // and refreshes the nodes edges in the graph
     return function (dispatch, getState) {
-
-        // send the request
-        return GwClientApi.putResource(resource)
-            .then(response => {
-
-                // replace the updated version of the asset/resource
-                dispatch(updateResourceSuccess({resource: response.data}));
-
+        const resolveCallback = (resource) => {
+                dispatch(updateResourceSuccess({resource: resource}));
+                // todo: refactor the graph update
                 // redraw the edges in the graph if asset in map
                 const activeMapAssets = getState().activeMapping.resources;
                 const inActiveMap = -1 !== _.findIndex(activeMapAssets, (item) => item.name === resource.name);
                 if (inActiveMap) {
-                    graphHelpers.removeResourceEdges(getState().graph, response.data);
-                    graphHelpers.drawResourceEdges(getState().graph, response.data);
+                    graphHelpers.removeResourceEdges(getState().graph, resource);
+                    graphHelpers.drawResourceEdges(getState().graph, resource);
                 }
-
-
-                return response;
-            }).catch(error => {
-                console.log(error)
-                return error.response;
-            })
+        };
+        // send the request
+        const promise = GwClientApi.putResource(resource);
+        return {promise, resolveCallback};
     }
 }
 
@@ -73,13 +53,13 @@ function updateResourceSuccess({resource}) {
 export function deleteResource({name}) {
     console.info("deleteResource(" + name + ")");
     return function (dispatch) {
-        return GwClientApi.deleteResource({name})
-            .then(response => {
-                dispatch(deleteResourceSuccess({removed: name}));
-                return response;
-            }).catch(error => {
-                return error.response;
-            })
+        const promise = GwClientApi.deleteResource({name})
+        // resolving a request is done in form container
+        const resolveCallback = () => {
+            // todo: deal with mapped assets
+            dispatch(deleteResourceSuccess({removed: name}));
+        };
+        return {promise, resolveCallback};
     }
 }
 
@@ -112,10 +92,20 @@ export function loadResourceSuccess(resource) {
 
 export function loadAllResources() {
     return function (dispatch) {
-        return GwClientApi.getResources().then(resources => {
-            dispatch(loadResourcesSuccess(resources));
+
+        // get all assets from the api
+        const promise = GwClientApi.getAssets();
+
+        promise.then(response => {
+            // dispatch success message with the data
+            // returned assets
+            dispatch(loadResourcesSuccess(response.data));
+
         }).catch(error => {
-            throw(error);
+            console.group("loadAllResources() -> <Error>");
+            console.warn(error.response.status);
+            console.warn(error);
+            console.groupEnd();
         });
     }
 }

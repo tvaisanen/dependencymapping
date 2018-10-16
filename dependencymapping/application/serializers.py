@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User, Group
-from application.models import DependencyMap, Tag, Resource
+from application.models import DependencyMap, Tag, Asset
 from rest_framework import serializers
 from rest_framework.parsers import JSONParser
 import json
@@ -30,16 +30,16 @@ class TagSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('name', 'description')
 
 
-class ResourceSerializer(serializers.ModelSerializer):
+class AssetSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Resource
+        model = Asset
         fields = '__all__'
         depth = 2
 
     def create(self, validated_data):
         print("####### resource serializer create ##########\n")
 
-        new_resource = Resource(**validated_data)
+        new_resource = Asset(**validated_data)
         new_resource.save()
 
         try:
@@ -51,7 +51,7 @@ class ResourceSerializer(serializers.ModelSerializer):
             resources = list(
                 filter(
                     lambda r: r.name in resource_names,
-                    Resource.objects.all()
+                    Asset.objects.all()
                 )
             )
 
@@ -84,7 +84,7 @@ class ResourceSerializer(serializers.ModelSerializer):
             resources = list(
                 filter(
                     lambda r: r.name in resource_names,
-                    Resource.objects.all()
+                    Asset.objects.all()
                 )
             )
 
@@ -108,7 +108,7 @@ class ResourceSerializer(serializers.ModelSerializer):
 
 
         print("####################################")
-        return super(ResourceSerializer, self).update(instance, validated_data)
+        return super(AssetSerializer, self).update(instance, validated_data)
 
 
 class DependencyMapSerializer(serializers.ModelSerializer):
@@ -129,7 +129,7 @@ class DependencyMapSerializer(serializers.ModelSerializer):
         resources = list(
             filter(
                 lambda r: r.name in resource_names,
-                Resource.objects.all()
+                Asset.objects.all()
             )
         )
 
@@ -159,7 +159,7 @@ class DependencyMapSerializer(serializers.ModelSerializer):
         resources = list(
             filter(
                 lambda r: r.name in resource_names,
-                Resource.objects.all()
+                Asset.objects.all()
             )
         )
 
