@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Inflater, Input} from "./login-view.styled";
+import { Layout } from '../layout';
 
 
 // actions
@@ -53,6 +54,7 @@ const getLoginCredentials = data => ({
 
 const LoginView = props => {
     return (
+        <Layout>
         <Inflater>
             <label>username:</label>
             <Input
@@ -71,6 +73,7 @@ const LoginView = props => {
             <button onClick={() => props.login(this)}>Login</button>
             <small>forgot password?</small>
         </Inflater>
+        </Layout>
     )
 };
 

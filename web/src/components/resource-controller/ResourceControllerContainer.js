@@ -114,11 +114,19 @@ class ResourceControllerContainer extends Component {
                 console.info(e);
                 console.groupEnd();
             }
-            this.props.closeFormAndSetActiveDetail({
-                setDetail: response.status !== 204, // don't set detail if deleted
-                data: response.data,
-                type: this.props.formType,
-            });
+
+            try {
+                this.props.closeFormAndSetActiveDetail({
+                    setDetail: response.status !== 204, // don't set detail if deleted
+                    data: response.data,
+                    type: this.props.formType,
+                });
+            } catch (e){
+                console.group("ResourceControllerContainer\ncloseFormAndSectActiveDetail({}) -> <Error>>");
+                console.info(response);
+                console.error(e);
+                console.groupEnd();
+            }
 
 
         }).catch(error => {

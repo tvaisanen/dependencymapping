@@ -38,7 +38,7 @@ export const Container = styled.div`
             : 'hidden'
             
     };
-    flex-grow: 1;
+    flex-grow: 3;
     padding: 0 12px;  
     border-radius: 3px;
     transform: ${p =>

@@ -52,7 +52,14 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(BottomPanelContainer);
 
-
+export const BottomContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: ${props=>props.justify};
+    align-items: center;
+    height: 40vh;
+    flex-grow: 1; 
+`;
 
 const BottomPanel = styled.div`
     max-width: 100vw;

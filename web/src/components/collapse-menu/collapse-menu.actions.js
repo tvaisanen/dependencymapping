@@ -29,7 +29,15 @@ export function clearGraph() {
 
 export function saveMapping() {
     return function (dispatch, getState) {
-        dispatch(mappingActions.updateMapping(getState().activeMapping));
+        const {promise, resolveCallback} = dispatch(mappingActions.updateMapping(getState().activeMapping));
+        promise.then(response => {
+           resolveCallback(response.data);
+
+        }).catch(error => {
+            console.group("saveMapping() ->  <Error>");
+            console.warn(error);
+            console.groupEnd();
+        });
         dispatch(appActions.toggleCollapseMenu());
     }
 }

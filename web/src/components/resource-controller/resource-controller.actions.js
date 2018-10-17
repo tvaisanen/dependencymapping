@@ -16,13 +16,15 @@ export function closeFormAndSetActiveDetail(activeDetail) {
         const isMapping = activeDetail.type === types.MAPPING;
 
         if ( isMapping && activeDetail.setDetail) {
-            alert("this should not happen when deleting a mapping")
+            // if the detail is a type of MAPPING
+            // it needs to be loaded
             dependencyMapHelpers.loadDependencyMap(
                 activeDetail.data.name || "None",
                 getState().graph,
                 getState().mappings,
                 getState().resources,
-                dispatch
+                dispatch,
+                getState().app.graph.selectedLayout
             )
         }
 

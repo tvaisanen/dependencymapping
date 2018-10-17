@@ -25,6 +25,7 @@ export default function mappingReducer(state = initialState.mappings, action){
 
         case types.UPDATE_MAPPING_SUCCESS:
             const removeUpdated = state.filter(m => m.name !== action.mapping.name);
+            console.info(action.mapping);
             return [...removeUpdated, action.mapping];
 
         case types.DELETE_MAPPING_SUCCESS:

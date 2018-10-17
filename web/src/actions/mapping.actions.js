@@ -28,7 +28,11 @@ export function addMapping(mapping) {
 
 export function updateMapping(mapping) {
     return function (dispatch) {
-        const resolveCallback = (mapping) => dispatch(updateMappingSuccess({mapping}));
+        const resolveCallback = (mapping) => {
+
+            alert('updatemapping');
+            dispatch(updateMappingSuccess({mapping}));
+        };
         const promise = GwClientApi.putMapping(mapping);
         return {promise, resolveCallback};
 
