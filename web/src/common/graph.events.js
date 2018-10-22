@@ -66,7 +66,6 @@ export function onNodeClick(event) {
 
         if (nodesToCreate.length > 0) {
             // nodes are created, update the layout
-            alert(`helpers called: ${layout}`);
             helpers.updateLayout(cy, layout);
         }
 

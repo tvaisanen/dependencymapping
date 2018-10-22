@@ -54,18 +54,18 @@ class ResourceBrowserContainer extends Component {
 
         return (
 
-            <ResourceBrowserLayout>
+            <ResourceBrowserLayout id="resource-browser__layout">
                 <l.LayoutRow justify={'center'}>
 
                     <ResourceBrowser>
-                        <ResourceSwitch>
-                            <ResourceListItem
+                        <ListTabs>
+                            <ListTab
                                 onClick={() => this.setState({resourceTypes: types.ASSET})}
-                                selected={resourceTypes === types.ASSET}>Assets</ResourceListItem>
-                            <ResourceListItem
+                                selected={resourceTypes === types.ASSET}>Assets</ListTab>
+                            <ListTab
                                 onClick={() => this.setState({resourceTypes: types.TAG})}
-                                selected={resourceTypes === types.TAG}>Tags</ResourceListItem>
-                        </ResourceSwitch>
+                                selected={resourceTypes === types.TAG}>Tags</ListTab>
+                        </ListTabs>
                         <FilterInputField
                             type="text"
                             placeholder="filter..."
@@ -122,11 +122,7 @@ export default connect(
 )(ResourceBrowserContainer);
 
 const ResourceSwitch = styled.div`
-    display: flex;
-    flex-direction: row;
-    background: transparent;
-    width: inherit;
-    
+   
 `;
 
 
@@ -140,15 +136,18 @@ const ResourceBrowserLayout = styled.div`
 
 `;
 const ResourceBrowser = styled.div`
- display: flex;
+    display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     height: 100%;
-    width:33%;
+    flex-grow: 1;
+    width: 16em;
+    max-width: 16em;
     min-width: 16em;
     margin-right: 12px;
     border-radius: 3px;
+    border: 1px solid grey;
 
 `;
 
@@ -156,28 +155,61 @@ const ResourceList = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    flex-grow: 1;
     align-items: center;
     height: 100%;
-    width:33%;
-    min-width: 16em;
-    overflow-y: scroll;
+    width: inherit;
+    min-width: inherit;
+    overflow-y: auto;
     overflow-x: hidden;
-    margin-right: 12px;
+    margin-right: 0;
     border-radius: 3px;
-
 `;
 
 const ResourceListItem = styled.div`
-    font-size: small;
+    font-size: small; 
+    letter-spacing: 0.05em;
     text-align: center;
     padding: 2px;
     cursor: pointer;
-    margin: 2px 4px;
+    margin: 2px 12px;
     width: 100%;
     border-radius: 3px;
     background: ${props => props.selected ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.1)'};
     :hover{
         background: rgba(255,255,255, 0.35);
+    }
+`;
+
+const ListTabs = styled.div`
+    display: flex;
+    flex-direction: row;
+    background: transparent;
+    width: 100%;
+  
+`;
+
+const ListTab = styled.div`
+    font-size: small;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-align: center;
+    justify-content: center;
+    padding: 2px 2px 4px 2px;
+    cursor: pointer;
+    width: 100%;
+    grow: 1;
+    border-radius: 3px;
+    background: ${props => props.selected ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.1)'};
+    :hover{
+        background: rgba(255,255,255, 0.35);
+    }
+    
+    :first-of-type {
+      border-radius: 3px 0 0 0;
+    }
+    :last-of-type {
+      border-radius: 0 3px 0 0;
     }
 `;
 

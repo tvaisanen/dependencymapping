@@ -30,7 +30,6 @@ export function updateMapping(mapping) {
     return function (dispatch) {
         const resolveCallback = (mapping) => {
 
-            alert('updatemapping');
             dispatch(updateMappingSuccess({mapping}));
         };
         const promise = GwClientApi.putMapping(mapping);

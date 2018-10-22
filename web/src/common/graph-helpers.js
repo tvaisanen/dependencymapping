@@ -195,7 +195,6 @@ export function hoverIndicationOff(cy = required(), id) {
 }
 
 export function downloadPng(cy = required()) {
-    alert('download')
     // todo: cross-browser
     let downloadLink = document.createElement('a')
     downloadLink.href = cy.png({bg: 'white'});

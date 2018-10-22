@@ -25,7 +25,7 @@ const InfoBlock         = ({message}) => <sc.InfoSpan>{message}</sc.InfoSpan>;
 
 const TopBarContainer = (props) => (
     <sc.TopBar>
-        <span>Dependency Mapper</span>
+        <sc.Title>Dependency Mapper</sc.Title>
         <InfoBlock message={props.info}/>
         <sc.BarBlock>
             <RefreshButton onClick={props.refreshLayout}/>

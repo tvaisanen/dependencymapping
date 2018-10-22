@@ -296,7 +296,7 @@ class ResourceControllerContainer extends Component {
                     column>
                     {/* Selectable resource list */}
                     <FormSelectionBlock
-                        labelOption="resources"
+                        labelOption="Available assets"
                         selectedLabel={this.props.formType === types.MAPPING ? "selected" : "connected to"}
                         onFilterChange={(e) => this.setState({resourceFilter: e.target.value})}
                         options={filteredResources}
@@ -312,7 +312,7 @@ class ResourceControllerContainer extends Component {
                     />
                     {/* TAGS */}
                     <FormSelectionBlock
-                        labelOption="tags"
+                        labelOption="Available tags"
                         selectedLabel="selected"
                         onFilterChange={(e) => this.setState({tagFilter: e.target.value})}
                         options={filteredTags}

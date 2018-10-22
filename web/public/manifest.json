@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Dependency Mapper",
+  "name": "Dependency Mapper GUI for Graphingwiki",
   "icons": [
     {
       "src": "favicon.ico",

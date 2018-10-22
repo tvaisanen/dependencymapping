@@ -5,12 +5,10 @@ export const Menu = (
     {title, listItems, onItemClick, onMouseOver, onMouseOut, darkButtons, selected}) => (
     <s.SidePanelMenu>
 
-        <s.SidePanelTabButton>
-            <s.PanelHeaderTitle>
+        <s.PanelHeader>
                 {title}
-            </s.PanelHeaderTitle>
-        </s.SidePanelTabButton>
-        <s.SidePanelContentContainer>
+        </s.PanelHeader>
+        <s.ScrollContent>
             {listItems ?
                 listItems.map((item, i) => (
                     <s.ListItem
@@ -26,7 +24,7 @@ export const Menu = (
                 )
                 : null
             }
-        </s.SidePanelContentContainer>
+        </s.ScrollContent>
     </s.SidePanelMenu>
 );
 

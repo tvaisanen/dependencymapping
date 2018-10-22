@@ -63,6 +63,7 @@ export const BottomContainer = styled.div`
 
 const BottomPanel = styled.div`
     max-width: 100vw;
+    min-width: 800px;
     flex-grow: 1;
     width: 100vw;
     height: 100%;

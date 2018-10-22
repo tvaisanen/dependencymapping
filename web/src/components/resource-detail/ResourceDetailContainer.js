@@ -12,11 +12,16 @@ import {
 
 const ResourceDetailContainer = props => (
         <Detail id="resource-detail-container">
-            <ResourceDetailHeader {...props}/>
-            <DetailBlock>
+            <ResourceDetailHeader
+                id="resource-detail-header"
+                {...props}/>
+            <DetailBlock id="resource-detail__detail-block">
                 <DetailDescription
+                    id="resource-detail__detail-block__description"
                     description={props.activeDetail.data.description}/>
-                <DetailLists {...props}/>
+                <DetailLists
+                    id="resource-detail__detail-block__lists"
+                    {...props}/>
             </DetailBlock>
         </Detail>
     )
@@ -48,18 +53,21 @@ const Detail = styled.div`
             flex-direction: column;
             justify-content: flex-start;
             height: 100%;
-            width: 67%;
+            //width: 67%;
+            flex-grow: 3;
             background: rgba(24,24,24,0.03);
             border-radius: 3px;
-            `;
+            border: 1px solid grey;
+            align-content: center;
+`;
 
 const DetailBlock = styled.div`
             display: flex;
             flex-direction: row;
-            width: auto;
+            justify-content: space-around;
             flex-grow: 1;
-            align-items: flex-start;
             height: inherit;
+            margin: 12px;
         
 `;
 

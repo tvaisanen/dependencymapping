@@ -28,8 +28,8 @@ export function addResourceToActiveMapping(resource) {
     return function (dispatch, getState) {
         console.info('add resource to active mapping action');
         console.info(getState().activeMapping);
-        const activeMapping = getState().activeMapping
-        // todo: refactor
+
+        const activeMapping = getState().activeMapping;
         const edgeElements = resource.connected_to.map(
             r => graphHelpers.edgeElementFromResource(resource.name, r.name)
         );
@@ -47,14 +47,14 @@ export function addResourceToActiveMapping(resource) {
             r => graphHelpers.edgeElementFromResource(r.name, resource.name));
 
         const cy = getState().graph;
-        graphHelpers.addElement(cy, resource);
+        const node = graphHelpers.nodeElementFromResource(resource);
+        graphHelpers.addElement(cy, node);
         graphHelpers.addElements(cy, edgeElements);
         graphHelpers.addElements(cy, edgesTargetingResource);
         //dispatch(graphActions.addNodeToGraph(resource));
         //dispatch(graphActions.addElementsToGraph(edgeElements));
         //dispatch(graphActions.addElementsToGraph(edgesTargetingResource));
         dispatch({type: types.ADD_ACTIVE_MAPPING_RESOURCE, resource});
-        alert('addResourceToActiveMapping')
         graphHelpers.updateLayout(cy, "cola");
     }
 }

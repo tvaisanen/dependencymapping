@@ -24,6 +24,7 @@ const newGraphInstance = ({eventHandlers}) => {
         container: document.getElementById('cy'),
         elements: [],
         style: graphStyle,
+        directed: false,
         layout: {
             name: 'cola',
         }

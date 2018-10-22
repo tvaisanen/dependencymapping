@@ -1,11 +1,10 @@
 import {nodeStyles} from './graph.styles';
 
-export const graphStyle = [ // the stylesheet for the graph
+export const graphStyle = [
     {
         selector: 'node',
         style: nodeStyles.passive
     },
-
     {
         selector: 'edge',
         style: {
@@ -13,8 +12,7 @@ export const graphStyle = [ // the stylesheet for the graph
             'curve-style': 'bezier',
             'line-color': '#eee',
              'target-arrow-color': '#ccc',
-            'target-arrow-shape': 'vee',
-
+            'target-arrow-shape': null,
         }
     },
 
@@ -46,4 +44,4 @@ export const layoutOptions = {
     cola: {
         nodeDimensionsIncludeLabels: true,
     }
-}
+};

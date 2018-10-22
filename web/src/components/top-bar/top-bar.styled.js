@@ -1,6 +1,11 @@
 import styled from 'styled-components';
 import {colorDark} from "../../constants/colors";
 
+export const Title = styled.span`
+  font-weight: normal; 
+  color: rgba(255,255,255,0.4);
+`;
+
 export const InfoSpan = styled.span`
   font-size: small;
 `;
@@ -26,13 +31,13 @@ export const TopBar = styled.div`
     background: ${colorDark};
     display: flex;
     flex-direction: row;
-   
+    border-bottom: 1px solid grey; 
     color: #FAFAFA;
     font-size: larger;
     font-weight: bold;
     justify-content: space-between;
     align-items: center;
-    padding: 0 24px;
+    padding: 2px 24px;
 `;
 
 export const MenuToggle = styled.div`
