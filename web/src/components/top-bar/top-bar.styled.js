@@ -3,7 +3,7 @@ import {colorDark} from "../../constants/colors";
 
 export const Title = styled.span`
   font-weight: normal; 
-  color: rgba(255,255,255,0.4);
+  color: ${p=>p.theme.textColorLight};
 `;
 
 export const InfoSpan = styled.span`
@@ -28,7 +28,7 @@ export const BarBlock = styled.div`
     `;
 
 export const TopBar = styled.div`
-    background: ${colorDark};
+    background: ${p => p.theme.colorDarkBackground};
     display: flex;
     flex-direction: row;
     border-bottom: 1px solid grey; 

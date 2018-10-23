@@ -186,7 +186,6 @@ const SelectionBlock = styled.div`
   flex-direction: row;
   padding: 4px;
   border-radius: 3px;
-  border: solid 1px; rgba(244,244,244,0.1);
   background-color: rgba(22,22,22,0.1);
   height: 100%;
   margin: 2px;

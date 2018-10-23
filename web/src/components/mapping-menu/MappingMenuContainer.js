@@ -72,8 +72,7 @@ MappingMenuContainer.propTypes = {
 };
 
 export const MenuColumn = styled.div`
-    background: rgba(200,200,200,0.8);
-    background: ${mediumDark};
+    background: ${p=>p.theme.colorLightBackground};
     display: flex;
     flex-direction: column;
     width: 320px;

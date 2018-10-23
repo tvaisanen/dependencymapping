@@ -133,8 +133,8 @@ const ResourceBrowserLayout = styled.div`
   width: 100%;
   height: 100%;
   color: rgba(255,255,255,0.8);
-
 `;
+
 const ResourceBrowser = styled.div`
     display: flex;
     flex-direction: column;

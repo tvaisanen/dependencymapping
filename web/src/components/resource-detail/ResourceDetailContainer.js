@@ -16,12 +16,18 @@ const ResourceDetailContainer = props => (
                 id="resource-detail-header"
                 {...props}/>
             <DetailBlock id="resource-detail__detail-block">
-                <DetailDescription
-                    id="resource-detail__detail-block__description"
-                    description={props.activeDetail.data.description}/>
-                <DetailLists
-                    id="resource-detail__detail-block__lists"
-                    {...props}/>
+                {
+                    props.activeDetail.type === "EMPTY" ?
+                        <NoSelection/>
+                        :
+                        <React.Fragment>
+                        <DetailDescription
+                            id="resource-detail__detail-block__description"
+                            description={props.activeDetail.data.description}/>
+                        <DetailLists id="resource-detail__detail-block__lists"
+                {...props}/>
+                        </React.Fragment>
+                }
             </DetailBlock>
         </Detail>
     )
@@ -71,8 +77,11 @@ const DetailBlock = styled.div`
         
 `;
 
-
-
+const Header = styled.span`
+  font-size: large;
+  letter-spacing: 0.1rem;
+`;
+const NoSelection = () => <Header>No Selection</Header>;
 
 
 

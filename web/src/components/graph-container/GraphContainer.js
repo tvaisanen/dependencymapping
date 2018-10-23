@@ -21,7 +21,7 @@ export const GraphCanvasContainer = styled.div`
     height: inherit;
     min-height: 360px;
     min-width: 400px;
-    background: rgba(255,255,255,1); 
+    background: ${p=>p.theme.colorGraphBackground}; 
     & > * > * { height: inherit; }
     & > div > canvas { 
       height: inherit; 
@@ -34,5 +34,4 @@ const GraphCanvasInflater = styled.div`
     min-height: 360px;
     background-color: transparent;
     overflow: hidden;
-    
 `;

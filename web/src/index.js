@@ -7,7 +7,8 @@ import configureStore from './store/configureStore';
 import { Provider } from 'react-redux';
 import * as actions from './actions/index';
 import * as storeActions from './store';
-
+import { ThemeProvider } from 'styled-components';
+import theme from './theme';
 
 const store = configureStore();
 
@@ -37,7 +38,9 @@ console.groupEnd();
 
 ReactDOM.render(
     <Provider store={store}>
-        <App/>
+        <ThemeProvider theme={theme}>
+            <App/>
+        </ThemeProvider>
     </Provider>
     , document.getElementById('root'));
 registerServiceWorker();

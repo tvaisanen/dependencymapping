@@ -48,8 +48,8 @@ class App extends Component {
             return (
                 <Layout>
                     <sc.TopContent id="container-top">
-                        <TopBarContainer/>
-                        <sc.MappingContent>
+                        <TopBarContainer id="top-bar-container"/>
+                        <sc.MappingContent id="mapping-content-container">
                             <MappingMenuContainer loadDependencyMap={this.loadDependencyMap}/>
                             <GraphContainer/>
                             <CollapseMenuContainer/>

@@ -130,7 +130,7 @@ export const ActionLink = styled.small`
 `;
 
 export const DetailDescription = styled.div`
-    background: rgba(255,255,255,.2);
+    background: rgba(255,255,255,.1);
     border-radius: 3px;
     overflow-y: scroll;
     border: 1px solid gray;
@@ -141,7 +141,7 @@ export const DetailDescription = styled.div`
     max-width: 70%;
     text-align: justify;
     text-justify: inter-character;
-    box-shadow: 0 0 20px rgba(255,255,255,0.1);
+    box-shadow: 0 0 5px rgba(255,255,255,0.1);
     overflow-x: visible;
     overflow-y: auto;
     

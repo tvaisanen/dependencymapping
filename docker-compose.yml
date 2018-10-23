@@ -31,11 +31,12 @@ services:
         build: ./web
         volumes:    
             # todo: refactor to .env
-            - /home/tvaisanen/OUSPG/dependencymapping/web/:/usr/webapp/src
+            - ./web/:/usr/webapp/src
             - ./.env:/usr/webapp/src/.env
         networks:
             - overlay
         command: bash docker-entrypoint.sh
+
         # hide ports. access only via proxy
         # ports:
              #- "3000:3000"
@@ -48,7 +49,7 @@ services:
         build: ./dependencymapping 
         volumes:
             # todo: refactor to .env
-            - /home/tvaisanen/OUSPG/dependencymapping/dependencymapping/:/usr/api/src
+            - ./dependencymapping/:/usr/api/src
         # hide ports. access only via proxy
         # ports:
              #- "8000:8000"
