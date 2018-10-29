@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 import * as sc from './app.styled';
 import {connect} from 'react-redux'
 import TopBarContainer from '../top-bar/TopBarContainer';
-import { Layout } from '../layout';
+import {Layout} from '../layout';
 import GraphContainer from '../graph-container/GraphContainer';
 import BottomPanelContainer from '../bottom-panel/BottomPanelContainer';
 import MappingMenuContainer from '../mapping-menu/MappingMenuContainer';
 import CollapseMenuContainer from '../collapse-menu/CollapseMenuContainer';
 import LoginView from '../login-view/LoginView';
 import appCtrl from './app.controller';
-
 
 
 class App extends Component {
@@ -39,27 +38,22 @@ class App extends Component {
 
 
     render() {
-        if (!this.props.auth.loggedIn) {
-            // if there's no logged in user
-            // render the login view
-            return <LoginView/>
-        } else {
-            // render main view
-            return (
-                <Layout>
-                    <sc.TopContent id="container-top">
-                        <TopBarContainer id="top-bar-container"/>
-                        <sc.MappingContent id="mapping-content-container">
-                            <MappingMenuContainer loadDependencyMap={this.loadDependencyMap}/>
-                            <GraphContainer/>
-                            <CollapseMenuContainer/>
-                        </sc.MappingContent>
-                    </sc.TopContent>
-                    <BottomPanelContainer id="bottom-panel"/>
-                </Layout>
-            );
-        }
+
+        return (
+            <Layout>
+                <sc.TopContent id="container-top">
+                    <TopBarContainer id="top-bar-container"/>
+                    <sc.MappingContent id="mapping-content-container">
+                        <MappingMenuContainer loadDependencyMap={this.loadDependencyMap}/>
+                        <GraphContainer/>
+                        <CollapseMenuContainer/>
+                    </sc.MappingContent>
+                </sc.TopContent>
+                <BottomPanelContainer id="bottom-panel"/>
+            </Layout>
+        );
     }
+
 }
 
 
