@@ -9,9 +9,10 @@ import * as appActions from '../../actions/app.actions';
 export function postResource(asset) {
     return function (dispatch) {
         const promise = GwClientApi.postResource(asset);
-        dispatch(appActions.setInfoMessage(`Created asset: ${asset.name}`));
+
         // resolving a request is done in form container
         const resolveCallback = (resource) => {
+            dispatch(appActions.setInfoMessage(`Created asset: ${asset.name}`));
             dispatch(postResourceSuccess(resource))
         };
 

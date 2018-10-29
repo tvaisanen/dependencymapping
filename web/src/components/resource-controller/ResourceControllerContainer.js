@@ -122,7 +122,7 @@ class ResourceControllerContainer extends Component {
                     data: response.data,
                     type: this.props.formType,
                 });
-            } catch (e){
+            } catch (e) {
                 console.group("ResourceControllerContainer\ncloseFormAndSectActiveDetail({}) -> <Error>>");
                 console.info(response);
                 console.error(e);
@@ -131,7 +131,7 @@ class ResourceControllerContainer extends Component {
 
 
         }).catch(error => {
-            if (apiHelpers.isNetworkError(error)){
+            if (apiHelpers.isNetworkError(error)) {
                 console.error("Network Error");
             } else {
                 // only error should be if the name is already reserved
@@ -163,22 +163,43 @@ class ResourceControllerContainer extends Component {
 
     createAssetAndSelect(assetName) {
 
-        // quick asset creation, post new asset with just a name to quicker input
-        const {promise, resolveCallback} = this.props.formActions[types.ASSET].post({name: assetName});
-        promise.then(response => {
-            resolveCallback(response.data);
-            this.setState({selectedResources: [...this.state.selectedResources, response.data.name]})
-        });
+        if (_.includes(this.props.assetNameList, assetName)) {
+            // if asset exists, just add it to selected
+            // but do not allow duplicates
+            if (!_.includes(this.state.selectedResources, assetName)){
+                this.setState({selectedResources: [...this.state.selectedResources, assetName]});
+            }
+        } else {
+            // if it does not exist create a new one and add it to selected
+            const {promise, resolveCallback} = this.props.formActions[types.ASSET].post({name: assetName});
+            promise.then(response => {
+                resolveCallback(response.data);
+                this.setState({selectedResources: [...this.state.selectedResources, response.data.name]})
+            });
+        }
+        //
 
     }
 
     createTagAndSelect(tagName) {
-        const {promise, resolveCallback} = this.props.formActions[types.TAG].post({name: tagName});
 
-        promise.then(response => {
-            resolveCallback(response.data);
-            this.setState({selectedTags: [...this.state.selectedTags, response.data.name]})
-        });
+        if (_.includes(this.props.tagNameList, tagName)) {
+            // if tag already exists, just add the tag to selected
+            // but do not allow duplicates
+            if (!_.includes(this.state.selectedTags, tagName)){
+                this.setState({selectedTags: [...this.state.selectedTags, tagName]})
+            }
+
+        } else {
+            // create the tag and add it to selected
+            const {promise, resolveCallback} = this.props.formActions[types.TAG].post({name: tagName});
+            promise.then(response => {
+                resolveCallback(response.data);
+                this.setState({selectedTags: [...this.state.selectedTags, response.data.name]})
+            });
+        }
+        console.groupEnd();
+
     }
 
     getFormData() {
@@ -301,7 +322,7 @@ class ResourceControllerContainer extends Component {
                     visible={this.props.formType !== types.TAG}
                     id="form-col-two"
                     column
-                    >
+                >
                     {/* Selectable resource list */}
                     <FormSelectionBlock
                         labelOption="Available assets"
@@ -380,18 +401,18 @@ export const MainBlock = styled.div`
     justify-content: center;
     align-items: center;
     align-self: center; 
-    border: ${p=>p.theme.defaultBorder};
-    border-radius: ${p=>p.theme.borderRadius};
+    border: ${p => p.theme.defaultBorder};
+    border-radius: ${p => p.theme.borderRadius};
     width: ${p =>
-        p.visible ?
-            "100%"
-            : "0"
+    p.visible ?
+        "100%"
+        : "0"
     };
     visibility: ${p =>
-        p.visible ?
-            'visible'
-            : 'hidden'
-            
+    p.visible ?
+        'visible'
+        : 'hidden'
+
     };
     height: inherit;
     flex-grow: 3;
@@ -418,18 +439,18 @@ export const SecondaryBlock = styled.div`
     align-items: center;
     align-self: center;
     margin-left: 12px;
-    border: ${p=>p.theme.defaultBorder};
-    border-radius: ${p=>p.theme.borderRadius};
+    border: ${p => p.theme.defaultBorder};
+    border-radius: ${p => p.theme.borderRadius};
     width: ${p =>
-        p.visible ?
-            "100%"
-            : "0"
+    p.visible ?
+        "100%"
+        : "0"
     };
     visibility: ${p =>
-        p.visible ?
-            'visible'
-            : 'hidden'
-            
+    p.visible ?
+        'visible'
+        : 'hidden'
+
     };
     flex-grow: 3;
     padding: 0 12px;  
