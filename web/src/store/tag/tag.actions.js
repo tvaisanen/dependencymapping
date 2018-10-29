@@ -52,7 +52,7 @@ export function loadAllTags() {
         promise.then(response => {
             dispatch(loadTagsSuccess(response.data));
         }).catch(error => {
-               if (error.message && error.message === "Network Error"){
+               if (apiHelpers.isNetworkError(error)){
                 dispatch(apiHelpers.handleNetworkError(error));
             } else {
             console.group("loadAllResources() -> <Error>");

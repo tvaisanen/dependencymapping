@@ -1,6 +1,10 @@
 import * as types from './actionTypes';
 import * as views from '../constants/views';
 
+export function setInfoMessage(infoMessage){
+    return {type: types.SET_INFO_MESSAGE, infoMessage};
+}
+
 export function setGraphLayout(layout){
     return {type: types.SET_GRAPH_LAYOUT, layout};
 }

@@ -82,7 +82,7 @@ export function loadAllMappings(auth) {
         promise.then(response => {
             dispatch(loadMappingsSuccess(response.data))
         }).catch(error => {
-            if (error.message && error.message === "Network Error"){
+            if (apiHelpers.isNetworkError(error)){
                 dispatch(apiHelpers.handleNetworkError(error));
             } else {
                 console.groupCollapsed("loadAllMappings()");

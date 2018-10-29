@@ -4,6 +4,13 @@ import * as resourceType from '../constants/types';
 
 export default function ( state = initialState.app, action ){
     switch(action.type){
+
+        case types.SET_INFO_MESSAGE:
+            return {
+                ...state,
+                info: action.infoMessage
+            };
+
         case types.SET_FORM_TYPE:
             return {
                 ...state,

@@ -6,6 +6,7 @@ import * as configs from './top-bar.config';
 function mapStateToProps(state, props) {
     return {
         ...props,
+        infoMessage: state.app.info,
         layoutOptions: configs.layoutOptions,
         selectedLayout: state.app.graph.selectedLayout,
         refreshLayout: () => graphHelpers.updateLayout(state.graph, state.app.graph.selectedLayout),

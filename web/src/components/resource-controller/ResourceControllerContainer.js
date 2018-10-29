@@ -13,6 +13,7 @@ import styled from 'styled-components';
 import ControllerNavTabs from './components/ControllerNavTabs';
 import resourceControllerCtrl from './resource-controller.controller';
 import * as types from '../../constants/types';
+import * as apiHelpers from '../../common/api.helpers';
 
 class ResourceControllerContainer extends Component {
     constructor(props) {
@@ -130,16 +131,20 @@ class ResourceControllerContainer extends Component {
 
 
         }).catch(error => {
-            // only error should be if the name is already reserved
-            console.group("Debugging error");
-            console.info(JSON.stringify(error));
-            Object.keys(error).forEach(key => {
-                console.groupCollapsed(key);
-                console.info(error[key]);
+            if (apiHelpers.isNetworkError){
+                console.error("Network Error");
+            } else {
+                // only error should be if the name is already reserved
+                console.group("Debugging error");
+                console.info(JSON.stringify(error));
+                Object.keys(error).forEach(key => {
+                    console.groupCollapsed(key);
+                    console.info(error[key]);
+                    console.groupEnd();
+                });
                 console.groupEnd();
-            });
-            console.groupEnd();
-            this.setState({errors: error.response.data});
+                this.setState({errors: error.response.data});
+            }
         })
     }
 
