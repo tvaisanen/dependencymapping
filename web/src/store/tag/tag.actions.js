@@ -1,6 +1,6 @@
 import GwClientApi from '../../api/gwClientApi';
 import * as types from './tag.action-types';
-
+import * as apiHelpers from '../../common/api.helpers';
 
 /********* TAG POST *******************/
 
@@ -52,7 +52,16 @@ export function loadAllTags() {
         promise.then(response => {
             dispatch(loadTagsSuccess(response.data));
         }).catch(error => {
-            throw(error);
+               if (error.message && error.message === "Network Error"){
+                dispatch(apiHelpers.handleNetworkError(error));
+            } else {
+            console.group("loadAllResources() -> <Error>");
+            console.warn(error);
+            console.groupEnd();
+
+                   throw(error);
+            }
+
         });
     }
 }

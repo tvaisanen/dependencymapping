@@ -2,7 +2,7 @@ import GwClientApi from '../../api/gwClientApi';
 import * as types from './asset.action-types';
 import * as graphHelpers from '../../common/graph-helpers';
 import * as _ from 'lodash';
-
+import * as apiHelpers from '../../common/api.helpers';
 /************* ASSET       ************* */
 
 export function postResource(asset) {
@@ -102,10 +102,14 @@ export function loadAllResources() {
             dispatch(loadResourcesSuccess(response.data));
 
         }).catch(error => {
+             if (error.message && error.message === "Network Error"){
+                dispatch(apiHelpers.handleNetworkError(error));
+            } else {
             console.group("loadAllResources() -> <Error>");
-            console.warn(error.response.status);
             console.warn(error);
             console.groupEnd();
+            }
+
         });
     }
 }

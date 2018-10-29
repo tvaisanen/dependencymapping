@@ -14,16 +14,13 @@ const store = configureStore();
 
 
 // load resources and stored graphs
-const authStorage = localStorage.getItem('auth') || false;
-const auth = authStorage ? JSON.parse(authStorage) : false;
-console.info(auth);
-if (auth) {
-    console.info("now we are logged in -> so load the assets!");
-    store.dispatch(storeActions.loginSuccess(auth));
-    store.dispatch(actions.loadAllMappings());
-    store.dispatch(storeActions.loadAllResources());
-    store.dispatch(storeActions.loadAllTags());
-}
+// const authStorage = localStorage.getItem('auth') || false;
+// const auth = authStorage ? JSON.parse(authStorage) : false;
+
+// store.dispatch(storeActions.loginSuccess(auth));
+store.dispatch(actions.loadAllMappings());
+store.dispatch(storeActions.loadAllResources());
+store.dispatch(storeActions.loadAllTags());
 
 
 

@@ -3,6 +3,8 @@ import * as types from './actionTypes';
 import * as graphHelpers from '../common/graph-helpers';
 import * as activeMappingActions from '../store/active-mapping/active-mapping.actions';
 
+import * as apiHelpers from '../common/api.helpers';
+
 /*************** MAPPING *************/
 
 export function postMapping({name, description, resources, tags}) {
@@ -80,7 +82,13 @@ export function loadAllMappings(auth) {
         promise.then(response => {
             dispatch(loadMappingsSuccess(response.data))
         }).catch(error => {
-            console.error(error);
+            if (error.message && error.message === "Network Error"){
+                dispatch(apiHelpers.handleNetworkError(error));
+            } else {
+                console.groupCollapsed("loadAllMappings()");
+                console.info(error);
+                console.groupEnd();
+            }
         });
     }
 }
