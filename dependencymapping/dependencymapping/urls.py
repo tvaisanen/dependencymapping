@@ -32,8 +32,7 @@ router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'tags', views.TagViewSet)
-router.register(r'resources', views.ResourceViewSet)
-router.register(r'resources-detail', views.ResourceViewSet)
+router.register(r'assets', views.AssetViewSet)
 router.register(r'mappings', views.DependencyMapViewSet)
 
 admin.site.site_header = "Dependency Mapper - Panel"
@@ -51,5 +50,5 @@ urlpatterns = [
     url(r'^docs/', include_docs_urls(title="Dependency Mapper API", public=False)),
     url(r'^', include(router.urls)),
     url(r'^api-token-auth/', rest_views.obtain_auth_token),
-    url(r'^app/', TemplateView.as_view(template_name='index.html'))
+    url(r'^rest-auth/', include('rest_auth.urls'))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

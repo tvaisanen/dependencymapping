@@ -2,6 +2,9 @@ import * as types from './../../constants';
 import * as resourceHelpers from "./../../common/resource-helpers";
 import * as actionCreators from './../../actions';
 import {bindActionCreators} from 'redux';
+import * as activeDetailActions from '../../store/active-detail/active-detail.actions';
+import * as activeMappingActions from '../../store/active-mapping/active-mapping.actions';
+
 
 function stateToProps(state) {
     const {
@@ -22,13 +25,17 @@ function stateToProps(state) {
     return {...state, lists}
 }
 
-function dispatchToProps(dispatch){
-    return bindActionCreators(actionCreators, dispatch);
-}
+
+const mapDispatchToProps = dispatch => ({
+    ...bindActionCreators(actionCreators, dispatch),
+    setActiveDetail: (activeDetail) => dispatch(activeDetailActions.setActiveDetail(activeDetail)),
+    addResourceToActiveMapping: (resource) => dispatch(activeMappingActions.addResourceToActiveMapping(resource)),
+    removeResourceFromActiveMapping: (resource) => dispatch(activeMappingActions.removeResourceFromActiveMapping(resource))
+});
 
 export default {
     stateToProps: (state, props) => stateToProps(state, props),
-    dispatchToProps: (dispatch) => dispatchToProps(dispatch)
+    dispatchToProps: (dispatch) => mapDispatchToProps(dispatch)
 };
 
 const getLists = ({activeDetail, setDetail, items}) => {

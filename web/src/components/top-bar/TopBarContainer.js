@@ -1,45 +1,56 @@
 import React from 'react';
-import styled from 'styled-components';
-import { colorDark } from "../../constants/colors";
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import topBarController from './top-bar.controller';
+import * as sc from './top-bar.styled';
 
-const TopBarContainer = ({menuToggleHandler, info}) => (
-    <TopBar>
-        <span>Dependency Mapper</span>
-        <span style={{fontSize: 'small'}}>{info}</span>
+/**
+ * Generate dropdown selection for
+ * selecting the layout
+ */
+const LayoutSelection = ({layoutOptions, selectedLayout, setGraphLayout}) => (
+    <select value   ={selectedLayout}
+            onChange={(e) => setGraphLayout(e.target.value)}>
+        {
+            layoutOptions.map((layoutOption, i) => (
+                <option key={i}>{layoutOption}</option>
+            ))
+        }
+    </select>
+);
 
-        <MenuToggle onClick={menuToggleHandler}>
-            &#9776;
-        </MenuToggle>
-    </TopBar>
-)
+const RefreshButton     = ({onClick}) => <sc.RefreshBtn onClick={onClick}>&#8635;</sc.RefreshBtn>;
+const MenuToggleButton  = ({onClick}) => <sc.MenuToggle onClick={onClick}>&#9776;</sc.MenuToggle>;
+const InfoBlock         = ({message}) => <sc.InfoSpan>{message}</sc.InfoSpan>;
 
-export default TopBarContainer;
+const TopBarContainer = (props) => (
+    <sc.TopBar>
+        <sc.Title>Dependency Mapper</sc.Title>
+        <InfoBlock message={props.info}/>
+        <sc.BarBlock>
+            <RefreshButton onClick={props.refreshLayout}/>
+            <LayoutSelection
+                layoutOptions={props.layoutOptions}
+                selectedLayout={props.selectedLayout}
+                setGraphLayout={props.setGraphLayout}
+            />
+            <MenuToggleButton onClick={props.toggleCollapseMenu}>
+            </MenuToggleButton>
+        </sc.BarBlock>
+    </sc.TopBar>
+);
 
+TopBarContainer.propTypes = {
+    info: PropTypes.string,
+    layoutOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
+    menuToggleHandler: PropTypes.func.isRequired,
+    refreshLayout: PropTypes.func.isRequired,
+    selectedLayout: PropTypes.string.isRequired,
+    setGraphLayout: PropTypes.func.isRequired,
+};
 
-const TopBar = styled.div`
-    background: ${colorDark};
-    display: flex;
-    flex-direction: row;
-   
-    color: #FAFAFA;
-    font-size: larger;
-    font-weight: bold;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 24px;
-`;
-
-const MenuToggle = styled.div`
-    padding: 3px;
-    margin-bottom: 2px;
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    :hover {
-      border-color: white;
-    }    
-    transition: all .3s ease-in-out;
-`;
+export default connect(
+    topBarController.mapStateToProps,
+    topBarController.dispatchToProps
+)(TopBarContainer);
 

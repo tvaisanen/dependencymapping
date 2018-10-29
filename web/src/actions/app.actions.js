@@ -1,6 +1,10 @@
 import * as types from './actionTypes';
 import * as views from '../constants/views';
 
+export function setGraphLayout(layout){
+    return {type: types.SET_GRAPH_LAYOUT, layout};
+}
+
 export function setFormType(formType){
     return {type: types.SET_FORM_TYPE, formType};
 }
@@ -17,6 +21,9 @@ export function setEditFalse(){
     return {type: types.CANCEL_EDIT};
 }
 
+export function toggleCollapseMenu(){
+    return {type: types.TOGGLE_COLLAPSE_MENU};
+}
 
 
 export function editDetail(){

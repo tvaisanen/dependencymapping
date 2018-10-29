@@ -8,7 +8,8 @@ export default function mappingReducer(state = initialState.mappings, action){
             // didn't return any items
             return action.mappings ? action.mappings : [];
 
-        case types.ADD_MAPPING:
+        case types.POST_MAPPING_SUCCESS:
+            console.info(action);
             return [...state, action.mapping];
 
         case types.SAVE_MAPPING:
@@ -24,9 +25,11 @@ export default function mappingReducer(state = initialState.mappings, action){
 
         case types.UPDATE_MAPPING_SUCCESS:
             const removeUpdated = state.filter(m => m.name !== action.mapping.name);
+            console.info(action.mapping);
             return [...removeUpdated, action.mapping];
 
         case types.DELETE_MAPPING_SUCCESS:
+            console.info("DELETE_MAPPING_SUCCESS!");
             return state.filter(m => m.name !== action.removed);
 
         default:

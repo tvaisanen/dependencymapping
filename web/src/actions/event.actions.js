@@ -1,5 +1,5 @@
 import * as graphHelpers from '../common/graph-helpers';
-import * as activeMappingActions from './active-mapping.actions';
+import * as activeMappingActions from '../store/active-mapping/active-mapping.actions';
 
 /**
  *  Compound actions.

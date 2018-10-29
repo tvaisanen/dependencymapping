@@ -1,15 +1,9 @@
 import styled from 'styled-components';
 
-export const PanelHeaderTitle = styled.div` 
-    text-center: center;
-    text-transform: capitalize;
-    border-bottom: solid 2px transparent;
-
-`;
-
 export const ListItem = styled.div`
     font-size: small;
     text-align: center;
+    letter-spacing: 0.05em;
     padding: 2px;
     cursor: pointer;
     margin: 2px 0;
@@ -39,38 +33,31 @@ export const ListItem = styled.div`
     }
     transition: all .15s ease-in-out;   
 `;
-export const SidePanelContentContainer = styled.div`
+export const ScrollContent = styled.div`
     display: flex;
     flex-direction: column;
-    height: ${props => 
-        props.collapsed ? 
-        '0' : 
-        'auto'
-    };
-    transform: ${props => 
-        props.collapsed ? 
-        'scale(1,0)' : 
-        'scale(1,1)'
-    };
-    visibility:
-    transition: all 1s ease-in;
+    height: auto; 
     padding: 4px 0;
-    margin: 6px;
-
+    margin: 0 6px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex-grow: 1;
 `;
-export const SidePanelTabButton = styled.div`
+export const PanelHeader = styled.div`
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    background: rgba(36,36,42, 0.8);
+    justify-content: center;
+    //background: rgba(36,36,42, 0.8);
     color: white;
     text-align: center;
-    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
     padding: 6px 15px;
     margin: 4px;
     border-radius: 3px;
 `;
 
 export const SidePanelMenu = styled.div`
-    resize: vertical;
-    `;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+`;

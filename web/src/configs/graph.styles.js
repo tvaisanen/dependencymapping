@@ -14,7 +14,7 @@ const edgeStylePassive = {
             'width': 4,
             'line-color': '#eee',
             'target-arrow-color': '#ccc',
-            'target-arrow-shape': 'triangle'
+            'target-arrow-shape': 'none'
         };
 
 const edgeStyleExpanded = {

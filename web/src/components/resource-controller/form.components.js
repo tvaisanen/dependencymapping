@@ -38,7 +38,7 @@ export const Container = styled.div`
             : 'hidden'
             
     };
-    flex-grow: 1;
+    flex-grow: 3;
     padding: 0 12px;  
     border-radius: 3px;
     transform: ${p =>
@@ -186,7 +186,6 @@ const SelectionBlock = styled.div`
   flex-direction: row;
   padding: 4px;
   border-radius: 3px;
-  border: solid 1px; rgba(244,244,244,0.1);
   background-color: rgba(22,22,22,0.1);
   height: 100%;
   margin: 2px;
@@ -200,8 +199,10 @@ export const Block = styled.div`
   align-items: center;
   flex-grow: 1;
   padding: 4px;
-  
+`;
 
+export const SmallLabel = styled.small`
+  letter-spacing: 0.05rem;
 `;
 
 
@@ -216,7 +217,7 @@ export const FormSelectionBlock = (
     ) => (
     <SelectionBlock id="selection-block">
         <Block id="block">
-            <small>{labelOption} {options.length}</small>
+            <SmallLabel>{labelOption} <small>({options.length})</small></SmallLabel>
             <FilterInputField id="filter-input-field"
                 onChange={(e) => onFilterChange(e)}
             />
@@ -228,7 +229,7 @@ export const FormSelectionBlock = (
 
         </Block>
         <Block id="block">
-            <small>{selectedLabel} {selected.length}</small>
+            <SmallLabel>{selectedLabel}: {selected.length}</SmallLabel>
             <AddInputField
                 id="filter-input-field"
                 addItem={addItem}

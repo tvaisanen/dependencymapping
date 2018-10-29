@@ -4,12 +4,12 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import * as form from './form.components';
 import {connect} from 'react-redux'
-import {mappingExists} from '../../common/resource-helpers';
+import * as resourceHelpers from '../../common/resource-helpers';
 import {filterItems} from "../../common";
 import * as validators from '../../common/validators';
 import {FormSelectionBlock} from "./form.components";
 import * as _ from 'lodash';
-
+import styled from 'styled-components';
 import ControllerNavTabs from './components/ControllerNavTabs';
 import resourceControllerCtrl from './resource-controller.controller';
 import * as types from '../../constants/types';
@@ -40,32 +40,43 @@ class ResourceControllerContainer extends Component {
 
     }
 
-    componentDidMount(){
-        if (this.props.formEdit){
-            const {type,data} = this.props.activeDetail;
+    componentDidMount() {
+        if (this.props.formEdit) {
+
+            // if the form is in edit mode
+            // get data from the active detail
+            const {type, data} = this.props.activeDetail;
+
+            // copy the active detail information to the
+            // components state to edit
             this.setState({
                 name: data.name,
                 description: data.description
             });
-            if (type === types.ASSET){
+
+            // if the detail is type ASSET get resources
+            // connected to and tags
+            if (type === types.ASSET) {
                 this.setState({
-                    selectedResources: data.connected_to
-                        .map(r=>r.name),
-                    selectedTags: data.tags
-                        .map(t=>t.name)
+                    selectedResources: data.connected_to.map(r => r.name),
+                    selectedTags: data.tags.map(t => t.name)
                 })
-            } else if (type === types.MAPPING){
+            }
+
+            // if the detail is type MAPPING do the same as for
+            // asset.
+            else if (type === types.MAPPING) {
                 console.info(this.props.activeDetail);
                 this.setState({
-                    selectedResources: data.resources.map(r=>r.name),
-                    selectedTags: data.tags.map(t=>t.name),
+                    selectedResources: data.resources.map(r => r.name),
+                    selectedTags: data.tags.map(t => t.name),
                 })
             }
         }
     }
 
     exists({id, set}) {
-        return mappingExists({id: id, mappings: set});
+        return resourceHelpers.mappingExists({id: id, mappings: set});
     }
 
     actionDelete({name}) {
@@ -77,39 +88,58 @@ class ResourceControllerContainer extends Component {
     actionPost(form) {
         console.group("actionPost()");
         const {formType, formActions} = this.props;
-        const response = formActions[formType].post(form);
-        this.handlePromise(response);
+        const {promise, resolveCallback} = formActions[formType].post(form);
+        this.handlePromise({promise, resolveCallback});
         console.groupEnd();
     }
 
-    handlePromise(promise) {
-        promise.then(resolved => {
+    handlePromise({promise, resolveCallback}) {
+        promise.then(response => {
 
+            console.group("Debug deleting :: handlePromise()");
+            console.info(response);
+            console.info(resolveCallback);
+            console.groupEnd();
 
-            const status = resolved.status ?
-                resolved.status
-                : resolved.response.status;
+            try {
+                // There is not necessarily data returned
+                // with the response and  all callbacks
+                // do not require the data.
+                const data = response.data || {};
+                resolveCallback(data);
 
-            console.groupCollapsed(`handleResponse(${status})`);
-
-            if ((status === 200) || (status === 201)) {
-
-                //
-                this.props.closeFormAndSetActiveDetail({
-                    data: resolved.data,
-                    type: this.props.formType,
-                });
-
-            } else if (status === 400) {
-
-                // only error should be if the name is already reserved
-                console.group("Debuggint response: 400");
-                console.info(resolved);
+            } catch (e) {
+                console.group("responseCallback(response.data || {}) -> <Error>>");
+                console.info(response);
+                console.info(e);
                 console.groupEnd();
-                this.setState({errors: resolved.data})
             }
 
+            try {
+                this.props.closeFormAndSetActiveDetail({
+                    setDetail: response.status !== 204, // don't set detail if deleted
+                    data: response.data,
+                    type: this.props.formType,
+                });
+            } catch (e){
+                console.group("ResourceControllerContainer\ncloseFormAndSectActiveDetail({}) -> <Error>>");
+                console.info(response);
+                console.error(e);
+                console.groupEnd();
+            }
+
+
+        }).catch(error => {
+            // only error should be if the name is already reserved
+            console.group("Debugging error");
+            console.info(JSON.stringify(error));
+            Object.keys(error).forEach(key => {
+                console.groupCollapsed(key);
+                console.info(error[key]);
+                console.groupEnd();
+            });
             console.groupEnd();
+            this.setState({errors: error.response.data});
         })
     }
 
@@ -129,34 +159,33 @@ class ResourceControllerContainer extends Component {
     createAssetAndSelect(assetName) {
 
         // quick asset creation, post new asset with just a name to quicker input
-        const promise = this.props.formActions[types.ASSET].post({name: assetName});
-
-        promise.then(r => {
-            this.setState({ selectedResources: [...this.state.selectedResources, assetName] })
+        const {promise, resolveCallback} = this.props.formActions[types.ASSET].post({name: assetName});
+        promise.then(response => {
+            resolveCallback(response.data);
+            this.setState({selectedResources: [...this.state.selectedResources, response.data.name]})
         });
+
     }
 
     createTagAndSelect(tagName) {
-        const promise = this.props.formActions[types.TAG].post({name: tagName});
-        promise.then(r => {
-            console.info(r);
-            this.setState({
-                selectedTags: [...this.state.selectedTags, tagName]
-            })
+        const {promise, resolveCallback} = this.props.formActions[types.TAG].post({name: tagName});
+        promise.then(response => {
+            resolveCallback(response.data);
+            this.setState({selectedTags: [...this.state.selectedTags, response.data.name]})
         });
     }
 
     getFormData() {
         return {
-            name:           this.state.name,
-            description:    this.state.description,
-            resources:      this.state.selectedResources.map(n => ({name: n})),
-            tags:           this.state.selectedTags,
+            name: this.state.name,
+            description: this.state.description,
+            resources: this.state.selectedResources.map(n => ({name: n})),
+            tags: this.state.selectedTags,
         }
     }
 
-    clearErrors(){
-        this.setState({errors:{}})
+    clearErrors() {
+        this.setState({errors: {}})
     }
 
     onSave() {
@@ -215,9 +244,9 @@ class ResourceControllerContainer extends Component {
         });
 
         return (
-            <form.Inflater id="resource-controller-container" column>
+            <ResourceControllerLayout id="resource-controller-container">
                 {/**/}
-                <form.Container column visible >
+                <MainBlock column visible>
                     {
                         /* todo: refactor logic
                          * If editing, do not show the other
@@ -228,6 +257,7 @@ class ResourceControllerContainer extends Component {
                                 types={this.props.types}
                                 setFormType={this.props.setFormType}/>
                     }
+
                     <form.Label>Name</form.Label>
                     <form.Input
                         lock={this.props.formEdit}
@@ -253,21 +283,22 @@ class ResourceControllerContainer extends Component {
                         }
                     />
 
-                        <form.ButtonRow
-                            edit={this.props.formEdit}
-                            save={this.onSave}
-                            remove={() => this.onDelete({name: this.state.name})}
-                            cancel={this.props.closeEdit}/>
+                    <form.ButtonRow
+                        edit={this.props.formEdit}
+                        save={this.onSave}
+                        remove={() => this.onDelete({name: this.state.name})}
+                        cancel={this.props.closeEdit}/>
 
 
-                </form.Container>
-                <form.Container
+                </MainBlock>
+                <SecondaryBlock
                     visible={this.props.formType !== types.TAG}
                     id="form-col-two"
-                    column>
+                    column
+                    >
                     {/* Selectable resource list */}
                     <FormSelectionBlock
-                        labelOption="resources"
+                        labelOption="Available assets"
                         selectedLabel={this.props.formType === types.MAPPING ? "selected" : "connected to"}
                         onFilterChange={(e) => this.setState({resourceFilter: e.target.value})}
                         options={filteredResources}
@@ -283,7 +314,7 @@ class ResourceControllerContainer extends Component {
                     />
                     {/* TAGS */}
                     <FormSelectionBlock
-                        labelOption="tags"
+                        labelOption="Available tags"
                         selectedLabel="selected"
                         onFilterChange={(e) => this.setState({tagFilter: e.target.value})}
                         options={filteredTags}
@@ -297,8 +328,8 @@ class ResourceControllerContainer extends Component {
                         })}
                         addItem={this.createTagAndSelect}
                     />
-                </form.Container>
-            </form.Inflater>
+                </SecondaryBlock>
+            </ResourceControllerLayout>
         );
     }
 }
@@ -327,3 +358,86 @@ export default connect(
     resourceControllerCtrl.mapStateToProps,
     resourceControllerCtrl.dispatchToProps
 )(ResourceControllerContainer);
+
+const ResourceControllerLayout = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  color: rgba(255,255,255,0.8);
+`;
+
+
+export const MainBlock = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-self: center; 
+    border: ${p=>p.theme.defaultBorder};
+    border-radius: ${p=>p.theme.borderRadius};
+    width: ${p =>
+        p.visible ?
+            "100%"
+            : "0"
+    };
+    visibility: ${p =>
+        p.visible ?
+            'visible'
+            : 'hidden'
+            
+    };
+    height: inherit;
+    flex-grow: 3;
+    padding: 0 12px;  
+    transform: ${p =>
+    p.visible ?
+        "scaleX(1)"
+        : "scaleX(0)"};
+    transition:
+      transform 300ms ease-in-out,
+      width 500ms ease-in-out,
+      flex-grow 1000ms ease-in-out;
+      
+    transform-origin: right;
+    
+`;
+
+export const SecondaryBlock = styled.div`
+    height: inherit;
+    display: flex;
+    flex-direction: ${props => props.column ? 'column' : 'row'};
+    background: ${props => props.bg};
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    margin-left: 12px;
+    border: ${p=>p.theme.defaultBorder};
+    border-radius: ${p=>p.theme.borderRadius};
+    width: ${p =>
+        p.visible ?
+            "100%"
+            : "0"
+    };
+    visibility: ${p =>
+        p.visible ?
+            'visible'
+            : 'hidden'
+            
+    };
+    flex-grow: 3;
+    padding: 0 12px;  
+    border-radius: 3px;
+    transform: ${p =>
+    p.visible ?
+        "scaleX(1)"
+        : "scaleX(0)"};
+    transition:
+      transform 300ms ease-in-out,
+      width 500ms ease-in-out,
+      flex-grow 1000ms ease-in-out;
+      
+    transform-origin: right;
+    
+`;
+

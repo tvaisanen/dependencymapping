@@ -2,15 +2,25 @@ import React from 'react';
 import styled from 'styled-components';
 import {connect} from 'react-redux';
 import collapseMenuCtrl from './collapse-menu.controller';
+import {colorDark} from "../../constants/colors";
+import PropTypes from 'prop-types';
 
 const CollapseMenuContainer = props => (
     <CollapseMenu visible={props.visible}>
-        <FloatingButton onClick={props.updateLayout}>refresh</FloatingButton>
-        <FloatingButton onClick={props.clearGraphSelection}>clear</FloatingButton>
-        <FloatingButton onClick={(() => props.saveMapping(props.activeMapping))}>save</FloatingButton>
-        <FloatingButton onClick={props.downloadImage}>download</FloatingButton>
+        <MenuBtn onClick={props.clearGraphSelection}>clear</MenuBtn>
+        <MenuBtn onClick={props.saveMapping}>save</MenuBtn>
+        <MenuBtn onClick={props.downloadImage}>download</MenuBtn>
+        <MenuBtn onClick={props.logout}>logout</MenuBtn>
     </CollapseMenu>
-)
+);
+
+CollapseMenuContainer.propTypes = {
+    clearGraphSelection: PropTypes.func.isRequired,
+    downloadImage: PropTypes.func.isRequired,
+    logout: PropTypes.func.logout,
+    saveMapping: PropTypes.func.isRequired,
+    visible: PropTypes.bool.isRequired,
+};
 
 export default connect(
     collapseMenuCtrl.stateToProps,
@@ -24,9 +34,10 @@ export const CollapseMenu = styled.div`
     opacity: ${props => props.visible ? 1 : 0};
     transform: ${props => props.visible ? 'scaleY(1)' : 'scaleY(0)'};
     transform-origin: top center;
-    right: 12px;
-    background: transparent;
-    width: auto;
+    padding: 0 24px;
+    right: 28px;
+    background: ${colorDark};
+    width: 100px;
     min-height: inherit;
     height: auto;
     overflow: hidden;
@@ -34,14 +45,16 @@ export const CollapseMenu = styled.div`
     transition: all .2s ease-in-out;
 
 `;
-export const FloatingButton = styled.button`
-    border-radius: 3px;
-    border: none;
-    padding: 0.25em;
-    background: rgba(36,36,42, 0.5);
-    margin: .5em;
-    cursor: pointer;
-    color: white;
+export const MenuBtn = styled.div`
+  padding: 4px 0;
+  text-align: center;
+  text-justify: distribute-center-last;
+  color: rgba(255,255,255,0.8);
+  :hover {
     font-weight: bold;
-    font-size: smaller;
+  }
+  cursor: pointer;
+  :last-of-type {
+    border-top: 1px solid rgba(255,255,255,0.3);
+  } 
 `;

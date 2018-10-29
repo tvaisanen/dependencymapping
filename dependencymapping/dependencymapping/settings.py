@@ -41,23 +41,10 @@ SECRET_KEY = 'uqa&gk2y+z1bfh1d4#8-o6j@#56%crn$*4x=_g#*um8-nkf49x'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '127.0.0.1',
-    '192.168.1.127',
-    'localhost:8000',
-    '127.0.0.1:9000',
-    'localhost:3000',
-    'localhost:8000',
-    'localhost',
     '.{}'.format(API_HOST),
-    '0.0.0.0'
 ]
 
 CORS_ORIGIN_WHITELIST = (
-    'localhost:8000',
-    '127.0.0.1:9000',
-    'localhost:3000',
-    '192.168.1.127:3000',
-    '127.0.1.1:5000',
     '*.{}'.format(CLIENT_HOST),  # allow client host request with subdomains
 )
 
@@ -65,6 +52,7 @@ CORS_ORIGIN_REGEX_WHITELIST = (
     r'^(https?://)?.*{host}'.format(host=CLIENT_HOST),
 )
 
+SITE_ID = 1
 
 # Application definitioon
 
@@ -80,7 +68,8 @@ INSTALLED_APPS = [
     'application',
     'rest_framework',
     'rest_framework.authtoken',
-    'rest_framework_swagger'
+    'rest_framework_swagger',
+    'rest_auth'
 ]
 
 MIDDLEWARE = [
@@ -91,7 +80,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'dependencymapping.urls'
@@ -126,7 +115,7 @@ DATABASES = {
         'NAME': 'postgres',
         'USER': 'postgres',
         'HOST': 'db',
-        'PORT': 5432,
+        'PORT': '5432',
     }
 }
 
@@ -174,6 +163,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, '../static'),
 ]
 
+
 REST_FRAMEWORK = {
     'UNICODE_JSON': False,
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.AllowAny',),
@@ -188,3 +178,4 @@ SWAGGER_SETTINGS = {
  'LOGIN_URL': 'rest_framework:login',
  'LOGOUT_URL': 'rest_framework:logout'
 }
+

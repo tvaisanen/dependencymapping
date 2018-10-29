@@ -45,7 +45,7 @@ export const ListItems = ({items, type, clickHandler}) => {
 };
 
 export const detailListFragment = ({label, items, type, setActiveDetail, i}) => (
-    <React.Fragment key={i}>
+    <s.ListWrapper key={i}>
         <s.ListLabel>{label}</s.ListLabel>
         <s.List>
             <ListItems
@@ -54,19 +54,19 @@ export const detailListFragment = ({label, items, type, setActiveDetail, i}) => 
                 clickHandler={setActiveDetail}
             />
         </s.List>
-    </React.Fragment>
+    </s.ListWrapper>
 );
+
 
 
 export const ResourceDetailHeader = ({activeDetail, isResourceInMap, editDetail, addToMap, removeFromMap}) => {
     return <s.Col>
         {activeDetail.type ?
-            <s.Row>
-                <small>{
+            <s.HeaderBar>
+                {
                     activeDetail.type === types.EMPTY ?
                         null
-                        : activeDetail.type}
-                </small>
+                        : <small>{activeDetail.type}: {activeDetail.data.name}</small>}
                 <div>
                 </div>
                 <span>
@@ -84,15 +84,18 @@ export const ResourceDetailHeader = ({activeDetail, isResourceInMap, editDetail,
                     })}
                 > {activeDetail.type === types.EMPTY ? null : "edit"} </s.ActionLink>
             </span>
-            </s.Row>
+            </s.HeaderBar>
             : null
         }
-        <s.DetailHeader>{activeDetail.data.name}</s.DetailHeader>
     </s.Col>
 };
+
+
 export const DetailDescription = (props) => (
     <s.DetailDescription>
-        <MarkDownRenderer markdown={props.description ? props.description : null}/>
+        {/*<s.DetailHeader>{props.name}</s.DetailHeader>*/}
+        <MarkDownRenderer
+            markdown={props.description ? props.description : "Edit to add description."}/>
     </s.DetailDescription>
 );
 

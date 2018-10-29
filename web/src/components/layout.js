@@ -8,7 +8,7 @@ const mediumDark ="#4d4c4c";
 export const Layout = styled.div`
     display: flex;
     flex-direction: column;
-    background: rgb(54, 48, 54);
+    background: ${p=>p.theme.colorLightBackground};
     flex-grow: 1;
     min-height: 600px;
     min-width: 800px;

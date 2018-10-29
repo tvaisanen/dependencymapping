@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User, Group
-from application.models import Tag, Resource, DependencyMap
+from application.models import Tag, Asset, DependencyMap
 from rest_framework import viewsets
 from application.serializers import DependencyMapSerializer, UserSerializer, GroupSerializer, TagSerializer, \
-    ResourceSerializer
+    AssetSerializer
 from rest_framework.permissions import AllowAny
 from django.views.generic import View
 from django.http import HttpResponse
@@ -15,6 +15,9 @@ from rest_framework.schemas import SchemaGenerator
 from rest_framework.views import APIView
 from rest_framework_swagger import renderers
 
+import logging
+
+logger = logging.getLogger(__name__)
 
 class SwaggerSchemaView(APIView):
     permission_classes = [AllowAny]
@@ -58,21 +61,23 @@ class TagViewSet(viewsets.ModelViewSet):
     allowed_methods = ['get', 'post', 'put', 'delete']
 
 
-class ResourceViewSet(viewsets.ModelViewSet):
+class AssetViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
     """
 
     def create(self, request, *args, **kwargs):
         data = request.data
-        print(dir(request))
-
+        logger.critical(request.get_host())
+        logger.critical(request.META)
+        logger.critical(request.META['HTTP_ORIGIN'])
+        logger.critical(request.META['HTTP_X_FORWARDED_HOST'])
         print("name: {} description: {}".format(data['name'], data['description']))
         print("resources count: {}.".format(len(data['connected_to'])))
-        return super(ResourceViewSet, self).create(request, *args, **kwargs)
+        return super(AssetViewSet, self).create(request, *args, **kwargs)
 
-    queryset = Resource.objects.all()
-    serializer_class = ResourceSerializer
+    queryset = Asset.objects.all()
+    serializer_class = AssetSerializer
 
 
 class DependencyMapViewSet(viewsets.ModelViewSet):
@@ -80,7 +85,7 @@ class DependencyMapViewSet(viewsets.ModelViewSet):
     API endpoint that allows groups to be viewed or edited.
     """
 
-    permission_classes = (AllowAny,)
+    # permission_classes = (AllowAny,)
     queryset = DependencyMap.objects.all()
     serializer_class = DependencyMapSerializer
     allowed_methods = ['get', 'post', 'put', 'delete']

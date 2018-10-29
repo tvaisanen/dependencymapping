@@ -22,7 +22,6 @@ const panelViews = {
 
 const BottomPanelContainer = (props) => {
     const view = props.views[props.selectedView];
-    console.info(view);
         return (
             <BottomPanel id="bottom-panel-container">
                 <PanelNavTabs/>
@@ -53,17 +52,25 @@ function mapDispatchToProps(dispatch) {
 
 export default connect(mapStateToProps, mapDispatchToProps)(BottomPanelContainer);
 
-
+export const BottomContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: ${props=>props.justify};
+    align-items: center;
+    height: 40vh;
+    flex-grow: 1; 
+`;
 
 const BottomPanel = styled.div`
     max-width: 100vw;
+    min-width: 800px;
     flex-grow: 1;
     width: 100vw;
     height: 100%;
     max-height: 40vh;
   
+    background: ${p => p.theme.colorDarkBackground};
     transform: ${props => props.collapsed ? 'scaleY(0)' : 'scaleY(1)'};
-    background: ${props => props.collapsed ? 'white' : null};
     color: rgba(255,255,255,0.8);
 `;
 
