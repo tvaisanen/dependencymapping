@@ -1,14 +1,17 @@
 import GwClientApi from '../../api/gwClientApi';
 import * as types from './tag.action-types';
 import * as apiHelpers from '../../common/api.helpers';
-
+import * as appActions from '../../actions/app.actions';
 /********* TAG POST *******************/
 
 export function postTag({name, description}) {
 
     return function (dispatch) {
 
-        const resolveCallback = (tag) => dispatch(postTagSuccess(tag));
+        const resolveCallback = (tag) => {
+            dispatch(appActions.setInfoMessage(`Created tag: ${tag.name}`));
+            dispatch(postTagSuccess(tag));
+        };
         const promise = GwClientApi.postTag({name, description});
         return {promise, resolveCallback};
     }
@@ -22,7 +25,10 @@ export function postTagSuccess(tag) {
 
 export function updateTag(tag) {
     return function (dispatch) {
-        const resolveCallback = tag => dispatch(updateTagSuccess({tag}));
+        const resolveCallback = tag => {
+            dispatch(appActions.setInfoMessage(`Updated tag: ${tag.name}`));
+            dispatch(updateTagSuccess({tag}));
+        };
         const promise = GwClientApi.putTag(tag);
         return {promise, resolveCallback};
     }
@@ -36,7 +42,10 @@ export function updateTagSuccess({tag}) {
 
 export function deleteTag({name}) {
     return function (dispatch) {
-        const resolveCallback = () => dispatch(deleteTagSuccess({tagName: name}));
+        const resolveCallback = () => {
+            dispatch(appActions.setInfoMessage(`Deleted tag: ${name}`));
+            dispatch(deleteTagSuccess({tagName: name}));
+        };
         const promise = GwClientApi.deleteTag({name});
         return {promise, resolveCallback};
     }
@@ -50,6 +59,7 @@ export function loadAllTags() {
     return function (dispatch) {
         const promise = GwClientApi.getTags();
         promise.then(response => {
+            dispatch(appActions.setInfoMessage("Loaded all tags successfully"));
             dispatch(loadTagsSuccess(response.data));
         }).catch(error => {
                if (apiHelpers.isNetworkError(error)){

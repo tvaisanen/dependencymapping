@@ -8,37 +8,31 @@ import GraphContainer from '../graph-container/GraphContainer';
 import BottomPanelContainer from '../bottom-panel/BottomPanelContainer';
 import MappingMenuContainer from '../mapping-menu/MappingMenuContainer';
 import CollapseMenuContainer from '../collapse-menu/CollapseMenuContainer';
-import LoginView from '../login-view/LoginView';
 import appCtrl from './app.controller';
 
 
 class App extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     /**************** Todo: refactor this block **************/
+    /* after doing this the component can be refactored to
+       const App => ..
+    */
 
     componentDidMount() {
         // todo: refactor to appropriate location
-        if (this.props.auth.loggedIn) {
-            this.props.initGraph({
-                eventHandlers: {
-                    tap: ['node', this.props.onNodeClick],
-                    mouseover: ['node', this.props.onNodeMouseOver],
-                    mouseout: ['node', this.props.onNodeMouseOut],
-                    cxttap: ['node', this.props.onCtxClick]
-                }
-            });
-        }
+        this.props.initGraph({
+            eventHandlers: {
+                tap: ['node', this.props.onNodeClick],
+                mouseover: ['node', this.props.onNodeMouseOver],
+                mouseout: ['node', this.props.onNodeMouseOut],
+                cxttap: ['node', this.props.onCtxClick]
+            }
+        });
 
     }
-
-    /**************************************************************/
-
+    /*********************************************************/
 
     render() {
-
         return (
             <Layout>
                 <sc.TopContent id="container-top">

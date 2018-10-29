@@ -131,7 +131,7 @@ class ResourceControllerContainer extends Component {
 
 
         }).catch(error => {
-            if (apiHelpers.isNetworkError){
+            if (apiHelpers.isNetworkError(error)){
                 console.error("Network Error");
             } else {
                 // only error should be if the name is already reserved
@@ -174,6 +174,7 @@ class ResourceControllerContainer extends Component {
 
     createTagAndSelect(tagName) {
         const {promise, resolveCallback} = this.props.formActions[types.TAG].post({name: tagName});
+
         promise.then(response => {
             resolveCallback(response.data);
             this.setState({selectedTags: [...this.state.selectedTags, response.data.name]})

@@ -35,7 +35,7 @@ class Asset(models.Model):
 
 class DependencyMap(models.Model):
     name = models.CharField(max_length=100, primary_key=True)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     resources = models.ManyToManyField("Asset", related_name="resources")
     tags = models.ManyToManyField("Tag", related_name="tags")
 

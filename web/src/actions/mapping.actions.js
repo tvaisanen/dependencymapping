@@ -2,7 +2,7 @@ import GwClientApi from '../api/gwClientApi';
 import * as types from './actionTypes';
 import * as graphHelpers from '../common/graph-helpers';
 import * as activeMappingActions from '../store/active-mapping/active-mapping.actions';
-
+import * as appActions from '../actions/app.actions';
 import * as apiHelpers from '../common/api.helpers';
 
 /*************** MAPPING *************/
@@ -10,7 +10,10 @@ import * as apiHelpers from '../common/api.helpers';
 export function postMapping({name, description, resources, tags}) {
 
     return function (dispatch) {
-        const resolveCallback = mapping => dispatch(postMappingSuccess(mapping));
+        const resolveCallback = mapping => {
+            dispatch(appActions.setInfoMessage(`Created mapping: ${name}`));
+            dispatch(postMappingSuccess(mapping));
+        };
         const promise = GwClientApi.postMapping({name, description, resources, tags})
         return {promise, resolveCallback};
     }
@@ -32,6 +35,7 @@ export function updateMapping(mapping) {
     return function (dispatch) {
         const resolveCallback = (mapping) => {
 
+            dispatch(appActions.setInfoMessage(`Updated mapping: ${mapping.name}`));
             dispatch(updateMappingSuccess({mapping}));
         };
         const promise = GwClientApi.putMapping(mapping);
@@ -55,6 +59,7 @@ export function deleteMapping({name}) {
 
         const resolveCallback = () => {
             // no need to return responsa data
+            dispatch(appActions.setInfoMessage(`Deleted mapping: ${name}`));
             dispatch(deleteMappingSuccess({removed: name}));
             dispatch(activeMappingActions.clearActiveMappingSelection());
             graphHelpers.clearGraph(getState().graph);
@@ -80,6 +85,7 @@ export function loadAllMappings(auth) {
         const promise = GwClientApi.getGraphs({auth});
 
         promise.then(response => {
+            dispatch(appActions.setInfoMessage("Loaded all mappings successfully"));
             dispatch(loadMappingsSuccess(response.data))
         }).catch(error => {
             if (apiHelpers.isNetworkError(error)){

@@ -3,14 +3,18 @@ import * as types from './asset.action-types';
 import * as graphHelpers from '../../common/graph-helpers';
 import * as _ from 'lodash';
 import * as apiHelpers from '../../common/api.helpers';
+import * as appActions from '../../actions/app.actions';
 /************* ASSET       ************* */
 
 export function postResource(asset) {
     return function (dispatch) {
         const promise = GwClientApi.postResource(asset);
-
+        dispatch(appActions.setInfoMessage(`Created asset: ${asset.name}`));
         // resolving a request is done in form container
-        const resolveCallback = (resource) => dispatch(postResourceSuccess(resource))
+        const resolveCallback = (resource) => {
+            dispatch(postResourceSuccess(resource))
+        };
+
         return {promise, resolveCallback};
     }
 }
@@ -28,6 +32,7 @@ export function updateResource(resource) {
     return function (dispatch, getState) {
         const resolveCallback = (resource) => {
                 dispatch(updateResourceSuccess({resource: resource}));
+                dispatch(appActions.setInfoMessage(`Updated asset: ${resource.name}`));
                 // todo: refactor the graph update
                 // redraw the edges in the graph if asset in map
                 const activeMapAssets = getState().activeMapping.resources;
@@ -57,6 +62,7 @@ export function deleteResource({name}) {
         // resolving a request is done in form container
         const resolveCallback = () => {
             // todo: deal with mapped assets
+            dispatch(appActions.setInfoMessage(`Deleted asset: ${name}`));
             dispatch(deleteResourceSuccess({removed: name}));
         };
         return {promise, resolveCallback};
@@ -99,15 +105,16 @@ export function loadAllResources() {
         promise.then(response => {
             // dispatch success message with the data
             // returned assets
+            dispatch(appActions.setInfoMessage("Loaded all resources successfully"));
             dispatch(loadResourcesSuccess(response.data));
 
         }).catch(error => {
              if (error.message && error.message === "Network Error"){
                 dispatch(apiHelpers.handleNetworkError(error));
             } else {
-            console.group("loadAllResources() -> <Error>");
-            console.warn(error);
-            console.groupEnd();
+                console.group("loadAllResources() -> <Error>");
+                console.warn(error);
+                console.groupEnd();
             }
 
         });
