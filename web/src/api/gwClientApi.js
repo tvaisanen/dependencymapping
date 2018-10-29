@@ -40,9 +40,11 @@ console.info(process.env);
 console.groupEnd();
 
 function setAuthHeader() {
+    /*
     const token = JSON.parse(localStorage.getItem('auth')).key;
 
     axios.defaults.headers.common['Authorization'] =  `Token ${token}`;
+    */
 }
 
 class GwClientApi {
