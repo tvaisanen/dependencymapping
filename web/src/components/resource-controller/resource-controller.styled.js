@@ -3,8 +3,8 @@ import styled from 'styled-components';
 export const ResourceControllerLayout = styled.div`
   display: flex;
   flex-direction: row;
-  width: 100%;
-  height: 100%;
+  width: inherit;
+  height: inherit;
   color: rgba(255,255,255,0.8);
 `;
 
@@ -15,6 +15,7 @@ export const MainBlock = styled.div`
     justify-content: center;
     align-items: center;
     align-self: center; 
+    height: inherit;
     border: ${p => p.theme.defaultBorder};
     border-radius: ${p => p.theme.borderRadius};
     width: ${p =>
