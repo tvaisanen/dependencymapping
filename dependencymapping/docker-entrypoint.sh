@@ -7,7 +7,7 @@ echo "################# ${ENVIRONMENT} #################"
 
 echo "Apply database migrations"
 python manage.py migrate
-python manage.py makemigrations
+python manage.py makemigrations application
 python manage.py migrate
 # default login credentials
 # username: admin
