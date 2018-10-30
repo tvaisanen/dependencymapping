@@ -17,12 +17,6 @@ class Tag(models.Model):
 
 
 class Asset(models.Model):
-    state = models.ForeignKey(
-        'AssetState',
-        on_delete=models.SET_NULL,
-        null=True
-    )
-
     name = models.CharField(max_length=100, primary_key=True)
     description = models.TextField(blank=True)
     # todo: dependencies through="Dependency"
