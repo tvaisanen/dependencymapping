@@ -4,5 +4,7 @@ if [ ! -d "node_modules" ]; then
    npm install
 fi
 
+npm install --save-dev react-scripts
+
 npm start
 
