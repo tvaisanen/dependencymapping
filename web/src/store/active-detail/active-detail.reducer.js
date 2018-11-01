@@ -13,3 +13,4 @@ export default function categoryReducer(state = initialState.activeDetail, actio
             return state;
     }
 }
+

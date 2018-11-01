@@ -9,6 +9,7 @@ export function closeFormAndSetActiveDetail(activeDetail) {
         console.group("Debug !");
         console.info(activeDetail);
         console.groupEnd();
+
         dispatch(activeDetailActions.setActiveDetail(activeDetail));
         dispatch(closeEdit());
         // if active detail is mapping

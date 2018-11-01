@@ -1,0 +1,13 @@
+version: "3.1"
+
+services:
+    moin:
+            image: tvaisanen/collabs-demo-wiki
+            ports:
+                - "8080:80"
+                - "8443:443"
+            volumes:
+                - ./plugin/:/usr/local/lib/python2.7/dist-packages/graphingwiki/plugin
+                - ./start.sh:/usr/start.sh
+                - ./override-start.sh:/usr/override-start.sh
+            command: sh /usr/override-start.sh
