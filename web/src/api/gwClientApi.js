@@ -55,7 +55,6 @@ class GwClientApi {
             username: username,
             email: email,
             password: password,
-            httpsAgent: agent
         });
     }
 

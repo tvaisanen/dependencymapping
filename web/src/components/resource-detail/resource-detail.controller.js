@@ -28,7 +28,7 @@ function stateToProps(state) {
 
 const mapDispatchToProps = dispatch => ({
     ...bindActionCreators(actionCreators, dispatch),
-    setActiveDetail: (activeDetail) => dispatch(activeDetailActions.setActiveDetail(activeDetail)),
+    setActiveDetail: (activeDetail) => dispatch(activeDetailActions.setActiveDetailWithResourceCollecting(activeDetail)),
     addResourceToActiveMapping: (resource) => dispatch(activeMappingActions.addResourceToActiveMapping(resource)),
     removeResourceFromActiveMapping: (resource) => dispatch(activeMappingActions.removeResourceFromActiveMapping(resource))
 });
