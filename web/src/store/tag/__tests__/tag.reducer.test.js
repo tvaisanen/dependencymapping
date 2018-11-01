@@ -1,5 +1,5 @@
 import tagReducer from '../tag.reducer';
-import * as actions from '../../actions/tag.actions';
+import * as actions from '../tag.actions';
 
 const initialState = [
     {name: "Tag one", description: "describing one"},
@@ -24,7 +24,7 @@ test('New tag should be added to the state after addTag(tag)', () => {
     const newTag = {name: "Tag three", description: "describing three"};
     const state = tagReducer(
         initialState,
-        actions.addTag(newTag)
+        actions.postTagSuccess(newTag)
     );
     const expected = [newTag, ...initialState];
     expect(state).toEqual(expected);

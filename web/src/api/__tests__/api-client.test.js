@@ -12,7 +12,7 @@ const alreadyExistsError = {name: ["tag with this name already exists."]};
 it('getGraphs should return the data with status: 200 "OK"', () => {
     expect.assertions(3);
     return gwClientApi.getGraphs().then(response => {
-        console.log(typeof response);
+        // console.log(typeof response);
         const {data, status, statusText} = response;
         expect(status).toEqual(200);
         expect(statusText).toEqual('OK');
@@ -27,7 +27,7 @@ it('getGraph should return mappin with id/name', () => {
 it('getResources should return the data with status: 200 "OK"', () => {
     expect.assertions(4);
     return gwClientApi.getResources().then(response => {
-        console.log(typeof response);
+        // console.log(typeof response);
         const {data, status, statusText} = response;
         expect(status).toEqual(200);
         expect(statusText).toEqual('OK');
@@ -54,7 +54,7 @@ it('deleteTag should return 204 with OK when tag exists in db', () => {
     return gwClientApi.deleteTag({
         name: mockData.tags[0].name
     }).then(response => {
-        console.log(JSON.stringify(response));
+        //console.log(JSON.stringify(response));
         const {status, statusText} = response;
         expect(status).toEqual(204);
         expect(statusText).toEqual('OK');

@@ -1,5 +1,5 @@
 import activeMappingReducer from '../active-mapping.reducer';
-import * as actions from '../../actions/active-mapping.actions';
+import * as actions from '../active-mapping.actions';
 
 const initialState = {
     name: "Tag one",

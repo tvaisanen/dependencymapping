@@ -25,7 +25,8 @@ function resourceDetailUrl({name}) {
 //;
 //axios.get('https://something.com/foo', { httpsAgent: agent });
 
-console.group("Process ENVIRONMENT");
+//console.group("Process ENVIRONMENT");
+/*
 let agent;
 if (process.env.NODE_ENV === "development") {
     console.info("set TLS :: rejectUnauthorized = false");
@@ -35,9 +36,9 @@ if (process.env.NODE_ENV === "development") {
 } else {
     agent = new https.Agent();
 }
-
-console.info(process.env);
-console.groupEnd();
+*/
+// console.info(process.env);
+// console.groupEnd();
 
 function setAuthHeader() {
     /*

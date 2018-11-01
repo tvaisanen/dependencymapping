@@ -2,7 +2,7 @@ import * as types from './active-detail.action-types';
 import initialState from '../../reducers/initialState';
 import * as resourceTypes from '../../constants/types';
 
-export default function categoryReducer(state = initialState.activeDetail, action) {
+function categoryReducer(state = initialState.activeDetail, action) {
     switch (action.type) {
         case types.SET_ACTIVE_DETAIL:
             return action.activeDetail;
@@ -14,3 +14,6 @@ export default function categoryReducer(state = initialState.activeDetail, actio
     }
 }
 
+
+
+export default categoryReducer;

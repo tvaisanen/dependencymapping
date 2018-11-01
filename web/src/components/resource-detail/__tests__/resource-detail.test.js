@@ -1,7 +1,7 @@
 import React from 'react';
 import TestRenderer from 'react-test-renderer';
-import {ListItem} from './resource-detail.styled';
-import {ListItems} from './resource-detail.components';
+import {ListItem} from '../resource-detail.styled';
+import {ListItems} from '../resource-detail.components';
 
 const clickHandler = ({item, type}) => ({item, type})
 

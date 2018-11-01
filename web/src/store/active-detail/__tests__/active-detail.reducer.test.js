@@ -1,5 +1,5 @@
 import activeDetailReducer from '../active-detail.reducer';
-import * as actions from '../../actions/active-detail.actions';
+import * as actions from '../active-detail.actions';
 
 const initialState = {
     name: "Tag one",
