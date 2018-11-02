@@ -2,14 +2,15 @@ version: '3'
 
 services:
     moin:
-        image: tvaisanen/collabs-demo-wiki
+        image: tvaisanen/gwiki-with-moin
         ports:
             - "8080:80"
             - "8443:443"
         volumes:
             - ./wiki/plugin/:/usr/local/lib/python2.7/dist-packages/graphingwiki/plugin
+            #- ./wiki/pages/:/srv/wikis/collab/wikis/collab/data/pages
             - ./wiki/override-start.sh:/usr/new-start.sh
-        command: bash /usr/new-start.sh
+        command: apache2ctl -DFOREGROUND
         networks:
             - overlay
 

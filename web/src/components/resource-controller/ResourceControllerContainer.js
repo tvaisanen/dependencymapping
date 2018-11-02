@@ -9,7 +9,6 @@ import {filterItems} from "../../common";
 import * as validators from '../../common/validators';
 import {FormSelectionBlock} from "./form.components";
 import * as _ from 'lodash';
-import styled from 'styled-components';
 import ControllerNavTabs from './components/ControllerNavTabs';
 import resourceControllerCtrl from './resource-controller.controller';
 import * as types from '../../constants/types';

@@ -1,5 +1,5 @@
-from MoinMoin.PageEditor import PageEditor
-from MoinMoin.wikiutil import normalize_pagename
+#from MoinMoin.PageEditor import PageEditor
+#from MoinMoin.wikiutil import normalize_pagename
 
 from graphingwiki.plugin.action.api.asset import asset_handler
 from graphingwiki import values_to_form
@@ -7,6 +7,7 @@ from graphingwiki import values_to_form
 import logging
 
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 
 def get_request_body(request):
@@ -20,7 +21,10 @@ def get_url_params(request):
     try:
         return values_to_form(request.values)
     except Exception as ex:
-        return {'error': str(ex)}
+        return {
+            'body': "no request body",
+            'debug': str(ex)
+        }
 
 
 options = {
@@ -39,8 +43,6 @@ except ImportError:
     import json
 
 
-def write_response(request, payload):
-    request.write(json.dumps(payload))
 
 
 def sendfault(request, msg):
@@ -53,6 +55,7 @@ def execute(pagename, request):
     response_body = dict()
 
     request_body = get_request_body(request)
+    print("\n##########  Here starts the API.execute() ##########\n")
 
     logger.debug(request_body)
     logger.debug(url_params)
@@ -69,13 +72,19 @@ def execute(pagename, request):
 
     try:
 
+        method = request.environ['REQUEST_METHOD']
         resource = url_params['resource'][0]
-        response = resource_handlers[resource](request, url_params, request_body)
-        response_body.update(response)
-        write_response(request, response_body)
+        response = resource_handlers[resource](
+            request, url_params, request_body, method
+        )
+        response_body['data'] = response
+        request.write(json.dumps(response))
 
     except Exception as ex:
         error_response = dict(error=str(ex))
         error_response.update(options)
         error_response['msg'] = "helo"
+
         request.write(json.dumps(error_response))
+
+    print("\n Here API.execute() ends\n")

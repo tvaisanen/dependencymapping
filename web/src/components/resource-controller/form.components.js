@@ -85,7 +85,7 @@ export const Input = styled.input`
 `;
 
 export const TextArea = styled.textarea`
-    width: inherit;
+    width: 100%;
     min-width: 200px;
     background-color: ${ props =>
     props.check ? (props.valid ? cValid : cInvalid) : null

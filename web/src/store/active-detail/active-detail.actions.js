@@ -8,6 +8,13 @@ export function setActiveDetail(activeDetail) {
 }
 
 export function setActiveDetailWithResourceCollecting(activeDetail) {
+    /**
+     * This is in place for detail view asset selection list.
+     * Due to wrongly handled development server resource api
+     * object depth handling.
+     *
+     * Todo: when the gwiki api has been specified. Reflect the changes here.
+     */
     const {data} = activeDetail;
 
     if (activeDetail.type === resourceTypes.ASSET) {

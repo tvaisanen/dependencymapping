@@ -18,24 +18,11 @@ export const MainBlock = styled.div`
     height: inherit;
     border: ${p => p.theme.defaultBorder};
     border-radius: ${p => p.theme.borderRadius};
-    width: ${p =>
-    p.visible ?
-        "100%"
-        : "0"
-    };
-    visibility: ${p =>
-    p.visible ?
-        'visible'
-        : 'hidden'
+    min-width: 400px; 
 
-    };
     height: inherit;
     flex-grow: 3;
     padding: 0 12px;  
-    transform: ${p =>
-    p.visible ?
-        "scaleX(1)"
-        : "scaleX(0)"};
     transition:
       transform 300ms ease-in-out,
       width 500ms ease-in-out,
