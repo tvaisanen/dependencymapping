@@ -9,8 +9,8 @@ services:
         volumes:
             - ./wiki/plugin/:/usr/local/lib/python2.7/dist-packages/graphingwiki/plugin
             #- ./wiki/pages/:/srv/wikis/collab/wikis/collab/data/pages
-            - ./wiki/override-start.sh:/usr/new-start.sh
-        command: apache2ctl -DFOREGROUND
+            - ./wiki/start.sh:/usr/local/start.sh
+        command: bash /usr/local/start.sh
         networks:
             - overlay
 
