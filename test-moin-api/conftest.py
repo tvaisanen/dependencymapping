@@ -33,15 +33,15 @@ pages = [
 tags = [
     {
         'name': 'TestPage',
-        'description': 'Desribe Tag/GwCategory TestPage here.',
+        'description': 'Describe Tag/GwCategory TestPage here.',
     },
     {
         'name': 'TestTag',
-        'description': 'Desribe Tag/GwCategory TestTag here.',
+        'description': 'Describe Tag/GwCategory TestTag here.',
     },
     {
         'name': 'OtherTag',
-        'description': 'Desribe Tag/GwCategory OtherTag here.',
+        'description': 'Describe Tag/GwCategory OtherTag here.',
     },
 ]
 

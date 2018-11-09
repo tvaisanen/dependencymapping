@@ -17,14 +17,18 @@ def test_get_assets_returns_200():
 
 def test_that_assets_have_the_connected_to_assets_as_links():
     """
-    Test that the test data assets have the links in
-    the created wiki pages
-    :return:
+    Test that the test data assets have the links for the
+    Categories..
 
-    pages[2] ==  {
-        'name': 'TestPageThree',
+    Note:
+        Graphingwiki does not use any tagging indicating
+        which links are Graphingwiki Categories. This
+        could be a potential target for improving the GW.
+
+    pages[2] == {
+        'name': 'TestPageFour',
         'description': "Describe TestPageOne here.",
-        'connected_to': ['TestPageOne', 'TestPageThree'],
+        'connected_to': [],
         'tags': ['TestPage', 'TestTag']
     }
 
@@ -34,13 +38,15 @@ def test_that_assets_have_the_connected_to_assets_as_links():
     @author Toni Väisänen
     @date   9.11.2018
 
-    Tested by manually creating the page in Graphingwiki
+    Tested by manually creating the gwcategory links in Graphingwiki
 
     """
+
     page = pages[2]
 
     query_url = WIKI_ROOT + page['name']  # page['name']
     r = requests.get(query_url, verify=False, auth=credentials)
+
     find_these_links = [
         bytes('<a href="{path}{link}">{link}</a>'.format(
                 path=WIKI_PATH,
@@ -51,13 +57,14 @@ def test_that_assets_have_the_connected_to_assets_as_links():
         for link in page['connected_to']
     ]
 
-    """ print to see whats happening """
-    # print("These links should be found from the page content:\n")
-    # [print("\t* {}".format(link)) for link in find_these_links]
-
-    # print("\nquery_url: {}\n".format(query_url))
-    # print("content:\n{}\n".format(r.content))
-
+    """ Print to see whats happening for debugging purposes. """
+    """
+    print("These links should be found from the page content:\n")
+    [print("\t* {}".format(link)) for link in find_these_links]
+    print("\nquery_url: {}\n".format(query_url))
+    print("content:\n{}\n".format(r.content))
+    
+    """
     for link in find_these_links:
         assert link in r.content
 
@@ -68,10 +75,10 @@ def test_that_assets_have_the_tags_as_gwikicategory_links():
     the created wiki pages
     :return:
 
-    pages[2] ==  {
-        'name': 'TestPageThree',
+    pages[3] =={
+        'name': 'TestPageFour',
         'description': "Describe TestPageOne here.",
-        'connected_to': ['TestPageOne', 'TestPageThree'],
+        'connected_to': [],
         'tags': ['TestPage', 'TestTag']
     }
 
@@ -84,28 +91,37 @@ def test_that_assets_have_the_tags_as_gwikicategory_links():
     Tested by manually creating the page in Graphingwiki
 
     """
-    page = pages[2]
+    page = pages[3]
 
     query_url = WIKI_ROOT + page['name']  # page['name']
     r = requests.get(query_url, verify=False, auth=credentials)
-    find_these_links = [
+
+    """ 
+        These links could be any links since there's no
+        separation between GW category links and "normal
+        page links.
+    """
+
+    find_these_links_to_tags = [
         bytes('<a href="{path}{link}">{link}</a>'.format(
                 path=WIKI_PATH,
                 link=link
             ),
             encoding=r.encoding
         )
-        for link in page['connected_to']
+        for link in page['tags']
     ]
 
-    """ print to see whats happening """
-    # print("These links should be found from the page content:\n")
-    # [print("\t* {}".format(link)) for link in find_these_links]
+    """ these are printed out if assert failure """
 
-    # print("\nquery_url: {}\n".format(query_url))
-    # print("content:\n{}\n".format(r.content))
+    print("These links should be found from the page content:\n")
+    [print("\t* {}".format(link)) for link in find_these_links_to_tags]
+    print("\nquery_url: {}\n".format(query_url))
+    print("content:\n{}\n".format(r.content))
 
-    for link in find_these_links:
+    """ ####################################### """
+
+    for link in find_these_links_to_tags:
         assert link in r.content
 
 
@@ -156,17 +172,26 @@ def test_post_asset_create_returns_201():
     """
     asset_name = "NewAsset"
     asset_desc = "Description for NewAsset here."
+
+    # data to create the new page.
     payload = asset(asset_name, asset_desc, [], [])
     r = requests.post(API_ASSETS, verify=False, auth=credentials, data=payload)
     data = load_json(r)
 
-    """ assert here that the data returns as it should """
-    # assert False
-
     """ assert that the page is created and can be accessed """
     r = requests.get(WIKI_ROOT + asset_name, verify=False, auth=credentials)
     print(r.content)
+
+    """ If the page has not been created yet, there will be 
+        a text on the wiki page saying 'Create new empty page'.
+        
+        Therefore after successful creation this shouldn't be
+        visible on the new page. -> 'assert dont_expect not in r.text'
+        
+    """
+
     dont_expect = "Create new empty page"
+
     assert data['name'] is asset_name
     assert data['description'] is asset_desc
     assert dont_expect not in r.text
@@ -176,16 +201,16 @@ def test_put_asset_makes_the_changes():
     """
     Test that the put method updates the
     content of a page
-    :return:
 
     pages[1] == {
         'name': 'TestPageTwo',
         'description': "Describe TestPageOne here.",
         'connected_to': ['TestPageThree'],
         'tags': ['TestPage']
-    },
+    }
 
     """
+
     asset_to_edit = pages[1]
     query_url = asset_url_by_name(asset_to_edit['name'])
 
@@ -193,16 +218,16 @@ def test_put_asset_makes_the_changes():
     r = requests.get(query_url, verify=False, auth=credentials)
     data = load_json(r)
 
-    assert data['description'] is asset_to_edit['description']
+    # assert data['description'] is asset_to_edit['description']
 
     """ Then get the page version """
     r = requests.get(WIKI_ROOT + asset_to_edit['name'], verify=False, auth=credentials)
 
-    assert data['description'] in r.text
+    # assert data['description'] in r.text
 
     updated_data = {
         'name': asset_to_edit['name'],
-        'description': "This should be seen as description after update.",
+        'description': "This should be seen as a description after the update.",
         'connected_to': asset_to_edit['connected_to'],
         'tags': asset_to_edit['tags']
     }
@@ -211,8 +236,25 @@ def test_put_asset_makes_the_changes():
 
     put_response_data = load_json(r)
 
+    """ After the put the page should show the edited text
+        and the edited data should have been returned by the
+        put request.
+    """
+
+    r = requests.get(
+        WIKI_ROOT + asset_to_edit['name'],
+        verify=False, auth=credentials
+    )
+
+    # verify that the updated asset returns same asset
     assert put_response_data['name'] is asset_to_edit['name']
-    assert put_response_data['description'] is not asset_to_edit['description']
+
+    # verify that the updated description can be found
+    # from the rendered html page
+    assert bytes(updated_data['description'], r.encoding) in r.content
+
+    # verify that the received data matches sent data.
     assert put_response_data['description'] is updated_data['description']
 
-
+    # finally check that the description before update is not haunting
+    assert put_response_data['description'] is not asset_to_edit['description']
