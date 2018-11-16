@@ -1,33 +1,31 @@
 from conftest import *
 
+NODE = True
+
 
 # test api assets
-def test_get_assets_returns_200():
+def test_get_assets_returns_all_created_assets():
     """
     Test that the root returns
     Behaviour:
     ~ ListView
     """
-    r = requests.get(API_ASSETS, verify=False, auth=credentials)
+
+    query_url = API_ASSETS
+
+    if NODE:
+        query_url = NODE_HOST.format(resource="asset", id="")
+
+    r = requests.get(query_url, verify=False, auth=credentials)
     data = load_json(r)
-    assert "TODO" not in str(data)
-    assert 200 == r.status_code
+    asset_names = [asset['name'] for asset in data]
+    expected = ['TestPageOne', 'TestPageTwo', 'TestPageThree', 'TestPageFour']
+    print(asset_names)
+
+    for item in asset_names:
+        assert item in expected
 
 
-# test api assets
-def test_get_assets_returns_200():
-    """
-    Test that all off the assets are returned
-    if the root is called.
-    Behaviour:
-    ~ ListView
-    """
-
-    expect = ['TestPageOne', 'TestPageTwo', 'TestPageThree', 'TestPageFour']
-    r = requests.get(API_ASSETS, verify=False, auth=credentials)
-    data = load_json(r)
-    assert 200 == r.status_code
-    assert expect is data
 
 
 
@@ -41,7 +39,7 @@ def test_that_assets_have_the_connected_to_assets_as_links():
         which links are Graphingwiki Categories. This
         could be a potential target for improving the GW.
 
-    pages[2] == {
+    pages[3] == {
         'name': 'TestPageFour',
         'description': "Describe TestPageOne here.",
         'connected_to': [],
@@ -58,9 +56,13 @@ def test_that_assets_have_the_connected_to_assets_as_links():
 
     """
 
-    page = pages[2]
+    page = pages[3]
 
     query_url = WIKI_ROOT + page['name']  # page['name']
+
+    if NODE:
+        query_url = NODE_TEST_PAGES.format(page['name'])
+
     r = requests.get(query_url, verify=False, auth=credentials)
 
     find_these_links = [
@@ -232,11 +234,18 @@ def test_put_asset_makes_the_changes():
     asset_to_edit = pages[1]
     query_url = asset_url_by_name(asset_to_edit['name'])
 
+    if NODE:
+        query_url = NODE_HOST.format(
+            resource='asset',
+            id=asset_to_edit['name']
+        )
+
     """ Get the data first """
     r = requests.get(query_url, verify=False, auth=credentials)
     data = load_json(r)
 
-    # assert data['description'] is asset_to_edit['description']
+    assert data['description'] == asset_to_edit['description']
+
 
     """ Then get the page version """
     r = requests.get(WIKI_ROOT + asset_to_edit['name'], verify=False, auth=credentials)
@@ -265,7 +274,7 @@ def test_put_asset_makes_the_changes():
     )
 
     # verify that the updated asset returns same asset
-    assert put_response_data['name'] is asset_to_edit['name']
+    assert put_response_data['name'] == asset_to_edit['name']
 
     # verify that the updated description can be found
     # from the rendered html page

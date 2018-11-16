@@ -12,19 +12,19 @@ pages = [
     },
     {
         'name': 'TestPageTwo',
-        'description': "Describe TestPageOne here.",
+        'description': "Describe TestPageTwo here.",
         'connected_to': ['TestPageThree'],
         'tags': ['TestPage']
     },
     {
         'name': 'TestPageThree',
-        'description': "Describe TestPageOne here.",
+        'description': "Describe TestPageThree here.",
         'connected_to': ['TestPageOne', 'TestPageFour'],
         'tags': ['TestPage', 'TestTag']
     },
     {
         'name': 'TestPageFour',
-        'description': "Describe TestPageOne here.",
+        'description': "Describe TestPageFour here.",
         'connected_to': [],
         'tags': ['TestPage', 'TestTag']
     }
@@ -66,8 +66,13 @@ def pytest_sessionstart(session):
     """ before session.main() is called. """
     print("\nCreate MoinMoin test pages for tests here.\n")
 
+    r = requests.get("http://localhost:3000/reset-models")
+
+    print(r)
+
     print("create pages:")
     [pprint(p) for p in pages]
+
 
     print("create tags:")
     [pprint(t) for t in tags]
@@ -82,20 +87,24 @@ def pytest_sessionfinish(session, exitstatus):
 
 
 """  Define api paths here  """
-WIKI_IP_HOST = "https://172.20.0.3"
-
-""" 
+WIKI_IP_HOST = "https://172.20.0.2"
+"""
 this is used for checking that links created
 in pages has the format WIKI_IP_HOST/WIKI_PREPATH/LINK_TARGET
 """
 WIKI_PATH = "/collab/"
 WIKI_ROOT = WIKI_IP_HOST + WIKI_PATH
-API_ROOT = "https://172.20.0.3/collab/?action=API&debug=True"
+API_ROOT = "https://172.20.0.2/collab/?action=API&debug=True"
 API_ASSETS = API_ROOT + '&resource=asset'
 API_DEPENDENCIES = API_ROOT + '&resource=dependency'
 API_MAPPINGS = API_ROOT + '&resource=mapping'
 API_TAGS = API_ROOT + '&resource=tag'
 
+PAGE_EDIT = "{host}{path}{page}?action=edit"
+
+# node server for checking the tests
+NODE_HOST = "http://localhost:3000/{resource}/{id}"
+NODE_TEST_PAGES = "http://localhost:3000/test/{}.html"
 
 def mapping_url_by_name(name):
     return "{path}&id{id}".format(path=API_MAPPINGS, id=name)
@@ -119,6 +128,13 @@ def asset(name, description, dependencies, tags):
         'description': description,
         'dependencies': dependencies,
         'tags': tags
+    }
+
+
+def tag(name, description):
+    return {
+        'name': name,
+        'description': description,
     }
 
 ####################################################################
