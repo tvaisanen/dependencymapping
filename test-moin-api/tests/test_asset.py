@@ -4,8 +4,7 @@ from conftest import *
 # test api assets
 def test_get_assets_returns_200():
     """
-    Test that all off the assets are returned
-    if the root is called.
+    Test that the root returns
     Behaviour:
     ~ ListView
     """
@@ -13,6 +12,23 @@ def test_get_assets_returns_200():
     data = load_json(r)
     assert "TODO" not in str(data)
     assert 200 == r.status_code
+
+
+# test api assets
+def test_get_assets_returns_200():
+    """
+    Test that all off the assets are returned
+    if the root is called.
+    Behaviour:
+    ~ ListView
+    """
+
+    expect = ['TestPageOne', 'TestPageTwo', 'TestPageThree', 'TestPageFour']
+    r = requests.get(API_ASSETS, verify=False, auth=credentials)
+    data = load_json(r)
+    assert 200 == r.status_code
+    assert expect is data
+
 
 
 def test_that_assets_have_the_connected_to_assets_as_links():
@@ -115,7 +131,10 @@ def test_that_assets_have_the_tags_as_gwikicategory_links():
     """ these are printed out if assert failure """
 
     print("These links should be found from the page content:\n")
-    [print("\t* {}".format(link)) for link in find_these_links_to_tags]
+    [
+        print("\t* {}".format(link))
+        for link in find_these_links_to_tags
+    ]
     print("\nquery_url: {}\n".format(query_url))
     print("content:\n{}\n".format(r.content))
 
@@ -144,7 +163,7 @@ def test_get_asset_by_id_returns():
     url = asset_url_by_name(expected['name'])
     r = requests.get(url, verify=False, auth=credentials)
     data = load_json(r)
-    print(data)
+
     assert data is expected
 
 
@@ -180,7 +199,6 @@ def test_post_asset_create_returns_201():
 
     """ assert that the page is created and can be accessed """
     r = requests.get(WIKI_ROOT + asset_name, verify=False, auth=credentials)
-    print(r.content)
 
     """ If the page has not been created yet, there will be 
         a text on the wiki page saying 'Create new empty page'.
