@@ -56,7 +56,10 @@ const tags = [
 // docker run --rm --name dmapper-container -p 8081:8081 -d mongo
 
 // connect to the db
-mongoose.connect('mongodb://localhost:27017/dmapping');
+const MONGO_PATH = process.env.MONGO_PATH;
+const MONGO_PORT = process.env.MONGO_PORT;
+const DB_NAME = process.env.DB_NAME;
+mongoose.connect(`mongodb://${MONGO_PATH}:${MONGO_PORT}/${DB_NAME}`);
 
 // CONNECTION EVENTS
 // When successfully connected
@@ -136,13 +139,19 @@ router.get('/', (req, res) => {
 /*        ASSET API             */
 
 router.get('/asset(/:id)?', (req, res) => {
-    const result = assets.filter(a => a.name === req.params.id);
-
+    console.log("here")
     if (req.params.id) {
         Asset.findOne({name: req.params.id})
             .then(asset => {
+
+                console.log(asset)
+                if (!asset){
+                   res.status(404).json("Resource does not exist.")
+                } else {
                 console.log(asset);
                 res.status(200).json(asset);
+                }
+
             }).catch(err => res.status(400).json(err));
     } else {
         Asset.find()
@@ -208,6 +217,14 @@ router.post('/tag(/:id)?', (req, res) => {
     }).catch(err => {
         console.log(err);
     })
+});
+
+router.put('/tag(/:id)?', (req, res) => {
+    const query = {name: req.params.id};
+    console.log(query);
+    Tag.update(query, req.body)
+        .then(ok => res.status(204).json("Resource updated succesfully."))
+        .catch(err => res.status(400).send(err));
 });
 
 router.get('/mapping(/:id)?', (req, res) => {

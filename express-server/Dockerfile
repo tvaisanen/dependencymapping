@@ -1,0 +1,7 @@
+FROM node:latest
+WORKDIR /usr/local/src/express/
+COPY ./package.json ./
+COPY ./src ./
+RUN npm install
+EXPOSE 3000
+CMD ["npm", "run", "dev"]

@@ -1,7 +1,6 @@
 from pprint import pprint
 import requests
 import json
-import urllib3
 
 
 NAME = "name"
@@ -72,9 +71,9 @@ class Paths:
     GWIKI = {
         'page': "https://172.20.0.2/collab/{}",
         'resource': {
-            'asset': "",
-            'mapping': "",
-            'tag': "",
+            'asset': "https://172.20.0.2/collab/?action=API&resource=asset&id={}",
+            'mapping': "https://172.20.0.2/collab/?action=API&resource=mapping&id={}",
+            'tag': "https://172.20.0.2/collab/?action=API&resource=tag&id={}",
         }
     }
 
@@ -118,13 +117,29 @@ class Paths:
         return self.paths['resource'][resource].format(id)
 
 
+# tests use this for urls
+# if env.DEBUG uses paths for
+# mockup node server
+import os
+
+try:
+    debug = os.environ['DEBUG']
+except KeyError as ex:
+    debug = False
+
+print("\nDEBUG = {}\n".format(debug))
+paths = Paths(debug=debug)
+
 def pytest_sessionstart(session):
     """ before session.main() is called. """
     print("\nCreate MoinMoin test pages for tests here.\n")
 
-    r = requests.get("http://localhost:3000/reset-models")
-
-    print(r)
+    if debug:
+        # reset mongo
+        r = requests.get("http://localhost:3000/reset-models")
+        print(r)
+    else:
+        print("\nSet up the MoinMoin pages test pages here\n")
 
     print("create pages:")
     [pprint(p) for p in pages]
@@ -149,33 +164,6 @@ in pages has the format WIKI_IP_HOST/WIKI_PREPATH/LINK_TARGET
 """
 WIKI_PATH = "/collab/"
 WIKI_ROOT = WIKI_IP_HOST + WIKI_PATH
-API_ROOT = "https://172.20.0.2/collab/?action=API&debug=True"
-API_ASSETS = API_ROOT + '&resource=asset'
-API_DEPENDENCIES = API_ROOT + '&resource=dependency'
-API_MAPPINGS = API_ROOT + '&resource=mapping'
-API_TAGS = API_ROOT + '&resource=tag'
-
-PAGE_EDIT = "{host}{path}{page}?action=edit"
-
-# node server for checking the tests
-NODE_HOST = "http://localhost:3000/{resource}/{id}"
-NODE_TEST_PAGES = "http://localhost:3000/test/{}.html"
-
-
-def mapping_url_by_name(name):
-    return "{path}&id{id}".format(path=API_MAPPINGS, id=name)
-
-
-def dependency_url_by_name(name):
-    return "{path}&id={id}".format(path=API_DEPENDENCIES, id=name)
-
-
-def asset_url_by_name(name):
-    return "{path}&id={id}".format(path=API_ASSETS, id=name)
-
-
-def tag_url_by_name(name):
-    return "{path}&id={id}".format(path=API_TAGS, id=name)
 
 
 def asset(name, description, dependencies, tags):

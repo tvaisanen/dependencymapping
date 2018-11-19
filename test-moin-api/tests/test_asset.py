@@ -1,7 +1,5 @@
 from conftest import *
 
-paths = Paths(debug=True)
-
 
 # test api assets
 def test_get_assets_returns_all_created_assets():
@@ -10,12 +8,6 @@ def test_get_assets_returns_all_created_assets():
     Behaviour:
     ~ ListView
     """
-
-    query_url = API_ASSETS
-
-    if True:
-        query_url = NODE_HOST.format(resource="asset", id="")
-
     query_url = paths.get_resource_path("asset", "")
 
     r = requests.get(query_url, verify=False, auth=credentials)
@@ -26,9 +18,6 @@ def test_get_assets_returns_all_created_assets():
 
     for item in asset_names:
         assert item in expected
-
-
-
 
 
 def test_that_assets_have_the_connected_to_assets_as_links():
@@ -145,7 +134,7 @@ def test_that_assets_have_the_tags_as_gwikicategory_links():
         assert link in r.content
 
 
-def test_get_asset_by_id_returns():
+def test_get_asset_by_name_returns():
     """
     Test that the data can be retrieved
     Behaviour:
@@ -158,14 +147,14 @@ def test_get_asset_by_id_returns():
         'connected_to': ['TestPageFour'],
         'tags': ['TestPage']
     }
-
     """
     expected = pages[0]
     url = paths.get_resource_path("asset", expected['name'])
     r = requests.get(url, verify=False, auth=credentials)
     data = load_json(r)
 
-    assert data == expected
+    assert data[NAME] == expected[NAME]
+    assert data[DESCRIPTION] == expected[DESCRIPTION]
 
 
 def test_get_asset_that_dont_exist_returns_404():
@@ -175,12 +164,10 @@ def test_get_asset_that_dont_exist_returns_404():
     with an error message stating that it does not
     exist.
     """
-
-    query_url = asset_url_by_name("DoNotExist")
+    query_url = paths.get_resource_path(ASSET, "DoNotExist")
     r = requests.get(query_url, verify=False, auth=credentials)
     data = load_json(r)
     assert 404 == r.status_code
-    assert "error" in data.keys()
     assert "does not exist" in str(data)
 
 
@@ -256,21 +243,16 @@ def test_put_asset_makes_the_changes():
     """
 
     asset_to_edit = pages[1]
-    query_url = asset_url_by_name(asset_to_edit['name'])
 
-    query_url = paths.get_resource_path("asset", asset_to_edit['name'])
+    query_url = paths.get_resource_path(ASSET, asset_to_edit[NAME])
 
     """ Get the data first """
     r = requests.get(query_url, verify=False, auth=credentials)
     data = load_json(r)
 
-    assert data['description'] == asset_to_edit['description']
+    assert data[DESCRIPTION] == asset_to_edit[DESCRIPTION]
 
 
-    """ Then get the page version """
-    r = requests.get(WIKI_ROOT + asset_to_edit['name'], verify=False, auth=credentials)
-
-    # assert data['description'] in r.text
 
     updated_data = {
         'name': asset_to_edit['name'],

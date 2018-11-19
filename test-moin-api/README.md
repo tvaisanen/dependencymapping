@@ -15,3 +15,4 @@ This happens in `conftest.py`.
 file `/wiki/plugin/action/API.py` contains the access point
 for the api and the path `/wiki/plugin/action/path/` contains
 the rest of the files.
+

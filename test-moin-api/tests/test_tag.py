@@ -1,6 +1,6 @@
 from conftest import *
 
-paths = Paths(debug=True)
+# paths = Paths(debug=True)
 
 # test api assets
 def test_get_tags_returns_list_of_the_existing_tags():
@@ -92,7 +92,7 @@ def test_post_tag_create_returns_201():
     query_url = paths.get_page_path(new_tag[NAME], updated=True)
 
     """ assert that the tag is created and can be accessed """
-    r = requests.get(API_TAGS, verify=False, auth=credentials)
+    r = requests.get(query_url, verify=False, auth=credentials)
 
     """ If the page has not been created yet, there will be 
         a text on the wiki page saying 'Create new empty page'.
