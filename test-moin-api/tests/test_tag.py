@@ -106,3 +106,62 @@ def test_post_tag_create_returns_201():
     assert PAGE_DOES_NOT_EXIST not in str(r.content)
 
 
+
+
+def test_put_asset_makes_updates_and_returns_204():
+    """
+    Test that the put method updates the
+    content of a page
+
+    """
+
+    tag_to_edit = tags[1]
+
+    query_url = paths.get_resource_path(TAG, tag_to_edit[NAME])
+
+    """ Get the data first """
+    r = requests.get(query_url, verify=False, auth=credentials)
+    data = load_json(r)
+
+    assert data[DESCRIPTION] == tag_to_edit[DESCRIPTION]
+
+    """ Then get the page version """
+
+    query_url = paths.get_page_path(tag_to_edit[NAME])
+    r = requests.get(query_url, verify=False, auth=credentials)
+
+    assert data[DESCRIPTION] in r.text
+
+    updated_data = {
+        NAME: tag_to_edit[NAME],
+        DESCRIPTION: UPDATED_TAG_DESCRIPTION,
+    }
+
+    query_url = paths.get_resource_path(TAG, tag_to_edit[NAME])
+
+    r = requests.put(query_url, verify=False, auth=credentials, data=updated_data)
+
+    assert r.status_code == 204
+
+
+    """ After the put the page should show the edited text
+        and the edited data should have been returned by the
+        put request.
+    """
+
+    query_url = paths.get_page_path(tag_to_edit[NAME], updated=True)
+    r = requests.get(query_url, verify=False, auth=credentials,)
+
+    assert updated_data[DESCRIPTION] in str(r.content)
+
+    query_url = paths.get_resource_path(TAG, tag_to_edit[NAME])
+    r = requests.get(query_url, verify=False, auth=credentials)
+
+    retrieved_updated_data = load_json(r)
+
+    # verify that the updated asset returns same asset
+    assert updated_data[NAME] == retrieved_updated_data[NAME]
+    assert updated_data[DESCRIPTION] == retrieved_updated_data[DESCRIPTION]
+
+    # finally check that the description before update is not haunting
+    assert updated_data[DESCRIPTION] is not retrieved_updated_data[DESCRIPTION]

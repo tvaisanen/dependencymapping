@@ -7,7 +7,7 @@ import urllib3
 NAME = "name"
 DESCRIPTION = "description"
 PAGE_DOES_NOT_EXIST = "This page does not exist yet. You can create a new empty page, or use one of the page templates."
-
+UPDATED_TAG_DESCRIPTION = "This should be seen as a description after the update."
 pages = [
     {
         'name': 'TestPageOne',
