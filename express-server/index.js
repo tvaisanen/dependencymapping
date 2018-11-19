@@ -6,45 +6,58 @@ const router = express.Router();
 
 // middleware that is specific to this router
 router.use(function timeLog(req, res, next) {
-  console.log(`Time: ${Date.now()}, ${req.path}, body: ${req.body}`);
-  next();
+    const d = new Date();
+    //${d.toUTCString()},
+    console.log(`${req.method} ::  ${req.path}, body: ${JSON.stringify(req.body)}`);
+    next();
 });
 
 const assets = [
     {
         'name': 'TestPageOne',
         'description': "Describe TestPageOne here.",
-        'dependency': ['TestPageFour'],
+        'connected_to': ['TestPageFour'],
         'tags': ['TestPage']
     },
     {
         'name': 'TestPageTwo',
         'description': "Describe TestPageTwo here.",
-        'dependency': ['TestPageThree'],
+        'connected_to': ['TestPageThree'],
         'tags': ['TestPage']
     },
     {
         'name': 'TestPageThree',
         'description': "Describe TestPageThree here.",
-        'dependency': ['TestPageOne', 'TestPageFour'],
+        'connected_to': ['TestPageOne', 'TestPageFour'],
         'tags': ['TestPage', 'TestTag']
     },
     {
         'name': 'TestPageFour',
         'description': "Describe TestPageFour here.",
-        'dependency': [],
+        'connected_to': [],
         'tags': ['TestPage', 'TestTag']
     }
 ];
 // docker run --rm --name dmapper-container -p 8081:8081 -d mongo
 
 // connect to the db
-mongoose.connect('mongodb://localhost:8081/dmapping');
+mongoose.connect('mongodb://localhost:27017/dmapping');
+
+// CONNECTION EVENTS
+// When successfully connected
+mongoose.connection.on('connected', function () {
+    console.log('Mongoose successful connection:');
+});
+
+// If the connection throws an error
+mongoose.connection.on('error', function (err) {
+    console.log('Mongoose default connection error: ' + err);
+});
 
 const assetSchema = new mongoose.Schema({
     name: String,
     description: String,
-    dependencies: [String],
+    connected_to: [String],
     tags: [String],
 });
 
@@ -74,12 +87,12 @@ const tagSchema = new mongoose.Schema({
 });
 
 let app = express();
+app.use(bodyParser.urlencoded({extended: false}))
 
 router.get('/reset-models', (req, res) => {
-    Asset.remove()
-        .then(r => {
-            console.log(r);
-        })
+    Asset.remove().then(r => {
+        console.log(r);
+    })
         .catch(err => {
             console.log(err);
         });
@@ -105,25 +118,32 @@ router.get('/asset(/:id)?', (req, res) => {
         }
     } else {
         Asset.find()
-            .then(assets => {
-                console.log(assets);
-                res.send(assets)
-            })
+            .then(assets => res.send(assets))
             .catch(err => res.send(err));
     }
 
 });
 
+router.post('/asset(/:id)?', (req, res) => {
+    console.log(`post: ${req.params.id}`);
+    const query = {name: req.param.id};
+    const asset = new Asset({...req.body});
+    asset.save().then(saved => {
+        console.log(`saved: ${saved.name}`);
+        res.status(201).json(saved);
+    }).catch(err => {
+        console.log(err);
+    })
+
+});
+
 router.put('/asset(/:id)?', (req, res) => {
-    const query = { name: req.param.id };
+    const query = {name: req.params.id};
+    console.log(query);
     const updatedAsset = req.body;
-    Asset.findOne(query)
-        .then(r => {
-            console.log(r);
-            res.send(r);
-        }).catch(err => {
-            res.send(err);
-    });
+    Asset.update(query, req.body)
+        .then(ok => res.status(204).json("Resource updated succesfully."))
+        .catch(err => res.status(400).send(err));
 });
 
 
@@ -162,7 +182,6 @@ router.get('/mapping(/:id)?', (req, res) => {
 app.use('/test', express.static('pages'));
 app.use(router);
 app.listen(3000);
-
 
 
 const tags = [

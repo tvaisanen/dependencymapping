@@ -1,6 +1,6 @@
 from conftest import *
 
-NODE = True
+paths = Paths(debug=True)
 
 
 # test api assets
@@ -13,8 +13,10 @@ def test_get_assets_returns_all_created_assets():
 
     query_url = API_ASSETS
 
-    if NODE:
+    if True:
         query_url = NODE_HOST.format(resource="asset", id="")
+
+    query_url = paths.get_resource_path("asset", "")
 
     r = requests.get(query_url, verify=False, auth=credentials)
     data = load_json(r)
@@ -57,17 +59,13 @@ def test_that_assets_have_the_connected_to_assets_as_links():
     """
 
     page = pages[3]
-
-    query_url = WIKI_ROOT + page['name']  # page['name']
-
-    if NODE:
-        query_url = NODE_TEST_PAGES.format(page['name'])
+    query_url = paths.get_page_path(page['name'])
 
     r = requests.get(query_url, verify=False, auth=credentials)
 
     find_these_links = [
         bytes('<a href="{path}{link}">{link}</a>'.format(
-                path=WIKI_PATH,
+                path=WIKI_ROOT,
                 link=link
             ),
             encoding=r.encoding
@@ -111,7 +109,7 @@ def test_that_assets_have_the_tags_as_gwikicategory_links():
     """
     page = pages[3]
 
-    query_url = WIKI_ROOT + page['name']  # page['name']
+    query_url = paths.get_page_path(page['name'])
     r = requests.get(query_url, verify=False, auth=credentials)
 
     """ 
@@ -120,9 +118,10 @@ def test_that_assets_have_the_tags_as_gwikicategory_links():
         page links.
     """
 
+
     find_these_links_to_tags = [
         bytes('<a href="{path}{link}">{link}</a>'.format(
-                path=WIKI_PATH,
+                path=WIKI_ROOT,
                 link=link
             ),
             encoding=r.encoding
@@ -162,11 +161,11 @@ def test_get_asset_by_id_returns():
 
     """
     expected = pages[0]
-    url = asset_url_by_name(expected['name'])
+    url = paths.get_resource_path("asset", expected['name'])
     r = requests.get(url, verify=False, auth=credentials)
     data = load_json(r)
 
-    assert data is expected
+    assert data == expected
 
 
 def test_get_asset_that_dont_exist_returns_404():
@@ -176,6 +175,7 @@ def test_get_asset_that_dont_exist_returns_404():
     with an error message stating that it does not
     exist.
     """
+
     query_url = asset_url_by_name("DoNotExist")
     r = requests.get(query_url, verify=False, auth=credentials)
     data = load_json(r)
@@ -192,29 +192,54 @@ def test_post_asset_create_returns_201():
     with created: 201
     """
     asset_name = "NewAsset"
-    asset_desc = "Description for NewAsset here."
+    asset_desc = "Describe NewAsset here."
+    asset_connected_to = ["TestPageOne", "TestPageTwo"]
+    asset_tags = ["TestTag"]
+
+    # expect before creating a page and not after
+    expect_before = "This page does not exist yet. You can create a new empty page, or use one of the page templates."
+
+    # Expect to find "create new empty page" since the page
+    # is not created yet
+    query_url = paths.get_page_path(asset_name)
+    r = requests.get(query_url, verify=False, auth=credentials)
+
+    assert expect_before in str(r.content)
+
+    """ After creating the page check that everything is Ok. """
 
     # data to create the new page.
-    payload = asset(asset_name, asset_desc, [], [])
-    r = requests.post(API_ASSETS, verify=False, auth=credentials, data=payload)
+    payload = asset(asset_name, asset_desc, asset_connected_to, asset_tags)
+    query_url = paths.get_resource_path("asset", "")
+    r = requests.post(query_url, verify=False, auth=credentials, data=payload)
     data = load_json(r)
 
+    query_url = paths.get_page_path(asset_name, updated=True)
+
+
     """ assert that the page is created and can be accessed """
-    r = requests.get(WIKI_ROOT + asset_name, verify=False, auth=credentials)
+    r = requests.get(query_url, verify=False, auth=credentials)
 
-    """ If the page has not been created yet, there will be 
-        a text on the wiki page saying 'Create new empty page'.
-        
-        Therefore after successful creation this shouldn't be
-        visible on the new page. -> 'assert dont_expect not in r.text'
-        
-    """
+    links = asset_connected_to + asset_tags
 
-    dont_expect = "Create new empty page"
+    expect_to_find_from_response = [
+        bytes('<a href="{path}{link}">{link}</a>'.format(
+                path=WIKI_ROOT,
+                link=link
+            ),
+            encoding=r.encoding
+        )
+        for link in links
+    ]
 
-    assert data['name'] is asset_name
-    assert data['description'] is asset_desc
-    assert dont_expect not in r.text
+    for link in expect_to_find_from_response:
+        assert link in r.content
+
+    assert expect_before not in r.text
+    assert data['name'] == payload['name']
+    assert data['description'] == payload['description']
+    assert data['tags'] == payload['tags']
+    assert data['connected_to'] == payload['connected_to']
 
 
 def test_put_asset_makes_the_changes():
@@ -228,17 +253,12 @@ def test_put_asset_makes_the_changes():
         'connected_to': ['TestPageThree'],
         'tags': ['TestPage']
     }
-
     """
 
     asset_to_edit = pages[1]
     query_url = asset_url_by_name(asset_to_edit['name'])
 
-    if NODE:
-        query_url = NODE_HOST.format(
-            resource='asset',
-            id=asset_to_edit['name']
-        )
+    query_url = paths.get_resource_path("asset", asset_to_edit['name'])
 
     """ Get the data first """
     r = requests.get(query_url, verify=False, auth=credentials)
@@ -261,27 +281,30 @@ def test_put_asset_makes_the_changes():
 
     r = requests.put(query_url, verify=False, auth=credentials, data=updated_data)
 
-    put_response_data = load_json(r)
+    assert r.status_code == 204
 
     """ After the put the page should show the edited text
         and the edited data should have been returned by the
         put request.
     """
 
-    r = requests.get(
-        WIKI_ROOT + asset_to_edit['name'],
-        verify=False, auth=credentials
-    )
+    r = requests.get(query_url, verify=False, auth=credentials, data=updated_data)
+
+    updated_data = load_json(r)
+
+    print("response data")
+    pprint(updated_data)
 
     # verify that the updated asset returns same asset
-    assert put_response_data['name'] == asset_to_edit['name']
+    assert updated_data['name'] == asset_to_edit['name']
 
     # verify that the updated description can be found
     # from the rendered html page
-    assert bytes(updated_data['description'], r.encoding) in r.content
+    # assert bytes(updated_data['description'], r.encoding) in r.content
 
     # verify that the received data matches sent data.
-    assert put_response_data['description'] is updated_data['description']
+    assert updated_data['description'] is updated_data['description']
 
     # finally check that the description before update is not haunting
-    assert put_response_data['description'] is not asset_to_edit['description']
+    assert updated_data['description'] is not asset_to_edit['description']
+

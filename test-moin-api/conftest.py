@@ -62,6 +62,57 @@ mappings = [
 ]
 
 
+class Paths:
+
+    GWIKI = {
+        'page': "https://172.20.0.2/collab/{}",
+        'resource': {
+            'asset': "",
+            'mapping': "",
+            'tag': "",
+        }
+    }
+
+    NODE = {
+        'page': "http://localhost:3000/test/{}.html",
+        'resource': {
+            'asset': "http://localhost:3000/asset/{}",
+            'mapping':"http://localhost:3000/mapping/{}",
+            'tag': "http://localhost:3000/tag/{}",
+        }
+    }
+
+    def __init__(self, debug=False):
+        if debug:
+            self.paths = Paths.NODE
+        else:
+            self.paths = Paths.GWIKI
+
+    def get_path(self, resource, id, page=False):
+        if page:
+            return self.get_page_path(resource, id)
+        else:
+            return self.get_resource_path(resource, id)
+
+    def get_page_path(self, id, updated=False):
+        """
+        :param id: PageName
+        :param updated: For debugging, updated
+        flag tells if updated page need to be
+        fetched. If not debugging this has no effect.
+        :return: path where from get the page
+        """
+        if updated:
+            # for testing page updates
+            # PageName-updated.html
+            id = "{}-updated".format(id)
+
+        return self.paths['page'].format(id)
+
+    def get_resource_path(self, resource, id):
+        return self.paths['resource'][resource].format(id)
+
+
 def pytest_sessionstart(session):
     """ before session.main() is called. """
     print("\nCreate MoinMoin test pages for tests here.\n")
@@ -72,7 +123,6 @@ def pytest_sessionstart(session):
 
     print("create pages:")
     [pprint(p) for p in pages]
-
 
     print("create tags:")
     [pprint(t) for t in tags]
@@ -106,6 +156,7 @@ PAGE_EDIT = "{host}{path}{page}?action=edit"
 NODE_HOST = "http://localhost:3000/{resource}/{id}"
 NODE_TEST_PAGES = "http://localhost:3000/test/{}.html"
 
+
 def mapping_url_by_name(name):
     return "{path}&id{id}".format(path=API_MAPPINGS, id=name)
 
@@ -126,7 +177,7 @@ def asset(name, description, dependencies, tags):
     return {
         'name': name,
         'description': description,
-        'dependencies': dependencies,
+        'connected_to': dependencies,
         'tags': tags
     }
 
@@ -136,6 +187,7 @@ def tag(name, description):
         'name': name,
         'description': description,
     }
+
 
 ####################################################################
 
@@ -152,7 +204,6 @@ def load_json(response):
         return data
 
     except Exception as ex:
-        print(response.content)
         assert False
 
 
@@ -172,11 +223,10 @@ credentials = (user, password)
 
 
 def build_query_url(resource_type, resource_id):
-    return "{root}?action=API&resource={type}&id={id}"\
+    return "{root}?action=API&resource={type}&id={id}" \
         .format(root=API_ROOT, type=resource_type, id=resource_id)
 
 
 def get_resource(resource_type, resource_id):
     url = build_query_url(resource_type, resource_id)
     return requests.get(url, verify=False, auth=credentials)
-
