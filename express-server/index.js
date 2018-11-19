@@ -8,7 +8,7 @@ const router = express.Router();
 router.use(function timeLog(req, res, next) {
     const d = new Date();
     //${d.toUTCString()},
-    console.log(`${req.method} ::  ${req.path}, body: ${JSON.stringify(req.body)}`);
+    console.log(`\n${req.method} ::  ${req.path}, body: ${JSON.stringify(req.body)}`);
     next();
 });
 
@@ -38,6 +38,21 @@ const assets = [
         'tags': ['TestPage', 'TestTag']
     }
 ];
+
+const tags = [
+    {
+        'name': 'TestPage',
+        'description': 'Describe gwikicategory / tag TestPage here.',
+    },
+    {
+        'name': 'TestTag',
+        'description': 'Describe gwikicategory / tag TestTag here.',
+    },
+    {
+        'name': 'OtherTag',
+        'description': 'Describe gwikicategory / tag OtherTag here.',
+    },
+]
 // docker run --rm --name dmapper-container -p 8081:8081 -d mongo
 
 // connect to the db
@@ -61,12 +76,27 @@ const assetSchema = new mongoose.Schema({
     tags: [String],
 });
 
+const tagSchema = new mongoose.Schema({
+    name: String,
+    description: String
+});
+
 const Asset = mongoose.model('Asset', assetSchema);
+const Tag = mongoose.model('Tag', tagSchema);
 
 function loadDataToDb() {
     assets.forEach(item => {
         const asset = new Asset({...item});
         asset.save().then(saved => {
+            console.log(`saved: ${saved.name}`);
+        }).catch(err => {
+            console.log(err);
+        })
+    });
+
+    tags.forEach(item => {
+        const tag = new Tag({...item});
+        tag.save().then(saved => {
             console.log(`saved: ${saved.name}`);
         }).catch(err => {
             console.log(err);
@@ -81,22 +111,20 @@ const mappingSchema = new mongoose.Schema({
     tags: [String],
 });
 
-const tagSchema = new mongoose.Schema({
-    name: String,
-    description: String,
-});
-
 let app = express();
 app.use(bodyParser.urlencoded({extended: false}))
 
 router.get('/reset-models', (req, res) => {
-    Asset.remove().then(r => {
-        console.log(r);
-    })
-        .catch(err => {
-            console.log(err);
-        });
+
+    Asset.remove()
+        .then(r => console.log(r))
+        .catch(err => console.log(err));
+     Tag.remove()
+        .then(r => console.log(r))
+        .catch(err => console.log(err));
+
     loadDataToDb();
+
     res.send("database initialized")
 });
 
@@ -111,11 +139,11 @@ router.get('/asset(/:id)?', (req, res) => {
     const result = assets.filter(a => a.name === req.params.id);
 
     if (req.params.id) {
-        if (result[0]) {
-            res.send(JSON.stringify(result[0]));
-        } else {
-            res.send(`assets: id-${req.params.id}`);
-        }
+        Asset.findOne({name: req.params.id})
+            .then(asset => {
+                console.log(asset);
+                res.status(200).json(asset);
+            }).catch(err => res.status(400).json(err));
     } else {
         Asset.find()
             .then(assets => res.send(assets))
@@ -134,7 +162,6 @@ router.post('/asset(/:id)?', (req, res) => {
     }).catch(err => {
         console.log(err);
     })
-
 });
 
 router.put('/asset(/:id)?', (req, res) => {
@@ -148,21 +175,40 @@ router.put('/asset(/:id)?', (req, res) => {
 
 
 router.get('/tag(/:id)?', (req, res) => {
-    const result = tags.filter(a => a.name === req.params.id);
 
     if (req.params.id) {
-        if (result[0]) {
-            res.send(JSON.stringify(result[0]));
-        } else {
-            res.send(`assets: id-${req.params.id}`);
-        }
+        Tag.findOne({name: req.params.id})
+            .then(tag => {
+                if (tag == null){
+                    console.log("Tag does not exist.");
+                    res.status(404).json("Resource does not exist.")
+                } else {
+                    console.log(tag);
+                    res.status(200).json(tag);
+                }
+            }).catch(err => res.status(400).json(err));
+
     } else {
-        res.send(JSON.stringify(tags));
+        Tag.find()
+            .then(tags => {
+                const tagNameList = tags.map(t => t.name);
+                console.log(tagNameList);
+                res.status(200).json(tagNameList);
+            })
+            .catch(err => res.status(400).json(err));
     }
-
-
 });
 
+router.post('/tag(/:id)?', (req, res) => {
+    const query = {name: req.param.id};
+    const tag = new Tag({...req.body});
+    tag.save().then(saved => {
+        console.log(`saved: \n${saved}`);
+        res.status(201).json(saved);
+    }).catch(err => {
+        console.log(err);
+    })
+});
 
 router.get('/mapping(/:id)?', (req, res) => {
     const result = mappings.filter(a => a.name === req.params.id);
@@ -184,20 +230,7 @@ app.use(router);
 app.listen(3000);
 
 
-const tags = [
-    {
-        'name': 'TestPage',
-        'description': 'Describe Tag/GwCategory TestPage here.',
-    },
-    {
-        'name': 'TestTag',
-        'description': 'Describe Tag/GwCategory TestTag here.',
-    },
-    {
-        'name': 'OtherTag',
-        'description': 'Describe Tag/GwCategory OtherTag here.',
-    },
-]
+
 
 const mappings = [
     {

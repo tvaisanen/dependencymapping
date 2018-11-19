@@ -1,0 +1,502 @@
+/* common.css
+   - Default styles for graphingwiki's javascriptified features
+   Copyright: 2011 by Lauri Pokka
+*/
+
+.jslink {
+    font-size: 12px;
+    color: green;
+    cursor: pointer;
+}
+
+a.plus:after {
+    content: "+";
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-left: 10px;
+}
+
+a.cross:after {
+    content: "x";
+    color: red;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-left: 5px;
+}
+
+.alphabg {
+    background: rgba(0, 0, 0, 0.80);
+}
+
+/* Mootools tooltips */
+
+.mootip div.tip {
+    position: absolute;
+    color: #fff;
+    width: 150px;
+    z-index: 1050;
+
+    background: rgba(0, 0, 0, 0.80);
+    border-radius: 5px;
+}
+
+.mootip div.tip-title {
+    font-weight: bold;
+    font-size: 11px;
+    margin: 0;
+    color: #9FD4FF;
+    padding: 6px 6px 3px;
+}
+
+.mootip div.tip-text {
+    font-size: 11px;
+    padding: 3px 6px 6px;
+}
+
+table.metatable thead td,
+table.metatable thead div {
+    white-space: nowrap;
+}
+
+table.metatable.wrap thead td,
+table.metatable.wrap thead div {
+    white-space: normal;
+}
+
+/* Styles for sorted MetaTable */
+.table-th-sort-span {
+    float: right;
+    height: 0;
+    width: 0;
+    content: ' ';
+
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+.table-th-sort .table-th-sort-span {
+    margin-top: 0px;
+
+    border: transparent solid 5px;
+    border-bottom-color: #333;
+}
+
+.table-th-sort-rev .table-th-sort-span {
+    margin-top: 5px;
+
+    border: 5px solid transparent;
+    border-top-color: #333;
+}
+
+.close-button {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding: 0;
+    cursor: pointer;
+    background: 0 0;
+    border: 0;
+    -webkit-appearance: none;
+
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .4;
+
+
+    position: absolute;
+    top: 0px;
+    right: 5px;
+    margin: 0;
+}
+
+.close-button:hover {
+    opacity: 1;
+}
+
+span.edit {
+    display: block;
+}
+
+dt {
+    vertical-align: top;
+}
+.inline, .inline * {
+    display: inline !important;
+    vertical-align: middle;
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+.metaformedit * {
+    vertical-align: middle;
+}
+
+.metaformedit div {
+    display: inline;
+    float: left;
+}
+
+.metaformedit textarea {
+    margin-right: 5px;
+    display: inline !important;
+    padding: 2px;
+}
+
+
+textarea {
+    -webkit-transition: width .2s;
+}
+
+.hidden {
+    display: none;
+}
+
+/**
+ * For modern browsers
+ * 1. The space content is one way to avoid an Opera bug when the
+ *    contenteditable attribute is included anywhere else in the document.
+ *    Otherwise it causes space to appear at the top and bottom of elements
+ *    that are clearfixed.
+ * 2. The use of `table` rather than `block` is only necessary if using
+ *    `:before` to contain the top-margins of child elements.
+ */
+.clearfix:before,
+.clearfix:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+div.ac-results {
+    position: absolute;
+    border: 1px solid #999;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+
+    background: white;
+    color: black;
+    text-align: left;
+    cursor: pointer;
+    max-height: 250px;
+    overflow-y: hidden;
+}
+
+.ac-results table {
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+}
+
+.ac-results tr {
+    overflow-x: hidden;
+}
+
+.ac-results td {
+    border-width: 0;
+    margin: 0;
+    white-space: nowrap;
+    overflow-x: hidden;
+}
+
+.ac-results td.value {
+    padding: 0 25px 0 5px;
+}
+
+.ac-results td.page {
+    font-style: italic;
+    font-size: small;
+    text-align: right;
+}
+
+.ac-results tr.selected {
+    background: #ddffdd;
+}
+
+.attachtree_area > ul{
+    display: inline-block;
+}
+
+.attachtree_fileentry {
+    list-style: square;
+}
+
+.attachtree_direntry {
+    list-style: url("../img/Collapse.png");
+}
+
+.attachtree_direntry.collapsed {
+    list-style: url("../img/Expand.png");
+}
+
+.waiting {
+    min-height: 15px;
+    min-width: 50px;
+    padding-left: 15px;
+    padding-right: 15px;
+    background: url("../img/ajax-loader.gif") center no-repeat !important;
+}
+
+.progress {
+    border: solid #546569 2px;
+    width: 90%;
+    margin: 10px auto;
+}
+.progress div {
+    background-color: #87A4AB;
+    -webkit-transition: all .2s;
+    -moz-transition: all .2s;
+    margin: 0;
+}
+
+.progress div span {
+    padding: 4px;
+    display: inline-block;
+}
+
+.invite td {
+    white-space: nowrap;
+}
+
+.invite {
+    background: #E6EAF0;
+    padding: 10px;
+}
+
+#content .edit div {
+    margin: 0;
+    display: inline-block;
+
+}
+
+.edit button {
+    border-radius: 0;
+}
+#content .edit div[contenteditable] {
+    border: 1px solid #ccc;
+    padding: 4px 6px;
+    min-width: 5em;
+    max-width: 500px;
+    vertical-align: middle;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+
+.edit div[contenteditable]:focus {
+    border-color: #66afe9;
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+}
+
+
+.icon-spin {
+  display: inline-block;
+  -webkit-animation: spin 2s infinite linear;
+  animation: spin 2s infinite linear;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(359deg); }
+}
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(359deg); }
+}
+
+/* Poll macro styles */
+.poll table {
+    border-collapse: inherit;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
+}
+
+.poll th, .poll td {
+    padding: 10px;
+    min-width: 80px;
+}
+
+.poll input[type=text] {
+    padding: 5px;
+    width: 160px;
+}
+
+.poll input[type=checkbox] {
+    font-size: 2em;
+    margin: 6px 0;
+}
+
+.poll td, .poll th {
+    text-align: center;
+}
+
+#content .poll td > div {
+    display: flex;
+    align-items: center;
+    display: -webkit-flex;
+    -webkit-align-items: center;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.poll div > span {
+    flex: 1 1 auto;
+    -webkit-flex: 1 1 auto;
+}
+
+.poll td:first-child {
+    text-align: left;
+    min-width: 200px;
+}
+
+.poll td a {
+    margin-left: 5px;
+}
+
+.poll tr.delete {
+    opacity: 0.25;
+}
+
+.poll .save {
+    display: none;
+}
+
+.poll .edit .save {
+    display: inherit;
+}
+
+.poll .add .fallback {
+    font-weight: bold;
+    font-size: 1.6em;
+}
+
+.poll .btn {
+    border-radius: 0;
+}
+
+.poll .glyphicon, .poll tr {
+    transition: all .1s ease-out;
+}
+
+.poll td:first-child .glyphicon {
+    opacity: 0;
+    cursor: pointer;
+}
+
+.poll td:first-child:hover .glyphicon,
+.poll .edit td:first-child .glyphicon,
+.poll tfoot td:first-child a.glyphicon {
+    opacity: 0.6;
+}
+
+.poll td:first-child a.glyphicon:hover {
+    opacity: 1;
+    text-decoration: none;
+}
+
+.poll td:not(:first-child) .glyphicon {
+    font-size: 1.5em;
+}
+
+.poll .invalid {
+    border-color: rgba(233, 24, 27, 0.50);
+    background-color: rgba(233, 0, 0, 0.30);
+    outline: 0;
+
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 3px rgba(233, 0, 0, 0.60);
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 3px rgba(233, 0, 0, 0.60);
+}
+
+/* Group Editor */
+
+.groupeditor {
+    margin: 20px;
+    font-size: 14px;
+}
+
+.groupeditor .jslink {
+    text-decoration: none;
+}
+.groupeditor li span.glyphicon {
+    margin-right: 10px;
+}
+
+.groupeditor li.recursive {
+    font-size: 0.8em;
+}
+
+.groupeditor li span.info {
+    font-style: italic;
+    margin-left: 10px;
+}
+.groupeditor li span.denied {
+    color: red;
+}
+
+.groupeditor ul a.glyphicon {
+    float: right;
+    opacity: 0;
+    padding: 3px;
+    display: inline-block;
+}
+
+.groupeditor .groupcontainer:hover ul a.glyphicon {
+    opacity: 0.4;
+}
+
+.groupeditor .groupcontainer ul >*:hover a.glyphicon {
+    opacity: 0.6;
+}
+
+.groupeditor .groupcontainer ul >* a.glyphicon:hover {
+    opacity: 1;
+}
+
+.groupeditor .groupcontainer {
+    padding: 10px 0 10px 20px;
+    display: inline-block;
+    vertical-align: top;
+    margin-bottom: 20px;
+
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.6);
+}
+.groupeditor .groupcontainer > * {
+    margin-left: 0;
+}
+
+.groupeditor ul {
+    min-width: 200px;
+    margin-right: -10px;
+}
+.groupeditor ul > span {
+    font-size: 1.2em;
+}
+
+.groupeditor .groupcontainer > a {
+    margin-right: 10px;
+}
+
+.groupeditor .delete {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+
+.groupeditor .reinvite .inv, .groupeditor .groupcontainer:hover ul *.reinvite a.inv {
+    opacity: 0.8
+}
+
+.groupeditor:not(.edited) .save {
+    display: none;
+}
+
+.groupeditor .icon-spin {
+    font-size: 2em;
+}

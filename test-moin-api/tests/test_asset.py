@@ -197,7 +197,7 @@ def test_post_asset_create_returns_201():
     asset_tags = ["TestTag"]
 
     # expect before creating a page and not after
-    expect_before = "This page does not exist yet. You can create a new empty page, or use one of the page templates."
+    expect_before = PAGE_DOES_NOT_EXIST
 
     # Expect to find "create new empty page" since the page
     # is not created yet

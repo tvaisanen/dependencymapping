@@ -3,6 +3,11 @@ import requests
 import json
 import urllib3
 
+
+NAME = "name"
+DESCRIPTION = "description"
+PAGE_DOES_NOT_EXIST = "This page does not exist yet. You can create a new empty page, or use one of the page templates."
+
 pages = [
     {
         'name': 'TestPageOne',
@@ -33,15 +38,15 @@ pages = [
 tags = [
     {
         'name': 'TestPage',
-        'description': 'Describe Tag/GwCategory TestPage here.',
+        'description': 'Describe gwikicategory / tag TestPage here.',
     },
     {
         'name': 'TestTag',
-        'description': 'Describe Tag/GwCategory TestTag here.',
+        'description': 'Describe gwikicategory / tag TestTag here.',
     },
     {
         'name': 'OtherTag',
-        'description': 'Describe Tag/GwCategory OtherTag here.',
+        'description': 'Describe gwikicategory / tag OtherTag here.',
     },
 ]
 
@@ -211,6 +216,9 @@ ASSET = "asset"
 DEPENDENCY = "dependency"
 MAPPING = "mapping"
 TAG = "tag"
+
+ERROR = "error"
+RESOURCE_DOES_NOT_EXIST = "Resource does not exist."
 
 #  tvaisanen/gwiki-with-moin
 #     user: collab
