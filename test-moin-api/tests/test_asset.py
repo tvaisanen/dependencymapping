@@ -4,20 +4,29 @@ from conftest import *
 # test api assets
 def test_get_assets_returns_all_created_assets():
     """
-    Test that the root returns
+    Test that the root returns list of pages
+    as assets. These are used for the rest of
+    the tests.
     Behaviour:
     ~ ListView
     """
-    query_url = paths.get_resource_path("asset", "")
+    query_url = paths.get_resource_path(ASSET, "")
 
     r = requests.get(query_url, verify=False, auth=credentials)
-    data = load_json(r)
-    asset_names = [asset['name'] for asset in data]
-    expected = ['TestPageOne', 'TestPageTwo', 'TestPageThree', 'TestPageFour']
-    print(asset_names)
+    data = r.json()
 
-    for item in asset_names:
-        assert item in expected
+    response_assets = [
+        asset(
+            item[NAME],
+            item[DESCRIPTION],
+            item[CONNECTED_TO],
+            item[TAGS]
+        )
+        for item in data
+    ]
+
+    for item in response_assets:
+        assert item in pages
 
 
 def test_that_assets_have_the_connected_to_assets_as_links():
@@ -98,7 +107,7 @@ def test_that_assets_have_the_tags_as_gwikicategory_links():
     """
     page = pages[3]
 
-    query_url = paths.get_page_path(page['name'])
+    query_url = paths.get_page_path(page[NAME])
     r = requests.get(query_url, verify=False, auth=credentials)
 
     """ 
@@ -106,7 +115,6 @@ def test_that_assets_have_the_tags_as_gwikicategory_links():
         separation between GW category links and "normal
         page links.
     """
-
 
     find_these_links_to_tags = [
         bytes('{link}">{link}</a>'.format(
@@ -149,12 +157,14 @@ def test_get_asset_by_name_returns():
     }
     """
     expected = pages[0]
-    url = paths.get_resource_path("asset", expected['name'])
+    url = paths.get_resource_path(ASSET, expected[NAME])
     r = requests.get(url, verify=False, auth=credentials)
     data = load_json(r)
 
     assert data[NAME] == expected[NAME]
     assert data[DESCRIPTION] == expected[DESCRIPTION]
+    assert data[CONNECTED_TO] == expected[CONNECTED_TO]
+    assert data[TAGS] == expected[TAGS]
 
 
 def test_get_asset_that_dont_exist_returns_404():
@@ -168,7 +178,7 @@ def test_get_asset_that_dont_exist_returns_404():
     r = requests.get(query_url, verify=False, auth=credentials)
     data = load_json(r)
     assert 404 == r.status_code
-    assert "does not exist" in str(data)
+    assert response_messages[GET]['404'] in str(data)
 
 
 def test_post_asset_create_returns_201():
@@ -197,14 +207,12 @@ def test_post_asset_create_returns_201():
 
     # data to create the new page.
     payload = asset(asset_name, asset_desc, asset_connected_to, asset_tags)
-    query_url = paths.get_resource_path("asset", "")
+    query_url = paths.get_resource_path(ASSET, "")
     r = requests.post(query_url, verify=False, auth=credentials, data=payload)
     data = load_json(r)
 
-    query_url = paths.get_page_path(asset_name, updated=True)
-
-
     """ assert that the page is created and can be accessed """
+    query_url = paths.get_page_path(asset_name, updated=True)
     r = requests.get(query_url, verify=False, auth=credentials)
 
     links = asset_connected_to + asset_tags
@@ -223,10 +231,10 @@ def test_post_asset_create_returns_201():
         assert link in r.content
 
     assert expect_before not in r.text
-    assert data['name'] == payload['name']
-    assert data['description'] == payload['description']
-    assert data['tags'] == payload['tags']
-    assert data['connected_to'] == payload['connected_to']
+    assert data[NAME] == payload[NAME]
+    assert data[DESCRIPTION] == payload[DESCRIPTION]
+    assert data[CONNECTED_TO] == payload[CONNECTED_TO]
+    assert data[TAGS] == payload[TAGS]
 
 
 def test_put_asset_makes_the_changes():
@@ -252,13 +260,11 @@ def test_put_asset_makes_the_changes():
 
     assert data[DESCRIPTION] == asset_to_edit[DESCRIPTION]
 
-
-
     updated_data = {
-        'name': asset_to_edit['name'],
-        'description': "This should be seen as a description after the update.",
-        'connected_to': asset_to_edit['connected_to'],
-        'tags': asset_to_edit['tags']
+        NAME: asset_to_edit[NAME],
+        DESCRIPTION: "This should be seen as a description after the update.",
+        CONNECTED_TO: asset_to_edit[CONNECTED_TO],
+        TAGS: asset_to_edit[TAGS]
     }
 
     r = requests.put(query_url, verify=False, auth=credentials, data=updated_data)
@@ -272,21 +278,16 @@ def test_put_asset_makes_the_changes():
 
     r = requests.get(query_url, verify=False, auth=credentials, data=updated_data)
 
-    updated_data = load_json(r)
-
-    print("response data")
-    pprint(updated_data)
+    received_data = r.json()
 
     # verify that the updated asset returns same asset
-    assert updated_data['name'] == asset_to_edit['name']
+    assert updated_data[NAME] == asset_to_edit[NAME]
 
     # verify that the updated description can be found
     # from the rendered html page
     # assert bytes(updated_data['description'], r.encoding) in r.content
 
     # verify that the received data matches sent data.
-    assert updated_data['description'] is updated_data['description']
+    assert received_data[DESCRIPTION] == updated_data[DESCRIPTION]
 
-    # finally check that the description before update is not haunting
-    assert updated_data['description'] is not asset_to_edit['description']
 
