@@ -182,6 +182,15 @@ def tag(name, description):
     }
 
 
+def mapping(name, description, assets, tags):
+    return {
+        NAME: name,
+        DESCRIPTION: description,
+        ASSETS: assets,
+        TAGS: tags
+    }
+
+
 ####################################################################
 
 
@@ -204,6 +213,8 @@ ASSET = "asset"
 DEPENDENCY = "dependency"
 MAPPING = "mapping"
 TAG = "tag"
+TAGS = "tags"
+ASSETS = "assets"
 
 ERROR = "error"
 RESOURCE_DOES_NOT_EXIST = "Resource does not exist."

@@ -1,0 +1,16 @@
+
+[
+    {
+        "name": "TestMappingOne",
+        "description": "Describe TestMappingOne here.",
+        "assets": ["TestPageOne", "TestPageTwo", "TestPageThree"],
+        "tags": ["TestPage", "TestTag"]
+    },
+    {
+        "name": "TestMappingTwo",
+        "description": "Describe TestMappingTwo here.",
+        "assets": [],
+        "tags": ["TestPage", "TestTag"]
+    }
+
+]

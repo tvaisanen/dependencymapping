@@ -1,0 +1,51 @@
+const express = require('express');
+const Tag = require('../models').Tag;
+const tagRouter = express.Router();
+
+tagRouter.get('(/:id)?', (req, res) => {
+
+    console.log(Tag);
+
+    if (req.params.id) {
+        Tag.findOne({name: req.params.id})
+            .then(tag => {
+                if (tag == null){
+                    console.log("Tag does not exist.");
+                    res.status(404).json("Resource does not exist.")
+                } else {
+                    console.log(tag);
+                    res.status(200).json(tag);
+                }
+            }).catch(err => res.status(400).json(err));
+
+    } else {
+        Tag.find()
+            .then(tags => {
+                const tagNameList = tags.map(t => t.name);
+                console.log(tagNameList);
+                res.status(200).json(tagNameList);
+            })
+            .catch(err => res.status(400).json(err));
+    }
+});
+
+tagRouter.post('(/:id)?', (req, res) => {
+    const query = {name: req.param.id};
+    const tag = new Tag({...req.body});
+    tag.save().then(saved => {
+        console.log(`saved: \n${saved}`);
+        res.status(201).json(saved);
+    }).catch(err => {
+        console.log(err);
+    })
+});
+
+tagRouter.put('(/:id)?', (req, res) => {
+    const query = {name: req.params.id};
+    console.log(query);
+    Tag.update(query, req.body)
+        .then(ok => res.status(204).json("Resource updated succesfully."))
+        .catch(err => res.status(400).send(err));
+});
+
+module.exports = tagRouter;

@@ -98,8 +98,8 @@ def test_post_tag_create_returns_201():
         a text on the wiki page saying 'Create new empty page'.
         Therefore after successful creation this shouldn't be
         visible on the new page. -> 'assert dont_expect not in r.text'
-        
     """
+
 
     assert data[NAME] == new_tag[NAME]
     assert data[DESCRIPTION] == new_tag[DESCRIPTION]
