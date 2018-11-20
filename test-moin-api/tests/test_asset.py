@@ -53,7 +53,7 @@ def test_that_assets_have_the_connected_to_assets_as_links():
     r = requests.get(query_url, verify=False, auth=credentials)
 
     find_these_links = [
-        bytes('<a href="{path}{link}">{link}</a>'.format(
+        bytes('{link}">{link}</a>'.format(
                 path=WIKI_ROOT,
                 link=link
             ),
@@ -109,7 +109,7 @@ def test_that_assets_have_the_tags_as_gwikicategory_links():
 
 
     find_these_links_to_tags = [
-        bytes('<a href="{path}{link}">{link}</a>'.format(
+        bytes('{link}">{link}</a>'.format(
                 path=WIKI_ROOT,
                 link=link
             ),
@@ -210,7 +210,7 @@ def test_post_asset_create_returns_201():
     links = asset_connected_to + asset_tags
 
     expect_to_find_from_response = [
-        bytes('<a href="{path}{link}">{link}</a>'.format(
+        bytes('{link}">{link}</a>'.format(
                 path=WIKI_ROOT,
                 link=link
             ),

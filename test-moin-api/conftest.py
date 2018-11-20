@@ -157,7 +157,7 @@ def pytest_sessionfinish(session, exitstatus):
 
 
 """  Define api paths here  """
-WIKI_IP_HOST = "https://172.20.0.2"
+WIKI_IP_HOST = "https://172.20.0.3"
 """
 this is used for checking that links created
 in pages has the format WIKI_IP_HOST/WIKI_PREPATH/LINK_TARGET
