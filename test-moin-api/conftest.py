@@ -2,7 +2,6 @@ from pprint import pprint
 import requests
 import json
 
-
 NAME = "name"
 DESCRIPTION = "description"
 PAGE_DOES_NOT_EXIST = "This page does not exist yet. You can create a new empty page, or use one of the page templates."
@@ -62,12 +61,19 @@ mappings = [
         'assets': [],
         'tags': ['TestPage', 'TestTag']
     },
+    {
+        "name": "ToBeDeleted",
+        "description": "Describe ToBeDeleted here.",
+        "assets": ["TestPageOne"],
+        "tags": [
+            "TestTag"
+        ]
+    }
 
 ]
 
 
 class Paths:
-
     GWIKI = {
         'page': "https://172.20.0.2/collab/{}",
         'resource': {
@@ -81,7 +87,7 @@ class Paths:
         'page': "http://localhost:3000/test/{}.html",
         'resource': {
             'asset': "http://localhost:3000/asset/{}",
-            'mapping':"http://localhost:3000/mapping/{}",
+            'mapping': "http://localhost:3000/mapping/{}",
             'tag': "http://localhost:3000/tag/{}",
         }
     }
@@ -129,6 +135,7 @@ except KeyError as ex:
 
 print("\nDEBUG = {}\n".format(debug))
 paths = Paths(debug=debug)
+
 
 def pytest_sessionstart(session):
     """ before session.main() is called. """

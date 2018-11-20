@@ -1,5 +1,9 @@
 const UPDATED_SUCCESSFULLY_200 = {
-    msg: "Resource updated succesfully."
+    msg: "Resource updated successfully."
+};
+
+const DELETED_SUCCESSFULLY_200 = {
+    msg: "Resource deleted successfully."
 };
 
 const RESOURCE_NOT_FOUND = {
@@ -9,7 +13,8 @@ const RESOURCE_NOT_FOUND = {
 
 module.exports = {
     messages: {
-        UPDATED_SUCCESSFULLY_200
+        UPDATED_SUCCESSFULLY_200,
+        DELETED_SUCCESSFULLY_200
     },
     errors: {
         RESOURCE_NOT_FOUND

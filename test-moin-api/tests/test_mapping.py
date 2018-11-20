@@ -119,7 +119,7 @@ def test_put_mapping_updates_data_and_returns_200_with_success_msg():
     print(r.json())
 
     assert r.status_code == 200
-    assert "Resource updated succesfully." == r.json()['msg']
+    assert "Resource updated successfully." == r.json()['msg']
 
     """ Verify that the data changes are reflected
         to the database
@@ -210,6 +210,44 @@ def test_post_conflict_returns_pointer_to_existing_with_status_409():
     assert "/mapping/TestMappingOne" == data['pathToExisting']
 
 
-def test_delete_mapping_deletes_mapping_and_returns_204():
-    assert False
+def test_delete_mapping_deletes_mapping_with_a_success_message_with_status200():
 
+    mapping = mappings[2]
+
+    pprint(mapping)
+
+    query_url = paths.get_page_path(mapping[NAME])
+    r = requests.get(query_url, verify=False, auth=credentials, data=mapping)
+
+    """ Verify that the page exists
+        and have the links
+    """
+
+    asset_and_tag_names = mapping[ASSETS] + mapping[TAGS]
+
+    find_these_links = [
+        bytes('{link}">{link}</a>'.format(
+                path=WIKI_ROOT,
+                link=link
+            ),
+            encoding=r.encoding
+        )
+        for link in asset_and_tag_names
+    ]
+
+    for link in find_these_links:
+        assert link in r.content
+
+    query_url = paths.get_resource_path(MAPPING, mapping[NAME])
+    r = requests.delete(query_url, verify=False, auth=credentials)
+
+    response_data = r.json()
+    assert r.status_code == 200
+    assert "Resource deleted successfully." == response_data['msg']
+
+    """ Page shouldn't not exist anymore
+    """
+    query_url = paths.get_page_path(mapping[NAME], updated=True)
+    r = requests.get(query_url, verify=False, auth=credentials, data=mapping)
+
+    assert bytes(PAGE_DOES_NOT_EXIST, encoding=r.encoding) in r.content
