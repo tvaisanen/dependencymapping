@@ -199,7 +199,15 @@ def test_post_mapping_creates_mapping_with_a_page_and_returns_201():
 
 
 def test_post_conflict_returns_pointer_to_existing_with_status_409():
-    assert False
+
+    mapping = mappings[0]
+    query_url = paths.get_resource_path(MAPPING, mapping[NAME])
+    r = requests.post(query_url, verify=False, auth=credentials, data=mapping)
+
+    data = r.json()
+
+    assert r.status_code == 409
+    assert "/mapping/TestMappingOne" == data['pathToExisting']
 
 
 def test_delete_mapping_deletes_mapping_and_returns_204():

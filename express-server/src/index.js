@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
+const fs = require('fs');
+
 const assetRouter = require('./routers/asset.router');
 const mappingRouter = require('./routers/mapping.router');
 const tagRouter = require('./routers/tag.router');
@@ -18,6 +20,7 @@ const tags = require('./__test__/tags.json');
 const MONGO_PATH = process.env.MONGO_PATH;
 const MONGO_PORT = process.env.MONGO_PORT;
 const DB_NAME = process.env.DB_NAME;
+
 mongoose.connect(`mongodb://${MONGO_PATH}:${MONGO_PORT}/${DB_NAME}`);
 
 // CONNECTION EVENTS
@@ -65,7 +68,12 @@ const router = express.Router();
 router.use(function timeLog(req, res, next) {
     const d = new Date();
     //${d.toUTCString()},
-    console.log(`\n${req.method} ::  ${req.path}, body: ${JSON.stringify(req.body)}`);
+    console.log(`\n${req.method} ::  ${req.path}, \n\tbody: ${JSON.stringify(req.body)}`);
+    if (req.path.startsWith("/test")){
+        console.log("access to test pages");
+        console.log(process.cwd());
+
+    }
     next();
 });
 
@@ -87,9 +95,7 @@ router.get('/reset-models', (req, res) => {
     res.send("database initialized")
 });
 
-router.get('/', (req, res) => {
-    res.send('hello')
-});
+
 
 /**
  * Configure App
@@ -100,16 +106,20 @@ let app = express();
 app.use(bodyParser.urlencoded({extended: false}))
 
 
-// server misc
-app.use(router);
 
 // serve test pages
-app.use('/test', express.static('pages'));
 
+app.use(router);
+app.use('/test', express.static('src/pages'));
 // serve API endpoints
 app.use('/asset', assetRouter);
 app.use('/mapping', mappingRouter);
 app.use('/tag', tagRouter);
+
+app.get('*', (req, res) => {
+    res.status(404).send('Resource not found.')
+});
+// server misc
 
 app.listen(3000, ()=> {
     console.log(
