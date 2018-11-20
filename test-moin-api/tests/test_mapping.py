@@ -145,9 +145,57 @@ def test_put_mapping_updates_data_and_returns_200_with_success_msg():
     assert bytes(NEW_TAG, encoding=r.encoding) in r.content
 
 
-
 def test_post_mapping_creates_mapping_with_a_page_and_returns_201():
-    assert False
+
+    new_mapping = {
+        NAME: "MapTestCase",
+        DESCRIPTION: "Describe MapTestCase here.",
+        ASSETS: ["ThisShouldBeCreated", "ThisToo"],
+        TAGS: ["TestTag", "NewTagToBeCreated"]
+    }
+
+    """ check that the page does not exist 
+        yet (it shouldnt for tests)
+    """
+    query_url = paths.get_page_path(new_mapping[NAME])
+    r = requests.get(query_url, verify=False, auth=credentials)
+
+    assert bytes(PAGE_DOES_NOT_EXIST, encoding=r.encoding) in r.content
+
+    """ Make the post request
+    """
+    query_url = paths.get_resource_path(MAPPING, new_mapping[NAME])
+    r = requests.post(query_url, verify=False, auth=credentials, data=new_mapping)
+
+    retrieved_data = r.json()
+
+    assert r.status_code == 201
+
+    assert retrieved_data[NAME]         == new_mapping[NAME]
+    assert retrieved_data[DESCRIPTION]  == new_mapping[DESCRIPTION]
+    assert retrieved_data[ASSETS]       == new_mapping[ASSETS]
+    assert retrieved_data[TAGS]         == new_mapping[TAGS]
+
+    """ Verify that page is created
+        with the links
+    """
+    query_url = paths.get_page_path(new_mapping[NAME], updated=True)
+    r = requests.get(query_url, verify=False, auth=credentials)
+
+    asset_and_tag_names = new_mapping[ASSETS] + new_mapping[TAGS]
+
+    find_these_links = [
+        bytes('{link}">{link}</a>'.format(
+                path=WIKI_ROOT,
+                link=link
+            ),
+            encoding=r.encoding
+        )
+        for link in asset_and_tag_names
+    ]
+
+    for link in find_these_links:
+        assert link in r.content
 
 
 def test_post_conflict_returns_pointer_to_existing_with_status_409():
