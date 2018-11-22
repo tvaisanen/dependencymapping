@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import {colorDark} from "../../constants/colors";
 
 export const Title = styled.span`
   font-weight: normal; 

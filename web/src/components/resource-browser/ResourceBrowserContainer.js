@@ -4,8 +4,8 @@ import {connect} from 'react-redux'
 import styled from 'styled-components';
 import * as l from '../layout';
 import * as types from './../../constants/types';
-import {isResourceInMapping, filterResources } from './../../common/resource-helpers';
-import * as graphHelpers from "./../../common/graph-helpers";
+import {isResourceInMapping, } from './../../common/resource-helpers';
+import * as resourceHelpers from './../../common/resource-helpers';
 import ResourceDetail from '../resource-detail/ResourceDetailContainer';
 import { FilterInputField } from '../common.components';
 import resourceBrowserCtrl from './resource-browser.controller';
@@ -40,16 +40,20 @@ class ResourceBrowserContainer extends Component {
     }
 
     render() {
-        const { resources, tags } = this.props;
+        const { assets, tags } = this.props;
         const {filterValue, resourceTypes} = this.state;
+
         const isResourceInMap = isResourceInMapping({
             mapping: this.props.activeMapping ? this.props.activeMapping : {name:'none'},
             resourceId: this.props.activeDetail.name || false,
         });
 
+        // console.info(this.props);
+        // console.info(assets);
+
         const resourceItems = resourceTypes === types.ASSET ?
-            filterResources({resources: resources, filterValue})
-            : filterResources({resources: tags, filterValue})
+            resourceHelpers.filterByName({objectList: assets || [], filterValue})
+            : resourceHelpers.filterByName({objectList: tags || [], filterValue})
          ;
 
         return (
@@ -120,13 +124,6 @@ export default connect(
     resourceBrowserCtrl.mapStateToProps,
     resourceBrowserCtrl.mapDispatchToProps
 )(ResourceBrowserContainer);
-
-const ResourceSwitch = styled.div`
-   
-`;
-
-
-
 
 
 const ResourceBrowserLayout = styled.div`

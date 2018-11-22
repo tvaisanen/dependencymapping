@@ -4,64 +4,73 @@ import * as activeDetailActions from '../store/active-detail/active-detail.actio
 import * as parser from './parser';
 import * as resourceHelpers from './graph-helpers';
 import * as types from '../constants/types';
-import * as _ from 'lodash';
 
-export function getMappingById(mapId, mappings){
+export function getMappingById(mapId, mappings) {
     return mappings.filter(g => g.name === mapId)[0];
 }
 
-export function loadDependencyMap(mapId, cy, mappings, assets, dispatch, layout){
-        // load graph resources to the active mapping
+export function loadDependencyMap(mapId, cy, mappings, assets, dispatch, layout) {
+    // load graph resources to the active mapping
 
-        // current state of cy graph needs to be cleared
-        graphHelpers.clearGraph(cy);
-        const mapping = getMappingById(mapId, mappings);
+    // current state of cy graph needs to be cleared
+    graphHelpers.clearGraph(cy);
 
-        // By default this is an array of objects.
-        let resources = mapping ? mapping.resources : [];
+    const mapping = getMappingById(mapId, mappings);
 
-        console.info(resources);
-        console.info(mapping);
+    // By default this is an array of objects.
+    const assetNameList = mapping ? mapping.assets : [];
+    const tagNameList = mapping ? mapping.tags : [];
 
-        // Set mapping as active.
-        dispatch(activeMappingActions.loadActiveMappingResources(mapping));
+    console.group("LoadDependencyMap()");
+    console.info(assets);
+    console.info(mapping);
 
-        /**
-         * This is because at the moment there's no back end solution.
-         *  Current dev. environment returns mapping resources as objects,
-         * which is not too efficient. Preferred method would be using
-         * just an array of id's which would be used in a following manner.
-         */
-        if (_.isString(resources[0])) {
-            // if resource is a string
-            // map resource id's to resource objects
-            resources = parser.filterResourcesByIds({
-                ids: resources,
-                resources: assets
-            });
-        }
+    // Set mapping as active.
+    dispatch(activeMappingActions.setActiveMapping(mapping));
 
-        // objects for redux state
-        const connections = parser.getConnectionsFromResources(resources);
+    /**
+     * This is because at the moment there's no back end solution.
+     *  Current dev. environment returns mapping resources as objects,
+     * which is not too efficient. Preferred method would be using
+     * just an array of id's which would be used in a following manner.
+     */
 
-        dispatch(activeMappingActions.setActiveMappingConnections(connections));
+    // if resource is a string
+    // map resource id's to resource objects
+    const activeMappingAssetObjects = parser.filterObjectsByName({
+        names: assetNameList,
+        objectList: assets
+    });
 
-
-        // json for graphing
-        const edges = parser.parseEdgeElementsFromResources(resources);
+    const activeMappingTagObjects = parser.filterObjectsByName({
+        names: assetNameList,
+        objectList: assets
+    });
 
 
-        const nodes = resources.map(resource => resourceHelpers.nodeElementFromResource(resource));
-        graphHelpers.addElements(cy, nodes);
-        graphHelpers.addElements(cy, edges);
+    // objects for redux state
+    const connections = parser.getConnectionsFromResources(assets);
 
-        // update activeDetail store
-        dispatch(activeDetailActions.setActiveDetail({
-                data: mapping,
-                type: types.MAPPING
-            })
-        );
+    dispatch(activeMappingActions.setActiveMappingConnections(connections));
 
-        // update the graph layout
-        graphHelpers.updateLayout(cy, layout);
+
+    // json for graphing
+
+    // get cy.element objects from active mapping assets
+    const edges = parser.parseEdgeElementsFromResources(activeMappingAssetObjects);
+    const nodes = activeMappingAssetObjects.map(resource => resourceHelpers.nodeElementFromResource(resource));
+
+    graphHelpers.addElements(cy, nodes);
+    graphHelpers.addElements(cy, edges);
+
+    // update activeDetail store
+    dispatch(activeDetailActions.setActiveMappingAsDetail({
+            data: mapping,
+            type: types.MAPPING
+        })
+    );
+
+    // update the graph layout
+    graphHelpers.updateLayout(cy, layout);
+    console.groupEnd();
 };

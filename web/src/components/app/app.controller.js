@@ -28,7 +28,7 @@ const mapDispatchToProps = (dispatch) => ({
     onCtxClick: (event) => dispatch(events.onCtxClick(event)),
     initGraph: ({eventHandlers}) => dispatch(graphActions.initGraph({eventHandlers})),
     setActiveDetail: (activeDetail) => dispatch(activeDetailActions.setActiveDetail(activeDetail)),
-    addActiveMappingResources: (resources) => dispatch(activeMappingActions.addActiveMappingResources(resources))
+    addActiveMappingResources: (resources) => dispatch(activeMappingActions.addActiveMappingAssets(resources))
 });
 
 export default {

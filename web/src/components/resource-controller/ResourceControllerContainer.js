@@ -69,7 +69,7 @@ class ResourceControllerContainer extends Component {
             else if (type === types.MAPPING) {
                 console.info(this.props.activeDetail);
                 this.setState({
-                    selectedResources: data.resources.map(r => r.name),
+                    selectedResources: data.assets.map(r => r.name),
                     selectedTags: data.tags.map(t => t.name),
                 })
             }
@@ -89,6 +89,7 @@ class ResourceControllerContainer extends Component {
     actionPost(form) {
         console.group("actionPost()");
         const {formType, formActions} = this.props;
+        console.info(form);
         const {promise, resolveCallback} = formActions[formType].post(form);
         this.handlePromise({promise, resolveCallback});
         console.groupEnd();
@@ -203,10 +204,11 @@ class ResourceControllerContainer extends Component {
     }
 
     getFormData() {
+        console.info(this.state);
         return {
             name: this.state.name,
             description: this.state.description,
-            resources: this.state.selectedResources.map(n => ({name: n})),
+            resources: this.state.selectedResources,
             tags: this.state.selectedTags,
         }
     }

@@ -5,6 +5,8 @@ export function isNetworkError(error){
 }
 export function handleNetworkError(error){
 
+    console.info(error.response)
+
     return function (dispatch, getState) {
         dispatch(appActions.setInfoMessage("Network Error: try visiting https://api.localhost"));
         console.group("handleNetworkError");

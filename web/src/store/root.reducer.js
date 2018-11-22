@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import mappings from '../reducers/mapping.reducer';
-import resources from './asset/resource.reducer';
+import assets from './asset/asset.reducer';
 import activeMapping from './active-mapping/active-mapping.reducer';
 import tags from './tag/tag.reducer';
 import activeDetail from './active-detail/active-detail.reducer'
@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
     app,
     auth,
     mappings,
-    resources,
+    assets,
     tags,
     activeMapping,
     activeDetail,

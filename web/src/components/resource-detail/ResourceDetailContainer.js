@@ -24,7 +24,7 @@ const ResourceDetailContainer = props => (
                         <DetailDescription
                             id="resource-detail__detail-block__description"
                             description={props.activeDetail.data.description}/>
-                        <DetailLists id="resource-detail__detail-block__lists"
+                            <DetailLists id="resource-detail__detail-block__lists"
                 {...props}/>
                         </React.Fragment>
                 }

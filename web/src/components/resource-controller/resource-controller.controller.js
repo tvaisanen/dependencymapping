@@ -1,5 +1,5 @@
 import * as actions from './resource-controller.actions';
-import * as actionsResource from '../../store/asset/asset.actions';
+import * as actionsAsset from '../../store/asset/asset.actions';
 import * as actionsMapping from '../../actions/mapping.actions';
 import * as actionsTag from '../../store/tag/tag.actions';
 import * as actionsActiveDetail from '../../store/active-detail/active-detail.actions';
@@ -8,9 +8,9 @@ import * as types from '../../constants/types';
 
 const formActions = (dispatch) => ({
     [types.ASSET]: {
-        post: (asset) => dispatch(actionsResource.postResource(asset)),
-        put: (asset) => dispatch(actionsResource.updateResource(asset)),
-        remove: (asset) => dispatch(actionsResource.deleteResource(asset)),
+        post: (asset) => dispatch(actionsAsset.postAsset(asset)),
+        put: (asset) => dispatch(actionsAsset.updateAsset(asset)),
+        remove: (asset) => dispatch(actionsAsset.deleteAsset(asset)),
         parseForm: (form) => ({
             name: form.name,
             description: form.description,
@@ -45,7 +45,7 @@ function mapStateToProps(state, props) {
         types: types,
         formEdit: state.app.form.edit,
         formType: state.app.form.type,
-        assetNameList: state.resources.map(r => r.name),
+        assetNameList: state.assets.map(r => r.name),
         tagNameList: state.tags.map(t => t.name)
     }
 }

@@ -16,11 +16,13 @@ function stateToProps(state) {
     const items = activeDetail.type === types.TAG ?
         resourceHelpers
             .getAllResourcesWithTag({
-                tagId: activeDetail.data.name,
-                resources: state.resources
+                tagName: activeDetail.data.name,
+                resources: state.assets
             }) : false;
 
     const lists = getLists({activeDetail, detailType, setDetail, items});
+
+    // console.log(lists)
 
     return {...state, lists}
 }
@@ -57,17 +59,28 @@ const listCompositionInstructions = {
      * key: { key: [...values] }
      * type: type of the listed items
      *
+     * Read the instructions as following
+     * for type ASSET parse two lists for
+     * detail view. First list is labeled
+     * as "Connections" and items for this
+     * list is taken from asset.connected_to: [].
+     * Give this list the type definition
+     * types.ASSET
+     *
      * */
+
     [types.ASSET]: [
         {label: "Connections", key: "connected_to", type: types.ASSET},
         {label: "Tags", key: "tags", type: types.TAG}
     ],
     [types.MAPPING]: [
-        {label: "Resources", key: "resources", type: types.ASSET},
+        {label: "Assets", key: "assets", type: types.ASSET},
         {label: "Tags", key: "tags", type: types.TAG}
     ],
     [types.TAG]: [
-        {label: "Resources", key: false, type: types.ASSET}
+        // key: false -> the list items need to be derived
+        // from the assets
+        {label: "Assets", key: false, type: types.ASSET}
     ],
     [types.EMPTY]: [],
 };

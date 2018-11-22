@@ -1,7 +1,8 @@
 import * as helpers from './graph-helpers';
-import {getResourceById} from "./resource-helpers";
+import * as resourceHelpers from "./resource-helpers";
 import * as activeMappingActions from '../store/active-mapping/active-mapping.actions';
 import * as activeDetailActions from '../store/active-detail/active-detail.actions';
+
 
 export function onNodeMouseOver(event) {
     return function(dispatch, getState){
@@ -26,39 +27,48 @@ export function onNodeClick(event) {
 
     console.groupEnd();
     return function (dispatch, getState) {
+
+        const { assets } = getState()
+
         const cy = event.target.cy();
+        // name of the clicked asset
         const resourceName = event.target.id();
 
         // set store active detail
-        const clickedResource = getResourceById({
-            id: resourceName,
-            resources: getState().resources
+        const clickedResource = resourceHelpers.getObjectByName({
+            name: resourceName,
+            objectList: assets
         });
 
-        dispatch(activeDetailActions.setActiveDetail({
+        dispatch(activeDetailActions.setActiveDetailWithResourceCollecting({
             type: 'ASSET',
             data: clickedResource
         }));
+
+        const clickedAssetIsConnectedTo = clickedResource.connected_to;
+
         // the active mapping state needs to be updated by
         // adding the resources of the expanded node.
         dispatch(activeMappingActions
-            .addActiveMappingResources(clickedResource.connected_to));
+            .addActiveMappingAssetsFromNameList(
+                clickedAssetIsConnectedTo
+            )
+        );
 
         // required parameters for handling the graph update are
         // to have the reference of cy, target and the resource name
         // list to the target is connected to
 
-        const targetNames = clickedResource.connected_to.map(r => r.name);
 
         const layout = getState().app.graph.selectedLayout;
 
         const nodesToCreate = helpers.createNodeElements({
-            ids: targetNames
+            ids: clickedAssetIsConnectedTo
         });
 
         const edgesToCreate = helpers.createEdgeElementsBetween({
             source: resourceName,
-            targets: targetNames
+            targets: clickedAssetIsConnectedTo
         });
 
         helpers.addElements(cy, nodesToCreate);

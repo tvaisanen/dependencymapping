@@ -4,75 +4,77 @@ import * as graphHelpers from '../../common/graph-helpers';
 import * as _ from 'lodash';
 import * as apiHelpers from '../../common/api.helpers';
 import * as appActions from '../../actions/app.actions';
+import * as activeDetailActions from '../../store/active-detail/active-detail.actions';
 /************* ASSET       ************* */
 
-export function postResource(asset) {
+export function postAsset(asset) {
     return function (dispatch) {
-        const promise = GwClientApi.postResource(asset);
+        const promise = GwClientApi.postAsset(asset);
 
         // resolving a request is done in form container
-        const resolveCallback = (resource) => {
+        const resolveCallback = (asset) => {
             dispatch(appActions.setInfoMessage(`Created asset: ${asset.name}`));
-            dispatch(postResourceSuccess(resource))
+            dispatch(postAssetSuccess(asset));
         };
 
         return {promise, resolveCallback};
     }
 }
 
-export function postResourceSuccess(resource) {
+export function postAssetSuccess(asset) {
     console.info("Post resource success:");
-    return {type: types.POST_RESOURCE_SUCCESS, resource}
+    return {type: types.POST_ASSET_SUCCESS, asset}
 }
 
 /****************  ASSET UPDATE   ****************/
-export function updateResource(resource) {
+export function updateAsset(asset) {
 
     // updates asset/resource to the database
     // and refreshes the nodes edges in the graph
     return function (dispatch, getState) {
-        const resolveCallback = (resource) => {
-                dispatch(updateResourceSuccess({resource: resource}));
-                dispatch(appActions.setInfoMessage(`Updated asset: ${resource.name}`));
+        const resolveCallback = () => {
+                dispatch(updateAssetSuccess({asset: asset}));
+                dispatch(appActions.setInfoMessage(`Updated asset: ${asset.name}`));
                 // todo: refactor the graph update
                 // redraw the edges in the graph if asset in map
-                const activeMapAssets = getState().activeMapping.resources;
-                const inActiveMap = -1 !== _.findIndex(activeMapAssets, (item) => item.name === resource.name);
+                const activeMapAssets = getState().activeMapping.assets;
+                const inActiveMap = -1 !== _.findIndex(activeMapAssets, (item) => item.name === asset.name);
                 if (inActiveMap) {
-                    graphHelpers.removeResourceEdges(getState().graph, resource);
-                    graphHelpers.drawResourceEdges(getState().graph, resource);
+                    graphHelpers.removeResourceEdges(getState().graph, asset);
+                    graphHelpers.drawResourceEdges(getState().graph, asset);
                 }
         };
         // send the request
-        const promise = GwClientApi.putResource(resource);
+        const promise = GwClientApi.putAsset(asset);
         return {promise, resolveCallback};
     }
 }
 
-function updateResourceSuccess({resource}) {
+function updateAssetSuccess({asset}) {
     console.info("updateResourceSuccess");
-    return {type: types.UPDATE_RESOURCE_SUCCESS, resource};
+    return {type: types.UPDATE_ASSET_SUCCESS, asset};
 }
 
 /*************** DELETE **************/
 
-export function deleteResource({name}) {
+export function deleteAsset({name}) {
     console.info("deleteResource(" + name + ")");
-    return function (dispatch) {
-        const promise = GwClientApi.deleteResource({name})
+    return function (dispatch, getState) {
+        const promise = GwClientApi.deleteAsset({name});
         // resolving a request is done in form container
         const resolveCallback = () => {
             // todo: deal with mapped assets
+            alert('delete asset from all the mappings')
             dispatch(appActions.setInfoMessage(`Deleted asset: ${name}`));
-            dispatch(deleteResourceSuccess({removed: name}));
+            dispatch(deleteAssetSuccess({removed: name}));
         };
         return {promise, resolveCallback};
     }
 }
 
-export function deleteResourceSuccess({removed}) {
+export function deleteAssetSuccess({removed}) {
     console.info('Delete mapping success.');
-    return {type: types.DELETE_RESOURCE_SUCCESS, removed};
+    return {type: types.DELETE_ASSET_SUCCESS, removed};
 }
 
 /*********************************************** */
@@ -83,21 +85,20 @@ export function addResourceToMapping({nameMapping, nameResource}) {
     // add to the resources
     // add the resource
     return function (dispatch) {
-        postResource(nameResource);
+        postAsset(nameResource);
         //putResourceToMapping(nameMapping, nameResource);
     }
 }
 
-export function loadResourcesSuccess(resources) {
-    return {type: types.LOAD_RESOURCES_SUCCESS, resources}
+export function loadAssetsSuccess(assets) {
+    return {type: types.LOAD_ASSETS_SUCCESS, assets}
 }
 
-
-export function loadResourceSuccess(resource) {
-    return {type: types.LOAD_RESOURCE_SUCCESS, resource}
+export function loadAssetSuccess(asset) {
+    return {type: types.LOAD_ASSET_SUCCESS, asset}
 }
 
-export function loadAllResources() {
+export function loadAllAssets() {
     return function (dispatch) {
 
         // get all assets from the api
@@ -107,7 +108,7 @@ export function loadAllResources() {
             // dispatch success message with the data
             // returned assets
             dispatch(appActions.setInfoMessage("Loaded all resources successfully"));
-            dispatch(loadResourcesSuccess(response.data));
+            dispatch(loadAssetsSuccess(response.data));
 
         }).catch(error => {
              if (error.message && error.message === "Network Error"){
@@ -129,13 +130,13 @@ export function loadResource() {
      */
     return function (dispatch) {
         return GwClientApi.getResources().then(resource => {
-            dispatch(loadResourceSuccess(resource));
+            dispatch(loadAssetSuccess(resource));
         }).catch(error => {
             throw(error);
         });
     }
 }
 
-export function addResource(resource) {
-    return {type: types.ADD_RESOURCE, resource}
+export function addAsset(asset) {
+    return {type: types.ADD_ASSET, asset}
 }

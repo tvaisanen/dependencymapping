@@ -1,9 +1,7 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import * as types from './active-detail.action-types';
 import initialState from '../../reducers/initialState';
 import * as resourceTypes from '../../constants/types';
-import * as _ from 'lodash';
 
 const emptyDetail = {
     type: resourceTypes.EMPTY,

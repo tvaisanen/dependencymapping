@@ -21,14 +21,14 @@ function dispatchToProps(dispatch) {
 }
 
 function getMappingMenuProps(state) {
-    const {resources} = state.activeMapping;
+    const {assets} = state.activeMapping;
     // sort resources by name
     return {
         mappings: state.mappings,
         activeMapping: state.activeMapping,
         activeDetail: state.activeDetail,
         mappingNameList: state.mappings.map(m => m.name),
-        activeResourceNameList: resources ? resources.map(r => r.name) : [],
+        activeResourceNameList: assets ? assets.map(r => r.name) : [],
         // activeResourceNameList: state.activeMapping.resources ? state.activeMapping.resources.map(r => r.name).sort((a, b) => (a.name - b.name)) : [],
         hoverResourceOn: (id) => hoverIndicationOn(state.graph, id),
         hoverResourceOff: (id) => hoverIndicationOff(state.graph, id),

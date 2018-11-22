@@ -35,6 +35,11 @@ export function parseNodeElementsFromResources(resourceArray){
     return resourceArray.map(r=>({group:'nodes', data: {id: r.name } }));
 }
 
+// refactor usage of this to the filterObjectsByName
 export function filterResourcesByIds({ids, resources}){
    return resources.filter(r => (_.indexOf(ids, r.name) !== -1))
+}
+
+export function filterObjectsByName({names, objectList}){
+   return objectList.filter(obj => (_.indexOf(names, obj.name) !== -1))
 }

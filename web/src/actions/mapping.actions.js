@@ -5,6 +5,13 @@ import * as activeMappingActions from '../store/active-mapping/active-mapping.ac
 import * as appActions from '../actions/app.actions';
 import * as apiHelpers from '../common/api.helpers';
 
+type Mapping = {
+    name: string,
+    description: string,
+    assets: [string] | [],
+    tags: [string] | []
+}
+
 /*************** MAPPING *************/
 
 export function postMapping({name, description, resources, tags}) {
@@ -14,7 +21,7 @@ export function postMapping({name, description, resources, tags}) {
             dispatch(appActions.setInfoMessage(`Created mapping: ${name}`));
             dispatch(postMappingSuccess(mapping));
         };
-        const promise = GwClientApi.postMapping({name, description, resources, tags})
+        const promise = GwClientApi.postMapping({name, description, assets:resources, tags})
         return {promise, resolveCallback};
     }
 }
@@ -38,7 +45,12 @@ export function updateMapping(mapping) {
             dispatch(appActions.setInfoMessage(`Updated mapping: ${mapping.name}`));
             dispatch(updateMappingSuccess({mapping}));
         };
-        const promise = GwClientApi.putMapping(mapping);
+        const promise = GwClientApi.putMapping({
+            name: mapping.name,
+            description: mapping.description,
+            assets: mapping.resources,
+            tags: mapping.tags
+        });
         return {promise, resolveCallback};
 
     }
@@ -85,10 +97,13 @@ export function loadAllMappings(auth) {
         const promise = GwClientApi.getGraphs({auth});
 
         promise.then(response => {
+            console.info("loadAllMappings.then")
             dispatch(appActions.setInfoMessage("Loaded all mappings successfully"));
             dispatch(loadMappingsSuccess(response.data))
         }).catch(error => {
+            console.warn(error)
             if (apiHelpers.isNetworkError(error)){
+                console.log(error.response)
                 dispatch(apiHelpers.handleNetworkError(error));
             } else {
                 console.groupCollapsed("loadAllMappings()");

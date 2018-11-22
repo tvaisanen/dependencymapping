@@ -10,16 +10,16 @@ export const Menu = (
         </s.PanelHeader>
         <s.ScrollContent>
             {listItems ?
-                listItems.map((item, i) => (
+                listItems.map((listItem, i) => (
                     <s.ListItem
-                        selected={selected === item.name}
+                        selected={selected === listItem}
                         darkButtons={darkButtons}
                         key={i}
-                        onClick={() => onItemClick(item)}
-                        onMouseOver={onMouseOver ? () => onMouseOver(item.name) : null}
-                        onMouseOut={onMouseOut ? () => onMouseOut(item.name) : null}
+                        onClick={() => onItemClick(listItem)}
+                        onMouseOver={onMouseOver ? () => onMouseOver(listItem) : null}
+                        onMouseOut={onMouseOut ? () => onMouseOut(listItem) : null}
                     >
-                        {item.name}
+                        {listItem}
                     </s.ListItem>)
                 )
                 : null

@@ -8,7 +8,6 @@ import styled from 'styled-components';
 import { connect } from 'react-redux';
 
 import mappingMenuCtrl from './mapping-menu.controller';
-import { mediumDark } from "./../../constants/colors";
 import * as types from './../../constants'
 import { Menu } from './mapping-menu.components';
 import * as resourceHelpers from '../../common/resource-helpers';
@@ -18,9 +17,9 @@ const MappingMenuContainer = props => (
         <MenuColumn id="sidepanel">
             <Menu
                 title="Mappings "
-                listItems={props.mappings}
+                listItems={props.mappings.map(m => m.name)}
                 //onItemClick={(item) => props.loadDependencyMap(item.name)}
-                onItemClick={(item) => props.onMappingItemClick(item.name)}
+                onItemClick={(mappingName) => props.onMappingItemClick(mappingName)}
                 selected={
                     props.activeDetail.type === types.MAPPING ?
                         props.activeDetail.data.name : false
@@ -39,8 +38,8 @@ const MappingMenuContainer = props => (
                         : 'Select Mapping'
                 }
                 listItems={
-                    props.activeMapping.resources ?
-                        resourceHelpers.sortResources({resources: props.activeMapping.resources})
+                    props.activeMapping.assets ?
+                        resourceHelpers.sortObjectsByName(props.activeMapping.assets)
                         : []
                 }
                 onItemClick={(item) => props.onActiveAssetClick({data: item, type: types.ASSET})}

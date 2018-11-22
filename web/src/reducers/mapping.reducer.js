@@ -1,7 +1,19 @@
+//@flow
+
 import * as types from '../actions/actionTypes';
 import initialState from './initialState';
 
-export default function mappingReducer(state = initialState.mappings, action){
+
+type Mapping = {
+    name: String,
+    description: ?String,
+    assets: [?String],
+    tags: [?String]
+}
+
+type MappingState = [Mapping]
+
+export default function mappingReducer(state: MappingState = initialState.mappings, action){
     switch(action.type) {
         case types.LOAD_MAPPINGS_SUCCESS:
             // return empty array if the server response

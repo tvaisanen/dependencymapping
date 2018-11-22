@@ -1,7 +1,4 @@
-import * as graphHelpers from './../../common/graph-helpers';
 import * as actions from './collapse-menu.actions';
-
-
 
 function stateToProps(state, props) {
     return {

@@ -1,13 +1,17 @@
 import axios from 'axios';
-import https from 'https';
-import {connect} from 'react-redux';
 
 const API_HOST = process.env.REACT_APP_API_HOST;
-const API_URL = `https://${API_HOST}/`;
+//const API_URL = `https://${API_HOST}/`;
+const API_URL = `http://${API_HOST}/`;
 
-const MAPPINGS_URL = `${API_URL}mappings/`;
-const TAGS_URL = `${API_URL}tags/`;
-const RESOURCES_URL = `${API_URL}assets/`;
+// const MAPPINGS_URL = `${API_URL}mappings/`;
+// const TAGS_URL = `${API_URL}tags/`;
+// const RESOURCES_URL = `${API_URL}assets/`;
+
+const MAPPINGS_URL = `${API_URL}mapping/`;
+const TAGS_URL = `${API_URL}tag/`;
+const RESOURCES_URL = `${API_URL}asset/`;
+
 const LOGIN_URL = `${API_URL}rest-auth/login/`;
 
 function tagDetailUrl({name}) {
@@ -58,8 +62,13 @@ class GwClientApi {
         });
     }
 
+    static resetModels () {
+        axios.get("http://localhost:3000/reset-models");
+    }
+
     // todo: refactor to getMappings
     static getGraphs() {
+        console.log(MAPPINGS_URL);
         return axios.get(MAPPINGS_URL, {
             Authorization: setAuthHeader()
         });
@@ -83,32 +92,33 @@ class GwClientApi {
 
     /********************** MAPPING METHODS **********************/
 
-    static postMapping({name, description = " ", resources, tags}) {
+    static postMapping({name, description = " ", assets, tags}) {
         console.groupCollapsed("postMapping(form)");
-        console.info({name, description, resources, tags});
+        console.info({name, description, assets, tags});
         console.groupEnd();
 
         setAuthHeader();
         return axios.post(
             MAPPINGS_URL,
+
             {
                 name: name,
                 description: description,
-                resources: JSON.stringify(resources),
+                assets: JSON.stringify(assets),
                 tags: JSON.stringify(tags)
 
             }
         )
     }
 
-    static putMapping({name, description, resources, tags}) {
+    static putMapping({name, description, assets, tags}) {
         return axios.put(
             mappingsDetailUrl({name}),
             {
                 Authorization: setAuthHeader(),
                 name: name,
                 description: description,
-                resources: JSON.stringify(resources),
+                assets: JSON.stringify(assets),
                 tags: JSON.stringify(tags)
             }
         );
@@ -118,14 +128,13 @@ class GwClientApi {
         return axios.delete(mappingsDetailUrl({name}));
     }
 
-
     /** ***********************************************************/
 
-    static deleteResource({name}) {
+    static deleteAsset({name}) {
         return axios.delete(resourceDetailUrl({name}));
     }
 
-    static postResource({name, description = "", connected_to = [], tags = []}) {
+    static postAsset({name, description = "", connected_to = [], tags = []}) {
         console.groupCollapsed("postMapping(form)");
         console.info({name, description, connected_to, tags});
         console.info({
@@ -139,19 +148,19 @@ class GwClientApi {
             {
                 name: name,
                 description: description,
-                connected_to: JSON.stringify(connected_to),
-                tags: JSON.stringify(tags)
+                connected_to: connected_to,
+                tags: tags
             })
     }
 
-    static putResource({name, description, connected_to, tags}) {
+    static putAsset({name, description, connected_to, tags}) {
         return axios.put(
             resourceDetailUrl({name}),
             {
                 name: name,
                 description: description,
-                connected_to: JSON.stringify(connected_to),
-                tags: JSON.stringify(tags)
+                connected_to: connected_to,
+                tags: tags
             }
         );
     }
@@ -168,13 +177,6 @@ class GwClientApi {
 
     static deleteTag({name, description}) {
         return axios.delete(tagDetailUrl({name}));
-    }
-}
-
-const mapStateToProps = state => {
-    console.info("mapped state to props in gwClientAPI")
-    return {
-        auth: state.auth
     }
 }
 

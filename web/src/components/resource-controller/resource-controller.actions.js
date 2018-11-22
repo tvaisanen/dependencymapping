@@ -10,7 +10,7 @@ export function closeFormAndSetActiveDetail(activeDetail) {
         console.info(activeDetail);
         console.groupEnd();
 
-        dispatch(activeDetailActions.setActiveDetail(activeDetail));
+        dispatch(activeDetailActions.setActiveDetailWithResourceCollecting(activeDetail));
         dispatch(closeEdit());
         // if active detail is mapping
 
@@ -23,7 +23,7 @@ export function closeFormAndSetActiveDetail(activeDetail) {
                 activeDetail.data.name || "None",
                 getState().graph,
                 getState().mappings,
-                getState().resources,
+                getState().assets,
                 dispatch,
                 getState().app.graph.selectedLayout
             )
