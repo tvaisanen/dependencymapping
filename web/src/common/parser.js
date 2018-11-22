@@ -2,9 +2,16 @@ import _ from 'lodash';
 
 export function parseEdgeElementsFromResource(resource){ 
     const source = resource.name;
-    const edges = resource.connected_to.map(r=>(
-        {group: 'edges', data: {id: `${source}-${r.name}`, source: source, target: r.name}}
-    ))
+    const edges = resource.connected_to.map(target=>(
+        {
+            group: 'edges',
+            data: {
+                id: `${source}-${target}`,
+                source: source,
+                target: target
+            }
+        }
+    ));
     return _.flatten(edges);
 }
 

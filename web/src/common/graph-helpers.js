@@ -85,6 +85,8 @@ export function removeResourceEdges(cy = required(), resource = required()){
 }
 
 export function addElements(cy = required(), elements = required()) {
+    console.log(elements)
+    console.log(cy.elements("edges"));
     try {
         cy.add(elements);
     } catch (e) {
@@ -108,13 +110,6 @@ export function updateLayout(cy = required(), layout=required()) {
     }
 }
 
-export function toggleElementVisibility(cy = required(), elementId = required()) {
-    try {
-
-    } catch (e) {
-
-    }
-}
 
 export function clearGraph(cy = required()) {
     try {
@@ -126,7 +121,7 @@ export function clearGraph(cy = required()) {
 
 export function createEdgeElementsBetween({source, targets}) {
     const edges = targets.map(target => (
-        {group: 'edges', data: {id: `${source}-${target}`, source: source, target: target}}
+        {group: 'edges', data: {id: getEdgeId(source,target), source: source, target: target}}
     ));
     return _.flatten(edges);
 }

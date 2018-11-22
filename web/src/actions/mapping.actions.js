@@ -4,6 +4,7 @@ import * as graphHelpers from '../common/graph-helpers';
 import * as activeMappingActions from '../store/active-mapping/active-mapping.actions';
 import * as appActions from '../actions/app.actions';
 import * as apiHelpers from '../common/api.helpers';
+import * as mappingHelpers from '../common/dependency-map.helpers';
 
 type Mapping = {
     name: string,
@@ -39,11 +40,25 @@ export function addMapping(mapping) {
 /*************** UPDATE **************/
 
 export function updateMapping(mapping) {
-    return function (dispatch) {
+    return function (dispatch, getState) {
         const resolveCallback = (mapping) => {
 
             dispatch(appActions.setInfoMessage(`Updated mapping: ${mapping.name}`));
             dispatch(updateMappingSuccess({mapping}));
+
+            // if edited mapping is active mapping
+            if (mapping.name === getState().activeMapping.name) {
+                mappingHelpers.loadDependencyMap(
+                    mapping.name,
+                    getState().graph,
+                    getState().mappings,
+                    getState().assets,
+                    dispatch,
+                    getState().app.graph.selectedLayout
+                );
+                dispatch(activeMappingActions.setActiveMapping(mapping));
+            }
+
         };
         const promise = GwClientApi.putMapping({
             name: mapping.name,

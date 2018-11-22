@@ -17,7 +17,9 @@ const RenderToggleButton = ({activeDetail, inMap, addToMap, removeFromMap, detai
 
 const ResourceInMappingToggleButton = ({inMap, addToMap, removeFromMap, detail}) => {
     if (inMap) {
-        return <s.ActionLink onClick={() => removeFromMap(detail)}>remove from map</s.ActionLink>
+        return <s.ActionLink
+            onClick={() => removeFromMap(detail)}
+        >remove from map</s.ActionLink>
     } else {
         return <s.ActionLink onClick={() => addToMap(detail)}>add to map</s.ActionLink>
     }

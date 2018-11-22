@@ -23,18 +23,24 @@ services:
         networks:
           - overlay
 
-    moin:
-        image: tvaisanen/gwiki-with-moin
-        ports:
-            - "8080:80"
-            - "8443:443"
+    web:
+        build: ./web
         volumes:
-            - ./wiki/plugin/:/usr/local/lib/python2.7/dist-packages/graphingwiki/plugin
-            #- ./wiki/pages/:/srv/wikis/collab/wikis/collab/data/pages
-            - ./wiki/start.sh:/usr/local/start.sh
-        command: bash /usr/local/start.sh
+            # todo: refactor to .env
+            - ./web/:/usr/webapp/src
+            - ./.env:/usr/webapp/src/.env
         networks:
             - overlay
+        command: bash docker-entrypoint.sh
+
+        # hide ports. access only via proxy
+        ports:
+            - 3001:3000
+        env_file:
+            - .env
+        environment:
+          REACT_APP_API_HOST: "localhost:3000"
+          REACT_APP_API_PORT: 3000
 
 networks:
    overlay:

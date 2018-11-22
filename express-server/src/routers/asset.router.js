@@ -28,22 +28,58 @@ assetRouter.get('(/:id)?', (req, res) => {
 assetRouter.post('(/:id)?', (req, res) => {
     console.log(`post: ${req.params.id}`);
     const query = {name: req.param.id};
-    const asset = new Asset({...req.body});
+    const asset = new Asset({
+        name: req.body.name,
+        description: req.body.description,
+        connected_to: req.body.connected_to,
+        tags: req.body.tags
+    });
+
+    if ( !asset.name ) {
+        res.status(400).json({error: "name is required field"})
+    } else {
+
     asset.save().then(saved => {
         console.log(`saved: ${saved.name}`);
+        console.log(saved);
         res.status(201).json(saved);
     }).catch(err => {
         console.log(err);
     })
+    }
 });
 
 assetRouter.put('(/:id)?', (req, res) => {
     const query = {name: req.params.id};
     console.log(query);
-    const updatedAsset = req.body;
-    Asset.update(query, req.body)
-        .then(ok => res.status(204).json("Resource updated succesfully."))
+    Asset.update(query, {
+         name: req.body.name,
+        description: req.body.description,
+        connected_to: req.body.connected_to,
+        tags: req.body.tags
+    })
+        .then(ok => {
+            console.log("HERE")
+            console.log(ok);
+            Asset.findOne(query)
+                .then(asset => {
+                    console.log(asset);
+                    res.status(200).json(asset);
+                })
+                .catch(err => res.status(400).json(err))
+        })
         .catch(err => res.status(400).send(err));
+});
+
+
+assetRouter.delete('/:id', (req, res) => {
+    const query = {name: req.params.id};
+    Asset.remove(query)
+        .then(msg => {
+            console.log(msg);
+            res.status(204).json();
+        })
+        .catch(err => res.status(400).json(err))
 });
 
 

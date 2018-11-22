@@ -118,8 +118,8 @@ class GwClientApi {
                 Authorization: setAuthHeader(),
                 name: name,
                 description: description,
-                assets: JSON.stringify(assets),
-                tags: JSON.stringify(tags)
+                assets: assets,
+                tags: tags
             }
         );
     }

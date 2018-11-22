@@ -35,17 +35,17 @@ export function onNodeClick(event) {
         const resourceName = event.target.id();
 
         // set store active detail
-        const clickedResource = resourceHelpers.getObjectByName({
+        const clickedAsset = resourceHelpers.getObjectByName({
             name: resourceName,
             objectList: assets
         });
 
         dispatch(activeDetailActions.setActiveDetailWithResourceCollecting({
             type: 'ASSET',
-            data: clickedResource
+            data: clickedAsset
         }));
 
-        const clickedAssetIsConnectedTo = clickedResource.connected_to;
+        const clickedAssetIsConnectedTo = clickedAsset.connected_to;
 
         // the active mapping state needs to be updated by
         // adding the resources of the expanded node.
@@ -70,6 +70,10 @@ export function onNodeClick(event) {
             source: resourceName,
             targets: clickedAssetIsConnectedTo
         });
+
+        console.group("EDGES HERE");
+        console.info(edgesToCreate);
+        console.groupEnd();
 
         helpers.addElements(cy, nodesToCreate);
         helpers.addElements(cy, edgesToCreate);

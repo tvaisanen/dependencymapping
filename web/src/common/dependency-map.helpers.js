@@ -55,9 +55,10 @@ export function loadDependencyMap(mapId, cy, mappings, assets, dispatch, layout)
 
 
     // json for graphing
-
+    console.info(activeMappingAssetObjects)
     // get cy.element objects from active mapping assets
     const edges = parser.parseEdgeElementsFromResources(activeMappingAssetObjects);
+    console.info(edges);
     const nodes = activeMappingAssetObjects.map(resource => resourceHelpers.nodeElementFromResource(resource));
 
     graphHelpers.addElements(cy, nodes);

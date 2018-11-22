@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 const fs = require('fs');
 
@@ -11,9 +12,10 @@ const tagRouter = require('./routers/tag.router');
 const { Asset, Tag, Mapping } = require('./models');
 
 // require test data
-const assets = require('./__test__/assets.json');
-const mappings = require('./__test__/mappings.json');
-const tags = require('./__test__/tags.json');
+// todo: refactor unit-test vs. integration based  on env
+const assets = require('./__test__/unit-tests/assets.json');
+const mappings = require('./__test__/unit-tests/mappings.json');
+const tags = require('./__test__/unit-tests/tags.json');
 
 
 // connect to the db
@@ -68,10 +70,9 @@ const router = express.Router();
 router.use(function timeLog(req, res, next) {
     const d = new Date();
     //${d.toUTCString()},
+    console.log(`${JSON.stringify(req.headers)}`);
     console.log(`\n${req.method} ::  ${req.path}, \n\tbody: ${JSON.stringify(req.body)}`);
     if (req.path.startsWith("/test")){
-        console.log("access to test pages");
-        console.log(process.cwd());
 
     }
     next();
@@ -103,8 +104,8 @@ router.get('/reset-models', (req, res) => {
  */
 
 let app = express();
-app.use(bodyParser.urlencoded({extended: false}))
-
+app.use(cors());
+app.use(bodyParser.json())
 
 
 // serve test pages

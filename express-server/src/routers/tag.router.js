@@ -4,8 +4,6 @@ const tagRouter = express.Router();
 
 tagRouter.get('(/:id)?', (req, res) => {
 
-    console.log(Tag);
-
     if (req.params.id) {
         Tag.findOne({name: req.params.id})
             .then(tag => {
@@ -20,11 +18,7 @@ tagRouter.get('(/:id)?', (req, res) => {
 
     } else {
         Tag.find()
-            .then(tags => {
-                const tagNameList = tags.map(t => t.name);
-                console.log(tagNameList);
-                res.status(200).json(tagNameList);
-            })
+            .then(tags => res.status(200).json(tags))
             .catch(err => res.status(400).json(err));
     }
 });
@@ -43,9 +37,27 @@ tagRouter.post('(/:id)?', (req, res) => {
 tagRouter.put('(/:id)?', (req, res) => {
     const query = {name: req.params.id};
     console.log(query);
+
+    console.log(req.body)
+
     Tag.update(query, req.body)
-        .then(ok => res.status(204).json("Resource updated succesfully."))
+        .then(ok => {
+            Tag.findOne(query)
+                .then(tag => res.status(200).json(tag)
+                    .catch(err => res.status(400).json(err)))
+        })
         .catch(err => res.status(400).send(err));
 });
+
+tagRouter.delete('/:id', (req, res) => {
+    const query = {name: req.params.id};
+    Tag.remove(query)
+        .then(msg => {
+            console.log(msg);
+            res.status(204).json();
+        })
+        .catch(err => res.status(400).json(err))
+});
+
 
 module.exports = tagRouter;

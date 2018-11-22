@@ -4,8 +4,8 @@ import * as graphHelpers from '../../common/graph-helpers';
 import * as _ from 'lodash';
 import * as apiHelpers from '../../common/api.helpers';
 import * as appActions from '../../actions/app.actions';
-import * as activeDetailActions from '../../store/active-detail/active-detail.actions';
-/************* ASSET       ************* */
+import * as mappingActions from '../../actions/mapping.actions';
+
 
 export function postAsset(asset) {
     return function (dispatch) {
@@ -60,11 +60,76 @@ function updateAssetSuccess({asset}) {
 export function deleteAsset({name}) {
     console.info("deleteResource(" + name + ")");
     return function (dispatch, getState) {
+
+        const { assets, mappings } = getState();
+
         const promise = GwClientApi.deleteAsset({name});
         // resolving a request is done in form container
         const resolveCallback = () => {
             // todo: deal with mapped assets
-            alert('delete asset from all the mappings')
+            console.info('delete asset from all the mappings')
+
+            mappings.forEach(mapping => {
+
+                let update = false;
+
+                const filteredAssets = mapping.assets.filter(asset => {
+                  console.info(`${asset} === ${name}`);
+                  const deletedFound = asset === name;
+                  if (!update && deletedFound){
+                      update = deletedFound;
+                  }
+                  return !deletedFound;
+                });
+
+                if (update) {
+                    try {
+                        const {
+                            promise,
+                            resolveCallback
+                        } = dispatch(mappingActions.updateMapping({
+                            ...mapping,
+                            resources: filteredAssets
+                        }));
+                        promise.then(response => {
+                            resolveCallback(response.data);});
+                    }
+                    catch (err) {console.warn(err)}
+                }
+
+            });
+
+
+            assets.forEach(asset => {
+                console.group(`check if ${asset.name} needs to be deleted`)
+                let update = false;
+                const filteredAssets = asset.connected_to.filter(a => {
+                  console.info(`${a} === ${name}`);
+                  const deletedFound = a === name;
+                  if (!update && deletedFound){
+                      update = deletedFound;
+                      console.info(`asset: ${a} needs to be udpated`)
+                  }
+                  return !deletedFound;
+                });
+                if (update) {
+                    try {
+                        const {
+                            promise,
+                            resolveCallback
+                        } = dispatch(updateAsset({
+                            ...asset,
+                            connected_to: filteredAssets
+                        }));
+                        promise.then(response => {
+                            resolveCallback(response.data);});
+                    }
+                    catch (err) {console.warn(err)}
+                }
+                console.groupEnd();
+
+            });
+
             dispatch(appActions.setInfoMessage(`Deleted asset: ${name}`));
             dispatch(deleteAssetSuccess({removed: name}));
         };

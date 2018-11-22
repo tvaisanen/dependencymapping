@@ -38,8 +38,13 @@ mappingRouter.post('(/:id)?', (req, res) => {
         })
     } else {
 
-        const mapping = new Mapping({...req.body});
-
+        console.log(req.body.assets);
+        const mapping = new Mapping({
+            name: req.body.name,
+            description: req.body.description,
+            assets: req.body.assets,
+            tags: req.body.tags
+        });
         const query = {name: mapping.name};
 
         console.log("check if this already exists!");
@@ -77,9 +82,16 @@ mappingRouter.put('(/:id)?', (req, res) => {
     const query = {name: req.params.id};
     console.log(query);
     const updatedMapping = req.body;
-    Mapping.update(query, req.body)
+    Mapping.update(query, {
+          name: req.body.name,
+            description: req.body.description,
+            assets: req.body.assets,
+            tags: req.body.tags
+    })
         .then(ok => {
-            res.status(200).json(msg.UPDATED_SUCCESSFULLY_200)
+            Mapping.findOne(query)
+                .then(mapping => res.status(200).json(mapping))
+                .catch(err => res.status(400).json(err))
         })
         .catch(err => res.status(400).send(err));
 });

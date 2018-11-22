@@ -5,9 +5,8 @@ export function isResourceInMapping({resourceId, mapping}) {
     /**
      *  @return bool true if resource with given id in mapping
      */
-    const i = _.find(mapping.resources, {name: resourceId});
-    // if resource by id is found return true.
-    return !!i;
+
+    return _.includes(mapping.assets, resourceId);
 }
 
 export function mappingExists({id, mappings}) {
@@ -44,7 +43,11 @@ export function getAllResourcesWithTag({tagName, resources}) {
 }
 
 export function isResourceConnectedToId({resource, id}) {
-    console.group("isResourceConnectedToId(" + resource.name + ", " + id + ");");
+    console.group(`isResourceConnectedToId(${resource.name},${id});`);
+    console.info("resource");
+    console.info(resource);
+    console.info("id"); 
+    console.info(id);
     const bools = resource.connected_to.map(r => r.name === id);
 
     const i = _.includes(bools, true);
