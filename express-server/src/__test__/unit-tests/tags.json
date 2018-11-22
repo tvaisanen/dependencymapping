@@ -1,0 +1,14 @@
+[
+    {
+        "name": "TestPage",
+        "description": "Describe gwikicategory / tag TestPage here."
+    },
+    {
+        "name": "TestTag",
+        "description": "Describe gwikicategory / tag TestTag here."
+    },
+    {
+        "name": "OtherTag",
+        "description": "Describe gwikicategory / tag OtherTag here."
+    }
+]

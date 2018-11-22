@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+
+    mongo:
+        image: mongo
+        ports:
+          - 27017:27017
+        networks:
+          - overlay
+
+    express:
+        build: ./express-server
+        ports:
+          - 3000:3000
+        volumes:
+          - ./express-server/src/:/usr/local/src/express/src
+        environment:
+          NODE_ENV: development
+          MONGO_PATH: mongo
+          MONGO_PORT: 27017
+          DB_NAME: test
+        networks:
+          - overlay
+
+    moin:
+        image: tvaisanen/gwiki-with-moin
+        ports:
+            - "8080:80"
+            - "8443:443"
+        volumes:
+            - ./wiki/plugin/:/usr/local/lib/python2.7/dist-packages/graphingwiki/plugin
+            #- ./wiki/pages/:/srv/wikis/collab/wikis/collab/data/pages
+            - ./wiki/start.sh:/usr/local/start.sh
+        command: bash /usr/local/start.sh
+        networks:
+            - overlay
+
+networks:
+   overlay:
+             

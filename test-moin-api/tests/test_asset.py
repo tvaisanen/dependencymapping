@@ -208,7 +208,7 @@ def test_post_asset_create_returns_201():
     # data to create the new page.
     payload = asset(asset_name, asset_desc, asset_connected_to, asset_tags)
     query_url = paths.get_resource_path(ASSET, "")
-    r = requests.post(query_url, verify=False, auth=credentials, data=payload)
+    r = requests.post(query_url, verify=False, auth=credentials, json=payload)
     data = load_json(r)
 
     """ assert that the page is created and can be accessed """
@@ -267,9 +267,20 @@ def test_put_asset_makes_the_changes():
         TAGS: asset_to_edit[TAGS]
     }
 
-    r = requests.put(query_url, verify=False, auth=credentials, data=updated_data)
+    r = requests.put(query_url, verify=False, auth=credentials, json=updated_data)
 
-    assert r.status_code == 204
+    print(r.content)
+
+    retrieved_data = r.json()
+    assert r.status_code == 200
+
+    print("{} {}".format(type(retrieved_data),retrieved_data))
+    print("{} {}".format(type(updated_data), updated_data))
+
+    assert retrieved_data[NAME] == updated_data[NAME]
+    assert retrieved_data[DESCRIPTION] == updated_data[DESCRIPTION]
+    assert retrieved_data[CONNECTED_TO] == updated_data[CONNECTED_TO]
+    assert retrieved_data[TAGS] == updated_data[TAGS]
 
     """ After the put the page should show the edited text
         and the edited data should have been returned by the

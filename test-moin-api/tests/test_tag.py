@@ -17,11 +17,19 @@ def test_get_tags_returns_list_of_the_existing_tags():
 
     r = requests.get(query_url, verify=False, auth=credentials)
 
-    data = load_json(r)  # array of tag names
+    data = r.json()  # array of tag names
+
+    receivedTags = [
+        {
+            NAME: item[NAME],
+            DESCRIPTION: item[DESCRIPTION]
+        } for item in data
+    ]
+
+    pprint(data)
 
     assert 200 == r.status_code
-    assert expect.sort() == data.sort()
-
+    assert receivedTags == tags
 
 def test_get_asset_by_name_returns():
     """
@@ -85,7 +93,7 @@ def test_post_tag_create_returns_201():
     # data to create the new page.
     payload = tag(tag_name, tag_desc)
     query_url = paths.get_resource_path(TAG, "")
-    r = requests.post(query_url, verify=False, auth=credentials, data=payload)
+    r = requests.post(query_url, verify=False, auth=credentials, json=payload)
     data = load_json(r)
 
 
@@ -108,7 +116,7 @@ def test_post_tag_create_returns_201():
 
 
 
-def test_put_asset_makes_updates_and_returns_204():
+def test_put_asset_makes_updates_and_returns_200():
     """
     Test that the put method updates the
     content of a page
@@ -139,9 +147,9 @@ def test_put_asset_makes_updates_and_returns_204():
 
     query_url = paths.get_resource_path(TAG, tag_to_edit[NAME])
 
-    r = requests.put(query_url, verify=False, auth=credentials, data=updated_data)
+    r = requests.put(query_url, verify=False, auth=credentials, json=updated_data)
 
-    assert r.status_code == 204
+    assert r.status_code == 200
 
 
     """ After the put the page should show the edited text
@@ -157,11 +165,12 @@ def test_put_asset_makes_updates_and_returns_204():
     query_url = paths.get_resource_path(TAG, tag_to_edit[NAME])
     r = requests.get(query_url, verify=False, auth=credentials)
 
-    retrieved_updated_data = load_json(r)
+    retrieved_updated_data = r.json()
 
     # verify that the updated asset returns same asset
     assert updated_data[NAME] == retrieved_updated_data[NAME]
-    assert updated_data[DESCRIPTION] == retrieved_updated_data[DESCRIPTION]
+    assert UPDATED_TAG_DESCRIPTION == retrieved_updated_data[DESCRIPTION]
+
 
     # finally check that the description before update is not haunting
     assert updated_data[DESCRIPTION] is not retrieved_updated_data[DESCRIPTION]

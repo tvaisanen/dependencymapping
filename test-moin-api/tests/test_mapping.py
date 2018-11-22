@@ -44,7 +44,7 @@ def test_get_mapping_by_id_returns_correctly_with_200():
 
     expect = mappings[0]
 
-    query_url = paths.get_resource_path(MAPPING, "TestMappingOne")
+    query_url = paths.get_resource_path(MAPPING, expect[NAME])
     r = requests.get(query_url, verify=False, auth=credentials)
 
     data = load_json(r)
@@ -82,7 +82,7 @@ def test_mapping_page_has_links_to_assets_and_tags():
         assert link in r.content
 
 
-def test_put_mapping_updates_data_and_returns_200_with_success_msg():
+def test_put_mapping_updates_data_and_returns_updated_data_200():
 
     mapping_to_update = mappings[0]
 
@@ -112,14 +112,20 @@ def test_put_mapping_updates_data_and_returns_200_with_success_msg():
 
     query_url = paths.get_resource_path(MAPPING, mapping_to_update[NAME])
 
-    r = requests.put(query_url, verify=False, auth=credentials, data=update_to)
+    r = requests.put(query_url, verify=False, auth=credentials, json=update_to)
+
+    received_data = r.json()
 
     print("debug:")
     print(query_url)
     print(r.json())
 
     assert r.status_code == 200
-    assert "Resource updated successfully." == r.json()['msg']
+
+    assert update_to[NAME] == received_data[NAME]
+    assert update_to[DESCRIPTION] == received_data[DESCRIPTION]
+    assert update_to[ASSETS] == received_data[ASSETS]
+    assert update_to[TAGS] == received_data[TAGS]
 
     """ Verify that the data changes are reflected
         to the database
@@ -165,7 +171,7 @@ def test_post_mapping_creates_mapping_with_a_page_and_returns_201():
     """ Make the post request
     """
     query_url = paths.get_resource_path(MAPPING, new_mapping[NAME])
-    r = requests.post(query_url, verify=False, auth=credentials, data=new_mapping)
+    r = requests.post(query_url, verify=False, auth=credentials, json=new_mapping)
 
     retrieved_data = r.json()
 
@@ -202,7 +208,7 @@ def test_post_conflict_returns_pointer_to_existing_with_status_409():
 
     mapping = mappings[0]
     query_url = paths.get_resource_path(MAPPING, mapping[NAME])
-    r = requests.post(query_url, verify=False, auth=credentials, data=mapping)
+    r = requests.post(query_url, verify=False, auth=credentials, json=mapping)
 
     data = r.json()
 
@@ -217,7 +223,7 @@ def test_delete_mapping_deletes_mapping_with_a_success_message_with_status200():
     pprint(mapping)
 
     query_url = paths.get_page_path(mapping[NAME])
-    r = requests.get(query_url, verify=False, auth=credentials, data=mapping)
+    r = requests.get(query_url, verify=False, auth=credentials, json=mapping)
 
     """ Verify that the page exists
         and have the links
@@ -248,6 +254,10 @@ def test_delete_mapping_deletes_mapping_with_a_success_message_with_status200():
     """ Page shouldn't not exist anymore
     """
     query_url = paths.get_page_path(mapping[NAME], updated=True)
-    r = requests.get(query_url, verify=False, auth=credentials, data=mapping)
+    r = requests.get(query_url, verify=False, auth=credentials, json=mapping)
 
     assert bytes(PAGE_DOES_NOT_EXIST, encoding=r.encoding) in r.content
+
+
+def test_mapping_created_with_non_existing_assets_create_the_assets_successfully():
+    assert False

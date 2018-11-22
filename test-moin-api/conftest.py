@@ -6,7 +6,21 @@ NAME = "name"
 DESCRIPTION = "description"
 PAGE_DOES_NOT_EXIST = "This page does not exist yet. You can create a new empty page, or use one of the page templates."
 UPDATED_TAG_DESCRIPTION = "This should be seen as a description after the update."
-pages = [
+
+GET = "GET"
+PUT = "PUT"
+
+response_messages = {
+    GET: {
+        "404": "Resource does not exist."
+    },
+    PUT: {
+       "200": "Resource updated successfully."
+    }
+}
+
+
+pages = [  # Assets
     {
         'name': 'TestPageOne',
         'description': "Describe TestPageOne here.",
@@ -175,17 +189,17 @@ WIKI_ROOT = WIKI_IP_HOST + WIKI_PATH
 
 def asset(name, description, dependencies, tags):
     return {
-        'name': name,
-        'description': description,
-        'connected_to': dependencies,
-        'tags': tags
+        NAME: name,
+        DESCRIPTION: description,
+        CONNECTED_TO: dependencies,
+        TAGS: tags
     }
 
 
 def tag(name, description):
     return {
-        'name': name,
-        'description': description,
+        NAME: name,
+        DESCRIPTION: description,
     }
 
 
@@ -222,6 +236,7 @@ MAPPING = "mapping"
 TAG = "tag"
 TAGS = "tags"
 ASSETS = "assets"
+CONNECTED_TO = "connected_to"
 
 ERROR = "error"
 RESOURCE_DOES_NOT_EXIST = "Resource does not exist."
