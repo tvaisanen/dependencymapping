@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import * as graphHelpers from './graph-helpers';
 
 export function parseEdgeElementsFromResource(resource){ 
     const source = resource.name;
@@ -6,12 +7,15 @@ export function parseEdgeElementsFromResource(resource){
         {
             group: 'edges',
             data: {
-                id: `${source}-${target}`,
+                id: graphHelpers.getEdgeId(source,target),
                 source: source,
                 target: target
             }
         }
     ));
+    console.group("DEBUG HERE");
+    console.info(edges);
+    console.groupEnd();
     return _.flatten(edges);
 }
 

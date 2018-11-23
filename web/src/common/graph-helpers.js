@@ -13,7 +13,8 @@ export function nodeElementsFromResources(resources = required()) {
 
 }
 
-function getEdgeId(source = required(), target = required()) {
+export function getEdgeId(source = required(), target = required()) {
+    // always construct edge id for cy edge with this function
     return `${source}_to_${target}`;
 }
 
@@ -29,8 +30,6 @@ export function edgeElementFromResource(sourceId = required(), targetId = requir
 export function addElement(cy = required(), element = required()) {
     try {
         cy.add(element);
-        console.info("Added element to the graph:");
-        console.info(element);
     } catch (e) {
         console.error(e);
     }

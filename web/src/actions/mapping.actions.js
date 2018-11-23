@@ -63,7 +63,7 @@ export function updateMapping(mapping) {
         const promise = GwClientApi.putMapping({
             name: mapping.name,
             description: mapping.description,
-            assets: mapping.resources,
+            assets: mapping.assets,
             tags: mapping.tags
         });
         return {promise, resolveCallback};
