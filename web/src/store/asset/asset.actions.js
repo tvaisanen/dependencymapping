@@ -38,11 +38,18 @@ export function updateAsset(asset) {
                 // todo: refactor the graph update
                 // redraw the edges in the graph if asset in map
                 const activeMapAssets = getState().activeMapping.assets;
-                const inActiveMap = -1 !== _.findIndex(activeMapAssets, (item) => item.name === asset.name);
+                console.group(`updateAsset(${asset.name})`);
+                console.info(asset);
+                asset.connected_to.forEach(assetName => console.log(`${asset.name}_to_${assetName}`));
+
+                const inActiveMap = _.includes(activeMapAssets, asset.name);
+
+                console.info(inActiveMap)
                 if (inActiveMap) {
                     graphHelpers.removeResourceEdges(getState().graph, asset);
                     graphHelpers.drawResourceEdges(getState().graph, asset);
                 }
+                console.groupEnd();
         };
         // send the request
         const promise = GwClientApi.putAsset(asset);

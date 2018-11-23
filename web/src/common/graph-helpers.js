@@ -45,43 +45,33 @@ export function removeElement(cy = required(), id = required()) {
     }
 }
 
-export function drawResourceEdges(cy = required(), resource = required()){
-    console.group("Draw resource edges")
-
+export function drawResourceEdges(cy = required(), asset = required()){
     try {
-        const edges = resource.connected_to.map(r => edgeElementFromResource(resource.name, r.name))
+        const edges = asset.connected_to.map(nameConnectedTo => (
+            edgeElementFromResource(asset.name, nameConnectedTo))
+        );
         cy.add(edges)
-    } catch (e){
-
-    }
-    console.groupEnd();
+    } catch (e){ console.warn(e) }
 }
 
 
-export function removeResourceEdges(cy = required(), resource = required()){
+export function removeResourceEdges(cy = required(), asset = required()){
     /**
      *  Update graph after resource/asset update. It is required that
      *  the graph shows current situation of the connections of a node.
      *  So, if node has updated the connected_to list. It needs to be
      *  mapped again.
      */
-
-    console.group("Debug me");
     try {
-
         // remove edges that are not listed in connections
-        const removeTheseEdges = cy.getElementById(resource.name).neighborhood('edge');
-        const outGoingEdges = removeTheseEdges.filter(el => {
-           return el.source().id() === resource.name;
+        const removeTheEdgesFromThese = cy.getElementById(asset.name).neighborhood('edge');
+        const thatHasTheAssetAsSource = removeTheEdgesFromThese.filter(el => {
+           return el.source().id() === asset.name;
         });
-        console.info(outGoingEdges);
-        cy.remove(outGoingEdges);
-
-
+        cy.remove(thatHasTheAssetAsSource);
     } catch (e){
         console.error(e);
     }
-    console.groupEnd();
 }
 
 export function addElements(cy = required(), elements = required()) {
