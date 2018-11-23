@@ -1,0 +1,47 @@
+version: '3'
+
+services:
+
+    mongo:
+        image: mongo
+        ports:
+          - 27017:27017
+        networks:
+          - overlay
+
+    express:
+        build: ./express-server
+        ports:
+          - 3000:3000
+        volumes:
+          - ./express-server/src/:/usr/local/src/express/src
+        environment:
+          NODE_ENV: development
+          MONGO_PATH: mongo
+          MONGO_PORT: 27017
+          DB_NAME: test
+        networks:
+          - overlay
+
+    web:
+        build: ./web
+        volumes:
+            # todo: refactor to .env
+            - ./web/src/:/usr/webapp/src/src
+            - ./.env:/usr/webapp/src/.env
+        networks:
+            - overlay
+        command: npm start
+
+        # hide ports. access only via proxy
+        ports:
+            - 3001:3000
+        env_file:
+            - .env
+        environment:
+          REACT_APP_API_HOST: "localhost:3000"
+          REACT_APP_API_PORT: 3000
+
+networks:
+   overlay:
+             
