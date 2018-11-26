@@ -1,0 +1,65 @@
+import {nodeStyles} from './graph.styles';
+
+export const graphStyle = [
+    {
+        selector: 'node',
+        style: nodeStyles.passive
+    },
+    {
+        selector: 'edge',
+        style: {
+            'width': 3,
+            'curve-style': 'bezier',
+            'line-color': '#eee',
+             'target-arrow-color': '#ccc',
+            'target-arrow-shape': null,
+        }
+    },
+
+    {
+        selector: 'node.highlight',
+        style: {
+            'background-color': 'rgb(96, 80, 96)',
+            'label': 'data(id)'
+        }
+    },
+    {
+        selector: 'edge.highlight',
+        style: {
+            'width': 10,
+            'line-color': '#ccb8b8',
+            'target-arrow-color': '#ccc',
+            'target-arrow-shape': 'triangle'
+        }
+    },
+    {
+        selector: 'node.flash-shadow',
+        style: {
+            'background-color': 'rgb(244,0,0)',
+        }
+    },
+    {
+        selector: 'node.group',
+        style: {
+            'background-color': 'rgba(0,255,0,0.2)',
+        }
+    },
+        {
+      selector: '$node > node.group',
+      style: {
+        'padding-top': '10px',
+        'padding-left': '10px',
+        'padding-bottom': '10px',
+        'padding-right': '10px',
+        'text-valign': 'top',
+        'text-halign': 'center',
+        'background-color': "transparent"
+      }
+    },
+];
+
+export const layoutOptions = {
+    cola: {
+        nodeDimensionsIncludeLabels: true,
+    }
+};

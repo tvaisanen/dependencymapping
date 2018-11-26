@@ -10,11 +10,11 @@ services:
           - overlay
 
     express:
-        build: ./express-server
+        build: ./services/express-server
         ports:
           - 3000:3000
         volumes:
-          - ./express-server/src/:/usr/local/src/express/src
+          - ./services/express-server/src/:/usr/local/src/express/src
         environment:
           NODE_ENV: development
           MONGO_PATH: mongo

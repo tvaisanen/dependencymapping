@@ -10,11 +10,11 @@ services:
           - overlay
 
     express:
-        build: ./express-server
+        build: ./services/express-server
         ports:
           - 3000:3000
         volumes:
-          - ./express-server/src/:/usr/local/src/express/src
+          - ./services/express-server/src/:/usr/local/src/express/src
         environment:
           NODE_ENV: development
           MONGO_PATH: mongo
@@ -24,11 +24,9 @@ services:
           - overlay
 
     web:
-        build: ./web
+        build: ./services/web
         volumes:
-            # todo: refactor to .env
-            - ./web/src/:/usr/webapp/src/src
-            - ./.env:/usr/webapp/src/.env
+            - ./services/web/src/:/usr/webapp/src/src
         networks:
             - overlay
         command: npm start
@@ -41,6 +39,7 @@ services:
         environment:
           REACT_APP_API_HOST: "localhost:3000"
           REACT_APP_API_PORT: 3000
+
 
 networks:
    overlay:
