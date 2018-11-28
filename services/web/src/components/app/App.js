@@ -14,6 +14,7 @@ import appCtrl from './app.controller';
 class App extends Component {
 
     /**************** Todo: refactor this block **************/
+
     /* after doing this the component can be refactored to
        const App => ..
     */
@@ -30,6 +31,7 @@ class App extends Component {
         });
 
     }
+
     /*********************************************************/
 
     render() {
@@ -38,12 +40,12 @@ class App extends Component {
                 <sc.TopContent id="container-top">
                     <TopBarContainer id="top-bar-container"/>
                     <sc.MappingContent id="mapping-content-container">
-                        <MappingMenuContainer loadDependencyMap={this.loadDependencyMap}/>
-                             <sc.GraphCanvasInflater>
-            <sc.GraphCanvasContainer id="cy"/>
+                        <MappingMenuContainer/>
+                        <sc.GraphCanvasInflater>
+                            <sc.GraphCanvasContainer id="cy"/>
                             <GroupTogglePanel/>
 
-                             </sc.GraphCanvasInflater>
+                        </sc.GraphCanvasInflater>
                         <CollapseMenuContainer/>
                     </sc.MappingContent>
                 </sc.TopContent>

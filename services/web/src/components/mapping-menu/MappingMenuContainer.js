@@ -12,6 +12,8 @@ import * as types from './../../constants'
 import { Menu } from './mapping-menu.components';
 import * as resourceHelpers from '../../common/resource-helpers';
 
+// todo: refactor
+
 const MappingMenuContainer = props => (
     <React.Fragment>
         <MenuColumn id="sidepanel">
@@ -57,8 +59,8 @@ const MappingMenuContainer = props => (
 );
 
 export default connect(
-    mappingMenuCtrl.stateToProps,
-    mappingMenuCtrl.dispatchToProps
+    mappingMenuCtrl.mapStateToProps,
+    mappingMenuCtrl.mapDispatchToProps
     )(MappingMenuContainer);
 
 MappingMenuContainer.propTypes = {

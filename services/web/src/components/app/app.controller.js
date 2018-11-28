@@ -19,7 +19,7 @@ const mapStateToProps = (state, ownProps = {}) => {
         debug: state.debug,
         cy: state.graph
     }
-}
+};
 
 const mapDispatchToProps = (dispatch) => ({
     onNodeClick: (event) => dispatch(events.onNodeClick(event)),
