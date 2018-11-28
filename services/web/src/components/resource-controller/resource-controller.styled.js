@@ -12,9 +12,8 @@ export const ResourceControllerLayout = styled.div`
 export const MainBlock = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    align-self: center; 
     height: inherit;
     border: ${p => p.theme.defaultBorder};
     border-radius: ${p => p.theme.borderRadius};

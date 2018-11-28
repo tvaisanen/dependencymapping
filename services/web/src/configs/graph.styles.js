@@ -29,6 +29,12 @@ const groupStyle = {
 }
 
 
+const groupEdge = {
+            'width': 6,
+            'line-color': '#2f2f2f',
+            'target-arrow-color': '#2f2f2f',
+            'target-arrow-shape': 'none'
+        };
 
 
 const nodesStylePassive = {

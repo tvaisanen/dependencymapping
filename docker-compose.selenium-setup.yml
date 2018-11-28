@@ -43,7 +43,7 @@ services:
           REACT_APP_API_PORT: 3000
 
     integration-test-runner:
-        build: ./services/integration-test
+        build: ./services/selenium-driver
         volumes:
             - ./services/integration-test/test/:/usr/integration-tests/test
         container_name: integration-test-runner

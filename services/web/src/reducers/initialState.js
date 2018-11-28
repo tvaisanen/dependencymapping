@@ -1,8 +1,6 @@
 import * as types from '../constants/types';
 import * as views from '../constants/views';
 
-
-
 export default {
     app: {
         info: "Initial info message",
@@ -41,6 +39,7 @@ export default {
         type: "EMPTY"
     },
     graph: {},
+    assetGroups: []
 
 }
 

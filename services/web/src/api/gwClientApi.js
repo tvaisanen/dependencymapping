@@ -11,6 +11,7 @@ const API_URL = `http://${API_HOST}/`;
 const MAPPINGS_URL = `${API_URL}mapping/`;
 const TAGS_URL = `${API_URL}tag/`;
 const RESOURCES_URL = `${API_URL}asset/`;
+const ASSET_GROUPS_URL = `${API_URL}asset-group/`;
 
 const LOGIN_URL = `${API_URL}rest-auth/login/`;
 
@@ -78,6 +79,11 @@ class GwClientApi {
         return axios.get(RESOURCES_URL);
     }
 
+    static getAssetGroups() {
+        return axios.get(ASSET_GROUPS_URL, {
+            Authorization: setAuthHeader()
+        });
+    }
 
     static getResource(id) {
         return axios.get(resourceDetailUrl({name: id}));
@@ -134,34 +140,38 @@ class GwClientApi {
         return axios.delete(resourceDetailUrl({name}));
     }
 
-    static postAsset({name, description = "", connected_to = [], tags = []}) {
+    static postAsset({name, description = "", connected_to = [], tags = [], shape, color, group}) {
         console.groupCollapsed("postMapping(form)");
-        console.info({name, description, connected_to, tags});
-        console.info({
+        const data = {
             name: name,
             description: description,
-            connected_to: JSON.stringify(connected_to),
-            tags: JSON.stringify(tags)
-        });
+            connected_to: connected_to,
+            tags: tags,
+            group: group,
+            shape: shape,
+            color: color
+        };
+        console.info(data)
         console.groupEnd();
-        return axios.post(RESOURCES_URL,
-            {
-                name: name,
-                description: description,
-                connected_to: connected_to,
-                tags: tags
-            })
+        return axios.post(RESOURCES_URL, data);
     }
 
-    static putAsset({name, description, connected_to, tags}) {
+    static putAsset({name, description, connected_to, tags,shape,color,group}) {
+         console.groupCollapsed("putMapping(form)");
+        const data = {
+            name: name,
+            description: description,
+            connected_to: connected_to,
+            tags: tags,
+            group: group,
+            shape: shape,
+            color: color
+        };
+        console.info(data)
+        console.groupEnd();
         return axios.put(
             resourceDetailUrl({name}),
-            {
-                name: name,
-                description: description,
-                connected_to: connected_to,
-                tags: tags
-            }
+            data
         );
     }
 

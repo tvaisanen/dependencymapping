@@ -29,10 +29,25 @@
     "tags": [
       "TestPage",
       "TestTag"
+    ],
+     "group": [
+      "GroupOne"
     ]
   },
   {
     "name": "TestPageFour",
+    "description": "Describe TestPageFour here.",
+    "connected_to": [],
+    "tags": [
+      "TestPage",
+      "TestTag"
+    ],
+    "group": [
+      "GroupOne"
+    ]
+  },
+  {
+    "name": "GroupOne",
     "description": "Describe TestPageFour here.",
     "connected_to": [],
     "tags": [

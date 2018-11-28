@@ -22,31 +22,37 @@ const NavTab = styled.span`
 
 const NavTabs = styled.div`
   display: flex;
-  flex-direction: row;
   justify-content: center;
   width: 100%;
-  padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 12px;
 `;
 
-const ControllerNavTabs = ({setFormType, formType, types}) => (
-    <NavTabs>
-        <NavTab
-            selected={formType === types.ASSET}
-            onClick={() => setFormType(types.ASSET)}>
-            Asset
-        </NavTab>
-        <NavTab
-            selected={formType === types.MAPPING}
-            onClick={() => setFormType(types.MAPPING)}>
-            Mapping
-        </NavTab>
-        <NavTab
-            selected={formType === types.TAG}
-            onClick={() => setFormType(types.TAG)}>
-            Tag
-        </NavTab>
-    </NavTabs>
-);
+const ControllerNavTabs = ({setFormType, formType, types, visible}) => {
+    if (visible) {
+        return (
+            <NavTabs>
+                <NavTab
+                    selected={formType === types.ASSET}
+                    onClick={() => setFormType(types.ASSET)}>
+                    Asset
+                </NavTab>
+                <NavTab
+                    selected={formType === types.MAPPING}
+                    onClick={() => setFormType(types.MAPPING)}>
+                    Mapping
+                </NavTab>
+                <NavTab
+                    selected={formType === types.TAG}
+                    onClick={() => setFormType(types.TAG)}>
+                    Tag
+                </NavTab>
+            </NavTabs>
+        )
+    } else {
+        return null;
+    }
+};
 
 const mapStateToProps = (state, props) => ({
     formType: state.app.form.type,

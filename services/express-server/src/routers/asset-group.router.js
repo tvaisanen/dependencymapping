@@ -1,13 +1,12 @@
 const express = require('express');
-const Asset = require('../models').Asset;
+const AssetGroup = require('../models').AssetGroup;
 const assetRouter = express.Router();
 
 
 assetRouter.get('(/:id)?', (req, res) => {
     if (req.params.id) {
-        Asset.findOne({name: req.params.id})
+        AssetGroup.findOne({name: req.params.id})
             .then(asset => {
-
                 console.log(asset)
                 if (!asset){
                    res.status(404).json("Resource does not exist.")
@@ -18,13 +17,13 @@ assetRouter.get('(/:id)?', (req, res) => {
 
             }).catch(err => res.status(400).json(err));
     } else {
-        Asset.find()
+        AssetGroup.find()
             .then(assets => res.send(assets))
             .catch(err => res.send(err));
     }
 
 });
-
+/*
 assetRouter.post('(/:id)?', (req, res) => {
     console.log(`post: ${req.params.id}`);
     const query = {name: req.param.id};
@@ -50,18 +49,13 @@ assetRouter.post('(/:id)?', (req, res) => {
 });
 
 assetRouter.put('(/:id)?', (req, res) => {
-
     const query = {name: req.params.id};
     console.log(query);
-
     Asset.update(query, {
-        name: req.body.name,
+         name: req.body.name,
         description: req.body.description,
         connected_to: req.body.connected_to,
-        tags: req.body.tags,
-        shape: req.body.shape,
-        color: req.body.color,
-        group: req.body.group
+        tags: req.body.tags
     })
         .then(ok => {
             console.log("HERE")
@@ -87,5 +81,6 @@ assetRouter.delete('/:id', (req, res) => {
         .catch(err => res.status(400).json(err))
 });
 
-
+*/
 module.exports = assetRouter;
+

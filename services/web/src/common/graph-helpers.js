@@ -19,7 +19,19 @@ export function getEdgeId(source = required(), target = required()) {
 }
 
 export function nodeElementFromResource(resource = required()) {
-    return {'group': 'nodes', data: {id: resource.name}};
+    console.group("nodeElementFromResource");
+    console.info(resource)
+
+    const node = {
+        group: 'nodes',
+        data: {
+            id: resource.name,
+            parent: resource.group || null
+        }
+    };
+    console.info(node);
+    console.groupEnd();
+    return node;
 }
 
 export function edgeElementFromResource(sourceId = required(), targetId = required()) {
@@ -140,7 +152,7 @@ export function hoverIndicationOn(cy = required(), id) {
                             duration: 300
                         }
                     )
-                } else if (e.isEdge()) {
+                } else if (e.isEdge() && !e.hasClass('is-in-group')) {
                     e.delay(40).animate({
                         style: edgeStyles.expanded
                     });
@@ -171,7 +183,7 @@ export function hoverIndicationOff(cy = required(), id) {
                         {style: nodeStyles.passive},
                         {duration: 300}
                     )
-                } else if (e.isEdge()) {
+                } else if (e.isEdge() && !e.hasClass('is-in-group')) {
                     e.delay(40).animate(
                         {style: edgeStyles.passive},
                         {duration: 250});

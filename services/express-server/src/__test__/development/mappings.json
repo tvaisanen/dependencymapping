@@ -5,7 +5,8 @@
     "assets": [
       "TestPageOne",
       "TestPageTwo",
-      "TestPageThree"
+      "TestPageThree",
+      "GroupOne"
     ],
     "tags": [
       "TestPage",

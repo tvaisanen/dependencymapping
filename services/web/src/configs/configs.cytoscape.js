@@ -15,6 +15,17 @@ export const graphStyle = [
             'target-arrow-shape': null,
         }
     },
+    {
+        selector: 'edge.is-in-group',
+        style: {
+            'width': 5,
+            'line-style': 'dashed',
+            'curve-style': 'bezier',
+            'line-color': '#0f0f0f',
+             'target-arrow-color': '#ccc',
+            'target-arrow-shape': 'triangle',
+        }
+    },
 
     {
         selector: 'node.highlight',
@@ -41,11 +52,12 @@ export const graphStyle = [
     {
         selector: 'node.group',
         style: {
-            'background-color': 'rgba(0,255,0,0.2)',
+            'background-color': 'green',
+            'background-opacity': 0.1
         }
     },
         {
-      selector: '$node > node.group',
+      selector: '$node > node',
       style: {
         'padding-top': '10px',
         'padding-left': '10px',
@@ -63,3 +75,26 @@ export const layoutOptions = {
         nodeDimensionsIncludeLabels: true,
     }
 };
+
+export const nodeShapes = [
+    "ellipse",
+"triangle",
+"rectangle",
+"roundrectangle",
+"bottomroundrectangle",
+"cutrectangle",
+"barrel",
+"rhomboid",
+"diamond",
+"pentagon",
+"hexagon",
+"concavehexagon",
+"heptagon",
+"octagon",
+"star",
+"tag",
+"vee"];
+
+export const colorOptions = [
+    "black", "navy", "darkblue", "darkgreen"
+];

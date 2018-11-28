@@ -24,6 +24,7 @@ apiClient.resetModels();
 store.dispatch(actions.loadAllMappings());
 store.dispatch(storeActions.loadAllAssets());
 store.dispatch(storeActions.loadAllTags());
+store.dispatch(storeActions.loadAllAssetGroups());
 
 
 

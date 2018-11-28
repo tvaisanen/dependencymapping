@@ -15,7 +15,10 @@ const formActions = (dispatch) => ({
             name: form.name,
             description: form.description,
             connected_to: form.resources,
-            tags: form.tags
+            tags: form.tags,
+            group: form.group,
+            shape: form.shape,
+            color: form.color,
         })
     },
     [types.MAPPING]: {
@@ -45,6 +48,7 @@ function mapStateToProps(state, props) {
         types: types,
         formEdit: state.app.form.edit,
         formType: state.app.form.type,
+        assets: state.assets,
         assetNameList: state.assets.map(r => r.name),
         tagNameList: state.tags.map(t => t.name)
     }

@@ -1,23 +1,45 @@
 import styled from 'styled-components';
 
+export const DetailLayout = styled.div`
+            // detail layout
+            display: flex;
+            height: 100%;
+            width: inherit;
+            flex-grow: 3;
+            border-radius: 3px;
+            border: 1px solid grey;
+            align-content: center;
+            
+            > div {
+               display: flex;
+               flex-direction: column;
+               flex-grow: 1;
+               
+               > div:nth-of-type(1) {
+                 // detail title bar               
+                 justify-content: space-between;
+               }
+               
+               > div:nth-of-type(2){
+               }
+            }
+            
+            > div:nth-of-type(1) {
+              // header
+              min-width: 60%;
+              padding: 4px;
+            
+            > div:nth-of-type(2) {
+              // header
+              min-width: 40%;
+            }
+`;
+
+
 export const HeaderBar = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    height: ${props =>
-    props.header ?
-        '36px' : '24px'
-    };
-            min-height: ${props =>
-    props.header ?
-        '36px' : '24px'
-    };
-            justify-content: ${props =>
-    props.center ? 'center' : 'space-between'
-    };
-            padding: 0 12px;
-
-            
 `;
 
 export const ListBlock = styled.div`
@@ -127,31 +149,4 @@ export const ActionLink = styled.small`
       color: rgba(255,255,255,.6);
     }
     cursor: pointer;
-`;
-
-export const DetailDescription = styled.div`
-    background: rgba(255,255,255,.1);
-    border-radius: 3px;
-    overflow-y: scroll;
-    border: 1px solid gray;
-    height: inherit;
-    //height: 16em;
-    //width: 60%;
-    flex-grow: 6;
-    max-width: 70%;
-    text-align: justify;
-    text-justify: inter-character;
-    box-shadow: 0 0 5px rgba(255,255,255,0.1);
-    overflow-x: visible;
-    overflow-y: auto;
-    
-    > * {
-      heigh: inherit;
-      width: inherit;
-      padding: 12px;
-      p {
-        text-wrap: wrap;
-      }
-      box-sizing: border-box;
-    }
 `;

@@ -36,7 +36,7 @@ export function addResourceToActiveMapping(asset) {
 
     return function (dispatch, getState) {
 
-        const { activeMapping, assets } = getState();
+        const { activeMapping, assets, graph } = getState();
         const newAssetName = asset.name;
 
         const edgeElements = asset.connected_to.map(
@@ -44,7 +44,6 @@ export function addResourceToActiveMapping(asset) {
                 .edgeElementFromResource(asset.name, target.name)
         );
 
-        console.info(edgeElements)
 
         const activeMappingAssetsConnectingIntoNewAsset =
             activeMapping.assets.filter(
@@ -88,9 +87,29 @@ export function addResourceToActiveMapping(asset) {
         });
 
 
-        graphHelpers.addElement(cy, node);
+        //graphHelpers.addElement(cy, node);
+        const newElement = graph.add(node);
         graphHelpers.addElements(cy, preMappedToNewEdges);
         graphHelpers.addElements(cy, edgeElements);
+
+        // move children under parent if exist
+
+        const assetObjects = assets.filter(asset => {
+            return _.includes(activeMapping.assets, asset.name)
+        });
+
+        assetObjects.forEach(a => {
+            const el = graph.getElementById(a.name);
+            console.info(a)
+            if (a.group === asset.name){
+                el.move({parent: asset.name})
+            }
+            console.info(`${el.parent().id()} -> ${el.id()} `);
+        });
+        graph.elements('node').forEach(el=>{
+          console.info(`${el.parent().id()} -> ${el.id()} `);
+        });
+
         console.groupEnd();
 
         graphHelpers.updateLayout(cy, "cola");
@@ -99,6 +118,28 @@ export function addResourceToActiveMapping(asset) {
 
 export function removeResourceFromActiveMapping(asset) {
     return function (dispatch, getState) {
+        const { graph } = getState();
+
+        console.info(asset);
+
+        const el = graph.getElementById(asset.name);
+
+        // before deleting parent node, get the children
+        if ( el.isParent() ){
+            const removeChildren = window.confirm("remove the sub-graph too?");
+            if (removeChildren){
+                el.children().forEach(child => {
+                    console.info("this needs to be removed");
+                    const removeThis = {name: child.id()};
+                    console.info(removeThis);
+                    dispatch(removeAsset(removeThis));
+                });
+            } else {
+                // move children
+                el.children().move({parent: null})
+            }
+        }
+
         dispatch(removeAsset(asset))
         graphHelpers.removeElement(getState().graph, asset.name);
     }
@@ -146,11 +187,30 @@ export function groupByTag(tagName) {
         console.info(assetObjects);
 
         // 2. add all the assets which has the tag
-        assetObjects.forEach(asset => {
-            const n = graph.getElementById(asset.name)
-            n.move({parent:tagName})
-            console.info(n.json())
+        const newEdges = assetObjects.map(asset => {
+            const n = graph.getElementById(asset.name);
+            // if asset is moved from other group
+            // create edge from the tag node
+            const parent = n.data('parent');
+            console.info(parent)
+            n.move({parent:tagName});
+
+            if (parent) {
+                const edge = graphHelpers.edgeElementFromResource(parent, asset.name);
+                edge.classes = 'is-in-group';
+                return edge;
+            }
         });
+
+        // console.info(newEdges)
+        // graph.add(newEdges);
+
+        // newEdges.forEach(e => graph.getElementById(e).addClass("is-in-group"))
+
+
+        // newEdges.forEach(e => console.info(
+        //     graph.getElementById(e).hasClass("is-in-group"))
+        // )
 
         //    as children
         dispatch({type: types.GROUP_BY_TAG, tagName})

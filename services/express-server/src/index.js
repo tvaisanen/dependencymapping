@@ -6,16 +6,19 @@ const cors = require('cors');
 const fs = require('fs');
 
 const assetRouter = require('./routers/asset.router');
+const assetGroupRouter = require('./routers/asset-group.router');
 const mappingRouter = require('./routers/mapping.router');
 const tagRouter = require('./routers/tag.router');
 
-const { Asset, Tag, Mapping } = require('./models');
+const { Asset, AssetGroup, Tag, Mapping } = require('./models');
 
 // require test data
+
 // todo: refactor unit-test vs. integration based  on env
-const assets = require('./__test__/unit-tests/assets.json');
-const mappings = require('./__test__/unit-tests/mappings.json');
-const tags = require('./__test__/unit-tests/tags.json');
+const assets = require(`./${process.env.TEST_DATA}/assets.json`);
+const assetGroups = require(`./${process.env.TEST_DATA}/asset-groups.json`);
+const mappings = require(`./${process.env.TEST_DATA}/mappings.json`);
+const tags = require(`./${process.env.TEST_DATA}/tags.json`);
 
 
 // connect to the db
@@ -29,6 +32,8 @@ mongoose.connect(`mongodb://${MONGO_PATH}:${MONGO_PORT}/${DB_NAME}`);
 // When successfully connected
 mongoose.connection.on('connected', function () {
     console.log('Mongoose successful connection:');
+    console.log(`running in: ${process.env.NODE_ENV} mode`)
+    console.log(`using data from: ${process.env.TEST_DATA}`)
 });
 
 // If the connection throws an error
@@ -41,6 +46,15 @@ function loadDataToDb() {
     assets.forEach(item => {
         const asset = new Asset({...item});
         asset.save().then(saved => {
+            console.log(`saved: ${saved.name}`);
+        }).catch(err => {
+            console.log(err);
+        })
+    });
+
+    assetGroups.forEach(item => {
+        const assetGroup = new AssetGroup({...item});
+        assetGroup.save().then(saved => {
             console.log(`saved: ${saved.name}`);
         }).catch(err => {
             console.log(err);
@@ -83,6 +97,9 @@ router.get('/reset-models', (req, res) => {
     Asset.remove()
         .then(r => console.log(r))
         .catch(err => console.log(err));
+    AssetGroup.remove()
+        .then(r => console.log(r))
+        .catch(err => console.log(err));
      Tag.remove()
         .then(r => console.log(r))
         .catch(err => console.log(err));
@@ -114,6 +131,7 @@ app.use(router);
 app.use('/test', express.static('src/pages'));
 // serve API endpoints
 app.use('/asset', assetRouter);
+app.use('/asset-group', assetGroupRouter);
 app.use('/mapping', mappingRouter);
 app.use('/tag', tagRouter);
 

@@ -4,11 +4,13 @@ import {connect} from 'react-redux'
 import styled from 'styled-components';
 import * as l from '../layout';
 import * as types from './../../constants/types';
-import {isResourceInMapping, } from './../../common/resource-helpers';
+import {isResourceInMapping,} from './../../common/resource-helpers';
 import * as resourceHelpers from './../../common/resource-helpers';
 import ResourceDetail from '../resource-detail/ResourceDetailContainer';
-import { FilterInputField } from '../common.components';
+import {FilterInputField} from '../common.components';
 import resourceBrowserCtrl from './resource-browser.controller';
+
+// todo: refactor to store
 
 class ResourceBrowserContainer extends Component {
     constructor(props) {
@@ -40,11 +42,11 @@ class ResourceBrowserContainer extends Component {
     }
 
     render() {
-        const { assets, tags } = this.props;
+        const {assets, tags} = this.props;
         const {filterValue, resourceTypes} = this.state;
 
         const isResourceInMap = isResourceInMapping({
-            mapping: this.props.activeMapping ? this.props.activeMapping : {name:'none'},
+            mapping: this.props.activeMapping ? this.props.activeMapping : {name: 'none'},
             resourceId: this.props.activeDetail.name || false,
         });
 
@@ -54,7 +56,7 @@ class ResourceBrowserContainer extends Component {
         const resourceItems = resourceTypes === types.ASSET ?
             resourceHelpers.filterByName({objectList: assets || [], filterValue})
             : resourceHelpers.filterByName({objectList: tags || [], filterValue})
-         ;
+        ;
 
         return (
 
@@ -74,40 +76,36 @@ class ResourceBrowserContainer extends Component {
                             type="text"
                             placeholder="filter..."
                             onChange={this.onFilterChange}/>
-                        <ResourceList>
-                            {
-                                resourceItems.map((resource, i) => (
-                                        <ResourceListItem
-                                            key={i}
-                                            selected={resource.name === this.props.activeDetail.name}
-                                            onClick={() => this.props.setActiveDetail({
-                                                data: resource,
-                                                type: resourceTypes
-                                            })}
-                                        >{resource.name}
-                                        </ResourceListItem>
-                                    )
-                                )
-                            }
-                        </ResourceList>
-                    </ResourceBrowser>
+                        <ResourceList
+                            activeDetail={this.props.activeDetail}
+                            setActiveDetail={this.props.setActiveDetail}
+                            resourceItems={resourceItems}
+                            resourceTypes={resourceTypes}
+                        />
 
-                    <ResourceDetail
-                        addToMap={this.addResourceToMapping}
-                        removeFromMap={this.removeResourceFromMapping}
-                        editDetail={this.props.editDetail}
-                        detailType={this.props.activeDetailType}
-                        detail={this.props.detail}
-                        setDetail={this.props.setActiveDetail}
-                        isResourceInMap={isResourceInMap}
-                        addResourceToMapping={this.addResourceToMapping}
-                        removeResourceFromActiveMapping={this.removeResourceFromMapping}
-                    />
+                    </ResourceBrowser>
+                    <ResourceDetail/>
+
                 </l.LayoutRow>
             </ResourceBrowserLayout>
         );
     }
 }
+
+const ResourceList = (props) => {
+    return props.resourceItems.map((resource, i) => (
+            <ResourceListItem
+                key={i}
+                selected={resource.name === props.activeDetail.name}
+                onClick={() => props.setActiveDetail({
+                    data: resource,
+                    type: props.resourceTypes
+                })}
+            >{resource.name}
+            </ResourceListItem>
+        )
+    )
+};
 
 ResourceBrowserContainer.propTypes = {
     cy: PropTypes.object.isRequired,
@@ -117,7 +115,6 @@ ResourceBrowserContainer.propTypes = {
     editDetail: PropTypes.func.isRequired,
     activeMapping: PropTypes.object.isRequired
 };
-
 
 
 export default connect(
@@ -148,20 +145,6 @@ const ResourceBrowser = styled.div`
 
 `;
 
-const ResourceList = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    flex-grow: 1;
-    align-items: center;
-    height: 100%;
-    width: inherit;
-    min-width: inherit;
-    overflow-y: auto;
-    overflow-x: hidden;
-    margin-right: 0;
-    border-radius: 3px;
-`;
 
 const ResourceListItem = styled.div`
     font-size: small; 

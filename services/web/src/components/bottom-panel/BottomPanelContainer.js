@@ -4,32 +4,30 @@ import styled from 'styled-components';
 import ResourceBrowserContainer from '../resource-browser/ResourceBrowserContainer';
 import {connect} from 'react-redux'
 import * as views from './../../constants/views';
-import * as actionCreators from './../../actions/index';
-import {bindActionCreators} from 'redux';
 import PanelNavTabs from './bottom-panel.components';
 import ResourceControllerContainer from '../resource-controller/ResourceControllerContainer';
 
 const panelViews = {
-            [views.BROWSE]: {
-                header: "detail",
-                component: ResourceBrowserContainer,
-            },
-            [views.CREATE]: {
-                header: "forms",
-                component: ResourceControllerContainer,
-            }
-        };
+    [views.BROWSE]: {
+        header: "detail",
+        component: ResourceBrowserContainer,
+    },
+    [views.CREATE]: {
+        header: "forms",
+        component: ResourceControllerContainer,
+    }
+};
 
 const BottomPanelContainer = (props) => {
-    const view = props.views[props.selectedView];
-        return (
-            <BottomPanel id="bottom-panel-container">
-                <PanelNavTabs/>
-                <PanelContent id="panel-content">
-                    <view.component/>
-                </PanelContent>
-            </BottomPanel>
-        );
+    const {SelectedViewComponent} = props;
+    return (
+        <BottomPanel id="bottom-panel-container">
+            <PanelNavTabs/>
+            <PanelContent id="panel-content">
+                <SelectedViewComponent/>
+            </PanelContent>
+        </BottomPanel>
+    );
 };
 
 
@@ -37,29 +35,16 @@ BottomPanelContainer.propTypes = {
     detail: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state, ownProps = {}) => {
-    return {
-        views: panelViews,
-        activeDetail: state.activeDetail.data,
-        selectedView: state.app.bottomPanel.view,
-        cy: state.graph
-    }
-}
+const mapStateToProps = (state) => (
+    {SelectedViewComponent: panelViews[state.app.bottomPanel.view].component}
+);
 
-function mapDispatchToProps(dispatch) {
-    return bindActionCreators({...actionCreators}, dispatch)
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(BottomPanelContainer);
+export default connect(
+    mapStateToProps,
+    {}
+)(BottomPanelContainer);
 
-export const BottomContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: ${props=>props.justify};
-    align-items: center;
-    height: 40vh;
-    flex-grow: 1; 
-`;
 
 const BottomPanel = styled.div`
     max-width: 100vw;

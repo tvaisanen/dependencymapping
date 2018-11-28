@@ -9,11 +9,15 @@ import {filterItems} from "../../common";
 import * as validators from '../../common/validators';
 import {FormSelectionBlock} from "./form.components";
 import * as _ from 'lodash';
-import ControllerNavTabs from './components/ControllerNavTabs';
+import FormOptions from './components/ControllerNavTabs';
+import SelectionMenus from './components/SelectionMenus';
 import resourceControllerCtrl from './resource-controller.controller';
 import * as types from '../../constants/types';
 import * as apiHelpers from '../../common/api.helpers';
 import * as sc from './resource-controller.styled';
+import {MainBlock} from './resource-controller.styled';
+
+// todo: refactor to store
 
 class ResourceControllerContainer extends Component {
     constructor(props) {
@@ -27,7 +31,10 @@ class ResourceControllerContainer extends Component {
             description: "",
             errors: {},
             type: props.formType,
-            selections: true // if there's the selects
+            selections: true, // if there's the selects
+            shape: "ellipse",
+            color: "black",
+            group: null
         }
 
         this.createAssetAndSelect = this.createAssetAndSelect.bind(this);
@@ -60,7 +67,10 @@ class ResourceControllerContainer extends Component {
             if (type === types.ASSET) {
                 this.setState({
                     selectedResources: data.connected_to.map(r => r.name),
-                    selectedTags: data.tags.map(t => t.name)
+                    selectedTags: data.tags.map(t => t.name),
+                    group: data.group,
+                    shape: data.shape,
+                    color: data.color
                 })
             }
 
@@ -157,17 +167,12 @@ class ResourceControllerContainer extends Component {
         console.groupEnd();
     }
 
-    toggleValidation() {
-        this.setState({check: true});
-    }
-
-
     createAssetAndSelect(assetName) {
 
         if (_.includes(this.props.assetNameList, assetName)) {
             // if asset exists, just add it to selected
             // but do not allow duplicates
-            if (!_.includes(this.state.selectedResources, assetName)){
+            if (!_.includes(this.state.selectedResources, assetName)) {
                 this.setState({selectedResources: [...this.state.selectedResources, assetName]});
             }
         } else {
@@ -187,7 +192,7 @@ class ResourceControllerContainer extends Component {
         if (_.includes(this.props.tagNameList, tagName)) {
             // if tag already exists, just add the tag to selected
             // but do not allow duplicates
-            if (!_.includes(this.state.selectedTags, tagName)){
+            if (!_.includes(this.state.selectedTags, tagName)) {
                 this.setState({selectedTags: [...this.state.selectedTags, tagName]})
             }
 
@@ -210,6 +215,9 @@ class ResourceControllerContainer extends Component {
             description: this.state.description,
             resources: this.state.selectedResources,
             tags: this.state.selectedTags,
+            group: this.state.group,
+            color: this.state.color,
+            shape: this.state.shape
         }
     }
 
@@ -238,9 +246,6 @@ class ResourceControllerContainer extends Component {
         this.props.closeEdit();
     }
 
-    onCancel() {
-
-    }
 
     render() {
         const {tagNameList, assetNameList} = this.props;
@@ -271,35 +276,47 @@ class ResourceControllerContainer extends Component {
             items: notSelectedTags,
             filterValue: tagFilter
         });
-
+        console.log(this.state)
         return (
             <sc.ResourceControllerLayout id="resource-controller-container">
                 {/**/}
-                <sc.MainBlock column visible>
-                    {
-                        /* todo: refactor logic
-                         * If editing, do not show the other
-                         * form options
-                         */
-                        this.props.formEdit ? null :
-                            <ControllerNavTabs
-                                types={this.props.types}
-                                setFormType={this.props.setFormType}/>
-                    }
+                <MainBlock column visible>
+                    <div>
+                        <FormOptions
+                            // show form options if not editing
+                            visible={!this.props.formEdit}
+                            types={this.props.types}
+                            setFormType={this.props.setFormType}/>
 
-                    <form.Label>Name</form.Label>
-                    <form.Input
-                        lock={this.props.formEdit}
-                        readOnly={this.props.formEdit}
-                        value={this.state.name}
-                        valid={nameValid}
-                        check={this.state.check}
-                        onChange={(e) => this.setState({name: e.target.value})}
-                    />
-                    {this.state.errors.name ?
-                        <form.ErrorMsg>{this.state.errors.name}</form.ErrorMsg>
-                        : null
-                    }
+                        <div style={{
+                            display: 'flex',
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center"
+                        }}>
+                            <form.Label>Name</form.Label>
+                            <form.Input
+                                lock={this.props.formEdit}
+                                readOnly={this.props.formEdit}
+                                value={this.state.name}
+                                valid={nameValid}
+                                check={this.state.check}
+                                onChange={(e) => this.setState({name: e.target.value})}
+                            />
+                            {this.state.errors.name ?
+                                <form.ErrorMsg>{this.state.errors.name}</form.ErrorMsg>
+                                : null
+                            }
+
+                        </div>
+                    </div>
+                    <SelectionMenus
+                        setValue={(set) => {
+                            console.info(set);
+                            this.setState(set);
+                        }}
+                        assets={this.props.assetNameList}
+                        formType={this.props.formType}/>
 
                     <form.Label>Description</form.Label>
                     <form.TextArea
@@ -319,7 +336,7 @@ class ResourceControllerContainer extends Component {
                         cancel={this.props.closeEdit}/>
 
 
-                </sc.MainBlock>
+                </MainBlock>
                 <sc.SecondaryBlock
                     visible={this.props.formType !== types.TAG}
                     id="form-col-two"
