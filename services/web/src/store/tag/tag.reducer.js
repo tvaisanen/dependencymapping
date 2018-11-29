@@ -1,5 +1,5 @@
 import * as types from './tag.action-types';
-import initialState from '../../reducers/initialState';
+import initialState from '../initialState';
 
 export default function tagReducer(state = initialState.tags, action) {
     switch (action.type) {

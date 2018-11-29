@@ -1,11 +1,23 @@
+// @flow
 import * as types from './active-mapping.action-types';
-import initialState from '../../reducers/initialState';
+import initialState from '../initialState';
 import _ from 'lodash';
 
-export default function activeMappingReducer(state = initialState.activeMapping, action){
+import type {
+    ActiveMappingState,
+    ActiveMappingAction
+} from "./active-mapping.types";
+
+
+export default function activeMappingReducer(
+    state: ActiveMappingState = initialState.activeMapping,
+    action: ActiveMappingAction
+){
     switch(action.type) {
 
         case types.SET_ACTIVE_MAPPING:
+            // set the active mapping
+            // and override last selection
             return action.mapping;
 
 
@@ -39,7 +51,7 @@ export default function activeMappingReducer(state = initialState.activeMapping,
 
         case types.CLEAR_ACTIVE_MAPPING_SELECTION:
             return {name: "no selection", resources:[], tags: []};
-
+        /*
         case types.GROUP_BY_TAG:
             return {
                 ...state,
@@ -51,7 +63,7 @@ export default function activeMappingReducer(state = initialState.activeMapping,
                  ...state,
                  grouped: [...state.grouped.filter(t => t !== action.tagName)]
              };
-
+        */
         default:
             return state;
     }

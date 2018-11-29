@@ -1,5 +1,5 @@
 import * as types from './asset.action-types';
-import initialState from '../../reducers/initialState';
+import initialState from '../initialState';
 
 export default function resourceReducer(state = initialState.resources, action) {
     switch (action.type) {

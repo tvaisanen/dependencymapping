@@ -1,17 +1,12 @@
-import GwClientApi from '../api/gwClientApi';
-import * as types from './actionTypes';
-import * as graphHelpers from '../common/graph-helpers';
-import * as activeMappingActions from '../store/active-mapping/active-mapping.actions';
-import * as appActions from '../actions/app.actions';
-import * as apiHelpers from '../common/api.helpers';
-import * as mappingHelpers from '../common/dependency-map.helpers';
+import GwClientApi from '../../api/gwClientApi';
+import * as types from './mapping.action-types';
+import * as graphHelpers from '../../common/graph-helpers';
+import * as activeMappingActions from '../active-mapping/active-mapping.actions';
+import * as appActions from '../../actions/app.actions';
+import * as apiHelpers from '../../common/api.helpers';
+import * as mappingHelpers from '../../common/dependency-map.helpers';
 
-type Mapping = {
-    name: string,
-    description: string,
-    assets: [string] | [],
-    tags: [string] | []
-}
+import type { Mapping } from "./mapping.types";
 
 /*************** MAPPING *************/
 
@@ -39,8 +34,11 @@ export function addMapping(mapping) {
 
 /*************** UPDATE **************/
 
-export function updateMapping(mapping) {
-    return function (dispatch, getState) {
+export function updateMapping(mapping: Mapping) {
+    return function (dispatch: () => void , getState: () => any) {
+        console.group("debug update mpaping");
+        console.info(mapping);
+        console.groupEnd();
         const resolveCallback = (mapping) => {
 
             dispatch(appActions.setInfoMessage(`Updated mapping: ${mapping.name}`));
@@ -79,15 +77,16 @@ function updateMappingSuccess({mapping}) {
 
 /*************** DELETE **************/
 
-export function deleteMapping({name}) {
+export function deleteMapping(name: string) {
     return function (dispatch, getState) {
+        alert(`deleteMapping(${name})`);
 
         const promise = GwClientApi.deleteMapping({name});
 
         const resolveCallback = () => {
             // no need to return responsa data
             dispatch(appActions.setInfoMessage(`Deleted mapping: ${name}`));
-            dispatch(deleteMappingSuccess({removed: name}));
+            dispatch(deleteMappingSuccess(name));
             dispatch(activeMappingActions.clearActiveMappingSelection());
             graphHelpers.clearGraph(getState().graph);
         };
@@ -96,9 +95,8 @@ export function deleteMapping({name}) {
     }
 }
 
-export function deleteMappingSuccess({removed}) {
-    console.info('Delete mapping success.');
-    return {type: types.DELETE_MAPPING_SUCCESS, removed};
+export function deleteMappingSuccess(name) {
+    return {type: types.DELETE_MAPPING_SUCCESS, name};
 }
 
 /*********************************************** */
@@ -136,4 +134,3 @@ export function saveMapping(mapping) {
     // async actions before
     return {type: types.SAVE_MAPPING, mapping};
 }
-

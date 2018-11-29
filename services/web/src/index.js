@@ -22,7 +22,7 @@ apiClient.resetModels();
 // const auth = authStorage ? JSON.parse(authStorage) : false;
 
 // store.dispatch(storeActions.loginSuccess(auth));
-store.dispatch(actions.loadAllMappings());
+store.dispatch(storeActions.loadAllMappings());
 store.dispatch(storeActions.loadAllAssets());
 store.dispatch(storeActions.loadAllTags());
 store.dispatch(storeActions.loadAllAssetGroups());
@@ -33,7 +33,7 @@ console.info(process.env);
 console.info(Object.keys(process.env));
 console.info(process.env.MESSAGE)
 console.groupEnd();
-/*
+
 const eventHandlers =  {
         tap: ['node', (event) => store.dispatch(graphEvents.onNodeClick(event))],
         mouseover: ['node',  (event) => store.dispatch(graphEvents.onNodeMouseOver(event))],
@@ -41,8 +41,7 @@ const eventHandlers =  {
         cxttap: ['node', (event) => store.dispatch(graphEvents.onCtxClick(event))]
 };
 
-store.dispatch(graphActions.initGraph(eventHandlers));
-*/
+
 // configure application here based on the environment variables
 
 ReactDOM.render(
@@ -52,4 +51,7 @@ ReactDOM.render(
         </ThemeProvider>
     </Provider>
     , document.getElementById('root'));
+
+store.dispatch(graphActions.initGraph({eventHandlers}));
+
 registerServiceWorker();

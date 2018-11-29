@@ -40,13 +40,13 @@ export function updateTagSuccess({tag}) {
 
 /*************** DELETE **************/
 
-export function deleteTag({name}) {
+export function deleteTag(name) {
     return function (dispatch) {
         const resolveCallback = () => {
             dispatch(appActions.setInfoMessage(`Deleted tag: ${name}`));
             dispatch(deleteTagSuccess({tagName: name}));
         };
-        const promise = GwClientApi.deleteTag({name});
+        const promise = GwClientApi.deleteTag(name);
         return {promise, resolveCallback};
     }
 }

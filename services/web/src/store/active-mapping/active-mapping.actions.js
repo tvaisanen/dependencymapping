@@ -2,6 +2,16 @@ import * as types from './active-mapping.action-types';
 import * as graphHelpers from '../../common/graph-helpers';
 import * as resourceHelpers from '../../common/resource-helpers';
 import * as _ from 'lodash';
+import type {
+    ActiveMappingState,
+    ActiveMappingAction
+} from "./active-mapping.types";
+
+export
+function setActiveMapping(mapping: ActiveMappingState)
+    : ActiveMappingAction {
+    return {type: types.SET_ACTIVE_MAPPING, mapping}
+}
 
 export function clearActiveMappingSelection() {
     return {type: types.CLEAR_ACTIVE_MAPPING_SELECTION}
@@ -24,10 +34,6 @@ export function addActiveMappingAssetsFromNameList(assetNameList) {
 }
 
 
-export function setActiveMapping(mapping) {
-    return {type: types.SET_ACTIVE_MAPPING, mapping}
-}
-
 export function addResourceToActiveMapping(asset) {
 
     /**
@@ -36,7 +42,7 @@ export function addResourceToActiveMapping(asset) {
 
     return function (dispatch, getState) {
 
-        const { activeMapping, assets, graph } = getState();
+        const {activeMapping, assets, graph} = getState();
         const newAssetName = asset.name;
 
         const edgeElements = asset.connected_to.map(
@@ -59,7 +65,6 @@ export function addResourceToActiveMapping(asset) {
         const node = graphHelpers.nodeElementFromResource(asset);
 
 
-
         dispatch({type: types.ADD_ACTIVE_MAPPING_ASSET, asset: asset.name});
 
         // check if the assets in map have connections
@@ -67,7 +72,7 @@ export function addResourceToActiveMapping(asset) {
 
         console.group("Check if premapped points to new");
         const preMappedAssetObjects = assets.filter(asset => {
-          return _.includes(activeMapping.assets, asset.name);
+            return _.includes(activeMapping.assets, asset.name);
         });
 
         // todo: refactor to reduce
@@ -75,7 +80,7 @@ export function addResourceToActiveMapping(asset) {
 
         preMappedAssetObjects.forEach(preMappedAsset => {
             preMappedAsset.connected_to.forEach(target => {
-                if (target === newAssetName){
+                if (target === newAssetName) {
                     preMappedToNewEdges.push(
                         graphHelpers.edgeElementFromResource(
                             preMappedAsset.name,
@@ -101,13 +106,13 @@ export function addResourceToActiveMapping(asset) {
         assetObjects.forEach(a => {
             const el = graph.getElementById(a.name);
             console.info(a)
-            if (a.group === asset.name){
+            if (a.group === asset.name) {
                 el.move({parent: asset.name})
             }
             console.info(`${el.parent().id()} -> ${el.id()} `);
         });
-        graph.elements('node').forEach(el=>{
-          console.info(`${el.parent().id()} -> ${el.id()} `);
+        graph.elements('node').forEach(el => {
+            console.info(`${el.parent().id()} -> ${el.id()} `);
         });
 
         console.groupEnd();
@@ -118,16 +123,16 @@ export function addResourceToActiveMapping(asset) {
 
 export function removeResourceFromActiveMapping(asset) {
     return function (dispatch, getState) {
-        const { graph } = getState();
+        const {graph} = getState();
 
         console.info(asset);
 
         const el = graph.getElementById(asset.name);
 
         // before deleting parent node, get the children
-        if ( el.isParent() ){
+        if (el.isParent()) {
             const removeChildren = window.confirm("remove the sub-graph too?");
-            if (removeChildren){
+            if (removeChildren) {
                 el.children().forEach(child => {
                     console.info("this needs to be removed");
                     const removeThis = {name: child.id()};
@@ -151,13 +156,13 @@ function removeAsset(asset) {
 }
 
 
-function createGroupNode(name){
-   return {
-      group: "nodes",
-      data: {
-         id: name,
-      }
-   }
+function createGroupNode(name) {
+    return {
+        group: "nodes",
+        data: {
+            id: name,
+        }
+    }
 }
 
 export function groupByTag(tagName) {
@@ -193,7 +198,7 @@ export function groupByTag(tagName) {
             // create edge from the tag node
             const parent = n.data('parent');
             console.info(parent)
-            n.move({parent:tagName});
+            n.move({parent: tagName});
 
             if (parent) {
                 const edge = graphHelpers.edgeElementFromResource(parent, asset.name);
@@ -219,7 +224,7 @@ export function groupByTag(tagName) {
 }
 
 export function ungroupByTag(tagName) {
-    return function (dispatch, getState){
+    return function (dispatch, getState) {
         const {activeMapping, assets, graph} = getState();
         try {
             graph.getElementById(tagName)

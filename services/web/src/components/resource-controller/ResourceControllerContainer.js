@@ -92,7 +92,7 @@ class ResourceControllerContainer extends Component {
 
     actionDelete({name}) {
         const {formType, formActions} = this.props;
-        const promise = formActions[formType].remove({name});
+        const promise = formActions[formType].remove(name);
         this.handlePromise(promise);
     }
 

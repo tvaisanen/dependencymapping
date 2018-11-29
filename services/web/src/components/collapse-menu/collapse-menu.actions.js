@@ -1,4 +1,4 @@
-import * as mappingActions from '../../actions/mapping.actions';
+import * as mappingActions from '../../store/mapping/mapping.actions';
 import * as authActions from '../../store/auth/auth.actions';
 import * as activeMappingActions from '../../store/active-mapping/active-mapping.actions';
 import * as appActions from '../../actions/app.actions';

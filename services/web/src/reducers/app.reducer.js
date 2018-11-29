@@ -1,4 +1,4 @@
-import initialState from './initialState';
+import initialState from '../store/initialState';
 import * as types from '../actions/actionTypes';
 import * as resourceType from '../constants/types';
 

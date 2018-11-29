@@ -1,5 +1,5 @@
 import * as types from './graph.action-types';
-import initialState from '../../reducers/initialState';
+import initialState from '../initialState';
 import cytoscape from 'cytoscape';
 import {graphStyle} from '../../configs/configs.cytoscape';
 import cxtmenu from 'cytoscape-cxtmenu';

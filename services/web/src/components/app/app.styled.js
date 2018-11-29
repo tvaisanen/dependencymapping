@@ -1,5 +1,16 @@
 import styled from 'styled-components';
 
+export const AppContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    background: ${p=>p.theme.colorLightBackground};
+    flex-grow: 1;
+    min-height: 600px;
+    min-width: 800px;
+    height: 100vh;
+    overflow: hidden;
+`;
+
 export const TopContent = styled.div`
     display: flex;
     flex-direction: column;

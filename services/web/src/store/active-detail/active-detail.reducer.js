@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import * as types from './active-detail.action-types';
-import initialState from '../../reducers/initialState';
+import initialState from '../initialState';
 import * as resourceTypes from '../../constants/types';
 
 const emptyDetail = {

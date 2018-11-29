@@ -30,6 +30,7 @@ services:
         build: ./services/web
         volumes:
             - ./services/web/src/:/usr/webapp/src/src
+            - ./services/web/package.json:/usr/webapp/src/package.json
         networks:
             - overlay
         command: npm start

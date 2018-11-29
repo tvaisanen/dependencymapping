@@ -5,34 +5,40 @@ import * as actions from '../active-mapping.actions';
 const initialState = {
     name: "Tag one",
     description: "describing one",
-    resources: [
+    assets: [
         {name: "Tag three", description: "describing three"}
     ],
-    tags: [{name:"tag one", description:"describing"}],
+    tags: [{name: "tag one", description: "describing"}],
     grouped: ["RemoveMe"]
 };
 
-it('Active mapping groupByTag adds tagName to grouped', () => {
-    const action = actions.groupByTag("FindMeInGrouped")
+it('Returns default if type is not defined', () => {
     const result = activeMappingReducer(
         initialState,
-        action
+        {type: "not defined"}
     );
-
-    console.log(result)
-
-    expect(_.includes(result.grouped, action.tagName))
-        .toEqual(true);
+    expect(initialState).toEqual(result);
 });
 
 
-it('Active mapping ungroupByTag removes tagName from grouped', () => {
-    const action = actions.ungroupByTag("RemoveMe")
+it('SET_ACTIVE_MAPPING sets the state correctly', () => {
+
+    const newState = {
+        name: "Tag one",
+        description: "describing one",
+        assets: [
+            {name: "Tag three", description: "describing three"}
+        ],
+        tags: [{name: "tag one", description: "describing"}],
+        grouped: ["RemoveMe"]
+    };
+
+    const action = actions.setActiveMapping(newState);
+
     const result = activeMappingReducer(
         initialState,
         action
     );
 
-    expect(_.includes(result.grouped, action.tagName))
-        .toEqual(false);
+    expect(result).toEqual(newState);
 });

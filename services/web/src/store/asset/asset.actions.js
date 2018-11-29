@@ -1,13 +1,20 @@
+//@flow
+
 import GwClientApi from '../../api/gwClientApi';
 import * as types from './asset.action-types';
 import * as graphHelpers from '../../common/graph-helpers';
 import * as _ from 'lodash';
 import * as apiHelpers from '../../common/api.helpers';
 import * as appActions from '../../actions/app.actions';
-import * as mappingActions from '../../actions/mapping.actions';
+import * as mappingActions from '../mapping/mapping.actions';
 
 
-export function postAsset(asset) {
+import type { Asset } from "./asset.types";
+
+export function postAsset(asset: Asset): {
+    promise: Promise<$ObjMap<O, typeof $await>>,
+    resolveCallback: (asset: Asset) => void
+} {
     return function (dispatch) {
         const promise = GwClientApi.postAsset(asset);
 
@@ -64,13 +71,13 @@ function updateAssetSuccess({asset}) {
 
 /*************** DELETE **************/
 
-export function deleteAsset({name}) {
+export function deleteAsset(name: string) {
     console.info("deleteResource(" + name + ")");
     return function (dispatch, getState) {
 
         const { assets, mappings } = getState();
 
-        const promise = GwClientApi.deleteAsset({name});
+        const promise = GwClientApi.deleteAsset(name);
         // resolving a request is done in form container
         const resolveCallback = () => {
             // todo: deal with mapped assets
@@ -96,7 +103,7 @@ export function deleteAsset({name}) {
                             resolveCallback
                         } = dispatch(mappingActions.updateMapping({
                             ...mapping,
-                            resources: filteredAssets
+                            assets: filteredAssets
                         }));
                         promise.then(response => {
                             resolveCallback(response.data);});

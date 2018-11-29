@@ -1,16 +1,18 @@
+// @flow
 import * as actions from './resource-controller.actions';
 import * as actionsAsset from '../../store/asset/asset.actions';
-import * as actionsMapping from '../../actions/mapping.actions';
+import * as actionsMapping from '../../store/mapping/mapping.actions';
 import * as actionsTag from '../../store/tag/tag.actions';
 import * as actionsActiveDetail from '../../store/active-detail/active-detail.actions';
 import * as types from '../../constants/types';
+import type { Asset, Mapping, Tag } from "../../store/types";
 
 
 const formActions = (dispatch) => ({
     [types.ASSET]: {
-        post: (asset) => dispatch(actionsAsset.postAsset(asset)),
-        put: (asset) => dispatch(actionsAsset.updateAsset(asset)),
-        remove: (asset) => dispatch(actionsAsset.deleteAsset(asset)),
+        post: (asset: Asset) => dispatch(actionsAsset.postAsset(asset)),
+        put: (asset: Asset) => dispatch(actionsAsset.updateAsset(asset)),
+        remove: (name: string) => dispatch(actionsAsset.deleteAsset(name)),
         parseForm: (form) => ({
             name: form.name,
             description: form.description,
@@ -22,16 +24,16 @@ const formActions = (dispatch) => ({
         })
     },
     [types.MAPPING]: {
-        post: (mapping) => dispatch(actionsMapping.postMapping(mapping)),
-        put: (mapping) => dispatch(actionsMapping.updateMapping(mapping)),
-        remove: (mapping) => dispatch(actionsMapping.deleteMapping(mapping)),
-        parseForm: (form) => form,
+        post: (mapping: Mapping) => dispatch(actionsMapping.postMapping(mapping)),
+        put: (mapping: Mapping) => dispatch(actionsMapping.updateMapping(mapping)),
+        remove: (name: string) => dispatch(actionsMapping.deleteMapping(name)),
+        parseForm: (form) => ({...form, assets: form.resources}),
     },
 
     [types.TAG]: {
-        post: (tag) => dispatch(actionsTag.postTag(tag)),
-        put: (tag) => dispatch(actionsTag.updateTag(tag)),
-        remove: (tag) => dispatch(actionsTag.deleteTag(tag)),
+        post: (tag: Tag) => dispatch(actionsTag.postTag(tag)),
+        put: (tag: Tag) => dispatch(actionsTag.updateTag(tag)),
+        remove: (name: string) => dispatch(actionsTag.deleteTag(name)),
         parseForm: (form) => ({
             name: form.name,
             description: form.description
@@ -41,8 +43,6 @@ const formActions = (dispatch) => ({
 
 
 function mapStateToProps(state, props) {
-    console.info(props);
-    console.info(state);
     return {
         activeDetail: state.activeDetail,
         types: types,

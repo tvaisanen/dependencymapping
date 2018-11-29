@@ -1,3 +1,4 @@
+// @flow
 import axios from 'axios';
 
 const API_HOST = process.env.REACT_APP_API_HOST;
@@ -110,8 +111,8 @@ class GwClientApi {
             {
                 name: name,
                 description: description,
-                assets: JSON.stringify(assets),
-                tags: JSON.stringify(tags)
+                assets: assets,
+                tags: tags
 
             }
         )
@@ -130,13 +131,13 @@ class GwClientApi {
         );
     }
 
-    static deleteMapping({name}) {
+    static deleteMapping(name: string) {
         return axios.delete(mappingsDetailUrl({name}));
     }
 
     /** ***********************************************************/
 
-    static deleteAsset({name}) {
+    static deleteAsset(name: string): Promise<T> {
         return axios.delete(resourceDetailUrl({name}));
     }
 
@@ -185,7 +186,7 @@ class GwClientApi {
             {name, description})
     }
 
-    static deleteTag({name, description}) {
+    static deleteTag(name: string) {
         return axios.delete(tagDetailUrl({name}));
     }
 }

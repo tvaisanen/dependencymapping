@@ -1,30 +1,33 @@
 //@flow
 
-import * as types from '../actions/actionTypes';
-import initialState from './initialState';
+import {
+   LOAD_MAPPINGS_SUCCESS,
+    POST_MAPPING_SUCCESS,
+    SAVE_MAPPING,
+    UPDATE_MAPPING_SUCCESS,
+    DELETE_MAPPING_SUCCESS
+} from './mapping.action-types';
+import initialState from '../initialState';
 
+import type { MappingAction, MappingState } from "./mapping.types";
 
-type Mapping = {
-    name: String,
-    description: ?String,
-    assets: [?String],
-    tags: [?String]
-}
+export default function mappingReducer(
+    state: MappingState = initialState.mappings,
+    action: MappingAction
+): MappingState {
 
-type MappingState = [Mapping]
-
-export default function mappingReducer(state: MappingState = initialState.mappings, action){
     switch(action.type) {
-        case types.LOAD_MAPPINGS_SUCCESS:
+
+        case LOAD_MAPPINGS_SUCCESS:
             // return empty array if the server response
             // didn't return any items
             return action.mappings ? action.mappings : [];
 
-        case types.POST_MAPPING_SUCCESS:
+        case POST_MAPPING_SUCCESS:
             console.info(action);
             return [...state, action.mapping];
 
-        case types.SAVE_MAPPING:
+        case SAVE_MAPPING:
             const updatedMapping = action.mapping;
             return state.map(mapping => {
                 if (mapping.name !== updatedMapping.name){
@@ -35,14 +38,16 @@ export default function mappingReducer(state: MappingState = initialState.mappin
                 }
             });
 
-        case types.UPDATE_MAPPING_SUCCESS:
+        case UPDATE_MAPPING_SUCCESS:
             const removeUpdated = state.filter(m => m.name !== action.mapping.name);
             console.info(action.mapping);
             return [...removeUpdated, action.mapping];
 
-        case types.DELETE_MAPPING_SUCCESS:
-            console.info("DELETE_MAPPING_SUCCESS!");
-            return state.filter(m => m.name !== action.removed);
+        case DELETE_MAPPING_SUCCESS:
+            return state.filter(m => {
+                console.info(`${m.name} !== ${action.name}`)
+                return m.name !== action.name
+            });
 
         default:
             return state;

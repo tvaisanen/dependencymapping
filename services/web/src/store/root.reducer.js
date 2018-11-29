@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import mappings from '../reducers/mapping.reducer';
+import mappings from './mapping/mapping.reducer';
 import assets from './asset/asset.reducer';
 import assetGroups from './asset-group/asset-group.reducer';
 import activeMapping from './active-mapping/active-mapping.reducer';
