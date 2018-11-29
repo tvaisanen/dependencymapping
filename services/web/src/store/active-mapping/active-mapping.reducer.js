@@ -8,11 +8,15 @@ import type {
     ActiveMappingAction
 } from "./active-mapping.types";
 
+import type { Asset } from "../asset/asset.types";
+
 
 export default function activeMappingReducer(
     state: ActiveMappingState = initialState.activeMapping,
     action: ActiveMappingAction
 ){
+    const asset: Asset = action.asset;
+
     switch(action.type) {
 
         case types.SET_ACTIVE_MAPPING:
@@ -44,9 +48,14 @@ export default function activeMappingReducer(
             return { ...state, assets: [ ...state.assets, action.asset ]}
 
         case types.REMOVE_ACTIVE_MAPPING_ASSET:
+            if (!asset){
+                // requires action.asset
+                return state;
+            }
             // remove the given resource from active mapping resources
-            const filteredAssets = state
-                .assets.filter(asset => asset !== action.asset.name);
+            const filteredAssets: Array<Asset> = state.assets
+                .filter(assetName => assetName !== action.asset.name);
+
             return { ...state, assets: filteredAssets };
 
         case types.CLEAR_ACTIVE_MAPPING_SELECTION:

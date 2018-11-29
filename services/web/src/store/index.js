@@ -3,3 +3,4 @@ export * from './asset/asset.actions';
 export * from './auth/auth.actions';
 export * from './asset-group/asset-group.actions';
 export * from './mapping/mapping.actions';
+export * from './detail-form/detail-form.actions';

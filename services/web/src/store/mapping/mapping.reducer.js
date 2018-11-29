@@ -1,7 +1,7 @@
 //@flow
 
 import {
-   LOAD_MAPPINGS_SUCCESS,
+    LOAD_MAPPINGS_SUCCESS,
     POST_MAPPING_SUCCESS,
     SAVE_MAPPING,
     UPDATE_MAPPING_SUCCESS,
@@ -9,44 +9,66 @@ import {
 } from './mapping.action-types';
 import initialState from '../initialState';
 
-import type { MappingAction, MappingState } from "./mapping.types";
+import type {Mapping, MappingAction, MappingState} from "./mapping.types";
+import {emptyArray} from "../types";
 
 export default function mappingReducer(
     state: MappingState = initialState.mappings,
     action: MappingAction
 ): MappingState {
 
-    switch(action.type) {
+    const mapping: Mapping = action.mapping;
+    const name: string = action.name;
+
+    switch (action.type) {
 
         case LOAD_MAPPINGS_SUCCESS:
             // return empty array if the server response
             // didn't return any items
-            return action.mappings ? action.mappings : [];
+            return action.mappings ? action.mappings : emptyArray;
 
         case POST_MAPPING_SUCCESS:
-            console.info(action);
-            return [...state, action.mapping];
+            return action.mapping ?
+                // add the mapping only if type Mapping
+                ([...state, (action.mapping: Mapping)]: MappingState)
+                // else return state
+                : state;
 
         case SAVE_MAPPING:
-            const updatedMapping = action.mapping;
-            return state.map(mapping => {
-                if (mapping.name !== updatedMapping.name){
-                    return mapping;
-                } 
+            if (!mapping){
+                // action.mapping is a must
+                return state;
+            }
+
+            return state.map(m => {
+                if (m.name !== mapping.name) {
+                    return m;
+                }
                 return {
-                    ...updatedMapping
+                    ...mapping
                 }
             });
 
         case UPDATE_MAPPING_SUCCESS:
-            const removeUpdated = state.filter(m => m.name !== action.mapping.name);
-            console.info(action.mapping);
-            return [...removeUpdated, action.mapping];
+            if (!mapping){
+                // action.mapping is a must
+                return state;
+            } else {
+                const removeUpdated: Array<Mapping> = state
+                    .filter(m => m.name !== mapping.name);
+
+                return [...removeUpdated, mapping];
+            }
+
 
         case DELETE_MAPPING_SUCCESS:
+            if (!name){
+                // action.name is a must
+                return state;
+            }
             return state.filter(m => {
-                console.info(`${m.name} !== ${action.name}`)
-                return m.name !== action.name
+                console.info(`${m.name} !== ${name}`)
+                return m.name !== name
             });
 
         default:

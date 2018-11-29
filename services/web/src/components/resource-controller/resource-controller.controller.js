@@ -7,6 +7,8 @@ import * as actionsActiveDetail from '../../store/active-detail/active-detail.ac
 import * as types from '../../constants/types';
 import type { Asset, Mapping, Tag } from "../../store/types";
 
+// todo: clean up
+import * as detailEditorActions from '../detail-editor/detail-editor.actions';
 
 const formActions = (dispatch) => ({
     [types.ASSET]: {
@@ -57,6 +59,7 @@ function mapStateToProps(state, props) {
 function dispatchToProps(dispatch) {
     return {
         formActions: formActions(dispatch),
+        detailEditorFilterChange: (value) => dispatch(detailEditorActions.onResourceFilterChange(value)),
         clearActiveDetail: () => dispatch(actionsActiveDetail.clearActiveDetail()),
         closeEdit: () => dispatch(actions.closeEdit()),
         closeFormAndSetActiveDetail: (detail) => dispatch(

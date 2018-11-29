@@ -20,7 +20,7 @@ export default function resourceReducer(state = initialState.resources, action) 
             return [...removeUpdated, action.asset];
 
         case types.DELETE_ASSET_SUCCESS:
-            return state.filter(m => m.name !== action.removed);
+            return state.filter(m => m.name !== action.name);
         default:
             return state;
     }

@@ -8,6 +8,8 @@ import {
     UPDATE_MAPPING_SUCCESS
 } from "./mapping.action-types";
 
+import type { EmptyArray } from '../types';
+
 export type Mapping = {
     name: string,
     description: string,
@@ -23,12 +25,10 @@ export type MappingAction = {
         DELETE_MAPPING_SUCCESS |
         UPDATE_MAPPING_SUCCESS
         ,
-    mapping: ?Mapping,
+    mapping: Mapping,
     mappings: ?Array<Mapping>,
-    name: ?string
+    name: string
 }
 
-export type MappingState = {
-    type: Array<Mapping>,
-    default: []
-}
+export type MappingState = Array<Mapping>;
+

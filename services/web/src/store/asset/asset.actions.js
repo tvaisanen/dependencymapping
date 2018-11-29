@@ -10,12 +10,13 @@ import * as mappingActions from '../mapping/mapping.actions';
 
 
 import type { Asset } from "./asset.types";
+import type {Dispatch, GetState} from "../types";
 
-export function postAsset(asset: Asset): {
-    promise: Promise<$ObjMap<O, typeof $await>>,
-    resolveCallback: (asset: Asset) => void
-} {
-    return function (dispatch) {
+type AssetAction = {promise: Promise<any>, resolveCallback: (asset: Asset)=>void}
+
+export function postAsset(asset: Asset): Dispatch {
+    return function (dispatch: Dispatch): AssetAction {
+
         const promise = GwClientApi.postAsset(asset);
 
         // resolving a request is done in form container
@@ -28,17 +29,16 @@ export function postAsset(asset: Asset): {
     }
 }
 
-export function postAssetSuccess(asset) {
-    console.info("Post resource success:");
+export function postAssetSuccess(asset: Asset) {
     return {type: types.POST_ASSET_SUCCESS, asset}
 }
 
 /****************  ASSET UPDATE   ****************/
-export function updateAsset(asset) {
+export function updateAsset(asset: Asset): Dispatch {
 
     // updates asset/resource to the database
     // and refreshes the nodes edges in the graph
-    return function (dispatch, getState) {
+    return function (dispatch: Dispatch, getState: GetState): AssetAction {
         const resolveCallback = () => {
                 dispatch(updateAssetSuccess({asset: asset}));
                 dispatch(appActions.setInfoMessage(`Updated asset: ${asset.name}`));
@@ -73,7 +73,7 @@ function updateAssetSuccess({asset}) {
 
 export function deleteAsset(name: string) {
     console.info("deleteResource(" + name + ")");
-    return function (dispatch, getState) {
+    return function (dispatch: Dispatch, getState: GetState) {
 
         const { assets, mappings } = getState();
 
@@ -145,40 +145,30 @@ export function deleteAsset(name: string) {
             });
 
             dispatch(appActions.setInfoMessage(`Deleted asset: ${name}`));
-            dispatch(deleteAssetSuccess({removed: name}));
+            dispatch(deleteAssetSuccess(name));
         };
         return {promise, resolveCallback};
     }
 }
 
-export function deleteAssetSuccess({removed}) {
+export function deleteAssetSuccess(name: string) {
     console.info('Delete mapping success.');
-    return {type: types.DELETE_ASSET_SUCCESS, removed};
+    return {type: types.DELETE_ASSET_SUCCESS, name};
 }
 
 /*********************************************** */
 
-export function addResourceToMapping({nameMapping, nameResource}) {
-    // if no resource -> create resource
-    console.debug('add ' + nameResource + " to " + nameMapping);
-    // add to the resources
-    // add the resource
-    return function (dispatch) {
-        postAsset(nameResource);
-        //putResourceToMapping(nameMapping, nameResource);
-    }
-}
 
-export function loadAssetsSuccess(assets) {
+export function loadAssetsSuccess(assets: Array<Asset>) {
     return {type: types.LOAD_ASSETS_SUCCESS, assets}
 }
 
-export function loadAssetSuccess(asset) {
+export function loadAssetSuccess(asset: Asset) {
     return {type: types.LOAD_ASSET_SUCCESS, asset}
 }
 
 export function loadAllAssets() {
-    return function (dispatch) {
+    return function (dispatch: Dispatch) {
 
         // get all assets from the api
         const promise = GwClientApi.getAssets();
@@ -203,19 +193,7 @@ export function loadAllAssets() {
 }
 
 
-export function loadResource() {
-    /**
-     * Load resource node
-     */
-    return function (dispatch) {
-        return GwClientApi.getResources().then(resource => {
-            dispatch(loadAssetSuccess(resource));
-        }).catch(error => {
-            throw(error);
-        });
-    }
-}
 
-export function addAsset(asset) {
+export function addAsset(asset: Asset) {
     return {type: types.ADD_ASSET, asset}
 }

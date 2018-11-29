@@ -346,7 +346,10 @@ class ResourceControllerContainer extends Component {
                     <FormSelectionBlock
                         labelOption="Available assets"
                         selectedLabel={this.props.formType === types.MAPPING ? "selected" : "connected to"}
-                        onFilterChange={(e) => this.setState({resourceFilter: e.target.value})}
+                        onFilterChange={(e) => {
+                            this.props.detailEditorFilterChange(e.target.value);
+                            this.setState({resourceFilter: e.target.value})
+                        }}
                         options={filteredResources}
                         selected={selectedResources}
                         select={item => this.setState({

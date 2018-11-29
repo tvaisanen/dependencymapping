@@ -8,11 +8,15 @@ import {
     REMOVE_ACTIVE_MAPPING_ASSET,
 } from "./active-mapping.action-types";
 
-import type { Asset } from '../asset/asset.types';
+import type { Asset }   from '../asset/asset.types';
 import type { Mapping } from '../mapping/mapping.types';
+import type { Tag }     from "../tag/tag.types";
 
 export type ActiveMappingState = {
-    +assets: { type: Array<string>, default: []},
+    +assets: Array<Asset>,
+    +tags: Array<Tag>,
+    +name: string,
+    +description: string
 }
 
 export type ActiveMappingAction = {
@@ -22,9 +26,9 @@ export type ActiveMappingAction = {
         ADD_ACTIVE_MAPPING_ASSET |
         CLEAR_ACTIVE_MAPPING_SELECTION |
         REMOVE_ACTIVE_MAPPING_ASSET,
-    asset: ?Asset,
-    assets: ?Array<Asset>,
-    mapping: ?Mapping
+    asset: Asset,
+    assets: Array<Asset>,
+    mapping: Mapping
 
 }
 

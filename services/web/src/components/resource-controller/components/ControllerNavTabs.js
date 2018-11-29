@@ -4,6 +4,9 @@ import {connect} from 'react-redux'
 import styled from 'styled-components';
 import * as actions from '../../../actions';
 
+// todo: needs to be refactored
+import * as detailEditorActions from '../../detail-editor/detail-editor.actions';
+
 const NavTab = styled.span`
         text-decoration: ${p=>p.selected?'underline':null};
         font-weight: bold;
@@ -60,7 +63,10 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    setFormType: (formType) => dispatch(actions.setFormType(formType))
+    setFormType: (formType) => {
+        dispatch(detailEditorActions.clickDetailType(formType));
+        dispatch(actions.setFormType(formType))
+    }
 });
 
 export default connect(

@@ -8,6 +8,7 @@ import activeDetail from './active-detail/active-detail.reducer'
 import graph from './graph/graph.reducer';
 import app from '../reducers/app.reducer'
 import auth from './auth/auth.reducer';
+import detailForm from './detail-form/detail-form.reducer';
 
 const rootReducer = combineReducers({
     app,
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
     tags,
     activeMapping,
     activeDetail,
-    graph
+    graph,
+    detailForm
 });
 
 export default rootReducer;

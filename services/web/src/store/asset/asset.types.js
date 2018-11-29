@@ -4,3 +4,7 @@ export type Asset = {
     connected_to: { type: Array<string>, default: [] },
     tags: { type: Array<string>, default: [] }
 }
+
+export type AssetState = {
+
+}
