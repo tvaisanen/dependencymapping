@@ -44,64 +44,68 @@ export function addResourceToActiveMapping(asset) {
 
     return function (dispatch, getState) {
 
+
         const { activeMapping, assets } = getState();
         const newAssetName = asset.name;
 
-        const edgeElements = asset.connected_to.map(
-            target => graphHelpers
-                .edgeElementFromResource(asset.name, target.name)
-        );
+        if (activeMapping.name === "no selection"){
+          alert("Create or select a mapping first, before adding assets.");
+        } else {
+            const edgeElements = asset.connected_to.map(
+                target => graphHelpers
+                    .edgeElementFromResource(asset.name, target.name)
+            );
 
-        console.info(edgeElements)
+            console.info(edgeElements)
 
-        const activeMappingAssetsConnectingIntoNewAsset =
-            activeMapping.assets.filter(
-                activeMappingAsset => resourceHelpers.isResourceConnectedToId({
-                        resource: asset,
-                        id: activeMappingAsset
-                    }
+            const activeMappingAssetsConnectingIntoNewAsset =
+                activeMapping.assets.filter(
+                    activeMappingAsset => resourceHelpers.isResourceConnectedToId({
+                            resource: asset,
+                            id: activeMappingAsset
+                        }
+                    )
                 )
-            )
-        ;
+            ;
 
-        const cy = getState().graph;
-        const node = graphHelpers.nodeElementFromResource(asset);
-
+            const cy = getState().graph;
+            const node = graphHelpers.nodeElementFromResource(asset);
 
 
-        dispatch({type: types.ADD_ACTIVE_MAPPING_ASSET, asset: asset.name});
+            dispatch({type: types.ADD_ACTIVE_MAPPING_ASSET, asset: asset.name});
 
-        // check if the assets in map have connections
-        // to the new asset
+            // check if the assets in map have connections
+            // to the new asset
 
-        console.group("Check if premapped points to new");
-        const preMappedAssetObjects = assets.filter(asset => {
-          return _.includes(activeMapping.assets, asset.name);
-        });
+            console.group("Check if premapped points to new");
+            const preMappedAssetObjects = assets.filter(asset => {
+                return _.includes(activeMapping.assets, asset.name);
+            });
 
-        // todo: refactor to reduce
-        let preMappedToNewEdges = [];
+            // todo: refactor to reduce
+            let preMappedToNewEdges = [];
 
-        preMappedAssetObjects.forEach(preMappedAsset => {
-            preMappedAsset.connected_to.forEach(target => {
-                if (target === newAssetName){
-                    preMappedToNewEdges.push(
-                        graphHelpers.edgeElementFromResource(
-                            preMappedAsset.name,
-                            newAssetName
-                        )
-                    );
-                }
-            })
-        });
+            preMappedAssetObjects.forEach(preMappedAsset => {
+                preMappedAsset.connected_to.forEach(target => {
+                    if (target === newAssetName) {
+                        preMappedToNewEdges.push(
+                            graphHelpers.edgeElementFromResource(
+                                preMappedAsset.name,
+                                newAssetName
+                            )
+                        );
+                    }
+                })
+            });
 
 
-        graphHelpers.addElement(cy, node);
-        graphHelpers.addElements(cy, preMappedToNewEdges);
-        graphHelpers.addElements(cy, edgeElements);
-        console.groupEnd();
+            graphHelpers.addElement(cy, node);
+            graphHelpers.addElements(cy, preMappedToNewEdges);
+            graphHelpers.addElements(cy, edgeElements);
+            console.groupEnd();
 
-        graphHelpers.updateLayout(cy, "cola");
+            graphHelpers.updateLayout(cy, "cola");
+        }
     }
 }
 

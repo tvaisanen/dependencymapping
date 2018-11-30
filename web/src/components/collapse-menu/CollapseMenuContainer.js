@@ -5,12 +5,13 @@ import collapseMenuCtrl from './collapse-menu.controller';
 import {colorDark} from "../../constants/colors";
 import PropTypes from 'prop-types';
 
+//<MenuBtn onClick={props.logout}>logout</MenuBtn>
+
 const CollapseMenuContainer = props => (
     <CollapseMenu visible={props.visible}>
         <MenuBtn onClick={props.clearGraphSelection}>clear</MenuBtn>
         <MenuBtn onClick={props.saveMapping}>save</MenuBtn>
         <MenuBtn onClick={props.downloadImage}>download</MenuBtn>
-        <MenuBtn onClick={props.logout}>logout</MenuBtn>
     </CollapseMenu>
 );
 
@@ -37,13 +38,14 @@ export const CollapseMenu = styled.div`
     padding: 0 24px;
     right: 28px;
     background: ${colorDark};
-    width: 100px;
+    width: 80px;
     min-height: inherit;
     height: auto;
     overflow: hidden;
     overflow-x: hidden;
     transition: all .2s ease-in-out;
 
+  border-radius: 0 0 3px 3px;
 `;
 export const MenuBtn = styled.div`
   padding: 4px 0;
@@ -54,7 +56,5 @@ export const MenuBtn = styled.div`
     font-weight: bold;
   }
   cursor: pointer;
-  :last-of-type {
-    border-top: 1px solid rgba(255,255,255,0.3);
-  } 
+  
 `;

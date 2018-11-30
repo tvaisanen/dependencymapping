@@ -14,6 +14,10 @@ const RESOURCES_URL = `${API_URL}asset/`;
 
 const LOGIN_URL = `${API_URL}rest-auth/login/`;
 
+console.group("Api client config");
+console.info(`api host: ${API_HOST}`);
+console.groupEnd();
+
 function tagDetailUrl({name}) {
     return `${TAGS_URL}${encodeURI(name)}/`;
 }
@@ -97,15 +101,14 @@ class GwClientApi {
         console.info({name, description, assets, tags});
         console.groupEnd();
 
-        setAuthHeader();
         return axios.post(
             MAPPINGS_URL,
 
             {
                 name: name,
                 description: description,
-                assets: JSON.stringify(assets),
-                tags: JSON.stringify(tags)
+                assets: assets,
+                tags: tags
 
             }
         )
@@ -140,8 +143,8 @@ class GwClientApi {
         console.info({
             name: name,
             description: description,
-            connected_to: JSON.stringify(connected_to),
-            tags: JSON.stringify(tags)
+            connected_to: connected_to,
+            tags: tags
         });
         console.groupEnd();
         return axios.post(RESOURCES_URL,

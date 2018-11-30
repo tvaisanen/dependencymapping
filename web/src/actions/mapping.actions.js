@@ -22,7 +22,9 @@ export function postMapping({name, description, resources, tags}) {
             dispatch(appActions.setInfoMessage(`Created mapping: ${name}`));
             dispatch(postMappingSuccess(mapping));
         };
-        const promise = GwClientApi.postMapping({name, description, assets:resources, tags})
+
+        console.info({name, description, assets:resources, tags});
+        const promise = GwClientApi.postMapping({name, description, assets:resources, tags});
         return {promise, resolveCallback};
     }
 }
@@ -63,7 +65,7 @@ export function updateMapping(mapping) {
         const promise = GwClientApi.putMapping({
             name: mapping.name,
             description: mapping.description,
-            assets: mapping.assets,
+            assets: mapping.resources,
             tags: mapping.tags
         });
         return {promise, resolveCallback};

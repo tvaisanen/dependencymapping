@@ -26,7 +26,7 @@ export default {
     dependencies: [],
     resources: [],
     tags: [],
-    activeMapping: {name: 'none', resources: [], connections: []},
+    activeMapping: {name: 'no selection', resources: [], connections: []},
     activeDetail: {
         data: {
             name: 'Welcome from store',

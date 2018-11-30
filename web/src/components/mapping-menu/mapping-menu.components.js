@@ -24,8 +24,7 @@ export const Menu = (
                 )
                 : null
             }
+            {title === "no selection" ? <s.SelectFirst>Create or select a mapping first, before adding assets.</s.SelectFirst> :  null }
         </s.ScrollContent>
     </s.SidePanelMenu>
 );
-
-

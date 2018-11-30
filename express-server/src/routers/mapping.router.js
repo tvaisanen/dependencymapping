@@ -46,6 +46,7 @@ mappingRouter.post('(/:id)?', (req, res) => {
             tags: req.body.tags
         });
         const query = {name: mapping.name};
+        console.log(mapping)
 
         console.log("check if this already exists!");
         console.log(query);

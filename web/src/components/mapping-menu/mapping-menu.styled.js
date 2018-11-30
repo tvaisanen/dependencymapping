@@ -1,5 +1,12 @@
 import styled from 'styled-components';
 
+
+export const SelectFirst = styled.div`
+   color: white;
+   text-align: center;
+   letter-spacing: 0.04rem;
+`;
+
 export const ListItem = styled.div`
     font-size: small;
     text-align: center;
@@ -35,6 +42,7 @@ export const ListItem = styled.div`
 `;
 export const ScrollContent = styled.div`
     display: flex;
+    height: inherit;
     flex-direction: column;
     height: auto; 
     padding: 4px 0;
