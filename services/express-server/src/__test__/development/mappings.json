@@ -1,0 +1,33 @@
+[
+  {
+    "name": "TestMappingOne",
+    "description": "Describe TestMappingOne here.",
+    "assets": [
+      "TestPageOne",
+      "TestPageTwo",
+      "TestPageThree",
+      "GroupOne"
+    ],
+    "tags": [
+      "TestPage",
+      "TestTag"
+    ]
+  },
+  {
+    "name": "TestMappingTwo",
+    "description": "Describe TestMappingTwo here.",
+    "assets": [],
+    "tags": [
+      "TestPage",
+      "TestTag"
+    ]
+  },
+  {
+    "name": "ToBeDeleted",
+    "description": "Describe ToBeDeleted here.",
+    "assets": ["TestPageOne"],
+    "tags": [
+      "TestTag"
+    ]
+  }
+]

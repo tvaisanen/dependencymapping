@@ -1,0 +1,6 @@
+
+[ignore]
+.*/__tests__/.*
+.*/src/\(foo\|bar\)/.*
+.*\.ignore\.js
+

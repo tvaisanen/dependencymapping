@@ -10,33 +10,29 @@ services:
           - overlay
 
     express:
-        build: ./express-server
+        build: ./services/express-server
         ports:
           - 3000:3000
         volumes:
-          - ./express-server/src/:/usr/local/src/express/src
+          - ./services/express-server/src/:/usr/local/src/express/src
         env_file:
          - .env-development
         networks:
           - overlay
 
     web:
-        build: ./web
+        build: ./services/web
         volumes:
-            - ./web/src/:/usr/webapp/src/src
-            - ./.env:/usr/webapp/src/.env
+            - ./services/web/src/:/usr/webapp/src/src
+            - ./services/web/package.json:/usr/webapp/src/package.json
+            - ./services/web/.flowconfig:/usr/webapp/src/.flowconfig
         networks:
             - overlay
         command: npm start
-
-        # hide ports. access only via proxy
         ports:
             - 3001:3000
         env_file:
             - .env-development
-        environment:
-          REACT_APP_API_HOST: "localhost:3000"
-          REACT_APP_API_PORT: 3000
 
 networks:
    overlay:
