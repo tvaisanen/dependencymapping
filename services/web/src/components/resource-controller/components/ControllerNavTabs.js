@@ -1,5 +1,5 @@
 import React from 'react';
-import * as types from '../../../constants/types';
+import {ASSET, MAPPING, TAG} from '../../../constants/types';
 import {connect} from 'react-redux'
 import styled from 'styled-components';
 import * as actions from '../../../actions';
@@ -8,10 +8,10 @@ import * as actions from '../../../actions';
 import * as detailEditorActions from '../../detail-editor/detail-editor.actions';
 
 const NavTab = styled.span`
-        text-decoration: ${p=>p.selected?'underline':null};
+        text-decoration: ${p => p.selected ? 'underline' : null};
         font-weight: bold;
-        background-color: ${p=>p.selected ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.1)'};; 
-        color: ${p=>p.selected?'rgba(36,36,36,0.9)': 'rgba(255,255,255,0.2)'};
+        background-color: ${p => p.selected ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.1)'};; 
+        color: ${p => p.selected ? 'rgba(36,36,36,0.9)' : 'rgba(255,255,255,0.2)'};
         padding: 4px 12px;
         margin: 2px 6px; 
         border-radius: 3px;
@@ -31,25 +31,25 @@ const NavTabs = styled.div`
   margin-bottom: 12px;
 `;
 
-const ControllerNavTabs = ({setFormType, formType, types, visible}) => {
-    if (visible) {
+type Props = {
+    setFormType: (value:string) => void,
+    formType: ASSET | MAPPING | TAG,
+    visible: boolean,
+    buttons: Array<{label: string, type: ASSET | MAPPING | TAG}>
+}
+
+const ControllerNavTabs = (props: Props) => {
+    if (props.visible) {
         return (
             <NavTabs>
-                <NavTab
-                    selected={formType === types.ASSET}
-                    onClick={() => setFormType(types.ASSET)}>
-                    Asset
-                </NavTab>
-                <NavTab
-                    selected={formType === types.MAPPING}
-                    onClick={() => setFormType(types.MAPPING)}>
-                    Mapping
-                </NavTab>
-                <NavTab
-                    selected={formType === types.TAG}
-                    onClick={() => setFormType(types.TAG)}>
-                    Tag
-                </NavTab>
+                {props.buttons.map(b => (
+                    <NavTab
+                        selected={props.formType === b.type}
+                        onClick={() => props.setFormType(b.type)}>
+                        {b.label}
+                    </NavTab>
+                ))}
+
             </NavTabs>
         )
     } else {
@@ -57,9 +57,16 @@ const ControllerNavTabs = ({setFormType, formType, types, visible}) => {
     }
 };
 
+ControllerNavTabs.defaultProps = {visible: true};
+
 const mapStateToProps = (state, props) => ({
+    visible: true,
     formType: state.app.form.type,
-    types: types,
+    buttons: [
+        {label: "Asset", type: ASSET},
+        {label: "Mapping", type: MAPPING},
+        {label: "Tag", type: TAG},
+    ]
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -71,5 +78,22 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default connect(
     mapStateToProps,
-        mapDispatchToProps
+    mapDispatchToProps
 )(ControllerNavTabs)
+    /*
+<NavTab
+                    selected={formType === ASSET}
+                    onClick={() => setFormType(ASSET)}>
+                    Asset
+                </NavTab>
+                <NavTab
+                    selected={formType === MAPPING}
+                    onClick={() => setFormType(MAPPING)}>
+                    Mapping
+                </NavTab>
+                <NavTab
+                    selected={formType === TAG}
+                    onClick={() => setFormType(TAG)}>
+                    Tag
+                </NavTab>
+                */

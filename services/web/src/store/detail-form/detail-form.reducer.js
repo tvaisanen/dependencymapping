@@ -16,6 +16,7 @@ import {
 } from "./detail-form.action-types";
 
 const initialState = {
+    showFormSelection: true,
     assetFilter: "",
     selectedAssets: [],
     tagFilter: "",

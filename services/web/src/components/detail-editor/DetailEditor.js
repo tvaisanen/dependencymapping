@@ -1,16 +1,21 @@
 //@flow
 import React from 'react';
-import { connect } from 'react-redux';
+import {TAG} from "../../constants";
+import {connect} from 'react-redux';
 import styled from 'styled-components';
-import { AssetSelection, TagSelection } from "./components/";
+import SelectionMenus from '../resource-controller/components/SelectionMenus';
+import ControllerNavTabs from '../resource-controller/components/ControllerNavTabs';
+import { AssetSelection, TagSelection, DescriptionTextarea } from "./components/";
+import * as form from '../form.components';
 
 const Container = styled.div`
+    display: flex;
   position: fixed;
   top:0;
   right:0;
-  width: 50%;
+  width: 100%;
   min-height: 400px;
-  height: 100%;
+  height: 50%;
   z-index: 20;
   border: grey;
   border-radius: 3px;
@@ -22,18 +27,30 @@ const Container = styled.div`
 type DetailEditorProps = {}
 
 const DetailEditor = (props: DetailEditorProps) => {
-   return <Container>
-       DetailEditor
-       <div>
-           {Object.keys(props)
-               .map(key => <div>{key}: {JSON.stringify(props[key])}</div>)}
-       </div>
-       <AssetSelection/>
-       <TagSelection/>
-   </Container>
+    return <Container>
+        DetailEditor
+        <div>
+            {Object.keys(props)
+                .map(key => <div>{key}: {JSON.stringify(props[key])}</div>)}
+        </div>
+        <div>
+            <ControllerNavTabs/>
+            <SelectionMenus/>
+            <DescriptionTextarea/>
+        </div>
+
+        {
+            props.formType !== TAG ?
+                <div style={{width: "50%"}}>
+                    <AssetSelection/>
+                    <TagSelection/>
+                </div>
+                : null
+        }
+    </Container>
 }
 
 export default connect(
     (state, props) => ({...state.detailForm}),
     {}
-    )(DetailEditor);
+)(DetailEditor);
