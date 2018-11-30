@@ -301,7 +301,10 @@ class ResourceControllerContainer extends Component {
                                 value={this.state.name}
                                 valid={nameValid}
                                 check={this.state.check}
-                                onChange={(e) => this.setState({name: e.target.value})}
+                                onChange={(e) => {
+                                    this.props.setResourceNameValue(e.target.value);
+                                    this.setState({name: e.target.value})
+                                }}
                             />
                             {this.state.errors.name ?
                                 <form.ErrorMsg>{this.state.errors.name}</form.ErrorMsg>
@@ -324,8 +327,10 @@ class ResourceControllerContainer extends Component {
                         value={this.state.description}
                         valid={descriptionValid}
                         check={this.state.check}
-                        onChange={(e) =>
+                        onChange={(e) => {
+                            this.props.setResourceDescriptionValue(e.target.value);
                             this.setState({description: e.target.value})
+                        }
                         }
                     />
 
@@ -347,34 +352,49 @@ class ResourceControllerContainer extends Component {
                         labelOption="Available assets"
                         selectedLabel={this.props.formType === types.MAPPING ? "selected" : "connected to"}
                         onFilterChange={(e) => {
-                            this.props.detailEditorFilterChange(e.target.value);
+                            this.props.setAssetFilterValue(e.target.value);
                             this.setState({resourceFilter: e.target.value})
                         }}
                         options={filteredResources}
                         selected={selectedResources}
-                        select={item => this.setState({
-                            selectedResources: [...this.state.selectedResources, item]
-                        })}
-                        deselect={item => this.setState({
-                            selectedResources: this.state.selectedResources
-                                .filter(r => r !== item)
-                        })}
+                        select={item => {
+                            this.props.addAssetToSelected((item: string));
+                            this.setState({
+                                selectedResources: [...this.state.selectedResources, item]
+                            })
+                        }}
+                        deselect={item => {
+                            this.props.removeAssetFromSelected((item: string));
+                            this.setState({
+                                selectedResources: this.state.selectedResources
+                                    .filter(r => r !== item)
+                            })
+                        }}
                         addItem={this.createAssetAndSelect}
                     />
                     {/* TAGS */}
                     <FormSelectionBlock
                         labelOption="Available tags"
                         selectedLabel="selected"
-                        onFilterChange={(e) => this.setState({tagFilter: e.target.value})}
+                        onFilterChange={(e) => {
+                            this.props.setTagFilterValue(e.target.value);
+                            this.setState({tagFilter: e.target.value})
+                        }}
                         options={filteredTags}
                         selected={selectedTags}
-                        select={item => this.setState({
-                            selectedTags: [...this.state.selectedTags, item]
-                        })}
-                        deselect={item => this.setState({
-                            selectedTags: this.state.selectedTags
-                                .filter(r => r !== item)
-                        })}
+                        select={item => {
+                            this.props.addTagToSelected((item: string));
+                            this.setState({
+                                selectedTags: [...this.state.selectedTags, item]
+                            })
+                        }}
+                        deselect={item => {
+                            this.props.removeTagFromSelected((item: string));
+                            this.setState({
+                                selectedTags: this.state.selectedTags
+                                    .filter(r => r !== item)
+                            })
+                        }}
                         addItem={this.createTagAndSelect}
                     />
                 </sc.SecondaryBlock>

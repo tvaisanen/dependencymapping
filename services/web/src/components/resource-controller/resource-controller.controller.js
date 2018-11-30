@@ -59,12 +59,20 @@ function mapStateToProps(state, props) {
 function dispatchToProps(dispatch) {
     return {
         formActions: formActions(dispatch),
-        detailEditorFilterChange: (value) => dispatch(detailEditorActions.onResourceFilterChange(value)),
         clearActiveDetail: () => dispatch(actionsActiveDetail.clearActiveDetail()),
         closeEdit: () => dispatch(actions.closeEdit()),
         closeFormAndSetActiveDetail: (detail) => dispatch(
             actions.closeFormAndSetActiveDetail(detail)
         ),
+        // todo: to be refactored
+        setAssetFilterValue: (value: string) => dispatch(detailEditorActions.onAssetFilterChange(value)),
+        setTagFilterValue: (value: string) => dispatch(detailEditorActions.onTagFilterChange(value)),
+        setResourceNameValue: (value: string) => dispatch(detailEditorActions.onResourceNameChange(value)),
+        setResourceDescriptionValue: (value: string) => dispatch(detailEditorActions.onResourceDescriptionChange(value)),
+        addAssetToSelected: (value: string) => dispatch(detailEditorActions.addAssetToSelected(value)),
+        addTagToSelected: (value: string) => dispatch(detailEditorActions.addTagToSelected(value)),
+        removeAssetFromSelected: (value: string) => dispatch(detailEditorActions.removeAssetFromSelected(value)),
+        removeTagFromSelected: (value: string) => dispatch(detailEditorActions.removeTagFromSelected(value)),
     }
 }
 
