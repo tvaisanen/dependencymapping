@@ -2,6 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import { AssetSelection, TagSelection } from "./components/";
 
 const Container = styled.div`
   position: fixed;
@@ -9,7 +10,7 @@ const Container = styled.div`
   right:0;
   width: 50%;
   min-height: 400px;
-  height: 400px;
+  height: 100%;
   z-index: 20;
   border: grey;
   border-radius: 3px;
@@ -27,6 +28,8 @@ const DetailEditor = (props: DetailEditorProps) => {
            {Object.keys(props)
                .map(key => <div>{key}: {JSON.stringify(props[key])}</div>)}
        </div>
+       <AssetSelection/>
+       <TagSelection/>
    </Container>
 }
 
