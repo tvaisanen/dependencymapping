@@ -52,7 +52,9 @@ function mapStateToProps(state, props) {
         formType: state.app.form.type,
         assets: state.assets,
         assetNameList: state.assets.map(r => r.name),
-        tagNameList: state.tags.map(t => t.name)
+        tagNameList: state.tags.map(t => t.name),
+        selectedAssets: state.detailForm.selectedAssets,
+        selectedTags: state.detailForm.selectedTags
     }
 }
 

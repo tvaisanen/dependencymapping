@@ -15,11 +15,12 @@ export type SelectionProps = {
     select: (value: string) => void,
     deselect: (value: string) => void,
     addItem: (value: string) => void,
-    selectedLabel: string
+    selectedLabel: string,
+    createAndSelect: (name: string) => void
 }
 
 
-const SelectionWithFilterAndCreate = (props: Props) => (
+const SelectionWithFilterAndCreate = (props: SelectionProps) => (
         <SelectionBlock id="selection-block">
             <Block id="block">
                 <SmallLabel>{props.title}
@@ -39,7 +40,7 @@ const SelectionWithFilterAndCreate = (props: Props) => (
                 <SmallLabel>{props.selectedLabel}: {props.selected.length}</SmallLabel>
                 <AddInputField
                     id="filter-input-field"
-                    addItem={props.addItem}
+                    addItem={props.createAndSelect}
                     placeholder={"create new"}
                 />
                 <OptionsToChooseFrom id="options-to-choose-from"

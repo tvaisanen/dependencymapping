@@ -16,6 +16,8 @@ import * as types from '../../constants/types';
 import * as apiHelpers from '../../common/api.helpers';
 import * as sc from './resource-controller.styled';
 import {MainBlock} from './resource-controller.styled';
+import TagSelection from "../detail-editor/components/TagSelection";
+import AssetSelection from "../detail-editor/components/AssetSelection";
 
 // todo: refactor to store
 
@@ -38,7 +40,6 @@ class ResourceControllerContainer extends Component {
         }
 
         this.createAssetAndSelect = this.createAssetAndSelect.bind(this);
-        this.createTagAndSelect = this.createTagAndSelect.bind(this);
         this.actionDelete = this.actionDelete.bind(this);
         this.actionPost = this.actionPost.bind(this);
         this.actionUpdate = this.actionUpdate.bind(this);
@@ -187,34 +188,15 @@ class ResourceControllerContainer extends Component {
 
     }
 
-    createTagAndSelect(tagName) {
 
-        if (_.includes(this.props.tagNameList, tagName)) {
-            // if tag already exists, just add the tag to selected
-            // but do not allow duplicates
-            if (!_.includes(this.state.selectedTags, tagName)) {
-                this.setState({selectedTags: [...this.state.selectedTags, tagName]})
-            }
-
-        } else {
-            // create the tag and add it to selected
-            const {promise, resolveCallback} = this.props.formActions[types.TAG].post({name: tagName});
-            promise.then(response => {
-                resolveCallback(response.data);
-                this.setState({selectedTags: [...this.state.selectedTags, response.data.name]})
-            });
-        }
-        console.groupEnd();
-
-    }
 
     getFormData() {
         console.info(this.state);
         return {
             name: this.state.name,
             description: this.state.description,
-            resources: this.state.selectedResources,
-            tags: this.state.selectedTags,
+            resources: this.props.selectedAssets,
+            tags: this.props.selectedTags,
             group: this.state.group,
             color: this.state.color,
             shape: this.state.shape
@@ -234,9 +216,11 @@ class ResourceControllerContainer extends Component {
         console.group("On Save");
         console.info(parsedData);
         console.info(this.props.formType);
+        /*
         this.props.formEdit ?
             this.actionUpdate(parsedData)
             : this.actionPost(parsedData);
+            */
         console.groupEnd();
     }
 
@@ -248,34 +232,9 @@ class ResourceControllerContainer extends Component {
 
 
     render() {
-        const {tagNameList, assetNameList} = this.props;
-        const {
-            resourceFilter, selectedResources,
-            tagFilter, selectedTags
-        } = this.state;
         const nameValid = validators.validMappingName(this.state.name);
         const descriptionValid = validators.validDescription(this.state.description);
 
-        // handle resource filtering
-        const notSelectedResources = assetNameList.filter(name => {
-            // return !_.includes(selectedResources, name);
-            return !_.includes(selectedResources, name)
-        });
-
-        const filteredResources = filterItems({
-            items: notSelectedResources,
-            filterValue: resourceFilter
-        });
-
-        // handle tag filtering
-        const notSelectedTags = tagNameList.filter(name => {
-            return !_.includes(selectedTags, name);
-        });
-
-        const filteredTags = filterItems({
-            items: notSelectedTags,
-            filterValue: tagFilter
-        });
         console.log(this.state)
         return (
             <sc.ResourceControllerLayout id="resource-controller-container">
@@ -347,56 +306,9 @@ class ResourceControllerContainer extends Component {
                     id="form-col-two"
                     column
                 >
-                    {/* Selectable resource list */}
-                    <FormSelectionBlock
-                        labelOption="Available assets"
-                        selectedLabel={this.props.formType === types.MAPPING ? "selected" : "connected to"}
-                        onFilterChange={(e) => {
-                            this.props.setAssetFilterValue(e.target.value);
-                            this.setState({resourceFilter: e.target.value})
-                        }}
-                        options={filteredResources}
-                        selected={selectedResources}
-                        select={item => {
-                            this.props.addAssetToSelected((item: string));
-                            this.setState({
-                                selectedResources: [...this.state.selectedResources, item]
-                            })
-                        }}
-                        deselect={item => {
-                            this.props.removeAssetFromSelected((item: string));
-                            this.setState({
-                                selectedResources: this.state.selectedResources
-                                    .filter(r => r !== item)
-                            })
-                        }}
-                        addItem={this.createAssetAndSelect}
-                    />
-                    {/* TAGS */}
-                    <FormSelectionBlock
-                        labelOption="Available tags"
-                        selectedLabel="selected"
-                        onFilterChange={(e) => {
-                            this.props.setTagFilterValue(e.target.value);
-                            this.setState({tagFilter: e.target.value})
-                        }}
-                        options={filteredTags}
-                        selected={selectedTags}
-                        select={item => {
-                            this.props.addTagToSelected((item: string));
-                            this.setState({
-                                selectedTags: [...this.state.selectedTags, item]
-                            })
-                        }}
-                        deselect={item => {
-                            this.props.removeTagFromSelected((item: string));
-                            this.setState({
-                                selectedTags: this.state.selectedTags
-                                    .filter(r => r !== item)
-                            })
-                        }}
-                        addItem={this.createTagAndSelect}
-                    />
+                    <AssetSelection/>
+                    <TagSelection/>
+
                 </sc.SecondaryBlock>
             </sc.ResourceControllerLayout>
         );
@@ -428,3 +340,75 @@ export default connect(
     resourceControllerCtrl.dispatchToProps
 )(ResourceControllerContainer);
 
+
+/*
+createTagAndSelect(tagName) {
+
+        if (_.includes(this.props.tagNameList, tagName)) {
+            // if tag already exists, just add the tag to selected
+            // but do not allow duplicates
+            if (!_.includes(this.state.selectedTags, tagName)) {
+                this.setState({selectedTags: [...this.state.selectedTags, tagName]})
+            }
+
+        } else {
+            // create the tag and add it to selected
+            const {promise, resolveCallback} = this.props.formActions[types.TAG].post({name: tagName});
+            promise.then(response => {
+                resolveCallback(response.data);
+                this.setState({selectedTags: [...this.state.selectedTags, response.data.name]})
+            });
+        }
+        console.groupEnd();
+
+    }
+
+
+<FormSelectionBlock
+labelOption="Available assets"
+selectedLabel={this.props.formType === types.MAPPING ? "selected" : "connected to"}
+onFilterChange={(e) => {
+    this.props.setAssetFilterValue(e.target.value);
+    this.setState({resourceFilter: e.target.value})
+}}
+options={filteredResources}
+selected={selectedResources}
+select={item => {
+    this.props.addAssetToSelected((item: string));
+    this.setState({
+        selectedResources: [...this.state.selectedResources, item]
+    })
+}}
+deselect={item => {
+    this.props.removeAssetFromSelected((item: string));
+    this.setState({
+        selectedResources: this.state.selectedResources
+            .filter(r => r !== item)
+    })
+}}
+addItem={this.createAssetAndSelect}
+/>
+<FormSelectionBlock
+    labelOption="Available tags"
+    selectedLabel="selected"
+    onFilterChange={(e) => {
+        this.props.setTagFilterValue(e.target.value);
+        this.setState({tagFilter: e.target.value})
+    }}
+    options={filteredTags}
+    selected={selectedTags}
+    select={item => {
+        this.props.addTagToSelected((item: string));
+        this.setState({
+            selectedTags: [...this.state.selectedTags, item]
+        })
+    }}
+    deselect={item => {
+        this.props.removeTagFromSelected((item: string));
+        this.setState({
+            selectedTags: this.state.selectedTags
+                .filter(r => r !== item)
+        })
+    }}
+    addItem={this.createTagAndSelect}
+/>*/

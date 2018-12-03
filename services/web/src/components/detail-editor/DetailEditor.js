@@ -15,7 +15,7 @@ const Container = styled.div`
   right:0;
   width: 100%;
   min-height: 400px;
-  height: 50%;
+  height: 30%;
   z-index: 20;
   border: grey;
   border-radius: 3px;
