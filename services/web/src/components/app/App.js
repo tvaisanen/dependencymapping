@@ -18,7 +18,6 @@ import {
 
 const App = () => (
     <AppContainer id="app-container">
-        <DetailEditor/>
         <TopContent id="container-top">
             <TopBarContainer id="top-bar-container"/>
             <MappingContent id="mapping-content-container">

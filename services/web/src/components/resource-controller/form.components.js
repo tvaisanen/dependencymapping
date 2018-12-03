@@ -141,7 +141,8 @@ export const ErrorMsg = styled.span`
 `;
 
 export const ButtonRow = ({cancel, save, remove, edit}) => (
-    <ButtonBox>{edit ? <Button cancel onClick={remove}>delete</Button> : null}
+    <ButtonBox>
+        {edit ? <Button cancel onClick={remove}>delete</Button> : null}
         <Button cancel onClick={cancel}>cancel</Button>
         <Button onClick={save}>save</Button>
     </ButtonBox>

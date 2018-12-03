@@ -4,7 +4,7 @@ import {ASSET} from '../../../constants/types';
 import {connect} from 'react-redux'
 import styled from 'styled-components';
 import {nodeShapes, colorOptions} from "../../../configs/configs.cytoscape";
-import * as detailEditorActions from '../../detail-editor/detail-editor.actions'
+import * as detailEditorActions from '../detail-editor.actions'
 
 
 type SelectionMenusProps = {
@@ -21,19 +21,17 @@ const SelectionMenus = (props: SelectionMenusProps) => (
         <Container>
             <NodeGroupSelection
                 onChange={props.onAssetGroupSelection}
-                setValue={props.setValue}
                 assets={props.assets}/>
-            <NodeShapeSelection
-                onChange={props.onNodeShapeSelection}
-                setValue={props.setValue}/>
-            <NodeColorSelection
-                onChange={props.onNodeColorSelection}
-                setValue={props.setValue}/>
+            <NodeShapeSelection onChange={props.onNodeShapeSelection}/>
+            <NodeColorSelection onChange={props.onNodeColorSelection}/>
         </Container>
         : null
 );
 
-const mapStateToProps = (state, props) => ({});
+const mapStateToProps = (state, props) => ({
+    assets: ["none", ...state.assets.map(asset=>asset.name)],
+    formType: state.detailForm.formType
+});
 
 const mapDispatchToProps = (dispatch) => ({
     onAssetGroupSelection: (value: string) => dispatch(detailEditorActions.onAssetGroupSelection((value: string))),
@@ -49,7 +47,7 @@ export default connect(
 const Container = styled.div`
   display: flex;
   width: 100%;
-  padding: 12px 0;
+  min-height: 1.2em;
 `;
 
 
@@ -57,35 +55,24 @@ const Select = styled.select`
   flex-grow: 1;
 `;
 
+
 const NodeGroupSelection = (props) => {
-    console.info(props)
-    return <Select onChange={(e) => {
-        props.onChange((e.target.value: string));
-        props.setValue({parent: e.target.value})
-    }}>
-        {props.assets.map(option => (
-            <option
-                onSelect={(e) => alert(e.target.value)}
-                value={option}>{option}</option>)
-        )}
+    return <Select
+        selected={"none"}
+        onChange={(e) => {props.onChange((e.target.value: string));}}>
+        {props.assets.map(option => (<option value={option}>{option}</option>))}
     </Select>
-}
+};
 
 const NodeShapeSelection = (props) => {
 
-    return <Select onChange={(e) => {
-        props.onChange((e.target.value:string));
-        props.setValue({shape: e.target.value})
-    }}>
+    return <Select onChange={(e) => {props.onChange((e.target.value:string));}}>
         {nodeShapes.map(option => <option value={option}>{option}</option>)}
     </Select>
 };
 
 const NodeColorSelection = (props) => {
-    return <Select onChange={(e) => {
-        props.onChange((e.target.value:string));
-        props.setValue({color: e.target.value})
-    }}>
+    return <Select onChange={(e) => {props.onChange((e.target.value:string));}}>
         {colorOptions.map(option => <option value={option}>{option}</option>)}
     </Select>
 };

@@ -4,11 +4,13 @@ import {connect} from 'react-redux';
 
 import * as appActions from '../../../actions/app.actions';
 import {ActionLink} from "../resource-detail.styled";
+import * as detailFormActions from '../../../store/detail-form/detail-form.actions';
 
 import { EMPTY } from '../../../constants/types';
 
 type EditButtonProps = {
     render: boolean,
+    editDetail: () => void
 }
 
 export const EditButton = (props: EditButtonProps) => (
@@ -24,6 +26,9 @@ export default connect(
         render: state.activeDetail.type !== EMPTY,
     }),
     (dispatch) => ({
-        editDetail: () => dispatch(appActions.editDetail())
+        editDetail: () => {
+            dispatch(appActions.editDetail());
+            dispatch(detailFormActions.setFormEditTrue());
+        }
     })
 )(EditButton);

@@ -16,13 +16,18 @@ const TagSelection = (props: SelectionProps) => (
 
 const mapStateToProps = (state, props) => {
 
+    const { tagFilter } = state.detailForm;
     const options = state.tags.map(tag => tag.name);
     const selected = state.detailForm.selectedTags;
     const notSelected = options.filter(option => !_.includes(selected, option));
 
+    const filteredAvailableSelections = notSelected.filter(option => (
+        option.toLowerCase(option)).includes(tagFilter.toLowerCase())
+    );
     return {
+        filterValue: state.detailForm.tagFilter,
         title: props.title,
-        options: notSelected,
+        options: filteredAvailableSelections,
         selected: selected
     }
 };
@@ -31,7 +36,8 @@ const mapDispatchToProps = dispatch => {
     return {
         select: (value:string) => dispatch(detailEditorActions.addTagToSelected((value:string))),
         deselect: (value:string) => dispatch(detailEditorActions.removeTagFromSelected((value:string))),
-        createAndSelect: (name:string) => dispatch(createAndSelect((name:string)))
+        createAndSelect: (name:string) => dispatch(createAndSelect((name:string))),
+        onFilterChange: (value:string) => dispatch(detailEditorActions.onTagFilterChange((value:string)))
     }
 };
 

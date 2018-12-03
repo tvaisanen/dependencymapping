@@ -6,6 +6,7 @@ import {connect} from 'react-redux'
 import * as views from './../../constants/views';
 import PanelNavTabs from './bottom-panel.components';
 import ResourceControllerContainer from '../resource-controller/ResourceControllerContainer';
+import DetailEditor from '../detail-editor/DetailEditor';
 
 const panelViews = {
     [views.BROWSE]: {
@@ -14,7 +15,8 @@ const panelViews = {
     },
     [views.CREATE]: {
         header: "forms",
-        component: ResourceControllerContainer,
+        //component: ResourceControllerContainer,
+        component: DetailEditor
     }
 };
 
@@ -24,7 +26,7 @@ const BottomPanelContainer = (props) => {
         <BottomPanel id="bottom-panel-container">
             <PanelNavTabs/>
             <PanelContent id="panel-content">
-                <SelectedViewComponent/>
+                <SelectedViewComponent id="active-panel-view"/>
             </PanelContent>
         </BottomPanel>
     );

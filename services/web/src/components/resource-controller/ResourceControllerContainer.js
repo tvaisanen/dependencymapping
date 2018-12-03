@@ -10,14 +10,18 @@ import * as validators from '../../common/validators';
 import {FormSelectionBlock} from "./form.components";
 import * as _ from 'lodash';
 import FormOptions from './components/ControllerNavTabs';
-import SelectionMenus from './components/SelectionMenus';
+//import SelectionMenus from '../detail-editor/components/SelectionMenus';
 import resourceControllerCtrl from './resource-controller.controller';
 import * as types from '../../constants/types';
 import * as apiHelpers from '../../common/api.helpers';
 import * as sc from './resource-controller.styled';
 import {MainBlock} from './resource-controller.styled';
+import ControllerNavTabs from './components/ControllerNavTabs';
 import TagSelection from "../detail-editor/components/TagSelection";
 import AssetSelection from "../detail-editor/components/AssetSelection";
+import DescriptionTextarea from "../detail-editor/components/DescriptionTextarea";
+import NameInputField from "../detail-editor/components/NameInputField";
+import EditorButtons from "../detail-editor/components/EditorButtons";
 
 // todo: refactor to store
 
@@ -25,12 +29,7 @@ class ResourceControllerContainer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            resourceFilter: "",
-            selectedResources: [],
-            tagFilter: "",
-            selectedTags: [],
             name: "",
-            description: "",
             errors: {},
             type: props.formType,
             selections: true, // if there's the selects
@@ -39,7 +38,6 @@ class ResourceControllerContainer extends Component {
             group: null
         }
 
-        this.createAssetAndSelect = this.createAssetAndSelect.bind(this);
         this.actionDelete = this.actionDelete.bind(this);
         this.actionPost = this.actionPost.bind(this);
         this.actionUpdate = this.actionUpdate.bind(this);
@@ -168,38 +166,17 @@ class ResourceControllerContainer extends Component {
         console.groupEnd();
     }
 
-    createAssetAndSelect(assetName) {
-
-        if (_.includes(this.props.assetNameList, assetName)) {
-            // if asset exists, just add it to selected
-            // but do not allow duplicates
-            if (!_.includes(this.state.selectedResources, assetName)) {
-                this.setState({selectedResources: [...this.state.selectedResources, assetName]});
-            }
-        } else {
-            // if it does not exist create a new one and add it to selected
-            const {promise, resolveCallback} = this.props.formActions[types.ASSET].post({name: assetName});
-            promise.then(response => {
-                resolveCallback(response.data);
-                this.setState({selectedResources: [...this.state.selectedResources, response.data.name]})
-            });
-        }
-        //
-
-    }
-
-
 
     getFormData() {
         console.info(this.state);
         return {
-            name: this.state.name,
-            description: this.state.description,
+            name: this.props.name,
+            description: this.props.description,
             resources: this.props.selectedAssets,
             tags: this.props.selectedTags,
-            group: this.state.group,
-            color: this.state.color,
-            shape: this.state.shape
+            group: this.props.group,
+            color: this.props.nodeColor,
+            shape: this.props.nodeShape
         }
     }
 
@@ -241,11 +218,8 @@ class ResourceControllerContainer extends Component {
                 {/**/}
                 <MainBlock column visible>
                     <div>
-                        <FormOptions
-                            // show form options if not editing
-                            visible={!this.props.formEdit}
-                            types={this.props.types}
-                            setFormType={this.props.setFormType}/>
+                        {/* enable if not editing */}
+                        <ControllerNavTabs/>
 
                         <div style={{
                             display: 'flex',
@@ -253,47 +227,15 @@ class ResourceControllerContainer extends Component {
                             justifyContent: "center",
                             alignItems: "center"
                         }}>
-                            <form.Label>Name</form.Label>
-                            <form.Input
-                                lock={this.props.formEdit}
-                                readOnly={this.props.formEdit}
-                                value={this.state.name}
-                                valid={nameValid}
-                                check={this.state.check}
-                                onChange={(e) => {
-                                    this.props.setResourceNameValue(e.target.value);
-                                    this.setState({name: e.target.value})
-                                }}
-                            />
-                            {this.state.errors.name ?
-                                <form.ErrorMsg>{this.state.errors.name}</form.ErrorMsg>
-                                : null
-                            }
+                            <NameInputField/>
 
                         </div>
                     </div>
-                    <SelectionMenus
-                        setValue={(set) => {
-                            console.info(set);
-                            this.setState(set);
-                        }}
-                        assets={this.props.assetNameList}
-                        formType={this.props.formType}/>
 
-                    <form.Label>Description</form.Label>
-                    <form.TextArea
-                        rows="12"
-                        value={this.state.description}
-                        valid={descriptionValid}
-                        check={this.state.check}
-                        onChange={(e) => {
-                            this.props.setResourceDescriptionValue(e.target.value);
-                            this.setState({description: e.target.value})
-                        }
-                        }
-                    />
+                    <DescriptionTextarea/>
 
-                    <form.ButtonRow
+
+                    <EditorButtons
                         edit={this.props.formEdit}
                         save={this.onSave}
                         remove={() => this.onDelete({name: this.state.name})}

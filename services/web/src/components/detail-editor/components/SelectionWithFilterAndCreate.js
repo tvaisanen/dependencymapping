@@ -27,7 +27,8 @@ const SelectionWithFilterAndCreate = (props: SelectionProps) => (
                     <small>({props.options.length})</small>
                 </SmallLabel>
                 <FilterInputField id="filter-input-field"
-                                  onChange={(e) => props.onFilterChange(e)}
+                                  onChange={(e) => props.onFilterChange(e.target.value)}
+
                 />
                 <OptionsToChooseFrom id="options-to-choose-from"
                                      remove={false}
@@ -82,10 +83,13 @@ const OptionsToChooseFrom = ({options, onClick, remove}) => (
 const SelectionBlock = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  height: 100%;
   padding: 4px;
   border-radius: 3px;
   background-color: rgba(22,22,22,0.1);
   margin: 2px;
+  flex-shrink: 4;
 
 `;
 

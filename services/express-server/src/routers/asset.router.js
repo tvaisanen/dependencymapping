@@ -9,11 +9,11 @@ assetRouter.get('(/:id)?', (req, res) => {
             .then(asset => {
 
                 console.log(asset)
-                if (!asset){
-                   res.status(404).json("Resource does not exist.")
+                if (!asset) {
+                    res.status(404).json("Resource does not exist.")
                 } else {
-                console.log(asset);
-                res.status(200).json(asset);
+                    console.log(asset);
+                    res.status(200).json(asset);
                 }
 
             }).catch(err => res.status(400).json(err));
@@ -35,17 +35,29 @@ assetRouter.post('(/:id)?', (req, res) => {
         tags: req.body.tags
     });
 
-    if ( !asset.name ) {
+    if (!asset.name) {
         res.status(400).json({error: "name is required field"})
     } else {
-
-    asset.save().then(saved => {
-        console.log(`saved: ${saved.name}`);
-        console.log(saved);
-        res.status(201).json(saved);
-    }).catch(err => {
-        console.log(err);
-    })
+        Asset.findOne({name: asset.name})
+            .then(existing => {
+                if (existing) {
+                    res.status(409).json({
+                        error: `Asset ${existing.name} already exists.`,
+                        pathToExisting: `/asset/${existing.name}`
+                    });
+                } else {
+                    console.log('here')
+                    asset.save().then(saved => {
+                        console.log(`saved: ${saved.name}`);
+                        res.status(201).json(saved);
+                    }).catch(err => {
+                        console.log(err);
+                    })
+                }
+            })
+            .catch(err => {
+                console.log(`err: ${err}`)
+            });
     }
 });
 

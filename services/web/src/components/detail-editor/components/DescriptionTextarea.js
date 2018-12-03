@@ -4,16 +4,18 @@ import * as detailEditorActions from '../detail-editor.actions';
 
 const DescriptionTextarea = (props) => {
     return (
-        <div>
+        <React.Fragment>
             <label> description</label>
+            <br/>
             <textarea
+                style={{flexGrow:1}}
                 rows="12"
                 value={props.description}
                 valid={true}
                 onChange={(e) => {
                     props.onChange(e.target.value);
                 }}/>
-        </div>
+        </React.Fragment>
     )
 };
 

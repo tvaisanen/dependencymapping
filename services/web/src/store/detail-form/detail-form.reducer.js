@@ -12,7 +12,10 @@ import {
     REMOVE_TAG_FROM_SELECTED,
     SET_NODE_COLOR_SELECTION,
     SET_ASSET_GROUP_SELECTION,
-    SET_NODE_SHAPE_SELECTION
+    SET_NODE_SHAPE_SELECTION,
+    SET_FORM_EDIT_FALSE,
+    SET_FORM_EDIT_TRUE,
+    SET_VALUES_FROM_DETAIL
 } from "./detail-form.action-types";
 
 const initialState = {
@@ -22,32 +25,36 @@ const initialState = {
     tagFilter: "",
     selectedTags: [],
     name: "",
+    edit: false,
     description: "",
     errors: {},
-    type: "formType",
+    formType: "ASSET",
     selections: true, // if there's the selects
     nodeShape: "ellipse",
     nodeColor: "black",
-    group: null
+    group: "none"
 };
 
 export default function (state = initialState, action) {
 
-    const {formType, selection, value} = action;
+    const {formType, detail, value} = action;
 
     switch (action.type) {
+
+        case SET_VALUES_FROM_DETAIL:
+            return {...state, ...action.detail};
 
         case SET_DETAIL_FORM_TYPE:
             return !formType ? state : {...state, formType: formType };
 
         case SET_ASSET_FILTER_VALUE:
-            return !value ? state : {...state, assetFilter: (value: string)};
+            return {...state, assetFilter: (value: string)};
 
         case SET_TAG_FILTER_VALUE:
-            return !value ? state : {...state, tagFilter: (value: string)};
+            return {...state, tagFilter: (value: string)};
 
         case SET_RESOURCE_NAME_VALUE:
-            return !value ? state : { ...state, name: (value: string) };
+            return { ...state, name: (value: string) };
 
         case SET_RESOURCE_DESCRIPTION_VALUE:
             return !value ? state : { ...state, description: (value: string) };
@@ -78,6 +85,13 @@ export default function (state = initialState, action) {
 
         case SET_NODE_COLOR_SELECTION:
             return !value ? state : {...state, nodeColor: (value: string)};
+
+        case SET_FORM_EDIT_TRUE:
+            return {...state, edit: true};
+
+        case SET_FORM_EDIT_FALSE:
+            return {...state, edit: false};
+
 
         default:
             return state;

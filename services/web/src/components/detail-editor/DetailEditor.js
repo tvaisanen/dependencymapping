@@ -3,54 +3,69 @@ import React from 'react';
 import {TAG} from "../../constants";
 import {connect} from 'react-redux';
 import styled from 'styled-components';
-import SelectionMenus from '../resource-controller/components/SelectionMenus';
+import SelectionMenus from './components/SelectionMenus';
 import ControllerNavTabs from '../resource-controller/components/ControllerNavTabs';
 import { AssetSelection, TagSelection, DescriptionTextarea } from "./components/";
-import * as form from '../form.components';
+import NameInputField from "./components/NameInputField";
+import EditorButtons from "./components/EditorButtons";
 
 const Container = styled.div`
     display: flex;
-  position: fixed;
-  top:0;
-  right:0;
-  width: 100%;
-  min-height: 400px;
-  height: 30%;
-  z-index: 20;
-  border: grey;
-  border-radius: 3px;
-  margin: 12px;
-  background-color: rgba(0,0,0,1);
-  color: white;
+    justify-content: center;
+    width: 100%;
+    height: inherit;
+    z-index: 20;
+    > div {
+        border: 1px solid lightgrey;
+        border-radius: 3px;
+    }
+    
+    transition: all .3s ease-in-out;
 `;
 
-type DetailEditorProps = {}
+type DetailEditorProps = {
+    formType: ASSET | MAPPING | TAG
+}
+
+const FormColumn = styled.div`
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    flex-basis: 60%;
+    flex-shrink: 1;
+    padding: 0 12px;
+    margin-right: 6px;
+`;
+
+const SelectionColumn = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex-basis: 40%;
+    flex-shrink: 2; 
+`;
 
 const DetailEditor = (props: DetailEditorProps) => {
     return <Container>
-        DetailEditor
-        <div>
-            {Object.keys(props)
-                .map(key => <div>{key}: {JSON.stringify(props[key])}</div>)}
-        </div>
-        <div>
+        <FormColumn>
             <ControllerNavTabs/>
+            <NameInputField/>
             <SelectionMenus/>
             <DescriptionTextarea/>
-        </div>
+            <EditorButtons/>
+        </FormColumn>
 
         {
             props.formType !== TAG ?
-                <div style={{width: "50%"}}>
+                <SelectionColumn>
                     <AssetSelection/>
                     <TagSelection/>
-                </div>
+                </SelectionColumn>
                 : null
         }
     </Container>
 }
 
 export default connect(
-    (state, props) => ({...state.detailForm}),
+    (state, props) => ({formType: state.detailForm.formType}),
     {}
 )(DetailEditor);

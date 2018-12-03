@@ -47,14 +47,11 @@ const formActions = (dispatch) => ({
 function mapStateToProps(state, props) {
     return {
         activeDetail: state.activeDetail,
+        description: state.detailForm.description,
+        name: state.detailForm.name,
         types: types,
         formEdit: state.app.form.edit,
-        formType: state.app.form.type,
-        assets: state.assets,
-        assetNameList: state.assets.map(r => r.name),
-        tagNameList: state.tags.map(t => t.name),
-        selectedAssets: state.detailForm.selectedAssets,
-        selectedTags: state.detailForm.selectedTags
+        formType: state.detailForm.formType,
     }
 }
 

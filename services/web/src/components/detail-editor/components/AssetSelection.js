@@ -7,24 +7,23 @@ import type {Dispatch, State} from "../../../store/types";
 import GwClientApi from "../../../api/gwClientApi";
 import * as assetActions from '../../../store/asset/asset.actions';
 
-export const AssetSelection = (props: Props) => {
-    console.info(props)
-
-    return (
-        <SelectionWithFilterAndCreate {...props}/>
-    );
-}
+export const AssetSelection = (props: Props) => <SelectionWithFilterAndCreate {...props}/>;
 
 const mapStateToProps = (state, props) => {
 
+    const { assetFilter } = state.detailForm;
     const options = state.assets.map(asset => asset.name);
     const selected = state.detailForm.selectedAssets;
     const notSelected = options.filter(option => !_.includes(selected, option));
 
+    const filteredAvailableSelections = notSelected.filter(option => (
+        option.toLowerCase(option)).includes(assetFilter.toLowerCase())
+    );
     return {
+        filterValue: state.detailForm.assetFilter,
         resourceType: props.resourceType,
         title: props.title,
-        options: notSelected,
+        options: filteredAvailableSelections,
         selected: selected
     };
 }
@@ -33,7 +32,8 @@ const mapDispatchToProps = dispatch => {
     return {
         select: (value:string) => dispatch(detailEditorActions.addAssetToSelected((value:string))),
         deselect: (value:string) => dispatch(detailEditorActions.removeAssetFromSelected((value:string))),
-        createAndSelect: (name:string) => dispatch(createAndSelect((name:string)))
+        createAndSelect: (name:string) => dispatch(createAndSelect((name:string))),
+        onFilterChange: (value:string) => dispatch(detailEditorActions.onAssetFilterChange((value:string)))
     }
 };
 

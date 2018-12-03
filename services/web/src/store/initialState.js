@@ -5,7 +5,7 @@ export default {
     app: {
         info: "Initial info message",
         bottomPanel: {
-            view: views.BROWSE,
+            view: views.CREATE,
             tabItems: [
                 {label: 'Resource Browser', view: views.BROWSE},
                 {label: 'Create', view: views.CREATE},

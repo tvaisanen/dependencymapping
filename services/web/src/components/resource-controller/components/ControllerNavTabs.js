@@ -27,7 +27,6 @@ const NavTabs = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  margin-top: 20px;
   margin-bottom: 12px;
 `;
 
@@ -60,8 +59,8 @@ const ControllerNavTabs = (props: Props) => {
 ControllerNavTabs.defaultProps = {visible: true};
 
 const mapStateToProps = (state, props) => ({
-    visible: true,
-    formType: state.app.form.type,
+    visible: !state.detailForm.edit,
+    formType: state.detailForm.formType,
     buttons: [
         {label: "Asset", type: ASSET},
         {label: "Mapping", type: MAPPING},
