@@ -17,7 +17,11 @@ type EditorButtonProps = {
 
 export const EditorButtons = (props: EditorButtonProps) => (
     <ButtonRow>
-        {props.edit ? <Button cancel onClick={props.onDelete}>delete</Button> : null}
+        {
+            props.edit ? // render edit button if editing a detail
+                <Button cancel onClick={props.onDelete}>delete</Button>
+                : null
+        }
         <Button cancel onClick={props.onCancel}>cancel</Button>
         <Button onClick={props.onSave}>save</Button>
     </ButtonRow>
@@ -36,11 +40,9 @@ const mapStateToProps = (state, props) => ({
 });
 
 const mapDispatchToProps= (dispatch) => ({
-    onChange: (value: string) => dispatch(detailEditorActions.onResourceDescriptionChange((value:string))),
     onCancel: () => dispatch(detailEditorActions.closeEdit()),
     onSave: ()  => dispatch(detailEditorActions.onSave()),
     onDelete: ()  => dispatch(detailEditorActions.onDelete())
-
 });
 
 export default connect(

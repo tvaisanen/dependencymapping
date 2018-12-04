@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import {edgeStyles, nodeStyles} from "../configs/graph.styles";
 import {layoutOptions} from "../configs/configs.cytoscape";
+import type {Asset} from "../store/asset/asset.types";
 
 
 const LAYOUT = 'cola';
@@ -18,19 +19,16 @@ export function getEdgeId(source = required(), target = required()) {
     return `${source}_to_${target}`;
 }
 
-export function nodeElementFromResource(resource = required()) {
-    console.group("nodeElementFromResource");
-    console.info(resource)
-
-    const node = {
+export function nodeElementFromResource(asset: Asset = required()) {
+    const node =  {
         group: 'nodes',
         data: {
-            id: resource.name,
-            parent: resource.group || null
-        }
+            id: asset.name,
+            parent: asset.group || null
+        },
+        classes: `${asset.nodeShape} ${asset.nodeColor}`
     };
     console.info(node);
-    console.groupEnd();
     return node;
 }
 
@@ -56,17 +54,19 @@ export function removeElement(cy = required(), id = required()) {
     }
 }
 
-export function drawResourceEdges(cy = required(), asset = required()){
+export function drawResourceEdges(cy = required(), asset = required()) {
     try {
         const edges = asset.connected_to.map(nameConnectedTo => (
             edgeElementFromResource(asset.name, nameConnectedTo))
         );
         cy.add(edges)
-    } catch (e){ console.warn(e) }
+    } catch (e) {
+        console.warn(e)
+    }
 }
 
 
-export function removeResourceEdges(cy = required(), asset = required()){
+export function removeResourceEdges(cy = required(), asset = required()) {
     /**
      *  Update graph after resource/asset update. It is required that
      *  the graph shows current situation of the connections of a node.
@@ -77,10 +77,10 @@ export function removeResourceEdges(cy = required(), asset = required()){
         // remove edges that are not listed in connections
         const removeTheEdgesFromThese = cy.getElementById(asset.name).neighborhood('edge');
         const thatHasTheAssetAsSource = removeTheEdgesFromThese.filter(el => {
-           return el.source().id() === asset.name;
+            return el.source().id() === asset.name;
         });
         cy.remove(thatHasTheAssetAsSource);
-    } catch (e){
+    } catch (e) {
         console.error(e);
     }
 }
@@ -93,7 +93,7 @@ export function addElements(cy = required(), elements = required()) {
     }
 }
 
-export function updateLayout(cy = required(), layout=required()) {
+export function updateLayout(cy = required(), layout = required()) {
     try {
         // if selected layout has additional options
         const options = layoutOptions[layout] || [];
@@ -120,7 +120,7 @@ export function clearGraph(cy = required()) {
 
 export function createEdgeElementsBetween({source, targets}) {
     const edges = targets.map(target => (
-        {group: 'edges', data: {id: getEdgeId(source,target), source: source, target: target}}
+        {group: 'edges', data: {id: getEdgeId(source, target), source: source, target: target}}
     ));
     return _.flatten(edges);
 }
@@ -134,34 +134,34 @@ export function hoverIndicationOn(cy = required(), id) {
     const el = cy.getElementById(id);
     if (!el.hasClass("group")) {
 
-    el.animate({
-        style: nodeStyles.expanded
-    }, {
-        duration: 300
-    });
-    el.neighborhood().clearQueue()
-        .forEach(e => {
-                if (e.id() === id) {
-                    return null;
+        el.animate({
+            style: nodeStyles.expanded
+        }, {
+            duration: 300
+        });
+        el.neighborhood().clearQueue()
+            .forEach(e => {
+                    if (e.id() === id) {
+                        return null;
+                    } else if (e.isNode()) {
+                        e.delay(50).animate({
+                                style: nodeStyles.expandedNeighbor,
+                            },
+                            {
+                                duration: 300
+                            }
+                        )
+                    } else if (e.isEdge() && !e.hasClass('is-in-group')) {
+                        e.delay(40).animate({
+                            style: edgeStyles.expanded
+                        });
+                    }
                 }
-                else if (e.isNode()) {
-                    e.delay(50).animate({
-                            style: nodeStyles.expandedNeighbor,
-                        },
-                        {
-                            duration: 300
-                        }
-                    )
-                } else if (e.isEdge() && !e.hasClass('is-in-group')) {
-                    e.delay(40).animate({
-                        style: edgeStyles.expanded
-                    });
-                }
-            }
-        )
-    ;
+            )
+        ;
 
-    };
+    }
+    ;
 }
 
 export function hoverIndicationOff(cy = required(), id) {
@@ -177,8 +177,7 @@ export function hoverIndicationOff(cy = required(), id) {
             .forEach(e => {
                 if (e.id() === id) {
                     return null;
-                }
-                else if (e.isNode()) {
+                } else if (e.isNode()) {
                     e.delay(130).animate(
                         {style: nodeStyles.passive},
                         {duration: 300}
@@ -192,7 +191,8 @@ export function hoverIndicationOff(cy = required(), id) {
                 }
 
             });
-    };
+    }
+    ;
 }
 
 export function downloadPng(cy = required()) {
@@ -201,4 +201,22 @@ export function downloadPng(cy = required()) {
     downloadLink.href = cy.png({bg: 'white'});
     downloadLink.download = "mapping.png";
     downloadLink.click();
+}
+
+export function updateNodeParent(cy, asset: Asset): void {
+    const el = cy.getElementById(asset.name);
+
+    el.move({parent: asset.group === "none" ? null : asset.group});
+}
+
+export function activeMappingAssetUpdateActions(cy, asset: Asset) {
+    updateNodeParent(cy, (asset: Asset));
+    updateShapeAndColor(cy, (asset: Asset));
+    removeResourceEdges(cy, (asset: Asset));
+    drawResourceEdges(cy, (asset: Asset));
+}
+
+export function updateShapeAndColor(cy, asset: Asset){
+    alert(`set: "${asset.nodeShape} ${asset.nodeColor}"`)
+    cy.getElementById(asset.name).addClass(`${asset.nodeShape} ${asset.nodeColor}`)
 }

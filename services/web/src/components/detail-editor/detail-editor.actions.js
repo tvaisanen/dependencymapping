@@ -12,6 +12,7 @@ import type { Asset, Mapping, Tag } from "../../store/types";
 import * as activeDetailActions from '../../store/active-detail/active-detail.actions';
 import * as appActions from '../../actions/app.actions';
 import * as dependencyMapHelpers from "../../common/dependency-map.helpers";
+import {setFormEditFalse} from "../../store/detail-form/detail-form.actions";
 
 export function closeFormAndSetActiveDetail(activeDetail) {
     return function (dispatch, getState) {
@@ -53,32 +54,18 @@ const dispatchFormActions = (dispatch) => ({
     [types.ASSET]: {
         post: (asset: Asset) => dispatch(actionsAsset.postAsset(asset)),
         put: (asset: Asset) => dispatch(actionsAsset.updateAsset(asset)),
-        remove: (name: string) => dispatch(actionsAsset.deleteAsset(name)),
-        parseForm: (form) => ({
-            name: form.name,
-            description: form.description,
-            connected_to: form.resources,
-            tags: form.tags,
-            group: form.group,
-            shape: form.shape,
-            color: form.color,
-        })
+        delete: (name: string) => dispatch(actionsAsset.deleteAsset(name)),
     },
     [types.MAPPING]: {
         post: (mapping: Mapping) => dispatch(actionsMapping.postMapping(mapping)),
         put: (mapping: Mapping) => dispatch(actionsMapping.updateMapping(mapping)),
-        remove: (name: string) => dispatch(actionsMapping.deleteMapping(name)),
-        parseForm: (form) => ({...form, assets: form.resources}),
+        delete: (name: string) => dispatch(actionsMapping.deleteMapping(name)),
     },
 
     [types.TAG]: {
         post: (tag: Tag) => dispatch(actionsTag.postTag(tag)),
         put: (tag: Tag) => dispatch(actionsTag.updateTag(tag)),
-        remove: (name: string) => dispatch(actionsTag.deleteTag(name)),
-        parseForm: (form) => ({
-            name: form.name,
-            description: form.description
-        })
+        delete: (name: string) => dispatch(actionsTag.deleteTag(name)),
     }
 });
 
@@ -128,6 +115,10 @@ export function onSave(): Dispatch {
         const formActions = dispatchFormActions(dispatch);
         const form = getForm[formType](detailForm);
 
+        console.group("onSave form:");
+        console.info(form);
+        console.groupEnd();
+
         // if edit use put if new use post
         const method = detailForm.edit ? 'put' : 'post';
 
@@ -139,6 +130,8 @@ export function onSave(): Dispatch {
 
             resolveCallback(response.data);
             dispatch(closeFormAndSetActiveDetail({type: formType, data: response.data}));
+            dispatch(detailFormActions.clearForm());
+            dispatch(setFormEditFalse());
 
         } catch (err) {
             console.info(err);
@@ -148,12 +141,38 @@ export function onSave(): Dispatch {
     }
 }
 
-export function onDelete(name: string): Dispatch {
+export function onDelete(): Dispatch {
 
-    const confirmDelete = window.confirm(`Are you sure that you want to delete: ${name}?`);
 
-    return function (dispatch: Dispatch, getState: State): void {
-        alert('delete')
+    return async function (dispatch: Dispatch, getState: State): void {
+
+        const {detailForm} = getState();
+        const { formType, name } = detailForm;
+
+        const confirmDelete = window.confirm(`Are you sure that you want to delete: ${name}?`);
+
+        const formActions = dispatchFormActions(dispatch);
+        const form = getForm[formType](detailForm);
+
+        // if edit use put if new use post
+
+        try {
+            const { promise, resolveCallback } = await formActions[formType].delete((name:string));
+            const response = await promise;
+
+            console.info(response);
+
+            resolveCallback();
+
+            dispatch(activeDetailActions.clearActiveDetail());
+            dispatch(detailFormActions.clearForm());
+            dispatch(closeEdit());
+            dispatch(setFormEditFalse());
+
+        } catch (err) {
+            console.info(err);
+            console.log(err.data);
+        }
     }
 }
 

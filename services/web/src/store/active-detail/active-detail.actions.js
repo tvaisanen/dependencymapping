@@ -2,8 +2,8 @@ import * as types from './active-detail.action-types';
 import * as resourceTypes from '../../constants/types';
 import * as _ from 'lodash';
 
-export function setActiveDetail(activeDetail) {
 
+export function setActiveDetail(activeDetail) {
     return {type: types.SET_ACTIVE_DETAIL, activeDetail}
 }
 

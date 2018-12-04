@@ -37,9 +37,9 @@ console.groupEnd();
 
 const eventHandlers =  {
         tap: ['node', (event) => store.dispatch(graphEvents.onNodeClick(event))],
-        mouseover: ['node',  (event) => store.dispatch(graphEvents.onNodeMouseOver(event))],
-        mouseout: ['node', (event) => store.dispatch(graphEvents.onNodeMouseOut(event))],
-        cxttap: ['node', (event) => store.dispatch(graphEvents.onCtxClick(event))]
+        //mouseover: ['node',  (event) => store.dispatch(graphEvents.onNodeMouseOver(event))],
+        //mouseout: ['node', (event) => store.dispatch(graphEvents.onNodeMouseOut(event))],
+        //cxttap: ['node', (event) => store.dispatch(graphEvents.onCtxClick(event))]
 };
 
 

@@ -103,35 +103,12 @@ class GwClientApi {
 
     /********************** MAPPING METHODS **********************/
 
-    static postMapping({name, description = " ", assets, tags}) {
-        console.groupCollapsed("postMapping(form)");
-        console.info({name, description, assets, tags});
-        console.groupEnd();
-
-        return axios.post(
-            MAPPINGS_URL,
-
-            {
-                name: name,
-                description: description,
-                assets: assets,
-                tags: tags
-
-            }
-        )
+    static postMapping(mapping: Mapping): Promise<T> {
+        return axios.post(MAPPINGS_URL, mapping)
     }
 
-    static putMapping({name, description, assets, tags}) {
-        return axios.put(
-            mappingsDetailUrl({name}),
-            {
-                Authorization: setAuthHeader(),
-                name: name,
-                description: description,
-                assets: assets,
-                tags: tags
-            }
-        );
+    static putMapping(mapping: Mapping): Promise<T> {
+        return axios.put(mappingsDetailUrl({name:mapping.name}),mapping);
     }
 
     static deleteMapping(name: string) {
@@ -144,20 +121,8 @@ class GwClientApi {
         return axios.delete(resourceDetailUrl({name}));
     }
 
-    static postAsset({name, description = "", connected_to = [], tags = [], shape, color, group}) {
-        console.groupCollapsed("postMapping(form)");
-        const data = {
-            name: name,
-            description: description,
-            connected_to: connected_to,
-            tags: tags,
-            group: group,
-            shape: shape,
-            color: color
-        };
-        console.info(data);
-        console.groupEnd();
-        return axios.post(RESOURCES_URL, data);
+    static postAsset(asset: Asset): Promise<T> {
+        return axios.post(RESOURCES_URL, asset);
     }
 
     static putAsset({name, description, connected_to, tags,shape,color,group}) {

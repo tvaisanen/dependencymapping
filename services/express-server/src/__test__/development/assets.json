@@ -7,7 +7,9 @@
     ],
     "tags": [
       "TestPage"
-    ]
+    ],
+    "nodeShape": "rectangle",
+    "nodeColor": "green"
   },
   {
     "name": "TestPageTwo",
@@ -17,7 +19,9 @@
     ],
     "tags": [
       "TestPage"
-    ]
+    ],
+     "nodeShape": "rectangle",
+    "nodeColor": "green"
   },
   {
     "name": "TestPageThree",
@@ -32,7 +36,9 @@
     ],
      "group": [
       "GroupOne"
-    ]
+    ],
+     "nodeShape": "rectangle",
+    "nodeColor": "green"
   },
   {
     "name": "TestPageFour",
@@ -44,7 +50,9 @@
     ],
     "group": [
       "GroupOne"
-    ]
+    ],
+     "nodeShape": "triangle",
+    "nodeColor": "yellow"
   },
   {
     "name": "GroupOne",
@@ -53,6 +61,8 @@
     "tags": [
       "TestPage",
       "TestTag"
-    ]
+    ],
+     "nodeShape": "ellipse",
+    "nodeColor": "blue"
   }
 ]

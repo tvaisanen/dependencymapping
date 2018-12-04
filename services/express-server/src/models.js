@@ -7,8 +7,8 @@ const assetSchema = new mongoose.Schema({
     connected_to: [String],
     tags: [String],
     group: {type: String, default: ""},
-    shape: {type: String, default: "ellipse"},
-    color: {type: String, default: "navyblue"}
+    nodeShape: {type: String, default: "ellipse"},
+    nodeColor: {type: String, default: "navyblue"}
 });
 
 const mappingSchema = new mongoose.Schema({

@@ -29,8 +29,8 @@ function mapStateToProps(state) {
         activeDetail: state.activeDetail,
         mappingNameList: state.mappings.map(m => m.name),
         activeResourceNameList: assets ? assets.map(r => r.name) : [],
-        hoverResourceOn: (id) => hoverIndicationOn(state.graph, id),
-        hoverResourceOff: (id) => hoverIndicationOff(state.graph, id),
+        hoverResourceOn: () => null,//(id) => hoverIndicationOn(state.graph, id),
+        hoverResourceOff: () => null,//(id) => hoverIndicationOff(state.graph, id),
     };
 }
 

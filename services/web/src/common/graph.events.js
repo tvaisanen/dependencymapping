@@ -23,14 +23,12 @@ export function onNodeMouseOut(event) {
 }
 
 export function onNodeClick(event) {
-    console.group("onNodeClick({cy, target, targetNames, layout})");
+    return function (dispatch: Dispatch, getState: State) {
 
-    console.groupEnd();
-    return function (dispatch, getState) {
-
-        const { assets } = getState()
+        const { assets } = getState();
 
         const cy = event.target.cy();
+
         // name of the clicked asset
         const resourceName = event.target.id();
 
@@ -70,10 +68,6 @@ export function onNodeClick(event) {
             source: resourceName,
             targets: clickedAssetIsConnectedTo
         });
-
-        console.group("EDGES HERE");
-        console.info(edgesToCreate);
-        console.groupEnd();
 
         helpers.addElements(cy, nodesToCreate);
         helpers.addElements(cy, edgesToCreate);

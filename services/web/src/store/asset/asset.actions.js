@@ -33,29 +33,31 @@ export function postAssetSuccess(asset: Asset) {
     return {type: types.POST_ASSET_SUCCESS, asset}
 }
 
-/****************  ASSET UPDATE   ****************/
 export function updateAsset(asset: Asset): Dispatch {
 
     // updates asset/resource to the database
     // and refreshes the nodes edges in the graph
     return function (dispatch: Dispatch, getState: GetState): AssetAction {
-        const resolveCallback = () => {
-                dispatch(updateAssetSuccess({asset: asset}));
-                dispatch(appActions.setInfoMessage(`Updated asset: ${asset.name}`));
-                // todo: refactor the graph update
-                // redraw the edges in the graph if asset in map
-                const activeMapAssets = getState().activeMapping.assets;
-                console.group(`updateAsset(${asset.name})`);
-                console.info(asset);
-                asset.connected_to.forEach(assetName => console.log(`${asset.name}_to_${assetName}`));
 
+
+        const resolveCallback = () => {
+
+                // set the redux store state
+                dispatch(updateAssetSuccess({asset: asset}));
+
+                // add info message to the top bar
+                dispatch(appActions.setInfoMessage(`Updated asset: ${asset.name}`));
+
+                // check if updated asset is in the active mapping
+                const activeMapAssets = getState().activeMapping.assets;
                 const inActiveMap = _.includes(activeMapAssets, asset.name);
 
-                console.info(inActiveMap)
                 if (inActiveMap) {
-                    graphHelpers.removeResourceEdges(getState().graph, asset);
-                    graphHelpers.drawResourceEdges(getState().graph, asset);
+                    // if the status of asset group has been changed
+                    // the node need to be moved to the appropriate parent group
+                    graphHelpers.activeMappingAssetUpdateActions(getState().graph,(asset:Asset));
                 }
+
                 console.groupEnd();
         };
         // send the request

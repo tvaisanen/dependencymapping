@@ -15,7 +15,8 @@ import {
     SET_NODE_SHAPE_SELECTION,
     SET_FORM_EDIT_FALSE,
     SET_FORM_EDIT_TRUE,
-    SET_VALUES_FROM_DETAIL
+    SET_VALUES_FROM_DETAIL,
+    CLEAR_FORM
 } from "./detail-form.action-types";
 
 const initialState = {
@@ -41,7 +42,13 @@ export default function (state = initialState, action) {
 
     switch (action.type) {
 
+        case CLEAR_FORM:
+            return initialState;
+
         case SET_VALUES_FROM_DETAIL:
+            console.group("set detail to form");
+            console.info(action.detail);
+            console.groupEnd();
             return {...state, ...action.detail};
 
         case SET_DETAIL_FORM_TYPE:

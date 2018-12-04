@@ -1,7 +1,7 @@
 import * as types from './graph.action-types';
 import initialState from '../initialState';
 import cytoscape from 'cytoscape';
-import {graphStyle} from '../../configs/configs.cytoscape';
+import style, {graphStyle} from '../../configs/configs.cytoscape';
 import cxtmenu from 'cytoscape-cxtmenu';
 import cola from 'cytoscape-cola';
 
@@ -20,11 +20,12 @@ export default function graphReducer(cy = initialState.graph, action){
 }
 
 const newGraphInstance = ({eventHandlers}) => {
+
     const cy = cytoscape({
         container: document.getElementById('cy'),
         elements: [],
-        style: graphStyle,
-        directed: false,
+        style: style,
+        directed: true,
         layout: {
             name: 'cola',
         }

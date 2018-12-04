@@ -16,7 +16,7 @@ export default {
             type: types.MAPPING
         },
         graph: {
-            selectedLayout: 'cose'
+            selectedLayout: 'cola'
         },
         showCollapseMenu: false,
     },

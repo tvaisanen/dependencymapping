@@ -13,24 +13,35 @@ type SelectionMenusProps = {
     setValue: (object) => void,
     onAssetGroupSelection: (value:string) => void,
     onNodeColorSelection: (value:string) => void,
-    onNodeShapeSelection: (value:string) => void
+    onNodeShapeSelection: (value:string) => void,
+    group: string,
+    nodeShape: string,
+    nodeColor: string
 }
 
 const SelectionMenus = (props: SelectionMenusProps) => (
     props.formType === ASSET ?
         <Container>
             <NodeGroupSelection
+                selected={props.group}
                 onChange={props.onAssetGroupSelection}
                 assets={props.assets}/>
-            <NodeShapeSelection onChange={props.onNodeShapeSelection}/>
-            <NodeColorSelection onChange={props.onNodeColorSelection}/>
+            <NodeShapeSelection
+                selected={props.nodeShape}
+                onChange={props.onNodeShapeSelection}/>
+            <NodeColorSelection
+                selected={props.nodeColor}
+                onChange={props.onNodeColorSelection}/>
         </Container>
         : null
 );
 
 const mapStateToProps = (state, props) => ({
     assets: ["none", ...state.assets.map(asset=>asset.name)],
-    formType: state.detailForm.formType
+    formType: state.detailForm.formType,
+    group: state.detailForm.group,
+    nodeShape: state.detailForm.nodeShape,
+    nodeColor: state.detailForm.nodeColor
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -59,21 +70,36 @@ const Select = styled.select`
 const NodeGroupSelection = (props) => {
     return <Select
         selected={"none"}
-        onChange={(e) => {props.onChange((e.target.value: string));}}>
-        {props.assets.map(option => (<option value={option}>{option}</option>))}
+        onChange={(e) => {
+            this.selected = e.target.value;
+            props.onChange((e.target.value: string));
+        }}>
+        {props.assets.map(option => (
+            <option
+                selected={option === props.selected}
+                onClick={(e)=>{
+                    e.preventDefault();
+                    alert('here')
+                }}
+                value={option}
+            >{option}</option>))}
     </Select>
 };
 
 const NodeShapeSelection = (props) => {
 
     return <Select onChange={(e) => {props.onChange((e.target.value:string));}}>
-        {nodeShapes.map(option => <option value={option}>{option}</option>)}
+        {nodeShapes.map(option => <option
+            selected={option === props.selected}
+            value={option}>{option}</option>)}
     </Select>
 };
 
 const NodeColorSelection = (props) => {
     return <Select onChange={(e) => {props.onChange((e.target.value:string));}}>
-        {colorOptions.map(option => <option value={option}>{option}</option>)}
+        {colorOptions.map(option => <option
+            selected={option === props.selected}
+            value={option}>{option}</option>)}
     </Select>
 };
 

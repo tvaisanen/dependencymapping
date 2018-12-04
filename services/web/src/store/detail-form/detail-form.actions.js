@@ -1,3 +1,4 @@
+//@flow
 import {ASSET, MAPPING, TAG} from "../../constants";
 import {
     SET_DETAIL_FORM_TYPE,
@@ -13,7 +14,8 @@ import {
     SET_NODE_SHAPE_SELECTION,
     SET_NODE_COLOR_SELECTION,
     SET_FORM_EDIT_TRUE,
-    SET_FORM_EDIT_FALSE, SET_VALUES_FROM_DETAIL
+    SET_FORM_EDIT_FALSE, SET_VALUES_FROM_DETAIL,
+    CLEAR_FORM
 } from './detail-form.action-types';
 import type {Dispatch} from "../types";
 
@@ -91,6 +93,10 @@ export function setFormEditFalse() {
     return {type: SET_FORM_EDIT_FALSE};
 }
 
+export function clearForm(){
+    return {type: CLEAR_FORM}
+}
+
 // use to load active detail
 // into the detailForm state
 // when editing a detail
@@ -100,6 +106,9 @@ const detailToFormMapping = {
         description: asset.description,
         selectedAssets: asset.connected_to.map(asset => asset.name),
         selectedTags: asset.tags.map(tag => tag.name),
+        group: asset.group,
+        nodeColor: asset.nodeColor,
+        nodeShape: asset.nodeShape
     }),
     MAPPING: (mapping: Mapping) => ({
         name: mapping.name,
@@ -112,3 +121,4 @@ const detailToFormMapping = {
         description: tag.description
     })
 }
+

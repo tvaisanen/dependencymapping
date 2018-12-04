@@ -37,7 +37,7 @@ export function addMapping(mapping) {
 /*************** UPDATE **************/
 
 export function updateMapping(mapping: Mapping) {
-    return function (dispatch: () => void , getState: () => any) {
+    return function (dispatch: Dispatch , getState: State): void {
         console.group("debug update mpaping");
         console.info(mapping);
         console.groupEnd();
@@ -60,12 +60,7 @@ export function updateMapping(mapping: Mapping) {
             }
 
         };
-        const promise = GwClientApi.putMapping({
-            name: mapping.name,
-            description: mapping.description,
-            assets: mapping.resources,
-            tags: mapping.tags
-        });
+        const promise = GwClientApi.putMapping((mapping:Mapping));
         return {promise, resolveCallback};
 
     }

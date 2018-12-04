@@ -34,8 +34,7 @@ const TopBarContainer = (props) => (
                 selectedLayout={props.selectedLayout}
                 setGraphLayout={props.setGraphLayout}
             />
-            <MenuToggleButton onClick={props.toggleCollapseMenu}>
-            </MenuToggleButton>
+            <MenuToggleButton onClick={props.toggleCollapseMenu}/>
         </sc.BarBlock>
     </sc.TopBar>
 );
@@ -43,7 +42,6 @@ const TopBarContainer = (props) => (
 TopBarContainer.propTypes = {
     info: PropTypes.string,
     layoutOptions: PropTypes.arrayOf(PropTypes.string).isRequired,
-    menuToggleHandler: PropTypes.func.isRequired,
     refreshLayout: PropTypes.func.isRequired,
     selectedLayout: PropTypes.string.isRequired,
     setGraphLayout: PropTypes.func.isRequired,
