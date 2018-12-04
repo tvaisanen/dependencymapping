@@ -24,7 +24,6 @@ const App = () => (
                 <MappingMenuContainer id="mapping-menu-container"/>
                 <GraphCanvasInflater id="graph-canvas-wrapper">
                     <GraphCanvasContainer id="cy"/>
-                    <GroupTogglePanel id="tag-toggle-panel-container"/>
                 </GraphCanvasInflater>
                 <CollapseMenuContainer/>
             </MappingContent>

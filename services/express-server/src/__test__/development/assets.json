@@ -20,8 +20,8 @@
     "tags": [
       "TestPage"
     ],
-     "nodeShape": "rectangle",
-    "nodeColor": "green"
+     "nodeShape": "ellipse",
+    "nodeColor": "smoke"
   },
   {
     "name": "TestPageThree",
@@ -64,5 +64,88 @@
     ],
      "nodeShape": "ellipse",
     "nodeColor": "blue"
+  },
+  {
+    "name": "LevelOne",
+    "description": "Describe TestPageFour here.",
+    "connected_to": [],
+    "tags": [
+      "TestPage",
+      "TestTag"
+    ],
+     "nodeShape": "ellipse",
+    "nodeColor": "lightgrey"
+  },
+  {
+    "name": "LevelTwoA",
+    "description": "Describe TestPageFour here.",
+    "connected_to": [],
+    "tags": [
+      "TestPage",
+      "TestTag"
+    ],
+    "group": "LevelOne",
+     "nodeShape": "ellipse",
+    "nodeColor": "beige"
+  },
+  {
+    "name": "LevelTwoB",
+    "description": "Describe TestPageFour here.",
+    "connected_to": ["LevelTwoA"],
+    "tags": [
+      "TestPage",
+      "TestTag"
+    ],
+    "group": "LevelOne",
+     "nodeShape": "ellipse",
+    "nodeColor": "burlywood"
+  },
+  {
+    "name": "LevelThreeA",
+    "description": "Describe TestPageFour here.",
+    "connected_to": [],
+    "tags": [
+      "TestPage",
+      "TestTag"
+    ],
+    "group": "LevelTwoA",
+     "nodeShape": "ellipse",
+    "nodeColor": "bisque"
+  },
+  {
+    "name": "LevelThreeB",
+    "description": "Describe TestPageFour here.",
+    "connected_to": ["LevelThreeD"],
+    "group": "LevelTwoA",
+    "tags": [
+      "TestPage",
+      "TestTag"
+    ],
+     "nodeShape": "ellipse",
+    "nodeColor": "darkorchid"
+  },
+  {
+    "name": "LevelThreeC",
+    "description": "Describe TestPageFour here.",
+    "connected_to": [],
+    "group": "LevelTwoB",
+    "tags": [
+      "TestPage",
+      "TestTag"
+    ],
+     "nodeShape": "ellipse",
+    "nodeColor": "darkcyan"
+  },
+  {
+    "name": "LevelThreeD",
+    "description": "Describe TestPageFour here.",
+    "connected_to": [],
+    "group": "LevelTwoB",
+    "tags": [
+      "TestPage",
+      "TestTag"
+    ],
+     "nodeShape": "ellipse",
+    "nodeColor": "darkgoldenrod"
   }
 ]

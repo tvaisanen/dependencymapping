@@ -29,5 +29,13 @@
     "tags": [
       "TestTag"
     ]
+  },
+  {
+    "name": "GroupingsMap",
+    "description": "Describe ToBeDeleted here.",
+    "assets": ["LevelOne", "LevelTwoA", "LevelTwoB", "LevelThreeA", "LevelThreeB", "LevelThreeC", "LevelThreeD"],
+    "tags": [
+      "TestTag"
+    ]
   }
 ]

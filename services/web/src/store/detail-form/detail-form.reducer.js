@@ -64,7 +64,7 @@ export default function (state = initialState, action) {
             return { ...state, name: (value: string) };
 
         case SET_RESOURCE_DESCRIPTION_VALUE:
-            return !value ? state : { ...state, description: (value: string) };
+            return { ...state, description: (value: string) };
 
         case ADD_ASSET_TO_SELECTED:
             return !value ? state : { ...state, selectedAssets: [...state.selectedAssets, value]};

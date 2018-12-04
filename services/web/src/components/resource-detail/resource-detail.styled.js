@@ -8,7 +8,6 @@ export const DetailLayout = styled.div`
             flex-grow: 3;
             border-radius: 3px;
             border: 1px solid grey;
-            align-content: center;
             
             > div {
                display: flex;

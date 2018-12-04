@@ -217,6 +217,6 @@ export function activeMappingAssetUpdateActions(cy, asset: Asset) {
 }
 
 export function updateShapeAndColor(cy, asset: Asset){
-    alert(`set: "${asset.nodeShape} ${asset.nodeColor}"`)
-    cy.getElementById(asset.name).addClass(`${asset.nodeShape} ${asset.nodeColor}`)
+    // replace old nodeShape and nodeColor
+    cy.getElementById(asset.name).classes(`${asset.nodeShape} ${asset.nodeColor}`)
 }

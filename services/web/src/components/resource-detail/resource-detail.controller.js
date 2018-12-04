@@ -1,5 +1,8 @@
 
-const mapStateToProps = (state, props) => ({activeDetail: state.activeDetail});
+const mapStateToProps = (state, props) => ({
+    detailType: state.activeDetail.type,
+    activeDetail: state.activeDetail
+});
 
 const mapDispatchToProps = dispatch => ({});
 
