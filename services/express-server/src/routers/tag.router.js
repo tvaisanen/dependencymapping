@@ -7,7 +7,7 @@ tagRouter.get('(/:id)?', (req, res) => {
     if (req.params.id) {
         Tag.findOne({name: req.params.id})
             .then(tag => {
-                if (tag == null){
+                if (tag == null) {
                     console.log("Tag does not exist.");
                     res.status(404).json("Resource does not exist.")
                 } else {
@@ -43,8 +43,8 @@ tagRouter.put('(/:id)?', (req, res) => {
     Tag.update(query, req.body)
         .then(ok => {
             Tag.findOne(query)
-                .then(tag => res.status(200).json(tag)
-                    .catch(err => res.status(400).json(err)))
+                .then(tag => res.status(200).json(tag))
+                .catch(err => res.status(400).json(err))
         })
         .catch(err => res.status(400).send(err));
 });

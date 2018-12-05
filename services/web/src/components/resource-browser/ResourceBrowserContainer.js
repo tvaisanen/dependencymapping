@@ -93,7 +93,9 @@ class ResourceBrowserContainer extends Component {
 }
 
 const ResourceList = (props) => {
-    return props.resourceItems.map((resource, i) => (
+
+   return <ResourceListContainer>
+        {props.resourceItems.map((resource, i) => (
             <ResourceListItem
                 key={i}
                 selected={resource.name === props.activeDetail.name}
@@ -103,8 +105,8 @@ const ResourceList = (props) => {
                 })}
             >{resource.name}
             </ResourceListItem>
-        )
-    )
+    ))}
+   </ResourceListContainer>
 };
 
 ResourceBrowserContainer.propTypes = {
@@ -145,15 +147,19 @@ const ResourceBrowser = styled.div`
 
 `;
 
+const ResourceListContainer = styled.div`
+    display: flex;
+    flex-direction:column;
+    width: inherit; 
+    overflow-y: auto;
+`;
 
 const ResourceListItem = styled.div`
     font-size: small; 
     letter-spacing: 0.05em;
     text-align: center;
-    padding: 2px;
     cursor: pointer;
-    margin: 2px 12px;
-    width: 100%;
+    margin: 1px 6px;
     border-radius: 3px;
     background: ${props => props.selected ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.1)'};
     :hover{

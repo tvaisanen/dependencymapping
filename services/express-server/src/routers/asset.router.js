@@ -28,12 +28,7 @@ assetRouter.get('(/:id)?', (req, res) => {
 assetRouter.post('(/:id)?', (req, res) => {
     console.log(`post: ${req.params.id}`);
     const query = {name: req.param.id};
-    const asset = new Asset({
-        name: req.body.name,
-        description: req.body.description,
-        connected_to: req.body.connected_to,
-        tags: req.body.tags
-    });
+    const asset = new Asset(req.body);
 
     if (!asset.name) {
         res.status(400).json({error: "name is required field"})
@@ -66,15 +61,7 @@ assetRouter.put('(/:id)?', (req, res) => {
     const query = {name: req.params.id};
     console.log(query);
 
-    Asset.update(query, {
-        name: req.body.name,
-        description: req.body.description,
-        connected_to: req.body.connected_to,
-        tags: req.body.tags,
-        shape: req.body.shape,
-        color: req.body.color,
-        group: req.body.group
-    })
+    Asset.update(query, req.body)
         .then(ok => {
             console.log("HERE")
             console.log(ok);

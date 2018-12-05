@@ -10,16 +10,16 @@ import type { Mapping } from "./mapping.types";
 
 /*************** MAPPING *************/
 
-export function postMapping({name, description, resources, tags}) {
+export function postMapping(mapping: Mapping): Dispatch {
 
     return function (dispatch) {
         const resolveCallback = mapping => {
-            dispatch(appActions.setInfoMessage(`Created mapping: ${name}`));
+            dispatch(appActions.setInfoMessage(`Created mapping: ${mapping.name}`));
             dispatch(postMappingSuccess(mapping));
         };
 
-        console.info({name, description, assets:resources, tags});
-        const promise = GwClientApi.postMapping({name, description, assets:resources, tags});
+        console.info(mapping);
+        const promise = GwClientApi.postMapping((mapping: Mapping));
         return {promise, resolveCallback};
     }
 }

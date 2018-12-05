@@ -125,22 +125,13 @@ class GwClientApi {
         return axios.post(RESOURCES_URL, asset);
     }
 
-    static putAsset({name, description, connected_to, tags,shape,color,group}) {
-         console.groupCollapsed("putMapping(form)");
-        const data = {
-            name: name,
-            description: description,
-            connected_to: connected_to,
-            tags: tags,
-            group: group,
-            shape: shape,
-            color: color
-        };
-        console.info(data)
+    static putAsset(asset: Asset): Promise<T> {
+        console.groupCollapsed("putMapping(asset)");
+        console.info(asset)
         console.groupEnd();
         return axios.put(
-            resourceDetailUrl({name}),
-            data
+            resourceDetailUrl({name: asset.name}),
+            asset
         );
     }
 

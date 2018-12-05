@@ -13,9 +13,6 @@ export function parseEdgeElementsFromResource(resource){
             }
         }
     ));
-    console.group("DEBUG HERE");
-    console.info(edges);
-    console.groupEnd();
     return _.flatten(edges);
 }
 

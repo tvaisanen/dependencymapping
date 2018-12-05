@@ -39,12 +39,7 @@ mappingRouter.post('(/:id)?', (req, res) => {
     } else {
 
         console.log(req.body.assets);
-        const mapping = new Mapping({
-            name: req.body.name,
-            description: req.body.description,
-            assets: req.body.assets,
-            tags: req.body.tags
-        });
+        const mapping = new Mapping(req.body);
         const query = {name: mapping.name};
         console.log(mapping)
 

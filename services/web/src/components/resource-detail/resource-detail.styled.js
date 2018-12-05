@@ -13,7 +13,8 @@ export const DetailLayout = styled.div`
                display: flex;
                flex-direction: column;
                flex-grow: 1;
-               
+               padding: 4px;
+              
                > div:nth-of-type(1) {
                  // detail title bar               
                  justify-content: space-between;
@@ -26,7 +27,6 @@ export const DetailLayout = styled.div`
             > div:nth-of-type(1) {
               // header
               min-width: 60%;
-              padding: 4px;
             
             > div:nth-of-type(2) {
               // header

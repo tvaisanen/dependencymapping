@@ -26,7 +26,7 @@ export function closeFormAndSetActiveDetail(activeDetail) {
 
         const isMapping = activeDetail.type === types.MAPPING;
 
-        if ( isMapping && activeDetail.setDetail) {
+        if ( isMapping ) {
             // if the detail is a type of MAPPING
             // it needs to be loaded
             dependencyMapHelpers.loadDependencyMap(
@@ -43,7 +43,7 @@ export function closeFormAndSetActiveDetail(activeDetail) {
 }
 
 export function closeEdit() {
-    return function (dispatch, getState) {
+    return function (dispatch: Dispatch, getState: State): void {
         dispatch(appActions.setEditFalse());
         dispatch(detailFormActions.setFormEditFalse());
         dispatch(appActions.setBottomPanelView(BROWSE))

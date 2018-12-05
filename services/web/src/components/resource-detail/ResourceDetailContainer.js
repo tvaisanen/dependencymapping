@@ -37,14 +37,14 @@ const ResourceDetailContainer = props => (
                 </EmptyDetail>
                 :
                 <React.Fragment>
-                    <div>
+                    <div id={"detail-description"}>
                         <ResourceDetailHeader id="resource-detail-header"/>
                         <ActiveDetailDescription
                             description={props.activeDetail.data.description}
                             id="resource-detail__detail-block"
                         />
                     </div>
-                    <div>
+                    <div id={"detail-assets-and-tags"}>
                         <div><InActiveMappingToggle/> <EditButton/></div>
                         <ActiveDetailLists id="resource-detail__detail-block__lists"/>
                     </div>
