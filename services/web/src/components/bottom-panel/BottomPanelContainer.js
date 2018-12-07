@@ -7,6 +7,7 @@ import * as views from './../../constants/views';
 import PanelNavTabs from './bottom-panel.components';
 import ResourceControllerContainer from '../resource-controller/ResourceControllerContainer';
 import DetailEditor from '../detail-editor/DetailEditor';
+import ConnectionManager from '../connection-manager/ConnectionManager';
 
 const panelViews = {
     [views.BROWSE]: {
@@ -17,6 +18,10 @@ const panelViews = {
         header: "forms",
         //component: ResourceControllerContainer,
         component: DetailEditor
+    },
+    [views.CONNECTIONS]: {
+        header: "connections",
+        component: ConnectionManager
     }
 };
 

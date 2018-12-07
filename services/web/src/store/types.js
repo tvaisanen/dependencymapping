@@ -6,6 +6,7 @@ import type {ActiveMappingState} from "./active-mapping/active-mapping.types";
 
 export * from './mapping/mapping.types';
 export * from './asset/asset.types';
+export * from './connection/connection.types';
 export * from './tag/tag.types';
 
 export const emptyArray: Array<any> = [];

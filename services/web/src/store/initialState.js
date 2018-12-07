@@ -9,6 +9,7 @@ export default {
             tabItems: [
                 {label: 'Resource Browser', view: views.BROWSE},
                 {label: 'Create', view: views.CREATE},
+                {label: 'Connections', view: views.CONNECTIONS}
             ]
         },
         form: {
@@ -24,7 +25,7 @@ export default {
     dependencies: [],
     resources: [],
     tags: [],
-    activeMapping: {name: "no selection", resources:[], tags: []},
+    activeMapping: {name: "no selection", assets:[], tags: []},
     activeDetail: {
         data: {
             name: 'Welcome from store',

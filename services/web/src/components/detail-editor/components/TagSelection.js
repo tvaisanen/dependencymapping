@@ -26,7 +26,8 @@ const mapStateToProps = (state, props) => {
     );
     return {
         filterValue: state.detailForm.tagFilter,
-        title: props.title,
+        title: "Tags",
+        selectedLabel: "tags",
         options: filteredAvailableSelections,
         selected: selected
     }

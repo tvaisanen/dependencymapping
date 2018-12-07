@@ -49,12 +49,14 @@ const mapDispatchToProps = dispatch => {
     return {
         addToMap: (resource) => (
             dispatch(
-                activeMappingActions.addResourceToActiveMapping(resource)
+                activeMappingActions
+                    .addResourceToActiveMapping(resource)
             )
         ),
         removeFromMap: (resource) => (
             dispatch(
-                activeMappingActions.removeResourceFromActiveMapping(resource)
+                activeMappingActions
+                    .removeResourceFromActiveMapping(resource)
             )
         )
     }

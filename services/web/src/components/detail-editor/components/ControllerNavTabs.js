@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import * as actions from '../../../actions';
 
 // todo: needs to be refactored
-import * as detailEditorActions from '../../detail-editor/detail-editor.actions';
+import * as detailEditorActions from '../detail-editor.actions';
 
 const NavTab = styled.span`
         text-decoration: ${p => p.selected ? 'underline' : null};

@@ -10,6 +10,7 @@ const API_URL = `http://${API_HOST}/`;
 // const RESOURCES_URL = `${API_URL}assets/`;
 
 const MAPPINGS_URL = `${API_URL}mapping/`;
+const CONNECTIONS_URL = `${API_URL}connection/`;
 const TAGS_URL = `${API_URL}tag/`;
 const RESOURCES_URL = `${API_URL}asset/`;
 const ASSET_GROUPS_URL = `${API_URL}asset-group/`;
@@ -78,6 +79,10 @@ class GwClientApi {
         return axios.get(MAPPINGS_URL, {
             Authorization: setAuthHeader()
         });
+    }
+
+    static getConnections() {
+        return axios.get(CONNECTIONS_URL);
     }
 
     static getAssets() {

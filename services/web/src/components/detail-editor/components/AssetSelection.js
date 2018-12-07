@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as _ from 'lodash';
+import { ASSET} from "../../../constants";
 import SelectionWithFilterAndCreate from './SelectionWithFilterAndCreate';
 import * as detailEditorActions from '../detail-editor.actions';
 import type {Dispatch, State} from "../../../store/types";
@@ -20,9 +21,10 @@ const mapStateToProps = (state, props) => {
         option.toLowerCase(option)).includes(assetFilter.toLowerCase())
     );
     return {
+        selectedLabel: state.detailForm.formType === ASSET ? "connected to" : "assets",
         filterValue: state.detailForm.assetFilter,
-        resourceType: props.resourceType,
-        title: props.title,
+        resourceType: state.detailForm.formType,
+        title: "Assets",
         options: filteredAvailableSelections,
         selected: selected
     };

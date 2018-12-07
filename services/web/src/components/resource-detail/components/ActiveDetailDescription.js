@@ -28,7 +28,9 @@ const ActiveDetailDescription = (props) => (
 );
 
 export default connect(
-    (state) => ({description: state.activeDetail.data.description}),
+    (state) => ({
+        description: state.activeDetail.data.description,
+    }),
     {}
 )(ActiveDetailDescription)
 

@@ -9,10 +9,11 @@ import graph from './graph/graph.reducer';
 import app from '../reducers/app.reducer'
 import auth from './auth/auth.reducer';
 import detailForm from './detail-form/detail-form.reducer';
+import connections from './connection/connection.reducer';
 
 const rootReducer = combineReducers({
     app,
-    auth,
+    connections,
     mappings,
     assets,
     assetGroups,

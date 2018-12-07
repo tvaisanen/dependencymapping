@@ -24,7 +24,7 @@ const SelectionWithFilterAndCreate = (props: SelectionProps) => (
         <SelectionBlock id="selection-block">
             <Block id="block">
                 <SmallLabel>{props.title}
-                    <small>({props.options.length})</small>
+                    <small> ({props.options.length})</small>
                 </SmallLabel>
                 <FilterInputField id="filter-input-field"
                                   onChange={(e) => props.onFilterChange(e.target.value)}
@@ -38,7 +38,10 @@ const SelectionWithFilterAndCreate = (props: SelectionProps) => (
 
             </Block>
             <Block id="block">
-                <SmallLabel>{props.selectedLabel}: {props.selected.length}</SmallLabel>
+                <SmallLabel>
+                    {props.selectedLabel}
+                    <small> ({props.selected.length})</small>
+                </SmallLabel>
                 <AddInputField
                     id="filter-input-field"
                     addItem={props.createAndSelect}

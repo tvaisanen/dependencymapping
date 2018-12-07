@@ -6,19 +6,23 @@ import {HeaderBar} from "../resource-detail.styled";
 
 
 const HeaderTitle = (props) => (props.type === EMPTY ? null
-        : <small>{props.type}: {props.name}, <br/>group: {props.group || "none"}</small>
+        : <React.Fragment>
+            <span>{props.name}</span>
+            <div>
+            <small>{props.type}</small>
+            <small>group: {props.group || "none"}</small>
+            </div>/
+        </React.Fragment>
 );
 
 
 const ResourceDetailHeader = ({activeDetail}) => {
     return <HeaderBar>
         {activeDetail.type ?
-            <div>
                 <HeaderTitle
                     type={activeDetail.type}
                     name={activeDetail.data.name}
                     group={activeDetail.data.group}/>
-            </div>
             : null
         }
     </HeaderBar>

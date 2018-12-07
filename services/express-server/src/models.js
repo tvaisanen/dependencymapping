@@ -11,6 +11,16 @@ const assetSchema = new mongoose.Schema({
     nodeColor: {type: String, default: "navyblue"}
 });
 
+assetSchema.post('save', (asset)  => {
+    console.log('create connections after saving');
+    asset.connected_to.forEach(target => {
+                const connection = new Connection({source: asset.name, target: target});
+                connection.save()
+                    .then(saved => console.log(saved))
+                    .catch(err => console.log(`error saving connection: ${err}`))
+            })
+});
+
 const mappingSchema = new mongoose.Schema({
     name: String,
     description: String,
@@ -24,11 +34,19 @@ const tagSchema = new mongoose.Schema({
     description: String
 });
 
+const connectionSchema = new mongoose.Schema({
+    source: {type: String, required: true},
+    target: {type: String, required: true},
+    meta: {type: String, default: null},
+    description: {type: String, default: ""}
+});
+
 const groupSchema = new mongoose.Schema({
     name: String,
 });
 
 const Asset = mongoose.model('Asset', assetSchema);
+const Connection = mongoose.model('Connection', connectionSchema);
 const Mapping = mongoose.model('Mapping', mappingSchema);
 const Tag = mongoose.model('Tag', tagSchema);
 const AssetGroup = mongoose.model('AssetGroup', groupSchema);
@@ -37,6 +55,7 @@ const AssetGroup = mongoose.model('AssetGroup', groupSchema);
 module.exports = {
     Asset: Asset,
     AssetGroup: AssetGroup,
+    Connection: Connection,
     Mapping: Mapping,
     Tag: Tag
 };

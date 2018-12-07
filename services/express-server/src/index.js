@@ -9,8 +9,9 @@ const assetRouter = require('./routers/asset.router');
 const assetGroupRouter = require('./routers/asset-group.router');
 const mappingRouter = require('./routers/mapping.router');
 const tagRouter = require('./routers/tag.router');
+const connectionRouter = require('./routers/connection.router');
 
-const { Asset, AssetGroup, Tag, Mapping } = require('./models');
+const { Asset, AssetGroup, Connection, Tag, Mapping } = require('./models');
 
 // require test data
 
@@ -47,6 +48,8 @@ function loadDataToDb() {
         const asset = new Asset({...item});
         asset.save().then(saved => {
             console.log(`saved: ${saved.name}`);
+
+
         }).catch(err => {
             console.log(err);
         })
@@ -97,6 +100,11 @@ router.get('/reset-models', (req, res) => {
     Asset.remove()
         .then(r => console.log(r))
         .catch(err => console.log(err));
+
+    Connection.remove()
+        .then(r => console.log(r))
+        .catch(err => console.log(err));
+
     AssetGroup.remove()
         .then(r => console.log(r))
         .catch(err => console.log(err));
@@ -134,6 +142,7 @@ app.use('/asset', assetRouter);
 app.use('/asset-group', assetGroupRouter);
 app.use('/mapping', mappingRouter);
 app.use('/tag', tagRouter);
+app.use('/connection', connectionRouter);
 
 app.get('*', (req, res) => {
     res.status(404).send('Resource not found.')

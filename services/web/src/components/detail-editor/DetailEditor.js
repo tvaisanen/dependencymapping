@@ -4,7 +4,7 @@ import {TAG} from "../../constants";
 import {connect} from 'react-redux';
 import styled from 'styled-components';
 import SelectionMenus from './components/SelectionMenus';
-import ControllerNavTabs from '../resource-controller/components/ControllerNavTabs';
+import ControllerNavTabs from './components/ControllerNavTabs';
 import { AssetSelection, TagSelection, DescriptionTextarea } from "./components/";
 import NameInputField from "./components/NameInputField";
 import EditorButtons from "./components/EditorButtons";

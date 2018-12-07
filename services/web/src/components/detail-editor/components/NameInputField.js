@@ -14,6 +14,7 @@ const NameInputField = (props) => {
             }
 
             <input type={"text"}
+                   readOnly={props.readOnly}
                    value={props.name ? props.name : ""}
                    onChange={(e) => {
                        if (e.target.value===""){this.value=""}
@@ -24,6 +25,7 @@ const NameInputField = (props) => {
 };
 
 const mapStateToProps = (state, props) => ({
+    readOnly: state.detailForm.edit, // name is read only if editing
     name: state.detailForm.name,
     error: state.detailForm.errors.name
 });

@@ -23,10 +23,14 @@ if (process.env.REACT_APP_ENV === "development"){
 // const auth = authStorage ? JSON.parse(authStorage) : false;
 
 // store.dispatch(storeActions.loginSuccess(auth));
-store.dispatch(storeActions.loadAllMappings());
-store.dispatch(storeActions.loadAllAssets());
-store.dispatch(storeActions.loadAllTags());
-store.dispatch(storeActions.loadAllAssetGroups());
+setTimeout(() => {
+    // wait a while for db to reset
+    store.dispatch(storeActions.loadAllMappings());
+    store.dispatch(storeActions.loadAllAssets());
+    store.dispatch(storeActions.loadAllTags());
+    store.dispatch(storeActions.loadAllConnections());
+    store.dispatch(storeActions.loadAllAssetGroups());
+}, 500);
 
 
 console.group("Environment");
