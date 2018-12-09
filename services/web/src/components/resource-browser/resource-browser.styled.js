@@ -1,6 +1,21 @@
 import styled from 'styled-components';
 
+export const DivConnectionListItem = styled.div`
+    display: flex;
+    margin: 1px 6px;
+    letter-spacing: 0.05rem; 
+    > div {
+        flex-basis: 45%;
+    } 
+    > div:nth-of-type(2){
+        flex-basis: 10%;
+    }
+`;
+
+
 export const ResourceBrowserLayout = styled.div`
+    display: flex;
+
   width: 100%;
   height: 100%;
   color: rgba(255,255,255,0.8);

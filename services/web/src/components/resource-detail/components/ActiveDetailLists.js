@@ -23,7 +23,7 @@ export const ListItems = ({items, type, clickHandler}) => {
                 onClick={() => clickHandler({
                     data: item,
                     type: type
-                })}>{item.name}
+                })}>{item.name} 
             </ListItem>)) : null;
 };
 
@@ -79,7 +79,7 @@ const getLists = ({activeDetail, setDetail, items}) => {
             label: data.label,
             onClick: setDetail,
             items: data.key ? activeDetail.data[data.key] : items,
-            type: data.type
+            type: data.type,
         })
     );
 };
@@ -114,7 +114,14 @@ const listCompositionInstructions = {
     [types.TAG]: [
         // key: false -> the list items need to be derived
         // from the assets
-        {label: "Assets", key: false, type: types.ASSET}
+        {label: "Assets", key: false, type: types.ASSET }
+    ],
+    [types.CONNECTION]: [
+        {
+            label: "Meta", 
+            key: "meta", 
+            type: types.CONNECTION, 
+        }
     ],
     [types.EMPTY]: [],
 };

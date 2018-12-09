@@ -36,7 +36,10 @@ const mapStateToProps = (state, ownProps = {}) => {
 
 const mapDispatchToProps = dispatch => ({
     editDetail: () => dispatch(appActions.editDetail()),
-    setActiveDetail: (activeDetail) => dispatch(activeDetailActions.setActiveDetailWithResourceCollecting(activeDetail)),
+    setActiveDetail: (activeDetail) => {
+        console.info(activeDetail);
+        dispatch(activeDetailActions.setActiveDetailWithResourceCollecting(activeDetail))
+    },
     addResourceToActiveMapping: (resource) => dispatch(activeMappingActions.addResourceToActiveMapping(resource)),
     removeResourceFromActiveMapping: (resource) => dispatch(activeMappingActions.removeResourceFromActiveMapping(resource))
 });
