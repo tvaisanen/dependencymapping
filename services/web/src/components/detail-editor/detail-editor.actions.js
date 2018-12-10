@@ -151,7 +151,6 @@ export function onSave(): Dispatch {
             console.info(err);
             console.log(err.data);
         }
-
     }
 }
 
@@ -290,4 +289,16 @@ export function onNodeShapeSelection(value: string): Dispatch {
     return function (dispatch: Dispatch): void {
         dispatch(detailFormActions.setNodeShapeSelection((value: string)))
     }
+}
+
+export function onSourceSelection(value: string) {
+   return function (dispatch: Dispatch): void {
+       dispatch(detailFormActions.setSourceValue((value:string)));
+   }
+}
+
+export function onTargetSelection(value: string) {
+   return function (dispatch: Dispatch): void {
+       dispatch(detailFormActions.setTargetValue((value:string)));
+   }
 }

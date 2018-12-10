@@ -1,1 +1,2 @@
 export const SET_CONNECTIONS = 'SET_CONNECTIONS';
+export const ADD_CONNECTION = 'ADD_CONNECTION';

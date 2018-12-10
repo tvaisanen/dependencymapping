@@ -24,6 +24,27 @@ connectionRouter.get('(/:id)?', (req, res) => {
     }
 });
 
+connectionRouter.post('(/:id)?', (req, res) => {
+    const {source, target} = req.body;
+    Connection.findOne({source:source, target:target})
+        .then((connection) => {
+            console.log("already exist?")
+            console.log(connection)
+            if (connection){
+                res.status(409).json({msg:"already exists"})
+            } else {
+               const newConnection = new Connection(req.body);
+               newConnection.save()
+                   .then(saved => res.status(201).json(saved))
+                   .catch(err => res.status(500).json(err))
+            }
+
+        }).catch(err => {
+            console.log(err);
+            res.status(500).json(err);
+    })
+});
+
 
 
 module.exports = connectionRouter;

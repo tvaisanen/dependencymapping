@@ -1,13 +1,16 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import styled from 'styled-components';
+
+import * as detailFormActions from '../../../store/detail-form/detail-form.actions';
+import * as detailEditorActions from '../detail-editor.actions';
 
 import TagSelection from "./TagSelection";
 import DescriptionTextarea from "./DescriptionTextarea";
 
 export const ConnectionSelections = () => (
     <React.Fragment>
-       <TagSelection/>
+        <TagSelection/>
     </React.Fragment>
 );
 
@@ -23,24 +26,22 @@ const Select = styled.select`
 `;
 
 export const ConnectionForm = (props) => (
-     <React.Fragment>
-            <SelectRow>
-                <SelectSourceAsset
-                    label={"source"}
-                    onChange={(selected) => alert(`selected: ${selected}`)}
-                    selected={props.source}
-                    {...props}/>
-                <SelectTargetAsset
-
-                    label={"target"}
-                    selected={props.target}
-                    onChange={(selected) => alert(`selected: ${selected}`)}
-                    {...props}/>
-            </SelectRow>
-            <DescriptionTextarea/>
+    <React.Fragment>
+        <SelectRow>
+            <SelectSourceAsset
+                label={"source"}
+                onChange={props.onSourceSelection}
+                selected={props.source}
+                {...props}/>
+            <SelectTargetAsset
+                label={"target"}
+                selected={props.target}
+                onChange={props.onTargetSelection}
+                {...props}/>
+        </SelectRow>
+        <DescriptionTextarea/>
     </React.Fragment>
 );
-
 
 type SelectAssetProp = { selected: string, edit: boolean };
 
@@ -52,7 +53,7 @@ export const SelectTargetAsset = (props: SelectAssetProp) => (
     props.edit ? <div>{props.selected}</div> : <SelectAsset {...props}/>
 );
 
-function mapStateToProps (state, props) {
+function mapStateToProps(state, props) {
     return {
         edit: state.detailForm.edit,
         assets: state.assets.map(asset => asset.name),
@@ -61,31 +62,38 @@ function mapStateToProps (state, props) {
     }
 }
 
-export default connect(
-    mapStateToProps
-    ,{}
-)(ConnectionForm);
+function mapDispatchToProps(dispatch) {
+    return {
+        onSourceSelection: (value: string) => dispatch(detailEditorActions.onSourceSelection(value)),
+        onTargetSelection: (value: string) => dispatch(detailEditorActions.onTargetSelection(value)),
+    }
+}
 
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ConnectionForm);
 
 const SelectAsset = (props) => {
     return <div>
         <small>
-            <label for={`${props.label}-asset`}>{props.label}</label><br/>
+            <label for={`${props.label}-asset`}>{props.label}</label>
+            <br/>
         </small>
         <Select
-        selected={"none"}
-        onChange={(e) => {
-            this.selected = e.target.value;
-            props.onChange((e.target.value: string));
-        }}>
-        {props.assets.map(option => (
-            <option
-                selected={option === props.selected}
-                onClick={(e)=>{
-                    e.preventDefault();
-                    alert('here')
-                }}
-                value={option}
-            >{option}</option>))}
-    </Select></div>
+            selected={"none"}
+            onChange={(e) => {
+                this.selected = e.target.value;
+                props.onChange((e.target.value: string));
+            }}>
+            {
+                props.assets.map(option => (
+                    <option selected={option === props.selected}
+                            value={option}>
+                        {option}
+                    </option>
+                ))
+            }
+        </Select>
+    </div>
 };

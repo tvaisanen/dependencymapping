@@ -129,7 +129,7 @@ router.get('/reset-models', (req, res) => {
 
 let app = express();
 app.use(cors());
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
 
 // serve test pages

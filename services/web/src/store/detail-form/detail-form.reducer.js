@@ -16,7 +16,9 @@ import {
     SET_FORM_EDIT_FALSE,
     SET_FORM_EDIT_TRUE,
     SET_VALUES_FROM_DETAIL,
-    CLEAR_FORM
+    CLEAR_FORM,
+    SET_SOURCE_VALUE,
+    SET_TARGET_VALUE
 } from "./detail-form.action-types";
 
 const initialState = {
@@ -101,6 +103,12 @@ export default function (state = initialState, action) {
         case SET_FORM_EDIT_FALSE:
             return {...state, edit: false};
 
+
+        case SET_SOURCE_VALUE:
+            return {...state, source: (value: string)};
+
+        case SET_TARGET_VALUE:
+            return {...state, target: (value: string)};
 
         default:
             return state;

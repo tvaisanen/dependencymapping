@@ -15,7 +15,9 @@ import {
     SET_NODE_COLOR_SELECTION,
     SET_FORM_EDIT_TRUE,
     SET_FORM_EDIT_FALSE, SET_VALUES_FROM_DETAIL,
-    CLEAR_FORM
+    CLEAR_FORM,
+    SET_SOURCE_VALUE,
+    SET_TARGET_VALUE
 } from './detail-form.action-types';
 import type {Dispatch} from "../types";
 import type {Asset, Connection, Mapping, Tag} from "../types";
@@ -23,6 +25,14 @@ import type {Asset, Connection, Mapping, Tag} from "../types";
 
 export function setDetailFormType(type: ASSET | MAPPING | TAG) {
     return {type: SET_DETAIL_FORM_TYPE, formType: type}
+}
+
+export function setSourceValue(value: string) {
+    return {type: SET_SOURCE_VALUE, value};
+}
+
+export function setTargetValue(value: string) {
+    return {type: SET_TARGET_VALUE, value};
 }
 
 export function setAssetFilterValue(value: string) {

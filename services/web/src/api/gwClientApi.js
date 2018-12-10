@@ -25,6 +25,10 @@ function tagDetailUrl({name}) {
     return `${TAGS_URL}${encodeURI(name)}/`;
 }
 
+function connectionDetailUrl({name}) {
+    return `${CONNECTIONS_URL}${encodeURI(name)}/`;
+}
+
 function mappingsDetailUrl({name}) {
     return `${MAPPINGS_URL}${encodeURI(name)}/`;
 }
@@ -95,16 +99,29 @@ class GwClientApi {
         });
     }
 
-    static getResource(id) {
-        return axios.get(resourceDetailUrl({name: id}));
-    }
-
-
     static getTags() {
         return axios.get(TAGS_URL, {
             Authorization: setAuthHeader()
         });
     }
+
+
+    /********************** ConnectionMETHODS **********************/
+
+    static postConnection(connection: Connection): Promise<T> {
+        return axios.post(CONNECTIONS_URL, connection)
+    }
+
+    static putConnection(connection: Connection): Promise<T> {
+        return axios.put(connectionDetailUrl({name:connection.name}),connection);
+    }
+
+    static deleteConnection(source: string, target: string): Promise<T> {
+        alert('todo: connection id not set');
+        return axios.delete(connectionDetailUrl({name: `${source}_to_${target}`}));
+    }
+
+    /** ***********************************************************/
 
     /********************** MAPPING METHODS **********************/
 
