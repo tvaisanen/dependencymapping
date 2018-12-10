@@ -8,13 +8,6 @@ export function setActiveDetail(activeDetail) {
 }
 
 export function setActiveMappingAsDetail(activeDetail) {
-    /**
-     * This is in place for detail view asset selection list.
-     * Due to wrongly handled development server resource api
-     * object depth handling.
-     *
-     * Todo: when the gwiki api has been specified. Reflect the changes here.
-     */
 
     return function (dispatch, getState) {
 
@@ -40,11 +33,7 @@ export function setActiveMappingAsDetail(activeDetail) {
 
 export function setActiveDetailWithResourceCollecting(activeDetail) {
     /**
-     * This is in place for detail view asset selection list.
-     * Due to wrongly handled development server resource api
-     * object depth handling.
-     *
-     * Todo: when the gwiki api has been specified. Reflect the changes here.
+     * Todo: refactor this function
      */
     const {data} = activeDetail;
 
@@ -74,6 +63,26 @@ export function setActiveDetailWithResourceCollecting(activeDetail) {
             console.groupEnd();
         }
     }
+    if (activeDetail.type === resourceTypes.CONNECTION) {
+        return function (dispatch, getState) {
+
+            const {tags} = getState();
+            const parseTags = data.tags ? _.isString(data.tags[0]) : [];
+
+            const collectedDetail = {
+                type: activeDetail.type,
+                data: {
+                    ...data,
+                    tags: parseTags ?
+                        tags.filter(t => _.includes(data.tags, t.name))
+                        : data.tags
+                }
+            };
+            dispatch(setActiveDetail(collectedDetail));
+        }
+    }
+
+    // this is run for tag?
     return setActiveDetail(activeDetail);
 }
 

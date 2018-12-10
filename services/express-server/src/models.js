@@ -37,7 +37,7 @@ const tagSchema = new mongoose.Schema({
 const connectionSchema = new mongoose.Schema({
     source: {type: String, required: true},
     target: {type: String, required: true},
-    meta: {type: String, default: null},
+    tags: {type: [String], default: null},
     description: {type: String, default: ""}
 });
 

@@ -13,16 +13,9 @@ import resourceBrowserCtrl from './resource-browser.controller';
 import { ResourceBrowser, ResourceList } from './components/components';
 
 import {
-    ListItemBox,
     ResourceBrowserLayout,
-    BrowserContainer,
-    ListTab,
-    ListTabs,
-    ListContainer
 } from './resource-browser.styled.js';
 
-
-const renderList = ({listItems}) => <div/>
 
 type Props = {
    assets: Array<Asset>,
@@ -56,6 +49,7 @@ class ResourceBrowserContainer extends Component <Props, State> {
     }
 
     render() {
+
         const {assets, connections, tags} = this.props;
         const {filterValue, selected} = this.state;
 
@@ -72,29 +66,25 @@ class ResourceBrowserContainer extends Component <Props, State> {
 
         return (
             <ResourceBrowserLayout id="resource-browser__layout">
-                    <ResourceBrowser
-                        tabItems={tabs}
-                        listItems={listItems}
-                        selected={selected}
-                        onSelect={(selected) =>  this.setState({selected})}
-                        onFilterChange={this.onFilterChange.bind(this)}
-                        setActiveDetail={this.props.setActiveDetail}
-                     />
-                    <ResourceDetail/>
+                <ResourceBrowser
+                    tabItems={tabs}
+                    listItems={listItems}
+                    selected={selected}
+                    onSelect={(selected) =>  this.setState({selected})}
+                    onFilterChange={this.onFilterChange.bind(this)}
+                    setActiveDetail={this.props.setActiveDetail}
+                 />
+                <ResourceDetail/>
             </ResourceBrowserLayout>
         );
     }
 }
 
-
-
-
 const tabs = [
-    {label: "Asset", type: ASSET},
+    {label: "Assets", type: ASSET},
     {label: "Connections", type: CONNECTION},
     {label: "Tags", type: TAG},
-]
-
+];
 
 export default connect(
     resourceBrowserCtrl.mapStateToProps,

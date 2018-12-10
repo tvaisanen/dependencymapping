@@ -7,9 +7,7 @@ import {HeaderBar} from "../resource-detail.styled";
 
 const HeaderTitle = (props) => (props.type === EMPTY ? null
         : <React.Fragment>
-            <span>
-                <small>{props.type}: </small>
-                {props.name}</span>
+                <small>{props.type}: {props.name} </small>
             <div>
             <small>group: {props.group || "none"}</small>
             </div>
