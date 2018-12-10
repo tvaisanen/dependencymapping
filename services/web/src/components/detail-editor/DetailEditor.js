@@ -1,67 +1,101 @@
 //@flow
 import React from 'react';
-import {TAG} from "../../constants";
+import {ASSET, CONNECTION, MAPPING, TAG} from "../../constants";
 import {connect} from 'react-redux';
-import styled from 'styled-components';
 import SelectionMenus from './components/SelectionMenus';
 import ControllerNavTabs from './components/ControllerNavTabs';
 import { AssetSelection, TagSelection, DescriptionTextarea } from "./components/";
 import NameInputField from "./components/NameInputField";
 import EditorButtons from "./components/EditorButtons";
 
-const Container = styled.div`
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    height: inherit;
-    z-index: 20;
-    > div {
-        border: 1px solid lightgrey;
-        border-radius: 3px;
-    }
-    
-    transition: all .3s ease-in-out;
-`;
+import ConnectionForm, { ConnectionSelections} from './components/connection-form-components';
+
+import {Container, FormColumn, FormWrapper, SelectionColumn } from "./detail-editor.styled";
 
 type DetailEditorProps = {
-    formType: ASSET | MAPPING | TAG
+    formType: ASSET | CONNECTION | MAPPING | TAG
 }
 
-const FormColumn = styled.div`
-    display: flex;
-    justify-content: space-between;
-    flex-direction: column;
-    flex-basis: 60%;
-    flex-shrink: 1;
-    padding: 0 12px;
-    margin-right: 6px;
-`;
+const AssetForm = () => (
+    <React.Fragment>
+        <NameInputField/>
+        <SelectionMenus/>
+        <DescriptionTextarea/>
+    </React.Fragment>
+);
 
-const SelectionColumn = styled.div`
-    display: flex;
-    flex-direction: column;
-    flex-basis: 40%;
-    flex-shrink: 2; 
-`;
+const AssetSelections = () => (
+    <React.Fragment>
+       <AssetSelection/>
+       <TagSelection/>
+    </React.Fragment>
+);
 
-const DetailEditor = (props: DetailEditorProps) => {
-    return <Container>
-        <FormColumn>
-            <ControllerNavTabs/>
+
+const MappingForm = () => (
+     <React.Fragment>
             <NameInputField/>
             <SelectionMenus/>
             <DescriptionTextarea/>
+    </React.Fragment>
+);
+
+const MappingSelections = () => (
+    <React.Fragment>
+       <AssetSelection/>
+       <TagSelection/>
+    </React.Fragment>
+)
+
+const TagForm = () => (
+     <React.Fragment>
+            <NameInputField/>
+            <SelectionMenus/>
+            <DescriptionTextarea/>
+    </React.Fragment>
+);
+
+const TagSelections = () => null;
+
+const formComponentsByType = {
+    ASSET: {formComponent: AssetForm, selectionComponent: AssetSelections},
+    CONNECTION: {formComponent: ConnectionForm, selectionComponent: ConnectionSelections},
+    MAPPING: {formComponent: MappingForm, selectionComponent: MappingSelections},
+    TAG: {formComponent: TagForm, selectionComponent: TagSelections},
+}
+/**
+ *  Asset:
+ *      - fields: name, description,group, node color, node shape
+ *      - selection: connected_to (asset), tags
+ *  Connection:
+ *      - fields: source, target, description, line type, line color, arrow shape
+ *      - selection: tags
+ *  Mapping:
+ *      - fields: name, description
+ *      - selection: assets, tags
+ *  Tag:
+ *      - fields: name, description
+ *
+ */
+const DetailEditor = (props: DetailEditorProps) => {
+
+    // select fields by form type
+    const Form = formComponentsByType[props.formType].formComponent;
+
+    // null if no selection
+    const Selection = formComponentsByType[props.formType].selectionComponent;
+
+    return <Container>
+        <ControllerNavTabs/>
+        <FormWrapper>
+        <FormColumn>
+            <Form/>
             <EditorButtons/>
         </FormColumn>
-
-        {
-            props.formType !== TAG ?
-                <SelectionColumn>
-                    <AssetSelection/>
-                    <TagSelection/>
-                </SelectionColumn>
-                : null
-        }
+        <SelectionColumn visible={Selection()}>
+            <Selection/>
+        </SelectionColumn>
+        </FormWrapper>
     </Container>
 }
 

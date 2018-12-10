@@ -118,9 +118,9 @@ const listCompositionInstructions = {
     ],
     [types.CONNECTION]: [
         {
-            label: "Meta", 
-            key: "meta", 
-            type: types.CONNECTION, 
+            label: "Tags",
+            key: "tags",
+            type: types.TAG,
         }
     ],
     [types.EMPTY]: [],

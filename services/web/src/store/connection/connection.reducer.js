@@ -5,7 +5,7 @@ import {
     SET_CONNECTIONS
 } from "./connection.action-types";
 
-const initialState = [{source: "TestPageOne", target: "TestPageTwo", meta: "no meta", description: "no description"}];
+const initialState = [{source: "TestPageOne", target: "TestPageTwo", tags: [], description: "no description"}];
 
 export default function (state: ConnectionState = initialState, action: ConnectionAction): ConnectionState {
 

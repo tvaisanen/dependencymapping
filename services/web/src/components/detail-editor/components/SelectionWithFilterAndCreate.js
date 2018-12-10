@@ -66,8 +66,9 @@ export default SelectionWithFilterAndCreate;
 
 const OptionList = styled.div`
   height: 6em;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
+  flex-grow:1;
   width: 16em;
 `;
 
@@ -93,13 +94,14 @@ const SelectionBlock = styled.div`
   background-color: rgba(22,22,22,0.1);
   margin: 2px;
   flex-shrink: 4;
-
 `;
 
 export const Block = styled.div`
   display: flex;
+  height: 100%;
+  flex-grow: 1;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   padding: 4px;
 `;

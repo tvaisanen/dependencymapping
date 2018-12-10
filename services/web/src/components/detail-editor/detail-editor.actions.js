@@ -4,6 +4,7 @@ import { BROWSE } from "../../constants/views";
 import * as detailFormActions from '../../store/detail-form/detail-form.actions';
 import * as actions from '../resource-controller/resource-controller.actions';
 import * as actionsAsset from '../../store/asset/asset.actions';
+import * as actionsConnection from '../../store/connection/connection.actions';
 import * as actionsMapping from '../../store/mapping/mapping.actions';
 import * as actionsTag from '../../store/tag/tag.actions';
 import * as types from '../../constants/types';
@@ -56,6 +57,11 @@ const dispatchFormActions = (dispatch) => ({
         put: (asset: Asset) => dispatch(actionsAsset.updateAsset(asset)),
         delete: (name: string) => dispatch(actionsAsset.deleteAsset(name)),
     },
+    [types.CONNECTION]: {
+        post: (connection: Connection) => dispatch(actionsConnection.postConnection(connection)),
+        put: (connection: Connection) => dispatch(actionsConnection.updateConnection(connection)),
+        delete: (name: string) => dispatch(actionsConnection.deleteConnection(name)),
+    },
     [types.MAPPING]: {
         post: (mapping: Mapping) => dispatch(actionsMapping.postMapping(mapping)),
         put: (mapping: Mapping) => dispatch(actionsMapping.updateMapping(mapping)),
@@ -78,6 +84,8 @@ type FormProps = {
     group: string | void,
     nodeShape: string | void,
     nodeColor: string | void,
+    source: string,
+    target: string
 }
 
 /**
@@ -93,6 +101,12 @@ const getForm = {
         group: detailForm.group,
         nodeShape: detailForm.nodeShape,
         nodeColor: detailForm.nodeColor
+    }),
+    CONNECTION: (detailForm: FormProps) => ({
+        source: detailForm.source,
+        target: detailForm.target,
+        description: detailForm.description,
+        tags: detailForm.selectedTags
     }),
     MAPPING: (detailForm) => ({
         name: detailForm.name,

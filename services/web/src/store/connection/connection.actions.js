@@ -33,3 +33,22 @@ export function loadAllConnections() {
         });
     }
 }
+
+export function postConnection(connection: Connection) {
+    return function (dispatch: Dispatch, getState: State) {
+        alert('todo: add connection');
+    }
+}
+
+
+export function deleteConnection(connection: Connection) {
+    return function (dispatch: Dispatch, getState: State) {
+        alert('todo: delete connection');
+    }
+}
+
+export function updateConnection(connection: Connection) {
+    return function (dispatch: Dispatch, getState: State) {
+        alert('todo: update connection');
+    }
+}

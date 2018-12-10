@@ -18,6 +18,7 @@ import {
     CLEAR_FORM
 } from './detail-form.action-types';
 import type {Dispatch} from "../types";
+import type {Asset, Connection, Mapping, Tag} from "../types";
 
 
 export function setDetailFormType(type: ASSET | MAPPING | TAG) {
@@ -119,6 +120,8 @@ const detailToFormMapping = {
     TAG: (tag: Tag) => ({
         name: tag.name,
         description: tag.description
-    })
+    }),
+    CONNECTION: (connection: Connection) => ({...connection})
 }
+
 

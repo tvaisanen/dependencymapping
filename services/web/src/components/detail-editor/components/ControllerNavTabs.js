@@ -1,5 +1,5 @@
 import React from 'react';
-import {ASSET, MAPPING, TAG} from '../../../constants/types';
+import {ASSET, CONNECTION, MAPPING, TAG} from '../../../constants/types';
 import {connect} from 'react-redux'
 import styled from 'styled-components';
 import * as actions from '../../../actions';
@@ -25,9 +25,13 @@ const NavTab = styled.span`
 
 const NavTabs = styled.div`
   display: flex;
-  justify-content: center;
-  width: 100%;
+  flex-direction: column;
+  height: inherit;
   margin-bottom: 12px;
+         border: 1px solid transparent;
+        border-radius: 3px;
+        flex-grow: 0;
+        flex-basis: 10%;
 `;
 
 type Props = {
@@ -63,6 +67,7 @@ const mapStateToProps = (state, props) => ({
     formType: state.detailForm.formType,
     buttons: [
         {label: "Asset", type: ASSET},
+        {label: "Connection", type: CONNECTION},
         {label: "Mapping", type: MAPPING},
         {label: "Tag", type: TAG},
     ]
@@ -79,20 +84,3 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(ControllerNavTabs)
-    /*
-<NavTab
-                    selected={formType === ASSET}
-                    onClick={() => setFormType(ASSET)}>
-                    Asset
-                </NavTab>
-                <NavTab
-                    selected={formType === MAPPING}
-                    onClick={() => setFormType(MAPPING)}>
-                    Mapping
-                </NavTab>
-                <NavTab
-                    selected={formType === TAG}
-                    onClick={() => setFormType(TAG)}>
-                    Tag
-                </NavTab>
-                */

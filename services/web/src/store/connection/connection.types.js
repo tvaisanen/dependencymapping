@@ -2,7 +2,7 @@
 export type Connection = {
     source: string,
     target: string,
-    meta: string,
+    tags: Array<string>,
     description: string
 }
 

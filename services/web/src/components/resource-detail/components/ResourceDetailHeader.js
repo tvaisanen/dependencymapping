@@ -1,28 +1,30 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {EMPTY} from '../../../constants/types';
+import {CONNECTION, EMPTY} from '../../../constants/types';
 import {HeaderBar} from "../resource-detail.styled";
 
 
 const HeaderTitle = (props) => (props.type === EMPTY ? null
         : <React.Fragment>
-            <span>{props.name}</span>
+            <span>
+                <small>{props.type}: </small>
+                {props.name}</span>
             <div>
-            <small>{props.type}</small>
             <small>group: {props.group || "none"}</small>
-            </div>/
+            </div>
         </React.Fragment>
 );
 
 
 const ResourceDetailHeader = ({activeDetail}) => {
+    const { type, data } = activeDetail;
     return <HeaderBar>
         {activeDetail.type ?
                 <HeaderTitle
-                    type={activeDetail.type}
-                    name={activeDetail.data.name}
-                    group={activeDetail.data.group}/>
+                    type={type}
+                    name={type === CONNECTION ? `${data.source} > ${data.target}` : data.name}
+                    group={data.group}/>
             : null
         }
     </HeaderBar>

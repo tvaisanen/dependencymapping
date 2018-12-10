@@ -21,7 +21,6 @@ const assetGroups = require(`./${process.env.TEST_DATA}/asset-groups.json`);
 const mappings = require(`./${process.env.TEST_DATA}/mappings.json`);
 const tags = require(`./${process.env.TEST_DATA}/tags.json`);
 
-
 // connect to the db
 const MONGO_PATH = process.env.MONGO_PATH;
 const MONGO_PORT = process.env.MONGO_PORT;

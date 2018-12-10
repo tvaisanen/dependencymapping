@@ -33,7 +33,9 @@ const initialState = {
     selections: true, // if there's the selects
     nodeShape: "ellipse",
     nodeColor: "black",
-    group: "none"
+    group: "none",
+    source: "",
+    target: "",
 };
 
 export default function (state = initialState, action) {
