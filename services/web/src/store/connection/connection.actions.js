@@ -5,6 +5,7 @@ import GwClientApi from '../../api/gwClientApi';
 import type { Connection, ConnectionAction } from "./connection.types";
 import { SET_CONNECTIONS, ADD_CONNECTION } from "./connection.action-types";
 import * as appActions from '../../actions/app.actions';
+import * as assetActions from '../../store/asset/asset.actions';
 import * as apiHelpers from '../../common/api.helpers';
 
 export function setConnections (connections: Array<Connection>): ConnectionAction {
@@ -23,7 +24,7 @@ export function loadAllConnections() {
         }).catch(error => {
             console.warn(error);
             if (apiHelpers.isNetworkError(error)){
-                console.log(error.response)
+                console.log(error.response);
                 dispatch(apiHelpers.handleNetworkError(error));
             } else {
                 console.groupCollapsed("loadAllMappings()");
@@ -36,12 +37,28 @@ export function loadAllConnections() {
 
 export function postConnection(connection: Connection) {
     return function (dispatch: Dispatch, getState: State) {
+
         const promise = GwClientApi.postConnection(connection);
+        const { assets } = getState();
+
+        // the source asset needs to know about the new connection
+        const assetToUpdate = assets.filter(asset => asset.name === connection.source)[0];
+        const updatedAsset = {
+            ...assetToUpdate,
+            connected_to: [...assetToUpdate.connected_to, connection.target]
+        };
 
         const resolveCallback = (connection) => {
-            alert('post connection resolve callback\nset detail\nupdate active mapping view')
+            console.info('post connection resolve callback');
+            console.info('set detail');
+            console.info('update active mapping view');
             dispatch(appActions.setInfoMessage(`Created connection between: ${connection.source} and ${connection.target}`));
             dispatch(postConnectionSuccess(connection));
+            // todo: add optional resolve at actions
+            const { promise, resolveCallback } = dispatch(assetActions.updateAsset(updatedAsset));
+            console.info(promise);
+            console.info(resolveCallback);
+            resolveCallback();
         };
 
         return {promise, resolveCallback};

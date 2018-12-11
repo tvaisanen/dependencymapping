@@ -36,6 +36,7 @@ EditorButtons.defaultProps = {
 
 
 const mapStateToProps = (state, props) => ({
+    edit: state.detailForm.edit,
     description: state.detailForm.description
 });
 
