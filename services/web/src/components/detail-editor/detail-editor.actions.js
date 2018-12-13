@@ -121,11 +121,28 @@ const getForm = {
 };
 
 export function onSave(): Dispatch {
+    /**
+     *  onSave click handler action for
+     *  DetailEditor.
+     *
+     *  Gets form data from detailForm
+     *  store, which is used to do
+     *  post or put request depending
+     *  on the store state ( detailForm.edit )
+     *
+     *  uses dispatchFormActions(dispatch)
+     *  to get the resource method and wrap
+     *  dispatch
+     */
     return async function (dispatch: Dispatch, getState: State): void {
+
+        // clear detail form errors
+        dispatch(detailFormActions.clearErrors());
 
         const {detailForm} = getState();
         const { formType } = detailForm;
 
+        // get the right action and wrap with dispatch
         const formActions = dispatchFormActions(dispatch);
         const form = getForm[formType](detailForm);
 
@@ -137,19 +154,48 @@ export function onSave(): Dispatch {
         const method = detailForm.edit ? 'put' : 'post';
 
         try {
-            const { promise, resolveCallback } = await formActions[formType][method](form);
-            const response = await promise;
 
-            console.info(response);
+            /** todo: Refactor
+             *
+             *      resolveCallback to resource
+             *      actions. This is still here because
+             *      it was used for error handling before
+             *      refactoring the form to detailForm reducer
+             *
+             *      Actions     state
+             *      ----------------------
+             *      tag:        refactored
+             *      asset:      todo
+             *      mapping:    todo
+             *      connection: todo
+             *
+             */
 
-            resolveCallback(response.data);
-            dispatch(closeFormAndSetActiveDetail({type: formType, data: response.data}));
+            /*
+            todo: This is here for reminding about the logic
+            todo: can be deleted after all actions refactored
+            const {
+                promise,
+                resolveCallback,
+                detail
+            } = await formActions[formType][method](form);
+            */
+
+            const responseData = await formActions[formType][method](form);
+
+            console.info(responseData);
+
+            // no errors -> action was successful
+            dispatch(closeFormAndSetActiveDetail({
+                type: formType,
+                data: responseData
+            }));
             dispatch(detailFormActions.clearForm());
             dispatch(setFormEditFalse());
 
         } catch (err) {
+            alert(err);
             console.info(err);
-            console.log(err.data);
         }
     }
 }
@@ -170,13 +216,15 @@ export function onDelete(): Dispatch {
         // if edit use put if new use post
 
         try {
-            const { promise, resolveCallback } = await formActions[formType].delete((name:string));
-            const response = await promise;
+            // const { promise, resolveCallback } = await formActions[formType].delete((name:string));
+
+            const response = await formActions[formType].delete((name:string));
 
             console.info(response);
 
-            resolveCallback();
+            // resolveCallback();
 
+            // update state after deletion
             dispatch(activeDetailActions.clearActiveDetail());
             dispatch(detailFormActions.clearForm());
             dispatch(closeEdit());
@@ -184,7 +232,6 @@ export function onDelete(): Dispatch {
 
         } catch (err) {
             console.info(err);
-            console.log(err.data);
         }
     }
 }

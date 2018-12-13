@@ -18,7 +18,10 @@ import {
     SET_VALUES_FROM_DETAIL,
     CLEAR_FORM,
     SET_SOURCE_VALUE,
-    SET_TARGET_VALUE
+    SET_TARGET_VALUE,
+    SET_ERROR_VALUE,
+    SET_ERRORS,
+    CLEAR_ERRORS
 } from "./detail-form.action-types";
 
 const initialState = {
@@ -31,6 +34,7 @@ const initialState = {
     edit: false,
     description: "",
     errors: {},
+    errorMsg: "",
     formType: "ASSET",
     selections: true, // if there's the selects
     nodeShape: "ellipse",
@@ -109,6 +113,16 @@ export default function (state = initialState, action) {
 
         case SET_TARGET_VALUE:
             return {...state, target: (value: string)};
+
+        case SET_ERROR_VALUE:
+            return {...state, errorMsg: (value: string)};
+
+        case SET_ERRORS:
+            return {...state, errors: (value: string)};
+
+        case CLEAR_ERRORS:
+            return {...state, errors: {}, errorMsg: ""}
+
 
         default:
             return state;

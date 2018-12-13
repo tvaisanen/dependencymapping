@@ -87,6 +87,7 @@ const DetailEditor = (props: DetailEditorProps) => {
 
     return <Container>
         <ControllerNavTabs/>
+        {JSON.stringify(props.error)}
         <FormWrapper>
         <FormColumn>
             <Form/>
@@ -100,6 +101,9 @@ const DetailEditor = (props: DetailEditorProps) => {
 }
 
 export default connect(
-    (state, props) => ({formType: state.detailForm.formType}),
+    (state, props) => ({
+        formType: state.detailForm.formType,
+        error: state.detailForm.errorMsg
+    }),
     {}
 )(DetailEditor);

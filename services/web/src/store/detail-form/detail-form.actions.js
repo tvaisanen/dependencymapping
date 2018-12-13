@@ -17,7 +17,10 @@ import {
     SET_FORM_EDIT_FALSE, SET_VALUES_FROM_DETAIL,
     CLEAR_FORM,
     SET_SOURCE_VALUE,
-    SET_TARGET_VALUE
+    SET_TARGET_VALUE,
+    SET_ERROR_VALUE,
+    SET_ERRORS,
+    CLEAR_ERRORS
 } from './detail-form.action-types';
 import type {Dispatch} from "../types";
 import type {Asset, Connection, Mapping, Tag} from "../types";
@@ -106,6 +109,19 @@ export function setFormEditFalse() {
 
 export function clearForm(){
     return {type: CLEAR_FORM}
+}
+
+
+export function setErrors(value) {
+    return {type: SET_ERRORS, value}
+}
+
+export function clearErrors(){
+    return {type: CLEAR_ERRORS};
+}
+
+export function setErrorMsg(value) {
+    return {type: SET_ERROR_VALUE, value}
 }
 
 // use to load active detail

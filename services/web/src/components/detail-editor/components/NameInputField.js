@@ -3,13 +3,14 @@ import {connect} from 'react-redux';
 import * as detailEditorActions from '../detail-editor.actions';
 
 const NameInputField = (props) => {
+    console.info(props)
     return (
         <React.Fragment>
             <label>name</label>
             <br/>
 
             {props.error ?
-                <span>{this.state.error}</span>
+                <span>{props.error}</span>
                 : null
             }
 

@@ -26,12 +26,33 @@ tagRouter.get('(/:id)?', (req, res) => {
 tagRouter.post('(/:id)?', (req, res) => {
     const query = {name: req.param.id};
     const tag = new Tag({...req.body});
-    tag.save().then(saved => {
-        console.log(`saved: \n${saved}`);
-        res.status(201).json(saved);
-    }).catch(err => {
-        console.log(err);
-    })
+
+
+    if (!tag.name) {
+        res.status(400).json({error: "name is required field"})
+    } else {
+        Tag.findOne({name: tag.name})
+            .then(existing => {
+                if (existing) {
+                    res.status(409).json({
+                        error: `Asset ${existing.name} already exists.`,
+                        pathToExisting: `/tag/${existing.name}`
+                    });
+                } else {
+                    console.log('here')
+                    tag.save().then(saved => {
+                        console.log(`saved: ${saved.name}`);
+                        res.status(201).json(saved);
+                    }).catch(err => {
+                        console.log(err);
+                    })
+                }
+            })
+            .catch(err => {
+                console.log(`err: ${err}`)
+            });
+    }
+
 });
 
 tagRouter.put('(/:id)?', (req, res) => {
