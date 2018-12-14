@@ -6,11 +6,13 @@ import * as apiHelpers from '../../common/api.helpers';
 import * as appActions from '../../actions/app.actions';
 import * as detailFormActions from '../detail-form/detail-form.actions';
 
+import { routeApiActionError } from "../error-handling";
+
 import type { Dispatch, Tag } from "../types";
 
 /********* TAG POST *******************/
 
-export function postTag({name, description}): Dispatch {
+export function postTag(tag: Tag, callback: (any) => void): Dispatch {
     /**
      *  Dispatchable store action to create new Tag.
      *  Related state actions handled here.
@@ -18,52 +20,32 @@ export function postTag({name, description}): Dispatch {
      *  @return server response data
      * */
 
-    return async function (dispatch: Dispatch): Tag {
+    return async function (dispatch: Dispatch): void {
 
         try {
 
             // wait for the response
             const response = await
-                GwClientApi.postTag({
-                    name,
-                    description
-                });
-
-            alert('here')
+                GwClientApi.postTag(tag);
 
             // response data should be of a type Tag
-            const tag: Tag = response.data;
+            const storedTag: Tag = response.data;
 
             // set info message
             dispatch(appActions
                 .setInfoMessage(
-                    `Created tag: ${tag.name}`
+                    `Created tag: ${storedTag.name}`
                 )
             );
 
             // update tag reducer state
-            dispatch(postTagSuccess(tag));
-            return tag;
+            dispatch(postTagSuccess(storedTag));
+
+            // run callers callback function
+            callback(storedTag);
 
         } catch (err) {
-
-            const status = err.response.status;
-            console.info(err.response);
-
-            if (status === 409) {
-                // conflict -> error with name field
-
-                // name field error
-                const errors = {
-                    name: err.response.data.error
-                };
-
-                // set errors to be displayed in the form
-                dispatch(detailFormActions.setErrors(errors));
-
-            }
-
-            throw new Error(`tag.actions.postTag() :: ${err} `)
+            routeApiActionError(err);
         }
     }
 }
@@ -93,8 +75,7 @@ export function updateTag(tag) {
 
         } catch (err) {
             // handle updateTag related errors here
-
-            throw new Error(`tag.actions.postTag() :: ${err} `)
+            routeApiActionError(err);
         }
 
     }
@@ -119,7 +100,16 @@ export function deleteTag(name) {
             // delete action does not need a response
         } catch (err) {
             // if error occurs
-            throw new Error('Error needs to be handled')
+            // handle updateTag related errors here
+            if (err.response) {
+                // throw this if error has response
+                // -> server side error
+                let error = new Error(`tag.actions.deleteTag() :: ${err} `,)
+                error.response = err.response;
+                throw error;
+            } else {
+                routeApiActionError(err);
+            }
         }
 
     }

@@ -1,19 +1,20 @@
 import {ASSET, MAPPING, TAG} from "../../constants";
 import type {Dispatch} from "../../store/types";
-import { BROWSE } from "../../constants/views";
+import {BROWSE} from "../../constants/views";
+
 import * as detailFormActions from '../../store/detail-form/detail-form.actions';
-import * as actions from '../resource-controller/resource-controller.actions';
 import * as actionsAsset from '../../store/asset/asset.actions';
 import * as actionsConnection from '../../store/connection/connection.actions';
 import * as actionsMapping from '../../store/mapping/mapping.actions';
 import * as actionsTag from '../../store/tag/tag.actions';
+
 import * as types from '../../constants/types';
-import type { Asset, Mapping, Tag } from "../../store/types";
+import type {Asset, Connection, Mapping, Tag} from "../../store/types";
 
 import * as activeDetailActions from '../../store/active-detail/active-detail.actions';
 import * as appActions from '../../actions/app.actions';
 import * as dependencyMapHelpers from "../../common/dependency-map.helpers";
-import {setFormEditFalse} from "../../store/detail-form/detail-form.actions";
+
 
 export function closeFormAndSetActiveDetail(activeDetail) {
     return function (dispatch, getState) {
@@ -27,7 +28,7 @@ export function closeFormAndSetActiveDetail(activeDetail) {
 
         const isMapping = activeDetail.type === types.MAPPING;
 
-        if ( isMapping ) {
+        if (isMapping) {
             // if the detail is a type of MAPPING
             // it needs to be loaded
             dependencyMapHelpers.loadDependencyMap(
@@ -72,7 +73,7 @@ const dispatchFormActions = (dispatch) => ({
         },
         delete: (name: string, callback) => {
             dispatch(actionsConnection.deleteConnection(name, callback))
-    },
+        },
     },
     [types.MAPPING]: {
         post: (mapping: Mapping, callback) => dispatch(actionsMapping.postMapping(mapping, callback)),
@@ -152,7 +153,7 @@ export function onSave(): Dispatch {
         dispatch(detailFormActions.clearErrors());
 
         const {detailForm} = getState();
-        const { formType } = detailForm;
+        const {formType} = detailForm;
 
         // get the right action and wrap with dispatch
         const formActions = dispatchFormActions(dispatch);
@@ -177,30 +178,23 @@ export function onSave(): Dispatch {
              *      Actions     state
              *      ----------------------
              *      tag:        refactored
-             *      asset:      todo
+             *      asset:      refactored
              *      mapping:    todo
              *      connection: todo
              *
              */
 
-            /*
-            todo: This is here for reminding about the logic
-            todo: can be deleted after all actions refactored
-            const {
-                promise,
-                resolveCallback,
-                detail
-            } = await formActions[formType][method](form);
-            */
-
-            // no errors -> action was successful
-            function callback (responseData) {
+            /**
+             * this function is called  by form action
+             * after resolving api actions
+             */
+            function callback(responseData) {
                 dispatch(closeFormAndSetActiveDetail({
                     type: formType,
                     data: responseData
                 }));
                 dispatch(detailFormActions.clearForm());
-                dispatch(setFormEditFalse());
+                dispatch(detailFormActions.setFormEditFalse());
             }
 
 
@@ -212,44 +206,72 @@ export function onSave(): Dispatch {
 
 
         } catch (err) {
-            alert(err);
-            console.info(err);
+
+            /**
+             *  If err has a response. The action used
+             *  returns a error response of an API call
+             */
+
+
+            if (err.response) {
+                // handle errors
+
+                const status = err.response.status;
+
+                if (status === 409) {
+                    // conflict -> resource already exists
+                    // error name is already in use
+
+                    // name field error
+                    const errors = {
+                        name: err.response.data.error
+                    };
+
+                    // set errors to be displayed in the form
+                    dispatch(detailFormActions.setErrors(errors));
+
+                }
+            } else {
+                throw new Error(`Unhandled exception :: detail-editor.actions.onSave() :: ${err}`)
+            }
+
+
         }
     }
 }
 
 export function onDelete(): Dispatch {
 
-
-    return async function (dispatch: Dispatch, getState: State): void {
-
+    return async function (dispatch: Dispatch, getState: State)
+        : void
+    {
         const {detailForm} = getState();
-        const { formType, name } = detailForm;
+        const {formType, name} = detailForm;
 
-        const confirmDelete = window.confirm(`Are you sure that you want to delete: ${name}?`);
+        const confirmDelete = window
+            .confirm(`Are you sure that you want to delete: ${name}?`);
 
         const formActions = dispatchFormActions(dispatch);
-        const form = getForm[formType](detailForm);
 
-        // if edit use put if new use post
-
-        try {
-            // const { promise, resolveCallback } = await formActions[formType].delete((name:string));
-
-            const response = await formActions[formType].delete((name:string));
-
-            console.info(response);
-
-            // resolveCallback();
+        if (confirmDelete) {
 
             // update state after deletion
-            dispatch(activeDetailActions.clearActiveDetail());
-            dispatch(detailFormActions.clearForm());
-            dispatch(closeEdit());
-            dispatch(setFormEditFalse());
+            function callback() {
+                dispatch(activeDetailActions.clearActiveDetail());
+                dispatch(detailFormActions.clearForm());
+                dispatch(closeEdit());
+                dispatch(detailFormActions.setFormEditFalse());
+            }
 
-        } catch (err) {
-            console.info(err);
+            try {
+                await
+                    formActions[formType].delete(
+                        (name: string),
+                        callback
+                    );
+            } catch (err) {
+                throw err;
+            }
         }
     }
 }
@@ -357,13 +379,13 @@ export function onNodeShapeSelection(value: string): Dispatch {
 }
 
 export function onSourceSelection(value: string) {
-   return function (dispatch: Dispatch): void {
-       dispatch(detailFormActions.setSourceValue((value:string)));
-   }
+    return function (dispatch: Dispatch): void {
+        dispatch(detailFormActions.setSourceValue((value: string)));
+    }
 }
 
 export function onTargetSelection(value: string) {
-   return function (dispatch: Dispatch): void {
-       dispatch(detailFormActions.setTargetValue((value:string)));
-   }
+    return function (dispatch: Dispatch): void {
+        dispatch(detailFormActions.setTargetValue((value: string)));
+    }
 }
