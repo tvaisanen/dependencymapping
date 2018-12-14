@@ -1,12 +1,16 @@
+// @flow
+
 import GwClientApi from '../../api/gwClientApi';
 import * as types from './tag.action-types';
 import * as apiHelpers from '../../common/api.helpers';
 import * as appActions from '../../actions/app.actions';
 import * as detailFormActions from '../detail-form/detail-form.actions';
 
+import type { Dispatch, Tag } from "../types";
+
 /********* TAG POST *******************/
 
-export function postTag({name, description}) {
+export function postTag({name, description}): Dispatch {
     /**
      *  Dispatchable store action to create new Tag.
      *  Related state actions handled here.
@@ -14,17 +18,21 @@ export function postTag({name, description}) {
      *  @return server response data
      * */
 
-    return async function (dispatch) {
+    return async function (dispatch: Dispatch): Tag {
 
         try {
 
+            // wait for the response
             const response = await
                 GwClientApi.postTag({
                     name,
                     description
                 });
 
-            const tag = response.data;
+            alert('here')
+
+            // response data should be of a type Tag
+            const tag: Tag = response.data;
 
             // set info message
             dispatch(appActions
@@ -35,7 +43,6 @@ export function postTag({name, description}) {
 
             // update tag reducer state
             dispatch(postTagSuccess(tag));
-
             return tag;
 
         } catch (err) {

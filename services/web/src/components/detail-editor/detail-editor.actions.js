@@ -53,25 +53,37 @@ export function closeEdit() {
 
 const dispatchFormActions = (dispatch) => ({
     [types.ASSET]: {
-        post: (asset: Asset) => dispatch(actionsAsset.postAsset(asset)),
-        put: (asset: Asset) => dispatch(actionsAsset.updateAsset(asset)),
-        delete: (name: string) => dispatch(actionsAsset.deleteAsset(name)),
+        post: (asset: Asset, callback) => {
+            dispatch(actionsAsset.postAsset(asset, callback));
+        },
+        put: (asset: Asset, callback) => {
+            dispatch(actionsAsset.updateAsset(asset, callback));
+        },
+        delete: (name: string, callback) => {
+            dispatch(actionsAsset.deleteAsset(name, callback));
+        }
     },
     [types.CONNECTION]: {
-        post: (connection: Connection) => dispatch(actionsConnection.postConnection(connection)),
-        put: (connection: Connection) => dispatch(actionsConnection.updateConnection(connection)),
-        delete: (name: string) => dispatch(actionsConnection.deleteConnection(name)),
+        post: (connection: Connection, callback) => {
+            dispatch(actionsConnection.postConnection(connection, callback))
+        },
+        put: (connection: Connection, callback) => {
+            dispatch(actionsConnection.updateConnection(connection, callback))
+        },
+        delete: (name: string, callback) => {
+            dispatch(actionsConnection.deleteConnection(name, callback))
+    },
     },
     [types.MAPPING]: {
-        post: (mapping: Mapping) => dispatch(actionsMapping.postMapping(mapping)),
-        put: (mapping: Mapping) => dispatch(actionsMapping.updateMapping(mapping)),
-        delete: (name: string) => dispatch(actionsMapping.deleteMapping(name)),
+        post: (mapping: Mapping, callback) => dispatch(actionsMapping.postMapping(mapping, callback)),
+        put: (mapping: Mapping, callback) => dispatch(actionsMapping.updateMapping(mapping, callback)),
+        delete: (name: string, callback) => dispatch(actionsMapping.deleteMapping(name, callback)),
     },
 
     [types.TAG]: {
-        post: (tag: Tag) => dispatch(actionsTag.postTag(tag)),
-        put: (tag: Tag) => dispatch(actionsTag.updateTag(tag)),
-        delete: (name: string) => dispatch(actionsTag.deleteTag(name)),
+        post: (tag: Tag, callback) => dispatch(actionsTag.postTag(tag, callback)),
+        put: (tag: Tag, callback) => dispatch(actionsTag.updateTag(tag, callback)),
+        delete: (name: string, callback) => dispatch(actionsTag.deleteTag(name, callback)),
     }
 });
 
@@ -181,17 +193,23 @@ export function onSave(): Dispatch {
             } = await formActions[formType][method](form);
             */
 
-            const responseData = await formActions[formType][method](form);
-
-            console.info(responseData);
-
             // no errors -> action was successful
-            dispatch(closeFormAndSetActiveDetail({
-                type: formType,
-                data: responseData
-            }));
-            dispatch(detailFormActions.clearForm());
-            dispatch(setFormEditFalse());
+            function callback (responseData) {
+                dispatch(closeFormAndSetActiveDetail({
+                    type: formType,
+                    data: responseData
+                }));
+                dispatch(detailFormActions.clearForm());
+                dispatch(setFormEditFalse());
+            }
+
+
+            await
+                formActions[formType][method](
+                    form,
+                    callback
+                );
+
 
         } catch (err) {
             alert(err);
