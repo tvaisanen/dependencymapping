@@ -57,6 +57,7 @@ export default connect(
 
 const Container = styled.div`
   display: flex;
+  flex-wrap: wrap;
   width: 100%;
   padding: 0 0 12px 0;
   min-height: 2.2em;

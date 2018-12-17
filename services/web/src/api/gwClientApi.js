@@ -25,8 +25,9 @@ function tagDetailUrl({name}) {
     return `${TAGS_URL}${encodeURI(name)}/`;
 }
 
-function connectionDetailUrl({name}) {
-    return `${CONNECTIONS_URL}${encodeURI(name)}/`;
+function connectionDetailUrl(connection) {
+    alert('here')
+    return `${CONNECTIONS_URL}?source=${encodeURI(connection.source)}&target=${encodeURI(connection.target)}`;
 }
 
 function mappingsDetailUrl({name}) {
@@ -116,9 +117,9 @@ class GwClientApi {
         return axios.put(connectionDetailUrl({name:connection.name}),connection);
     }
 
-    static deleteConnection(source: string, target: string): Promise<T> {
-        alert('todo: connection id not set');
-        return axios.delete(connectionDetailUrl({name: `${source}_to_${target}`}));
+    static deleteConnection(source: string, target:string): Promise<T> {
+        const uri = connectionDetailUrl({source, target});
+        return axios.delete(uri);
     }
 
     /** ***********************************************************/

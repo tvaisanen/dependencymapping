@@ -88,9 +88,7 @@ router.use(function timeLog(req, res, next) {
     //${d.toUTCString()},
     console.log(`${JSON.stringify(req.headers)}`);
     console.log(`\n${req.method} ::  ${req.path}, \n\tbody: ${JSON.stringify(req.body)}`);
-    if (req.path.startsWith("/test")){
-
-    }
+    console.log(req.query);
     next();
 });
 

@@ -108,6 +108,7 @@ export function deleteTag(name) {
                 error.response = err.response;
                 throw error;
             } else {
+                // todo: refactor to throwIfWithResponse
                 routeApiActionError(err);
             }
         }

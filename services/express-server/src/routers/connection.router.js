@@ -24,6 +24,15 @@ connectionRouter.get('(/:id)?', (req, res) => {
     }
 });
 
+
+connectionRouter.delete('(/:id)?', (req, res) => {
+   Connection.remove(req.query)
+       .then(response => {
+           console.log(response);
+           console.log(req.query);
+       })
+});
+
 connectionRouter.post('(/:id)?', (req, res) => {
     const {source, target} = req.body;
     Connection.findOne({source:source, target:target})

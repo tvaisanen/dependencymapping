@@ -86,9 +86,8 @@ const DetailEditor = (props: DetailEditorProps) => {
     const Selection = formComponentsByType[props.formType].selectionComponent;
 
     return <Container>
-        <ControllerNavTabs/>
-        {JSON.stringify(props.error)}
         <FormWrapper>
+            <ControllerNavTabs/>
         <FormColumn>
             <Form/>
             <EditorButtons/>

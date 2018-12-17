@@ -15,38 +15,36 @@ export const Container = styled.div`
     transition: all .3s ease-in-out;
 `;
 
-
 export const FormColumn = styled.div`
     display: flex;
     justify-content: space-between;
     flex-direction: column;
-    flex-basis: 60%;
+    flex-grow: 1;
     flex-shrink: 1;
     padding: 0 12px;
     margin-right: 6px;
-    
+    flex-basis: 50%;
 `;
-
 
 export const SelectionColumn = styled.div`
     display: flex;
     flex-direction: column;
     height: 100%;
-    flex-basis: ${p=>p.visible? '40%' : '0'};
     transform: ${p=>p.visible? 'scaleX(1)': 'scaleX(0)'};
     transform-origin: right;
     flex-shrink: 2; 
     transition: all .3s ease-in-out;
+    flex-basis: 40%;
 `;
 
 export const FormWrapper = styled.div`
     flex-grow: 1;
     display: flex;
-    justify-content: center;
-    flex-basis: 100%;
+    justify-content: flex-start;
+    max-width: 100%;
     height: 100%;
     transition: all .3s ease-in-out;
     border: 1px solid lightgrey;
-        border-radius: 3px;
-        flex-grow:1;
+    border-radius: 3px;
+    flex-grow:1;
 `;

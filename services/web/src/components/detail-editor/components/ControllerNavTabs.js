@@ -8,30 +8,30 @@ import * as actions from '../../../actions';
 import * as detailEditorActions from '../detail-editor.actions';
 
 const NavTab = styled.span`
-        text-decoration: ${p => p.selected ? 'underline' : null};
-        font-weight: bold;
-        background-color: ${p => p.selected ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.1)'};; 
-        color: ${p => p.selected ? 'rgba(36,36,36,0.9)' : 'rgba(255,255,255,0.2)'};
-        padding: 4px 12px;
-        margin: 2px 6px; 
-        border-radius: 3px;
-        :hover {
-          background-color: rgba(244,244,244,0.3);
-        }
-        transition: all .15s ease-in-out;
-        cursor: pointer;
-        min-height: 1.2em;
+    text-decoration: ${p => p.selected ? 'underline' : null};
+    font-weight: bold;
+    background-color: ${p => p.selected ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.1)'};; 
+    color: ${p => p.selected ? 'rgba(36,36,36,0.9)' : 'rgba(255,255,255,0.2)'};
+    padding: 4px 12px;
+    margin: 2px 6px; 
+    border-radius: 3px;
+    :hover {
+      background-color: rgba(244,244,244,0.3);
+    }
+    transition: all .15s ease-in-out;
+    cursor: pointer;
+    min-height: 1.2em;
 `;
 
 const NavTabs = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: inherit;
-  margin-bottom: 12px;
-         border: 1px solid transparent;
-        border-radius: 3px;
-        flex-grow: 0;
-        flex-basis: 10%;
+    display: flex;
+    flex-direction: column;
+    height: inherit;
+    margin-bottom: 12px;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    flex-grow: 0;
+    flex-basis: 10%;
 `;
 
 type Props = {

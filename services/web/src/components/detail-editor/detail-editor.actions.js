@@ -1,4 +1,4 @@
-import {ASSET, MAPPING, TAG} from "../../constants";
+import {ASSET, MAPPING, TAG, CONNECTION} from "../../constants";
 import type {Dispatch} from "../../store/types";
 import {BROWSE} from "../../constants/views";
 
@@ -29,6 +29,7 @@ export function closeFormAndSetActiveDetail(activeDetail) {
         const isMapping = activeDetail.type === types.MAPPING;
 
         if (isMapping) {
+
             // if the detail is a type of MAPPING
             // it needs to be loaded
             dependencyMapHelpers.loadDependencyMap(
@@ -179,7 +180,7 @@ export function onSave(): Dispatch {
              *      ----------------------
              *      tag:        refactored
              *      asset:      refactored
-             *      mapping:    todo
+             *      mapping:    refactored
              *      connection: todo
              *
              */
@@ -246,7 +247,7 @@ export function onDelete(): Dispatch {
         : void
     {
         const {detailForm} = getState();
-        const {formType, name} = detailForm;
+        const {formType, name, source, target} = detailForm;
 
         const confirmDelete = window
             .confirm(`Are you sure that you want to delete: ${name}?`);
@@ -255,7 +256,12 @@ export function onDelete(): Dispatch {
 
         if (confirmDelete) {
 
-            // update state after deletion
+            /**
+             *   form action uses
+             *   this as a callback
+             *   after the action have
+             *   been executed
+             */
             function callback() {
                 dispatch(activeDetailActions.clearActiveDetail());
                 dispatch(detailFormActions.clearForm());
@@ -263,12 +269,16 @@ export function onDelete(): Dispatch {
                 dispatch(detailFormActions.setFormEditFalse());
             }
 
+            const args = formType === CONNECTION ?
+                {source, target}
+                : name
+            ;
+
+            alert(`args: ${JSON.stringify(args)}`);
+
             try {
                 await
-                    formActions[formType].delete(
-                        (name: string),
-                        callback
-                    );
+                    formActions[formType].delete(args, callback);
             } catch (err) {
                 throw err;
             }

@@ -5,22 +5,31 @@ import * as activeMappingActions from '../active-mapping/active-mapping.actions'
 import * as appActions from '../../actions/app.actions';
 import * as apiHelpers from '../../common/api.helpers';
 import * as mappingHelpers from '../../common/dependency-map.helpers';
+import {routeApiActionError} from "../error-handling";
 
-import type { Mapping } from "./mapping.types";
+import type {Mapping} from "./mapping.types";
 
 /*************** MAPPING *************/
 
-export function postMapping(mapping: Mapping): Dispatch {
+export function postMapping(mapping: Mapping, callback: (any) => void): Dispatch {
 
-    return function (dispatch) {
-        const resolveCallback = mapping => {
-            dispatch(appActions.setInfoMessage(`Created mapping: ${mapping.name}`));
-            dispatch(postMappingSuccess(mapping));
-        };
+    return async function (dispatch) {
+        try {
+            const response = await GwClientApi.postMapping((mapping: Mapping));
+            const storedMapping: Mapping = response.data
 
-        console.info(mapping);
-        const promise = GwClientApi.postMapping((mapping: Mapping));
-        return {promise, resolveCallback};
+            dispatch(
+                appActions.setInfoMessage(
+                    `Created mapping: ${storedMapping.name}`));
+            dispatch(postMappingSuccess(storedMapping));
+
+            // run callers callback
+            // with response data
+            callback(storedMapping)
+        } catch (err) {
+           routeApiActionError(err)
+        }
+
     }
 }
 
@@ -36,18 +45,23 @@ export function addMapping(mapping) {
 
 /*************** UPDATE **************/
 
-export function updateMapping(mapping: Mapping) {
-    return function (dispatch: Dispatch , getState: State): void {
-        console.group("debug update mpaping");
-        console.info(mapping);
-        console.groupEnd();
-        const resolveCallback = (mapping) => {
+export function updateMapping(mapping: Mapping, callback: (any) => void) {
 
-            dispatch(appActions.setInfoMessage(`Updated mapping: ${mapping.name}`));
-            dispatch(updateMappingSuccess({mapping}));
+    return async function (dispatch: Dispatch, getState: State): void {
+
+        try {
+
+            const response = await GwClientApi.putMapping((mapping: Mapping));
+            const updatedMapping: Mapping = response.data;
+
+
+            dispatch(
+                appActions.setInfoMessage(
+                    `Updated mapping: ${updatedMapping.name}`));
+            dispatch(updateMappingSuccess({mapping: updatedMapping}));
 
             // if edited mapping is active mapping
-            if (mapping.name === getState().activeMapping.name) {
+            if (updatedMapping.name === getState().activeMapping.name) {
                 mappingHelpers.loadDependencyMap(
                     mapping.name,
                     getState().graph,
@@ -56,12 +70,17 @@ export function updateMapping(mapping: Mapping) {
                     dispatch,
                     getState().app.graph.selectedLayout
                 );
-                dispatch(activeMappingActions.setActiveMapping(mapping));
+                dispatch(
+                    activeMappingActions
+                        .setActiveMapping(updatedMapping));
             }
 
-        };
-        const promise = GwClientApi.putMapping((mapping:Mapping));
-        return {promise, resolveCallback};
+            // run callers callback function with response data
+            callback(updatedMapping);
+
+        } catch (err) {
+            routeApiActionError(err);
+        }
 
     }
 }
@@ -74,21 +93,26 @@ function updateMappingSuccess({mapping}) {
 
 /*************** DELETE **************/
 
-export function deleteMapping(name: string) {
-    return function (dispatch, getState) {
-        alert(`deleteMapping(${name})`);
+export function deleteMapping(name: string, callback: (any) => void) {
 
-        const promise = GwClientApi.deleteMapping({name});
+    return async function (dispatch, getState) {
 
-        const resolveCallback = () => {
-            // no need to return responsa data
-            dispatch(appActions.setInfoMessage(`Deleted mapping: ${name}`));
+        try {
+            await GwClientApi.deleteMapping((name: string));
+
+            /**
+             Do after delete actions here
+             */
             dispatch(deleteMappingSuccess(name));
+            dispatch(appActions.setInfoMessage(`Deleted mapping: ${name}`));
             dispatch(activeMappingActions.clearActiveMappingSelection());
             graphHelpers.clearGraph(getState().graph);
-        };
 
-        return {promise, resolveCallback};
+            // run caller callback
+            callback();
+        } catch (err) {
+            routeApiActionError(err)
+        }
     }
 }
 
@@ -112,7 +136,7 @@ export function loadAllMappings(auth) {
             dispatch(loadMappingsSuccess(response.data))
         }).catch(error => {
             console.warn(error)
-            if (apiHelpers.isNetworkError(error)){
+            if (apiHelpers.isNetworkError(error)) {
                 console.log(error.response)
                 dispatch(apiHelpers.handleNetworkError(error));
             } else {

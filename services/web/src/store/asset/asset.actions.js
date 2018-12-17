@@ -34,8 +34,8 @@ export function postAsset(asset: Asset, callback: (any) => void): Dispatch {
 
             dispatch(postAssetSuccess(storedAsset));
 
-            // execute callback from caller
-            callback(storedAsset);
+            // execute callback from caller if there's one
+            callback ? callback(storedAsset) : null;
 
         } catch (err) {
 
@@ -97,7 +97,7 @@ export function updateAsset(asset: Asset, callback: (any) => void): Dispatch {
                     );
             }
 
-            callback(updatedAsset)
+            callback ? callback(updatedAsset) : null;
 
         } catch (err) {
             throw new Error(`asset.actions.updateTag() :: ${err} `)
@@ -121,6 +121,7 @@ export function deleteAsset(name: string, callback: (any) => void) {
         // resolving a request is done in form container
 
 
+        // todo: refactor to a function to appropriate location
         mappings.forEach(mapping => {
 
             let update = false;
@@ -155,6 +156,7 @@ export function deleteAsset(name: string, callback: (any) => void) {
         });
 
 
+        // todo: refactor to appropriate location
         assets.forEach(asset => {
             console.group(`check if ${asset.name} needs to be deleted`)
             let update = false;
@@ -192,7 +194,7 @@ export function deleteAsset(name: string, callback: (any) => void) {
         dispatch(deleteAssetSuccess(name));
 
         // caller callback
-        callback();
+        callback ? callback() : null;
     }
 }
 
