@@ -94,6 +94,11 @@ export function addElements(cy = required(), elements = required()) {
 }
 
 export function updateLayout(cy = required(), layout = required()) {
+    cy.elements().forEach(el => {
+        const w = el.children().length;
+        el.data('weight', w)
+        console.info(`${el.id()} : childCount: ${w}, weight: ${el.data('weight')}`)
+    })
     try {
         // if selected layout has additional options
         const options = layoutOptions[layout] || [];

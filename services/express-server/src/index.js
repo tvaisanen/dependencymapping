@@ -33,7 +33,8 @@ mongoose.connect(`mongodb://${MONGO_PATH}:${MONGO_PORT}/${DB_NAME}`);
 mongoose.connection.on('connected', function () {
     console.log('Mongoose successful connection:');
     console.log(`running in: ${process.env.NODE_ENV} mode`)
-    console.log(`using data from: ${process.env.TEST_DATA}`)
+    console.log(`using test data from: ${process.env.TEST_DATA}`)
+    console.log(`and database: ${process.env.DB_NAME}`);
 });
 
 // If the connection throws an error
@@ -92,6 +93,29 @@ router.use(function timeLog(req, res, next) {
     next();
 });
 
+router.get('/purge-data', (req, res) => {
+
+    Asset.remove()
+        .then(r => console.log(r))
+        .catch(err => console.log(err));
+
+    Connection.remove()
+        .then(r => console.log(r))
+        .catch(err => console.log(err));
+
+    AssetGroup.remove()
+        .then(r => console.log(r))
+        .catch(err => console.log(err));
+    Tag.remove()
+        .then(r => console.log(r))
+        .catch(err => console.log(err));
+
+    Mapping.remove()
+        .then(r => console.log(r))
+        .catch(err => console.log(err));
+
+    res.send("database initialized")
+});
 router.get('/reset-models', (req, res) => {
 
     Asset.remove()

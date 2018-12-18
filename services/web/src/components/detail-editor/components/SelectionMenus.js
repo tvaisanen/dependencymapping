@@ -62,6 +62,7 @@ const Container = styled.div`
   padding: 0 0 12px 0;
   min-height: 2.2em;
   justify-content: center;
+  align-content: flex-start;
   > div {
     margin: 0 12px;
     }

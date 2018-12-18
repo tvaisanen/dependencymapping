@@ -148,7 +148,8 @@ export function onSave(): Dispatch {
      *  to get the resource method and wrap
      *  dispatch
      */
-    return async function (dispatch: Dispatch, getState: State): void {
+    return async function (
+        dispatch: Dispatch, getState: State): void {
 
         // clear detail form errors
         dispatch(detailFormActions.clearErrors());
@@ -160,34 +161,13 @@ export function onSave(): Dispatch {
         const formActions = dispatchFormActions(dispatch);
         const form = getForm[formType](detailForm);
 
-        console.group("onSave form:");
-        console.info(form);
-        console.groupEnd();
-
         // if edit use put if new use post
         const method = detailForm.edit ? 'put' : 'post';
 
         try {
-
-            /** todo: Refactor
-             *
-             *      resolveCallback to resource
-             *      actions. This is still here because
-             *      it was used for error handling before
-             *      refactoring the form to detailForm reducer
-             *
-             *      Actions     state
-             *      ----------------------
-             *      tag:        refactored
-             *      asset:      refactored
-             *      mapping:    refactored
-             *      connection: todo
-             *
-             */
-
             /**
-             * this function is called  by form action
-             * after resolving api actions
+             *  this function is called  by form action
+             *  after resolving api actions
              */
             function callback(responseData) {
                 dispatch(closeFormAndSetActiveDetail({
@@ -199,7 +179,7 @@ export function onSave(): Dispatch {
             }
 
 
-            await
+            await // async store action
                 formActions[formType][method](
                     form,
                     callback
@@ -250,7 +230,9 @@ export function onDelete(): Dispatch {
         const {formType, name, source, target} = detailForm;
 
         const confirmDelete = window
-            .confirm(`Are you sure that you want to delete: ${name}?`);
+            .confirm(
+                `Are you sure that you want to delete: ${name}?`
+            );
 
         const formActions = dispatchFormActions(dispatch);
 
@@ -274,7 +256,6 @@ export function onDelete(): Dispatch {
                 : name
             ;
 
-            alert(`args: ${JSON.stringify(args)}`);
 
             try {
                 await

@@ -15,12 +15,10 @@ import apiClient from './api/gwClientApi';
 
 const store = configureStore();
 
-if (process.env.REACT_APP_ENV === "development"){
+if (process.env.REACT_APP_ENV === "development"
+    && !process.env.REACT_APP_PERSIST_DATA){
     apiClient.resetModels();
 }
-// load resources and stored graphs
-// const authStorage = localStorage.getItem('auth') || false;
-// const auth = authStorage ? JSON.parse(authStorage) : false;
 
 // store.dispatch(storeActions.loginSuccess(auth));
 setTimeout(() => {

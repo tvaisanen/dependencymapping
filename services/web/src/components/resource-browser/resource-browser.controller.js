@@ -22,6 +22,7 @@ const mapStateToProps = (state, ownProps = {}) => {
     };
 
     return {
+        selected: ASSET,
         cy: state.graph,
         assets: sortedAssets || [],
         connections: state.connections,

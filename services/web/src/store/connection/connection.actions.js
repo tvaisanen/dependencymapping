@@ -11,7 +11,8 @@ import * as apiHelpers from '../../common/api.helpers';
 import {
     SET_CONNECTIONS,
     ADD_CONNECTION,
-    DELETE_CONNECTION
+    DELETE_CONNECTION,
+    UPDATE_CONNECTION
 } from "./connection.action-types";
 
 export function setConnections(connections: Array<Connection>): ConnectionAction {
@@ -54,7 +55,9 @@ export function postConnection(connection: Connection, callback: (any) => void) 
             // connected to list
             const {assets} = getState();
 
-            const response = await GwClientApi.postConnection(connection);
+            const response = await
+                GwClientApi.postConnection(connection);
+
             const storedConnection = response.data;
 
             // the source asset needs to know about the new connection
@@ -146,8 +149,55 @@ export function deleteConnectionSuccess(connection) {
 }
 
 
-export function updateConnection(connection: Connection) {
-    return function (dispatch: Dispatch, getState: State) {
-        return GwClientApi.putConnection(connection)
+export function updateConnection(connection: Connection, callback: (any) => void) {
+
+    return async function (dispatch: Dispatch, getState: State) {
+
+        try {
+
+            // for updating the source assets
+            // connected to list
+            const {assets} = getState();
+
+            console.group("update connection");
+            console.info(connection);
+
+            await
+                GwClientApi.putConnection(connection);
+
+            console.groupEnd();
+
+            // the source asset needs to know about the new connection
+            const assetToUpdate = assets.filter(
+                asset => asset.name === connection.source)[0];
+
+            // make a updated version
+            // of the updated asset
+            const updatedAsset = {
+                ...assetToUpdate,
+                connected_to: assetToUpdate
+                    .connected_to.filter(
+                        asset => asset !== connection.source
+                    )
+            };
+
+            dispatch(
+                appActions.setInfoMessage(
+                    `Updated connection: ${connection.source} \
+                     to ${connection.target}`));
+
+            dispatch(updateConnectionSuccess(connection));
+            dispatch(assetActions.updateAsset(updatedAsset));
+
+            // if callback provided, run it with response data
+            callback ? callback(connection) : null;
+
+        } catch (err) {
+
+        }
     }
+}
+
+export function updateConnectionSuccess(connection) {
+    return {type: UPDATE_CONNECTION, connection}
 }

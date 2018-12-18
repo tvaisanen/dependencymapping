@@ -4,6 +4,8 @@ import cytoscape from 'cytoscape';
 import style, {graphStyle} from '../../configs/configs.cytoscape';
 import cxtmenu from 'cytoscape-cxtmenu';
 import cola from 'cytoscape-cola';
+import jquery from 'jquery';
+
 
 cytoscape.use(cola);
 cytoscape.use(cxtmenu);
@@ -12,7 +14,8 @@ export default function graphReducer(cy = initialState.graph, action){
 
     switch(action.type){
         case types.INIT_GRAPH:
-            return newGraphInstance({...action}); // action.eventHandlers
+            return action.cy
+            //return newGraphInstance({...action}); // action.eventHandlers
 
         default:
             return cy;
@@ -26,10 +29,35 @@ const newGraphInstance = ({eventHandlers}) => {
         elements: [],
         style: style,
         directed: true,
+       boxSelectionEnabled: true,
         layout: {
             name: 'cola',
         }
     });
+
+    cy.cxtmenu({
+            selector: 'node', // elements matching this Cytoscape.js selector will trigger cxtmenus
+            commands: [
+                {
+                    content: 'add to group',
+                    contentStyle: {},
+                    select: function (ele) {
+
+                        alert('helo')
+                    },
+                    enabled: true
+                },
+                { // example command
+                    content: 'Connect', // html/text content to be displayed in the menu
+                    contentStyle: {}, // css key:value pairs to set the command's css in js if you want
+                    select: function (ele) { // a function to execute when the command is selected
+                        alert('helo')
+                    },
+                    enabled: true // whether the command is selectable
+                },
+            ]
+        });
+
 
     Object.keys(eventHandlers).forEach(key => {
        const selector = eventHandlers[key][0];
@@ -93,30 +121,7 @@ const newGraphInstance = ({eventHandlers}) => {
         layout.run();
         this.setState({cy: cy});
 
-        cy.cxtmenu({
-            selector: 'node', // elements matching this Cytoscape.js selector will trigger cxtmenus
-            commands: [
-                {
-                    content: 'remove',
 
-                    contentStyle: {},
-                    select: function (ele) {
-                        alert("remove element: " + ele.id() + " from active map!")
-                        //this.props.removeResourceFromActiveMapping(resource);
-                        graphHelpers.removeElement(cy, ele.id());
-                    },
-                    enabled: true
-                },
-                { // example command
-                    content: 'Connect', // html/text content to be displayed in the menu
-                    contentStyle: {}, // css key:value pairs to set the command's css in js if you want
-                    select: function (ele) { // a function to execute when the command is selected
-                        alert("connect element: " + ele.id() + " to ....!") // `ele` holds the reference to the active element
-                    },
-                    enabled: true // whether the command is selectable
-                },
-            ]
-        });
         cy.cxtmenu({
             selector: 'core',
 

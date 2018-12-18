@@ -5,6 +5,8 @@ const Input = styled.input`
 background-color: transparent;
   text-align: center;
   max-width: 200px;
+  min-height: 1.2em;
+  margin-bottom: 6px;
   width: 100%;
   border: none; 
   border-bottom: 1px solid grey; 
@@ -21,6 +23,7 @@ const Field = styled.div`
   display: flex;
   justify-self: center;
   padding: 4px;
+  min-height: 1.2em;
 `;
 
 const Btn = styled.span`

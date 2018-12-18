@@ -25,7 +25,7 @@ export function postMapping(mapping: Mapping, callback: (any) => void): Dispatch
 
             // run callers callback
             // with response data
-            callback(storedMapping)
+            callback ? callback(storedMapping) : null;
         } catch (err) {
            routeApiActionError(err)
         }
@@ -76,7 +76,7 @@ export function updateMapping(mapping: Mapping, callback: (any) => void) {
             }
 
             // run callers callback function with response data
-            callback(updatedMapping);
+            callback ? callback(updatedMapping) : null;
 
         } catch (err) {
             routeApiActionError(err);
@@ -109,7 +109,7 @@ export function deleteMapping(name: string, callback: (any) => void) {
             graphHelpers.clearGraph(getState().graph);
 
             // run caller callback
-            callback();
+            callback ? callback() : null;
         } catch (err) {
             routeApiActionError(err)
         }

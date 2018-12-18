@@ -3,14 +3,14 @@
 import {connect} from 'react-redux'
 import React, {Component} from 'react';
 
-import { ASSET, CONNECTION, TAG } from '../../constants/types';
+import {ASSET, CONNECTION, TAG} from '../../constants/types';
 import * as resourceHelpers from './../../common/resource-helpers';
 import ResourceDetail from '../resource-detail/ResourceDetailContainer';
 
-import type { Asset, Connection, Tag } from '../../store/types';
+import type {Asset, Connection, Tag} from '../../store/types';
 import resourceBrowserCtrl from './resource-browser.controller';
 
-import { ResourceBrowser, ResourceList } from './components/components';
+import {ResourceBrowser, ResourceList} from './components/components';
 
 import {
     ResourceBrowserLayout,
@@ -18,13 +18,13 @@ import {
 
 
 type Props = {
-   assets: Array<Asset>,
-   connections: Array<Connection>,
-   tags: Array<Tag>,
-   selected: ASSET | CONNECTION | TAG,
-   //  todo: specify the following
-   activeDetail: any,
-   setActiveDetail: (any) => void
+    assets: Array<Asset>,
+    connections: Array<Connection>,
+    tags: Array<Tag>,
+    selected: ASSET | CONNECTION | TAG,
+    //  todo: specify the following
+    activeDetail: any,
+    setActiveDetail: (any) => void
 }
 
 type State = {
@@ -34,15 +34,11 @@ type State = {
 
 class ResourceBrowserContainer extends Component <Props, State> {
 
-    defaultProps = {
-        selected: CONNECTION
-    }
-
-    state = {
-        filterValue: "",
-        selected: this.props.selected,
+   state = {
+            filterValue: "",
+            selected: this.props.selected,
     };
-    
+
     onFilterChange(e) {
         console.info(e.target.value);
         this.setState({filterValue: e.target.value.toLowerCase()});
@@ -55,7 +51,7 @@ class ResourceBrowserContainer extends Component <Props, State> {
 
         // todo: refactor all to selected
         const resourceTypes = selected;
-        
+
         const listItems = resourceTypes === CONNECTION ?
             // todo: filter connections
             this.props.typeToItemsMap[resourceTypes]
@@ -70,10 +66,11 @@ class ResourceBrowserContainer extends Component <Props, State> {
                     tabItems={tabs}
                     listItems={listItems}
                     selected={selected}
-                    onSelect={(selected) =>  this.setState({selected})}
+                    activeDetail={this.props.activeDetail}
+                    onSelect={(selected) => this.setState({selected})}
                     onFilterChange={this.onFilterChange.bind(this)}
                     setActiveDetail={this.props.setActiveDetail}
-                 />
+                />
                 <ResourceDetail/>
             </ResourceBrowserLayout>
         );

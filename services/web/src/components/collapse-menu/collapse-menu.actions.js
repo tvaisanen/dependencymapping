@@ -28,16 +28,12 @@ export function clearGraph() {
 }
 
 export function saveMapping() {
-    return function (dispatch, getState) {
-        const {promise, resolveCallback} = dispatch(mappingActions.updateMapping(getState().activeMapping));
-        promise.then(response => {
-           resolveCallback(response.data);
-
-        }).catch(error => {
-            console.group("saveMapping() ->  <Error>");
-            console.warn(error);
-            console.groupEnd();
-        });
-        dispatch(appActions.toggleCollapseMenu());
+    return async function (dispatch, getState) {
+        try {
+            dispatch(mappingActions.updateMapping(getState().activeMapping));
+            dispatch(appActions.toggleCollapseMenu());
+        } catch (err) {
+            alert(`collapse-menu.actions.saveMapping() :: ${err}`)
+        }
     }
 }

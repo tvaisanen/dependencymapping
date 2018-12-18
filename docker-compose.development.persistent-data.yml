@@ -1,10 +1,9 @@
 version: '3'
 
-# in demo setting
-# the database is restarted
-# on application refresh
-# for data persistence
-# use docker-compose.development.persistent-data.yaml
+# setting is the same as in development
+# but the env has PERSIST_DATA=True
+# which disables the server resetting
+# and there is no pre inserted data
 
 services:
 
@@ -23,6 +22,8 @@ services:
           - ./services/express-server/src/:/usr/local/src/express/src
         env_file:
          - .env-development
+        environment:
+          - DB_NAME=persistent-data
         networks:
           - overlay
 
@@ -39,6 +40,8 @@ services:
             - 3001:3000
         env_file:
             - .env-development
+        environment:
+          - REACT_APP_PERSIST_DATA=1
 
 networks:
    overlay:

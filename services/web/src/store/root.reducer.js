@@ -10,6 +10,7 @@ import app from '../reducers/app.reducer'
 import auth from './auth/auth.reducer';
 import detailForm from './detail-form/detail-form.reducer';
 import connections from './connection/connection.reducer';
+import eventHook from './event-hook/';
 
 const rootReducer = combineReducers({
     app,
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
     activeMapping,
     activeDetail,
     graph,
-    detailForm
+    detailForm,
+    eventHook
 });
 
 export default rootReducer;

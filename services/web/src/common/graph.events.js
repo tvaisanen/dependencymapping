@@ -22,10 +22,19 @@ export function onNodeMouseOut(event) {
     }
 }
 
+
 export function onNodeClick(event) {
     return function (dispatch: Dispatch, getState: State) {
 
-        const { assets } = getState();
+        // alert('if setWaitSelection === true');
+        // alert('take the next step');
+
+        const { assets, eventHook } = getState();
+
+        if (eventHook.hook === "onNodeClick"){
+            eventHook.callback(event.target.id());
+        }
+
 
         const cy = event.target.cy();
 

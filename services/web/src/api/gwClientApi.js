@@ -114,7 +114,11 @@ class GwClientApi {
     }
 
     static putConnection(connection: Connection): Promise<T> {
-        return axios.put(connectionDetailUrl({name:connection.name}),connection);
+        console.info(connection)
+        const {source, target} = connection;
+        const uri = connectionDetailUrl({source, target});
+        console.info(uri)
+        return axios.put(uri, connection);
     }
 
     static deleteConnection(source: string, target:string): Promise<T> {
