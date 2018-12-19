@@ -2,6 +2,8 @@
 
 GUI for Graphingwiki.
 
+![screenshot](https://tvaisanen.github.com/img/dependency-mapper-screen.png)
+
 CS-Aware at OUSGP univ. of Oulu.
 
 ## Development
