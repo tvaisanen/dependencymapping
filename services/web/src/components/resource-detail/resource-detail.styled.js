@@ -35,7 +35,6 @@ export const DetailLayout = styled.div`
       flex-basis: 60%;
     
     > div:nth-of-type(2) {
-      // header
       flex-basis: 40%;
     }
 `;
@@ -150,7 +149,8 @@ export const Row = styled.div`
             `;
 
 export const ActionLink = styled.small`
-    width: 100px;
+    flex-basis: auto;
+    margin: 1px 6px;
     color: rgba(255,255,255,0.8);
     border-bottom: 2px solid transparent;
     padding: 0 20px;

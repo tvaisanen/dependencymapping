@@ -50,10 +50,10 @@ const ResourceDetailContainer = props => (
 
                     <div id={"detail-assets-and-tags"}>
 
-                        <div>
-                            <InActiveMappingToggle/>
+                        <FlexReverseRow>
                             <EditButton/>
-                        </div>
+                            <InActiveMappingToggle/>
+                        </FlexReverseRow>
 
                         <ActiveDetailLists id="resource-detail__detail-block__lists"/>
 
@@ -70,6 +70,12 @@ export default connect(
     resourceDetailCtrl.mapStateToProps,
     resourceDetailCtrl.mapDispatchToProps
 )(ResourceDetailContainer);
+
+const FlexReverseRow = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+`;
 
 const EmptyDetail = styled.div`
     display: flex;

@@ -33,63 +33,61 @@ export function onNodeClick(event) {
 
         if (eventHook.hook === "onNodeClick"){
             eventHook.callback(event.target.id());
+        } else {
+
+
+            const cy = event.target.cy();
+
+            // name of the clicked asset
+            const resourceName = event.target.id();
+
+            // set store active detail
+            const clickedAsset = resourceHelpers.getObjectByName({
+                name: resourceName,
+                objectList: assets
+            });
+
+            dispatch(activeDetailActions.setActiveDetailWithResourceCollecting({
+                type: 'ASSET',
+                data: clickedAsset
+            }));
+
+            const clickedAssetIsConnectedTo = clickedAsset.connected_to;
+
+            // the active mapping state needs to be updated by
+            // adding the resources of the expanded node.
+            dispatch(activeMappingActions
+                .addActiveMappingAssetsFromNameList(
+                    clickedAssetIsConnectedTo
+                )
+            );
+
+            // required parameters for handling the graph update are
+            // to have the reference of cy, target and the resource name
+            // list to the target is connected to
+
+
+            const layout = getState().app.graph.selectedLayout;
+
+            const nodesToCreate = helpers.createNodeElements({
+                ids: clickedAssetIsConnectedTo
+            });
+
+            const edgesToCreate = helpers.createEdgeElementsBetween({
+                source: resourceName,
+                targets: clickedAssetIsConnectedTo
+            });
+
+            helpers.addElements(cy, nodesToCreate);
+            helpers.addElements(cy, edgesToCreate);
+
+            if (nodesToCreate.length > 0) {
+                // nodes are created, update the layout
+                helpers.updateLayout(cy, layout);
+            }
         }
-
-
-        const cy = event.target.cy();
-
-        // name of the clicked asset
-        const resourceName = event.target.id();
-
-        // set store active detail
-        const clickedAsset = resourceHelpers.getObjectByName({
-            name: resourceName,
-            objectList: assets
-        });
-
-        dispatch(activeDetailActions.setActiveDetailWithResourceCollecting({
-            type: 'ASSET',
-            data: clickedAsset
-        }));
-
-        const clickedAssetIsConnectedTo = clickedAsset.connected_to;
-
-        // the active mapping state needs to be updated by
-        // adding the resources of the expanded node.
-        dispatch(activeMappingActions
-            .addActiveMappingAssetsFromNameList(
-                clickedAssetIsConnectedTo
-            )
-        );
-
-        // required parameters for handling the graph update are
-        // to have the reference of cy, target and the resource name
-        // list to the target is connected to
-
-
-        const layout = getState().app.graph.selectedLayout;
-
-        const nodesToCreate = helpers.createNodeElements({
-            ids: clickedAssetIsConnectedTo
-        });
-
-        const edgesToCreate = helpers.createEdgeElementsBetween({
-            source: resourceName,
-            targets: clickedAssetIsConnectedTo
-        });
-
-        helpers.addElements(cy, nodesToCreate);
-        helpers.addElements(cy, edgesToCreate);
-
-        if (nodesToCreate.length > 0) {
-            // nodes are created, update the layout
-            helpers.updateLayout(cy, layout);
-        }
-
     };
-
-
-}
+};
 
 export function onEdgeClick(event) {
     console.info("")
