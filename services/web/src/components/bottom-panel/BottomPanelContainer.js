@@ -19,6 +19,7 @@ const panelViews = {
         //component: ResourceControllerContainer,
         component: DetailEditor
     },
+
     [views.CONNECTIONS]: {
         header: "connections",
         component: ConnectionManager

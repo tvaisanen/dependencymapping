@@ -1,10 +1,15 @@
 import * as types from './graph.action-types';
 
+import { ASSET, CONNECTION } from "../../constants";
 import { setEventHook, clearEventHook } from "../event-hook";
 
-import * as appActions from '../../actions/app.actions';
-import * as assetActions from '../asset/asset.actions';
-import * as connectionActions from '../connection/connection.actions';
+import * as activeDetailActions     from '../active-detail/active-detail.actions';
+import * as activeMappingActions    from '../active-mapping/active-mapping.actions';
+import * as appActions              from '../../actions/app.actions';
+import * as assetActions            from '../asset/asset.actions';
+import * as detailFormActions       from '../detail-form/detail-form.actions';
+import * as connectionActions       from '../connection/connection.actions';
+
 import cytoscape from 'cytoscape';
 import style, {graphStyle} from '../../configs/configs.cytoscape';
 import cxtmenu from 'cytoscape-cxtmenu';
@@ -49,7 +54,21 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
 
     function getConnectionByName(name){
 
+        const [sourceName, targetName] = name.split("_to_")
+
+        return getState().connections.filter(
+            connection => (
+                sourceName === connection.source
+                && targetName === connection.target
+            )
+        )[0];
     }
+
+
+    /**
+        Graph context menu actions
+
+     */
 
     cy.cxtmenu({
         selector: 'node', // elements matching this Cytoscape.js selector will trigger cxtmenus
@@ -59,28 +78,20 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                 contentStyle: {},
                 select: function (ele) {
                     const assetToGroup = getAssetByName((ele.id(): string));
-                    // set event hook to call
-                    // callback on event
-                    dispatch(appActions.setInfoMessage("Select node to group under."));
-                    dispatch(setEventHook({
-                        hook: "onNodeClick",
-                        callback: (assetName: string) => {
-                            alert(`${assetToGroup.name} to ${JSON.stringify(assetName)}`);
-                            const updatedAsset = {
-                                ...assetToGroup,
-                                group: assetName
-                            };
 
-                            dispatch(assetActions.updateAsset(updatedAsset));
-                            dispatch(clearEventHook())
-                            dispatch(appActions.setInfoMessage("grouping should be done."));
-                        }
-                    }))
+                    // set active for editing
+                    dispatch(activeDetailActions.setActiveDetailWithResourceCollecting({
+                        data: assetToGroup,
+                        type: ASSET
+                    }));
+
+                    dispatch(appActions.editDetail());
+                    dispatch(detailFormActions.setFormEditTrue());
                 },
                 enabled: true
             },
             {
-                content: 'add to group',
+                content: 'move to group',
                 contentStyle: {},
                 select: function (ele) {
                     const assetToGroup = getAssetByName((ele.id(): string));
@@ -105,7 +116,7 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                 enabled: true
             },
             { // example command
-                content: 'Connect', // html/text content to be displayed in the menu
+                content: 'connect to', // html/text content to be displayed in the menu
                 contentStyle: {}, // css key:value pairs to set the command's css in js if you want
                 select: function (ele) {
                     const assetToGroup = getAssetByName((ele.id(): string));
@@ -134,25 +145,9 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                 content: 'remove\nfrom map', // html/text content to be displayed in the menu
                 contentStyle: {}, // css key:value pairs to set the command's css in js if you want
                 select: function (ele) {
-                    const assetToGroup = getAssetByName((ele.id(): string));
-                    // set event hook to call
-                    // callback on event
-                    dispatch(appActions.setInfoMessage("Select node to connect to."));
-                    dispatch(setEventHook({
-                        hook: "onNodeClick",
-                        callback: (assetName: string) => {
-                            alert(`${assetToGroup.name} to ${JSON.stringify(assetName)}`);
-                            const newConnection = {
-                                source: ele.id(),
-                                target: assetName
-                            };
+                    const assetToRemove = getAssetByName((ele.id(): string));
+                    dispatch(activeMappingActions.removeResourceFromActiveMapping(assetToRemove))
 
-                            connectionActions.postConnection(newConnection);
-                            dispatch(clearEventHook())
-                            dispatch(appActions.setInfoMessage("connection should be made."));
-
-                        }
-                    }))
                 },
                 enabled: true // whether the command is selectable
             },
@@ -166,7 +161,8 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                 content: 'delete',
                 contentStyle: {},
                 select: function (ele) {
-                    getAssetByName(ele.id())
+                    const connectionToRemove = getConnectionByName(ele.id())
+                    dispatch(connectionActions.deleteConnection(connectionToRemove));
 
                 },
                 enabled: true
@@ -176,7 +172,16 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                 content: 'edit',
                 contentStyle: {},
                 select: function (ele) {
-                    getAssetByName(ele.id())
+                    const connectionToEdit = getConnectionByName(ele.id())
+
+                    // set active for editing
+                    dispatch(activeDetailActions.setActiveDetailWithResourceCollecting({
+                        data: connectionToEdit,
+                        type: CONNECTION
+                    }));
+
+                    dispatch(appActions.editDetail());
+                    dispatch(detailFormActions.setFormEditTrue());
 
                 },
                 enabled: true

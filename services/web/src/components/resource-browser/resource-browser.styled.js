@@ -34,27 +34,29 @@ export const BrowserContainer = styled.div`
     margin-right: 12px;
     border-radius: 3px;
     border: 1px solid grey;
+    background-color: rgba(60,63,65,0.35)
 `;
 
 
 export const ListItemBox = styled.div`
 
     font-size: small; 
-    letter-spacing: 0.05em;
+    letter-spacing: 0.07em;
     text-align: center;
     cursor: pointer;
     margin: 1px 6px;
     border-radius: 3px;
+    padding: 2px; 
 
-    background: ${props => props.selected ? 
-        'rgba(255,255,255,0.3)' 
-        : 'rgba(255,255,255,0.1)'
+    background: ${props => props.selected ?
+        'rgba(22,22,22, 0.5)'
+        : 'rgba(22,22,22, 0.6)'
     };
 
     :hover {
-        background: rgba(255,255,255, 0.35);
+    
+        background: rgba(255,255,255, 0.1);
     }
-
 `;
 
 export const ListTabs = styled.div`
@@ -78,15 +80,21 @@ export const ListTab = styled.div`
     cursor: pointer;
     width: 100%;
     grow: 1;
-    border-radius: 3px;
+    
+    :first-of-type {
+      border-top-left-radius: 3px;
+    }
+     
+    :last-of-type {
+      border-top-right-radius: 3px;
+    }
 
-    background: ${props => props.selected ? 
-        'rgba(255,255,255,0.3)' 
-        : 'rgba(255,255,255,0.1)'
-    };
+    background: rgba(22,22,22, 0.5);
+    
+    border-bottom: 1px solid ${p=>p.selected?"whitesmoke":"transparent"};
 
     :hover{
-        background: rgba(255,255,255, 0.35);
+        background: rgba(22,44,22, 0.7);
     }
     
     :first-of-type {

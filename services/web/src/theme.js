@@ -2,7 +2,8 @@
 export default {
     main: "dark",
     colorGraphBackground: "rgba(255,255,255,1)",
-    colorLightBackground: "rgba(54, 48, 54, 0.7)",
+    colorLightBackground: "rgba(50, 48, 50, 0.7)",
+    //colorLightBackground: "rgba(54, 48, 54, 0.7)",
     colorMediumBackground: "rgba(50, 46, 55, 0.8)",
     colorDarkBackground: "rgb(45, 45, 57)",
 

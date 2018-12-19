@@ -127,6 +127,9 @@ export function removeResourceFromActiveMapping(asset) {
 
         console.info(asset);
 
+        // todo: refactor.. set type
+        const assetName = asset.name ? asset.name : asset;
+
         const el = graph.getElementById(asset.name);
 
         // before deleting parent node, get the children

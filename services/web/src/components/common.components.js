@@ -6,7 +6,6 @@ background-color: transparent;
   text-align: center;
   max-width: 200px;
   min-height: 1.2em;
-  margin-bottom: 6px;
   width: 100%;
   border: none; 
   border-bottom: 1px solid grey; 
@@ -14,8 +13,9 @@ background-color: transparent;
   color: rgba(255,255,255,0.8);
   font-size: 1em;
   flex-grow: 1;
-  :focus::placeholder{
-    color: transparent;
+  
+  ::placeholder{
+    color: whitesmoke;
   }
 `;
 
@@ -24,6 +24,7 @@ const Field = styled.div`
   justify-self: center;
   padding: 4px;
   min-height: 1.2em;
+  font-size: small;
 `;
 
 const Btn = styled.span`
@@ -37,8 +38,8 @@ const Icon = styled.span`
   position: relative;
   height: 1em;
   width: 0;
-  bottom: 3px;
-  left: -2em;
+  bottom: 1px;
+  right: 0px;
 `;
 
 export const FilterInputField = ({onChange}) => {

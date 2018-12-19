@@ -18,7 +18,7 @@ export const ListItemInput = styled.input`
 export const Input = styled.input`
   background: transparent;
   border: none;
-  border-bottom: solid 2px grey;
+  border-bottom: solid 2px white;
   margin: 0 6px;
 `;
 

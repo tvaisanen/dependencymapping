@@ -35,10 +35,10 @@ export default connect(
 )(ActiveDetailDescription)
 
 const Container = styled.div`
-    background: rgba(255,255,255,.1);
+    background:rgba(60,63,65,0.35);
     border-radius: 3px;
     overflow-y: scroll;
-    border: 1px solid gray;
+    border: 1px solid rgba(255,255,255,0.15);
     height: inherit;
     //height: 16em;
     flex-grow: 1;

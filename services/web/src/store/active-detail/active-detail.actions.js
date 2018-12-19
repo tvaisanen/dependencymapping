@@ -31,6 +31,7 @@ export function setActiveMappingAsDetail(activeDetail) {
     }
 }
 
+
 export function setActiveDetailWithResourceCollecting(activeDetail) {
     /**
      * Todo: refactor this function
@@ -66,18 +67,35 @@ export function setActiveDetailWithResourceCollecting(activeDetail) {
     if (activeDetail.type === resourceTypes.CONNECTION) {
         return function (dispatch, getState) {
 
-            const {tags} = getState();
+            const {assets, tags} = getState();
+
+            // get source and target as objects from strings
+            const assetFilter = [activeDetail.data.source, activeDetail.data.target];
+
+            const filteredAssets = assets.filter(asset => _.includes(assetFilter, asset.name));
+
+            const first = filteredAssets.pop();
+
+            // check which one of the filtered is the source and assign both
+            const endPoints = first.name === activeDetail.data.source ?
+                {source: first, target: filteredAssets.pop()}
+                : {source: filteredAssets.pop(), target: first};
+
+
             const parseTags = data.tags ? _.isString(data.tags[0]) : [];
 
             const collectedDetail = {
                 type: activeDetail.type,
                 data: {
                     ...data,
+                    source: endPoints.source,
+                    target: endPoints.target,
                     tags: parseTags ?
                         tags.filter(t => _.includes(data.tags, t.name))
                         : data.tags
                 }
             };
+
             dispatch(setActiveDetail(collectedDetail));
         }
     }

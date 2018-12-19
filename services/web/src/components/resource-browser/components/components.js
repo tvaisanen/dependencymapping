@@ -62,7 +62,6 @@ export const ListTabItems = (props: ListTabItemsProps) => (
 
 export const ResourceBrowser = (props: BrowserProps) => (
     <BrowserContainer>
-        {console.info(props)}
         <ListTabItems
             items={props.tabItems}
             selected={props.selected}

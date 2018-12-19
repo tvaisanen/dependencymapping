@@ -80,7 +80,7 @@ export const MenuColumn = styled.div`
     flex-direction: column;
     width: 320px;
     min-height: inherit;
-    min-width: 20vw;
+    min-width: 100px;
     max-width: ${props=>props.max};
     height: auto;
     overflow: ${props => props.buttons ? 

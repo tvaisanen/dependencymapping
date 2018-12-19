@@ -23,7 +23,7 @@ export const ListItems = ({items, type, clickHandler}) => {
                 onClick={() => clickHandler({
                     data: item,
                     type: type
-                })}>{item.name} 
+                })}>{item.name ? item.name : item.target}
             </ListItem>)) : null;
 };
 
@@ -44,15 +44,27 @@ function mapStateToProps(state) {
     const {
         detailType,
         activeDetail,
-        setDetail
+        setDetail,
+        connections
     } = state;
 
-    const items = activeDetail.type === types.TAG ?
+    const assetsWithTag = activeDetail.type === types.TAG ?
         resourceHelpers
             .getAllResourcesWithTag({
                 tagName: activeDetail.data.name,
                 resources: state.assets
             }) : false;
+
+    const assetConnections = activeDetail.type === types.ASSET ?
+        connections.filter(connection => connection.source === activeDetail.data.name)
+        : null;
+
+    const itemsMap = {
+        [types.TAG]: assetsWithTag,
+        [types.ASSET]: assetConnections
+    };
+
+    const items = itemsMap[activeDetail.type];
 
     const lists = getLists({activeDetail, detailType, setDetail, items});
 
@@ -104,8 +116,17 @@ const listCompositionInstructions = {
      * */
 
     [types.ASSET]: [
-        {label: "Connections", key: "connected_to", type: types.ASSET},
-        {label: "Tags", key: "tags", type: types.TAG}
+        {
+            label: "Connections",
+            //key: "connected_to",
+            key: false,
+            type: types.CONNECTION
+        },
+        {
+            label: "Tags",
+            key: "tags",
+            type: types.TAG
+        }
     ],
     [types.MAPPING]: [
         {label: "Assets", key: "assets", type: types.ASSET},

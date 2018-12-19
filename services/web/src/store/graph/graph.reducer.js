@@ -4,11 +4,8 @@ import cytoscape from 'cytoscape';
 import style, {graphStyle} from '../../configs/configs.cytoscape';
 import cxtmenu from 'cytoscape-cxtmenu';
 import cola from 'cytoscape-cola';
-import jquery from 'jquery';
 
 
-cytoscape.use(cola);
-cytoscape.use(cxtmenu);
 
 export default function graphReducer(cy = initialState.graph, action){
 

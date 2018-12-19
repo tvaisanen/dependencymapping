@@ -9,7 +9,7 @@ export default {
             tabItems: [
                 {label: 'Resource Browser', view: views.BROWSE},
                 {label: 'Create', view: views.CREATE},
-                {label: 'Connections', view: views.CONNECTIONS}
+                //{label: 'Connections', view: views.CONNECTIONS}
             ]
         },
         form: {

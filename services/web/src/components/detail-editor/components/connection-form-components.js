@@ -31,11 +31,11 @@ export const ConnectionForm = (props) => (
             <SelectSourceAsset
                 label={"source"}
                 onChange={props.onSourceSelection}
-                selected={props.source}
+                selected={props.source.name}
                 {...props}/>
             <SelectTargetAsset
                 label={"target"}
-                selected={props.target}
+                selected={props.target.name}
                 onChange={props.onTargetSelection}
                 {...props}/>
         </SelectRow>

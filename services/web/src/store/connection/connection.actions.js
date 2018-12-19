@@ -96,7 +96,7 @@ export function postConnectionSuccess(connection) {
 
 
 export function deleteConnection(connection: Connection, callback: (any) => void) {
-
+    alert('delete connection')
     return async function (dispatch: Dispatch, getState: State) {
 
         try {
