@@ -21,40 +21,40 @@ export type SelectionProps = {
 
 
 const SelectionWithFilterAndCreate = (props: SelectionProps) => (
-        <SelectionBlock id="selection-block">
-            <Block id="block">
-                <SmallLabel>{props.title}
-                    <small> ({props.options.length})</small>
-                </SmallLabel>
-                <FilterInputField id="filter-input-field"
-                                  onChange={(e) => props.onFilterChange(e.target.value)}
+    <SelectionBlock id="selection-block">
+        <Block id="block">
+            <SmallLabel>{props.title}
+                <small> ({props.options.length})</small>
+            </SmallLabel>
+            <FilterInputField id="filter-input-field"
+                              onChange={(e) => props.onFilterChange(e.target.value)}
 
-                />
-                <OptionsToChooseFrom id="options-to-choose-from"
-                                     remove={false}
-                                     options={props.options}
-                                     onClick={props.select}
-                />
+            />
+            <OptionsToChooseFrom id="options-to-choose-from"
+                                 remove={false}
+                                 options={props.options}
+                                 onClick={props.select}
+            />
 
-            </Block>
-            <Block id="block">
-                <SmallLabel>
-                    {props.selectedLabel}
-                    <small> ({props.selected.length})</small>
-                </SmallLabel>
-                <AddInputField
-                    id="filter-input-field"
-                    addItem={props.createAndSelect}
-                    placeholder={"create new"}
-                />
-                <OptionsToChooseFrom id="options-to-choose-from"
-                                     remove={true}
-                                     options={props.selected}
-                                     onClick={props.deselect}
-                />
-            </Block>
-        </SelectionBlock>
-    );
+        </Block>
+        <Block id="block">
+            <SmallLabel>
+                {props.selectedLabel}
+                <small> ({props.selected.length})</small>
+            </SmallLabel>
+            <AddInputField
+                id="filter-input-field"
+                addItem={props.createAndSelect}
+                placeholder={"create new"}
+            />
+            <OptionsToChooseFrom id="options-to-choose-from"
+                                 remove={true}
+                                 options={props.selected}
+                                 onClick={props.deselect}
+            />
+        </Block>
+    </SelectionBlock>
+);
 
 SelectionWithFilterAndCreate.defaultProps = {
     options: [],
@@ -109,7 +109,7 @@ export const Block = styled.div`
 export const SmallLabel = styled.small`
   letter-spacing: 0.05rem;
 `;
-
+/*
 export const OptionItem = styled.div`
             font-size: small;
             background-color: rgba(255,255,255,0.2);
@@ -126,4 +126,33 @@ export const OptionItem = styled.div`
             overflow: hidden;
             text-overflow: ellipsis;
             min-height: 1em;
+`;
+
+*/
+export const OptionItem = styled.div`
+
+    font-size: small; 
+    letter-spacing: 0.07em;
+    text-align: center;
+    cursor: pointer;
+    margin: 1px 6px;
+    border-radius: 3px;
+    padding: 2px; 
+
+    background: ${p => p.selected ?
+        p.theme.listItemDarkBackground
+        : 'rgba(22,22,22, 0.6)'
+    };
+
+   
+    :hover {
+        background-color: ${props =>
+            props.remove ?
+                'rgba(255,0,0,0.2)'
+                : 'rgba(0,255,0,0.2)'
+            };
+    }
+    
+    transition: all .15s ease-in-out;
+            
 `;

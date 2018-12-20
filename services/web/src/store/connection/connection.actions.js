@@ -1,11 +1,13 @@
 //@flow
 
 import GwClientApi from '../../api/gwClientApi';
+import * as _ from 'lodash';
 
 import type {Connection, ConnectionAction} from "./connection.types";
 import * as appActions from '../../actions/app.actions';
 import * as assetActions from '../../store/asset/asset.actions';
 import * as apiHelpers from '../../common/api.helpers';
+import * as graphHelpers from '../../common/graph-helpers';
 
 
 import {
@@ -96,14 +98,14 @@ export function postConnectionSuccess(connection) {
 
 
 export function deleteConnection(connection: Connection, callback: (any) => void) {
-    alert('delete connection')
     return async function (dispatch: Dispatch, getState: State) {
 
         try {
 
             // for updating the source assets
             // connected to list
-            const {assets} = getState();
+            const {activeMapping, assets, graph} = getState();
+            const activeMapAssets = activeMapping.assets;
 
             await
                 GwClientApi
@@ -122,7 +124,7 @@ export function deleteConnection(connection: Connection, callback: (any) => void
                 ...assetToUpdate,
                 connected_to: assetToUpdate
                     .connected_to.filter(
-                        asset => asset !== connection.source
+                        asset => asset !== connection.target
                     )
 
             };
@@ -135,6 +137,21 @@ export function deleteConnection(connection: Connection, callback: (any) => void
             dispatch(deleteConnectionSuccess(connection));
             dispatch(assetActions.updateAsset(updatedAsset));
 
+            /*
+            console.info(updatedAsset)
+
+            const inActiveMap = _.includes(activeMapAssets, updatedAsset.name);
+
+            if (inActiveMap) {
+                alert(`${updatedAsset.name} is in active mapping and should be updated`)
+                // if the status of asset group has been changed
+                // the node need to be moved to the appropriate parent group
+                graphHelpers
+                    .activeMappingAssetUpdateActions(
+                        graph, (updatedAsset: Asset)
+                    );
+            }
+            */
             // if callback provided, run it with response data
             callback ? callback(connection) : null;
 

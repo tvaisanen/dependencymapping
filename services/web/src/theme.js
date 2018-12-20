@@ -16,6 +16,12 @@ export default {
     textColorLight: "rgba(255,255,255,0.4)",
     textColorMedium: "",
     textColorDark: "",
-    headerLetterSpace: "0.05rem"
+    headerLetterSpace: "0.05rem",
+    cardBackgroundColor: 'rgba(60,63,65,0.35)',
+    cardHeaderBackgroundColor: 'rgba(22,22,22, 0.5)',
+    cardHeaderTextColor: 'whitesmoke',
+    cardBorder: '1px solid grey',
+    listItemDarkBackground: 'rgba(22,22,22, 0.6)',
+    listItemSelectedDarkBackground: 'rgba(155,255,155, 0.1)',
 }
 

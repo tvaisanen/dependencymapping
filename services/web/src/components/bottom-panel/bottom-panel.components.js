@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { setBottomPanelView } from '../../actions/app.actions';
 import * as s from './bottom-panel.styled';
+import EditorButtons from "../detail-editor/components/EditorButtons";
                     //selectedView={props.selectedView}
                     //setView={this.setView}
                     //tabItems={tabItems}
@@ -20,6 +21,7 @@ const PanelNavTabs = ({selectedView, tabItems, setView}) => (
                 ))
             }
         </div>
+        <EditorButtons/>
     </s.PanelNavigation>
 );
 

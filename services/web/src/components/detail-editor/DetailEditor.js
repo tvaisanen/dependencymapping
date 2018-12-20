@@ -3,14 +3,13 @@ import React from 'react';
 import {ASSET, CONNECTION, MAPPING, TAG} from "../../constants";
 import {connect} from 'react-redux';
 import SelectionMenus from './components/SelectionMenus';
-import ControllerNavTabs from './components/ControllerNavTabs';
-import { AssetSelection, TagSelection, DescriptionTextarea } from "./components/";
+import FormButtons from './components/ControllerNavTabs';
+import {AssetSelection, TagSelection, DescriptionTextarea} from "./components/";
 import NameInputField from "./components/NameInputField";
-import EditorButtons from "./components/EditorButtons";
 
-import ConnectionForm, { ConnectionSelections} from './components/connection-form-components';
+import ConnectionForm, {ConnectionSelections} from './components/connection-form-components';
 
-import {Container, FormColumn, FormWrapper, SelectionColumn } from "./detail-editor.styled";
+import {Container, FormColumn, FormWrapper, SelectionColumn} from "./detail-editor.styled";
 
 type DetailEditorProps = {
     formType: ASSET | CONNECTION | MAPPING | TAG
@@ -26,32 +25,32 @@ const AssetForm = () => (
 
 const AssetSelections = () => (
     <React.Fragment>
-       <AssetSelection/>
-       <TagSelection/>
+        <AssetSelection/>
+        <TagSelection/>
     </React.Fragment>
 );
 
 
 const MappingForm = () => (
-     <React.Fragment>
-            <NameInputField/>
-            <SelectionMenus/>
-            <DescriptionTextarea/>
+    <React.Fragment>
+        <NameInputField/>
+        <SelectionMenus/>
+        <DescriptionTextarea/>
     </React.Fragment>
 );
 
 const MappingSelections = () => (
     <React.Fragment>
-       <AssetSelection/>
-       <TagSelection/>
+        <AssetSelection/>
+        <TagSelection/>
     </React.Fragment>
 )
 
 const TagForm = () => (
-     <React.Fragment>
-            <NameInputField/>
-            <SelectionMenus/>
-            <DescriptionTextarea/>
+    <React.Fragment>
+        <NameInputField/>
+        <SelectionMenus/>
+        <DescriptionTextarea/>
     </React.Fragment>
 );
 
@@ -85,19 +84,19 @@ const DetailEditor = (props: DetailEditorProps) => {
     // null if no selection
     const Selection = formComponentsByType[props.formType].selectionComponent;
 
-    return <Container>
-        <FormWrapper>
-            <ControllerNavTabs/>
-        <FormColumn>
-            <Form/>
-            <EditorButtons/>
-        </FormColumn>
-        <SelectionColumn visible={Selection()}>
-            <Selection/>
-        </SelectionColumn>
-        </FormWrapper>
-    </Container>
-}
+    return (
+        <Container>
+            <FormButtons/>
+            <FormWrapper>
+                <FormColumn>
+                    <Form/>
+                </FormColumn>
+                <SelectionColumn visible={Selection()}>
+                    <Selection/>
+                </SelectionColumn>
+            </FormWrapper>
+        </Container>)
+};
 
 export default connect(
     (state, props) => ({

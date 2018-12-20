@@ -215,6 +215,9 @@ export function updateNodeParent(cy, asset: Asset): void {
 }
 
 export function activeMappingAssetUpdateActions(cy, asset: Asset) {
+    console.group(`activeMappingASsetUpdateActions(${asset.name})`);
+    console.info(asset);
+    console.groupEnd();
     updateNodeParent(cy, (asset: Asset));
     updateShapeAndColor(cy, (asset: Asset));
     removeResourceEdges(cy, (asset: Asset));

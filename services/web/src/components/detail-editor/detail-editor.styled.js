@@ -9,7 +9,6 @@ export const Container = styled.div`
     z-index: 20;
     
     > div:nth-of-type(1) {
- 
     }
     
     transition: all .3s ease-in-out;
@@ -24,6 +23,7 @@ export const FormColumn = styled.div`
     padding: 0 12px;
     margin-right: 6px;
     flex-basis: 50%;
+    background-color: ${p=>p.theme.cardBackgroundColor}; 
 `;
 
 export const SelectionColumn = styled.div`
@@ -44,7 +44,12 @@ export const FormWrapper = styled.div`
     max-width: 100%;
     height: 100%;
     transition: all .3s ease-in-out;
-    border: 1px solid lightgrey;
     border-radius: 3px;
     flex-grow:1;
+    
+    > div {
+        border-radius: 3px;
+        border: ${p=>p.theme.cardBorder};
+        background-color: ${p=>p.theme.cardBackgroundColor}; 
+    }
 `;

@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import * as detailEditorActions from '../detail-editor.actions';
 import styled from 'styled-components';
+import { CREATE } from "../../../constants/views";
 import * as appActions from '../../../actions/app.actions';
 import { BROWSE } from "../../../constants/views";
 
@@ -16,7 +17,7 @@ type EditorButtonProps = {
 //{cancel, save, remove, edit}
 
 export const EditorButtons = (props: EditorButtonProps) => (
-    <ButtonRow>
+    props.view === CREATE ? <ButtonRow>
         {
             props.edit ? // render edit button if editing a detail
                 <Button cancel onClick={props.onDelete}>delete</Button>
@@ -24,7 +25,7 @@ export const EditorButtons = (props: EditorButtonProps) => (
         }
         <Button cancel onClick={props.onCancel}>cancel</Button>
         <Button onClick={props.onSave}>save</Button>
-    </ButtonRow>
+    </ButtonRow>: null
 );
 
 EditorButtons.defaultProps = {
@@ -36,6 +37,7 @@ EditorButtons.defaultProps = {
 
 
 const mapStateToProps = (state, props) => ({
+    view: state.app.bottomPanel.view,
     edit: state.detailForm.edit,
     description: state.detailForm.description
 });
@@ -55,18 +57,18 @@ export default connect(
 export const ButtonRow = styled.div`
     display:flex;
     justify-content: center;
-    min-height: 2em;
+    margin-right: 12px;
 `;
 
 export const Button = styled.button`
-  margin: 4px;
-  padding: 2px;
+  border: none;
+  margin: 0 5px;
   border-radius: 3px;
-  font-weight: bold;
+  letter-spacing: 0.05rem;
   color: white;
   background-color: ${p => p.cancel ?
-    'rgba(244,0,0,0.5)'
-    : 'rgba(0,244,0,0.5)'
+    'rgba(244,0,0,0.3)'
+    : 'rgba(0,244,0,0.3)'
     };
   cursor: pointer;
 `;

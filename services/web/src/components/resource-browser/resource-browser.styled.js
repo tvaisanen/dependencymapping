@@ -34,7 +34,7 @@ export const BrowserContainer = styled.div`
     margin-right: 12px;
     border-radius: 3px;
     border: 1px solid grey;
-    background-color: rgba(60,63,65,0.35)
+    background-color: ${p=>p.theme.cardBackgroundColor};
 `;
 
 
@@ -48,9 +48,9 @@ export const ListItemBox = styled.div`
     border-radius: 3px;
     padding: 2px; 
 
-    background: ${props => props.selected ?
-        'rgba(22,22,22, 0.5)'
-        : 'rgba(22,22,22, 0.6)'
+    background: ${p => p.selected ? 
+        p.theme.listItemSelectedDarkBackground
+        : p.theme.listItemDarkBackground
     };
 
     :hover {
@@ -89,7 +89,7 @@ export const ListTab = styled.div`
       border-top-right-radius: 3px;
     }
 
-    background: rgba(22,22,22, 0.5);
+    background: ${p=>p.theme.cardHeaderBackgroundColor};
     
     border-bottom: 1px solid ${p=>p.selected?"whitesmoke":"transparent"};
 
