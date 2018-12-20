@@ -134,6 +134,10 @@ export function createNodeElements({ids}) {
     return ids.map(id => ({group: 'nodes', data: {id: id}}));
 }
 
+export function assetsToNodes(assets: Array<Asset>) {
+    return assets.map(asset => nodeElementFromResource(asset))
+}
+
 
 export function hoverIndicationOn(cy = required(), id) {
     const el = cy.getElementById(id);

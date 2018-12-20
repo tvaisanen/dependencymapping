@@ -1,3 +1,5 @@
+import { ASSET } from "../constants";
+import * as _ from 'lodash';
 import * as helpers from './graph-helpers';
 import * as resourceHelpers from "./resource-helpers";
 import * as activeMappingActions from '../store/active-mapping/active-mapping.actions';
@@ -42,20 +44,29 @@ export function onNodeClick(event) {
             const resourceName = event.target.id();
 
             // set store active detail
-            const clickedAsset = resourceHelpers.getObjectByName({
-                name: resourceName,
-                objectList: assets
-            });
+            const clickedAsset = resourceHelpers
+                .getObjectByName({
+                    name: resourceName,
+                    objectList: assets
+                });
 
             dispatch(activeDetailActions.setActiveDetailWithResourceCollecting({
-                type: 'ASSET',
+                type: ASSET,
                 data: clickedAsset
             }));
 
             const clickedAssetIsConnectedTo = clickedAsset.connected_to;
 
+            const connectedAssets = assets.filter(asset => _.includes(clickedAssetIsConnectedTo, asset.name));
+
             // the active mapping state needs to be updated by
             // adding the resources of the expanded node.
+            /*
+            dispatch(activeMappingActions
+                .addActiveMappingAssetsFromNameList(
+                    clickedAssetIsConnectedTo
+                )
+            );*/
             dispatch(activeMappingActions
                 .addActiveMappingAssetsFromNameList(
                     clickedAssetIsConnectedTo
@@ -69,9 +80,12 @@ export function onNodeClick(event) {
 
             const layout = getState().app.graph.selectedLayout;
 
-            const nodesToCreate = helpers.createNodeElements({
+            /*const nodesToCreate = helpers.createNodeElements({
                 ids: clickedAssetIsConnectedTo
-            });
+            });*/
+
+
+            const nodesToCreate = helpers.assetsToNodes((connectedAssets: Array<Asset>));
 
             const edgesToCreate = helpers.createEdgeElementsBetween({
                 source: resourceName,
