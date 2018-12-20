@@ -23,5 +23,7 @@ export default {
     cardBorder: '1px solid grey',
     listItemDarkBackground: 'rgba(22,22,22, 0.6)',
     listItemSelectedDarkBackground: 'rgba(155,255,155, 0.1)',
+    //formFieldBackgroundColor: 'rgba(255,255,255,0.03)',
+    formFieldBackgroundColor: 'rgba(60,63,65,0.35)',
 }
 

@@ -21,7 +21,7 @@ background-color: transparent;
 
 const Field = styled.div`
   display: flex;
-  justify-self: center;
+  justify-content: center;
   padding: 4px;
   min-height: 1.2em;
   font-size: small;

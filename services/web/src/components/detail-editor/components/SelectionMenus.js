@@ -21,17 +21,19 @@ type SelectionMenusProps = {
 
 const SelectionMenus = (props: SelectionMenusProps) => (
     props.formType === ASSET ?
-        <Container>
+        <Container id={"form-select-fields"}>
             <NodeGroupSelection
                 selected={props.group}
                 onChange={props.onAssetGroupSelection}
                 assets={props.assets}/>
+            <FieldGroup>
             <NodeShapeSelection
                 selected={props.nodeShape}
                 onChange={props.onNodeShapeSelection}/>
             <NodeColorSelection
                 selected={props.nodeColor}
                 onChange={props.onNodeColorSelection}/>
+            </FieldGroup>
         </Container>
         : null
 );
@@ -57,28 +59,46 @@ export default connect(
 
 const Container = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-  padding: 0 0 12px 0;
-  min-height: 2.2em;
-  justify-content: center;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  padding: 6px; 
+  margin: 6px 0;
+  background-color: ${p => p.theme.formFieldBackgroundColor};
+  flex-shrink: 1;
+  flex-grow: 3;
   align-content: flex-start;
-  > div {
-    margin: 0 12px;
-    }
+   border: 1px solid rgba(255,255,255,0.15);
 `;
 
 
 const Select = styled.select`
-    flex-basis: inherit;
+    flex-basis: 100%;
+    border: none;
 `;
 
+const FieldGroup = styled.div`
+    display: flex;
+    flex-basis: 100%;
+    border-top: 1px solid grey;
+    padding-top: 6px;
+`;
+
+const SelectionField = styled.div`
+    display: flex;
+    flex-shrink: 1;
+    height: 1.4em;
+    padding: 6px;
+    flex-basis: 100%;
+`;
+
+const Label = styled.div`
+    font-size: small;
+    padding-right: 8px;
+`;
 
 const NodeGroupSelection = (props) => {
-    return <div>
-        <small>
-            <label for="node-group">group</label><br/>
-        </small>
+    return <SelectionField id={"select-asset-group"}>
+        <Label for="node-group">group</Label><br/>
         <Select
         selected={"none"}
         onChange={(e) => {
@@ -94,34 +114,30 @@ const NodeGroupSelection = (props) => {
                 }}
                 value={option}
             >{option}</option>))}
-    </Select></div>
+    </Select></SelectionField>
 };
 
 const NodeShapeSelection = (props) => {
 
-    return <div>
-        <small>
-        <label for="node-shape">node shape</label><br/>
-        </small>
+    return <SelectionField>
+        <Label for="node-shape">shape</Label>
         <Select name="node-shape" onChange={(e) => {props.onChange((e.target.value:string));}}>
         {nodeShapes.map(option => <option
             selected={option === props.selected}
             value={option}>{option}</option>)}
     </Select>
-    </div>
+    </SelectionField>
 };
 
 const NodeColorSelection = (props) => {
 
-    return<div>
-        <small>
-            <label for="node-color">node color</label><br/>
-        </small>
+    return<SelectionField>
+            <Label for="node-color">color</Label>
     <Select name="node-color" onChange={(e) => {props.onChange((e.target.value:string));}}>
         {colorOptions.map(option => <option
             selected={option === props.selected}
             value={option}>{option}</option>)}
     </Select>
-    </div>
+    </SelectionField>
 };
 

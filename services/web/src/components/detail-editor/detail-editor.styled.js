@@ -20,16 +20,15 @@ export const FormColumn = styled.div`
     flex-direction: column;
     flex-grow: 1;
     flex-shrink: 1;
-    padding: 0 12px;
+    padding: 6px 12px;
     margin-right: 6px;
     flex-basis: 50%;
-    background-color: ${p=>p.theme.cardBackgroundColor}; 
+    background-color: white;
 `;
 
 export const SelectionColumn = styled.div`
     display: flex;
     flex-direction: column;
-    height: 100%;
     transform: ${p=>p.visible? 'scaleX(1)': 'scaleX(0)'};
     transform-origin: right;
     flex-shrink: 2; 
@@ -50,6 +49,6 @@ export const FormWrapper = styled.div`
     > div {
         border-radius: 3px;
         border: ${p=>p.theme.cardBorder};
-        background-color: ${p=>p.theme.cardBackgroundColor}; 
+        background-color: ${p=>p.theme.cardHeaderBackgroundColor}; 
     }
 `;

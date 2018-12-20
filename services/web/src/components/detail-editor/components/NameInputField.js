@@ -5,8 +5,7 @@ import * as detailEditorActions from '../detail-editor.actions';
 
 const Container = styled.div`
     display: flex;
-    background-color: rgba(255,255,255,0.1);
-    margin: 6px; 
+    background-color: ${p=>p.theme.formFieldBackgroundColor};
     padding: 6px;
     align-items: center;
     border: 1px solid rgba(255,255,255,0.15);
@@ -37,7 +36,8 @@ const NameInputField = (props) => {
                    onChange={(e) => {
                        if (e.target.value===""){this.value=""}
                        props.onChange(e.target.value);
-                   }}/>
+                   }}
+            />
         </Container>
     )
 };

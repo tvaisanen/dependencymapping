@@ -19,12 +19,16 @@ export type SelectionProps = {
     createAndSelect: (name: string) => void
 }
 
+const WrapLine = styled.div`
+    display:flex;
+    flex-flow: row wrap;
+`;
+
 
 const SelectionWithFilterAndCreate = (props: SelectionProps) => (
     <SelectionBlock id="selection-block">
         <Block id="block">
-            <SmallLabel>{props.title}
-                <small> ({props.options.length})</small>
+            <SmallLabel>{props.title} ({props.options.length})
             </SmallLabel>
             <FilterInputField id="filter-input-field"
                               onChange={(e) => props.onFilterChange(e.target.value)}
@@ -38,9 +42,9 @@ const SelectionWithFilterAndCreate = (props: SelectionProps) => (
 
         </Block>
         <Block id="block">
+
             <SmallLabel>
-                {props.selectedLabel}
-                <small> ({props.selected.length})</small>
+                {props.selectedLabel}({props.selected.length})
             </SmallLabel>
             <AddInputField
                 id="filter-input-field"
@@ -70,6 +74,7 @@ const OptionList = styled.div`
   overflow-x: hidden;
   flex-grow:1;
   width: 16em;
+  background-color: rgba(255,255,255,0.1);
 `;
 
 const OptionsToChooseFrom = ({options, onClick, remove}) => (
@@ -89,25 +94,37 @@ const SelectionBlock = styled.div`
   flex-direction: row;
   justify-content: center;
   height: 100%;
-  padding: 4px;
   border-radius: 3px;
-  background-color: rgba(22,22,22,0.1);
-  margin: 2px;
+  margin: 6px;
   flex-shrink: 4;
+  border: ${p=>p.theme.cardBorder};
+  background-color: ${p => p.theme.formFieldBackgroundColor};
+  :first-of-type {
+    margin-bottom: 0;
+  }
 `;
 
 export const Block = styled.div`
   display: flex;
-  height: 100%;
+  flex-basis: 100%;
   flex-grow: 1;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
-  padding: 4px;
+  padding: 0;
+  > * {
+    width: 100%;
+  }
 `;
 
 export const SmallLabel = styled.small`
+    display: flex;
+    align-items: center;
+    justify-content: center;
   letter-spacing: 0.05rem;
+  min-height: 1.2em;
+  padding: 3px 0;
+  background-color: ${p=>p.theme.cardHeaderBackgroundColor};
+  border-bottom: ${p=>p.theme.cardBorder};
 `;
 /*
 export const OptionItem = styled.div`
@@ -135,7 +152,7 @@ export const OptionItem = styled.div`
     letter-spacing: 0.07em;
     text-align: center;
     cursor: pointer;
-    margin: 1px 6px;
+    margin: 2px 6px;
     border-radius: 3px;
     padding: 2px; 
 
