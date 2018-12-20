@@ -137,21 +137,6 @@ export function deleteConnection(connection: Connection, callback: (any) => void
             dispatch(deleteConnectionSuccess(connection));
             dispatch(assetActions.updateAsset(updatedAsset));
 
-            /*
-            console.info(updatedAsset)
-
-            const inActiveMap = _.includes(activeMapAssets, updatedAsset.name);
-
-            if (inActiveMap) {
-                alert(`${updatedAsset.name} is in active mapping and should be updated`)
-                // if the status of asset group has been changed
-                // the node need to be moved to the appropriate parent group
-                graphHelpers
-                    .activeMappingAssetUpdateActions(
-                        graph, (updatedAsset: Asset)
-                    );
-            }
-            */
             // if callback provided, run it with response data
             callback ? callback(connection) : null;
 

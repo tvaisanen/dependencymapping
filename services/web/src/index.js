@@ -5,7 +5,6 @@ import App from './components/app/App';
 import registerServiceWorker from './registerServiceWorker';
 import configureStore from './store/configureStore';
 import {Provider} from 'react-redux';
-import * as actions from './actions/index';
 import * as storeActions from './store';
 import {ThemeProvider} from 'styled-components';
 import theme from './theme';
@@ -27,7 +26,6 @@ setTimeout(() => {
     store.dispatch(storeActions.loadAllAssets());
     store.dispatch(storeActions.loadAllTags());
     store.dispatch(storeActions.loadAllConnections());
-    store.dispatch(storeActions.loadAllAssetGroups());
 }, 500);
 
 

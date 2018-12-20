@@ -10,7 +10,7 @@ export const graphStyle = [
         style: {
             'width': 3,
             'curve-style': 'bezier',
-            'line-color': '#eee',
+            'line-color': '#454545',
             'target-arrow-color': '#ccc',
             'target-arrow-shape': null,
         }
@@ -58,6 +58,7 @@ export const graphStyle = [
     {
         selector: '$node > node',
         style: {
+            'border-radius': '3px',
             'padding-top': '10px',
             'padding-left': '10px',
             'padding-bottom': '10px',
