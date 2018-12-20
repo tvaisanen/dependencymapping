@@ -52,3 +52,28 @@ export const FormWrapper = styled.div`
         background-color: ${p=>p.theme.cardHeaderBackgroundColor}; 
     }
 `;
+
+export const Select = styled.select`
+    flex-basis: 100%;
+    border: none;
+`;
+
+export const FieldGroup = styled.div`
+    display: flex;
+    flex-basis: 100%;
+    border-top: 1px solid grey;
+    padding-top: 6px;
+`;
+
+export const SelectionField = styled.div`
+    display: flex;
+    flex-shrink: 1;
+    height: 1.4em;
+    padding: 6px;
+    flex-basis: 100%;
+`;
+
+export const Label = styled.div`
+    font-size: small;
+    padding-right: 8px;
+`;

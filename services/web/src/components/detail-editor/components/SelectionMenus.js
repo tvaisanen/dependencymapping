@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import styled from 'styled-components';
 import {nodeShapes, colorOptions} from "../../../configs/configs.cytoscape";
 import * as detailEditorActions from '../detail-editor.actions'
-
+import { Label, SelectionField, FieldGroup, Select } from "../detail-editor.styled";
 
 type SelectionMenusProps = {
     formType: string,
@@ -71,30 +71,6 @@ const Container = styled.div`
 `;
 
 
-const Select = styled.select`
-    flex-basis: 100%;
-    border: none;
-`;
-
-const FieldGroup = styled.div`
-    display: flex;
-    flex-basis: 100%;
-    border-top: 1px solid grey;
-    padding-top: 6px;
-`;
-
-const SelectionField = styled.div`
-    display: flex;
-    flex-shrink: 1;
-    height: 1.4em;
-    padding: 6px;
-    flex-basis: 100%;
-`;
-
-const Label = styled.div`
-    font-size: small;
-    padding-right: 8px;
-`;
 
 const NodeGroupSelection = (props) => {
     return <SelectionField id={"select-asset-group"}>
