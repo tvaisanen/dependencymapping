@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ASSET, CONNECTION, TAG } from '../../../constants/types';
+import {ASSET, CONNECTION, TAG} from '../../../constants/types';
 
 import {
     ListItemBox,
@@ -16,10 +16,14 @@ import {FilterInputField} from '../../common.components';
 export type Selected = ASSET | CONNECTION | TAG
 
 export type ListItemProps = {
-    item: Asset | Connection | Tag, 
-    itemType: Selected, 
+    activeDetail:  {
+        type: ASSET | CONNECTION | TAG,
+        data: Asset | Connection | Tag
+    },
+    item: Asset | Connection | Tag,
+    itemType: Selected,
     selected: Selected,
-    onClick: (any) => void, 
+    onClick: (any) => void,
 }
 
 export type ResourceListProps = {
@@ -30,7 +34,11 @@ export type ResourceListProps = {
 }
 
 type BrowserProps = {
-    tabItems: Array<{label: string, type: string}>,
+    activeDetail: {
+        type: ASSET | CONNECTION | TAG,
+        data: Asset | Connection | Tag
+    },
+    tabItems: Array<{ label: string, type: string }>,
     listItems: Array<Asset> | Array<Connection> | Array<Tag>,
     selected: Selected,
     onSelect: (any) => void,
@@ -40,7 +48,7 @@ type BrowserProps = {
 
 
 type ListTabItemsProps = {
-    items: Array<{label: string, type: ASSET | CONNECTION | TAG}>,
+    items: Array<{ label: string, type: ASSET | CONNECTION | TAG }>,
     selected: ASSET | CONNECTION | TAG,
     onSelect: (string) => void
 }
@@ -73,8 +81,8 @@ export const ResourceBrowser = (props: BrowserProps) => (
             placeholder="filter..."
             onChange={props.onFilterChange}
         />
-        
-        <ResourceList 
+
+        <ResourceList
             onClick={props.setActiveDetail}
             listItems={props.listItems}
             selected={props.selected}
@@ -84,47 +92,48 @@ export const ResourceBrowser = (props: BrowserProps) => (
 );
 
 
-
 export const AssetList = (props: ResourceListProps) => (
-    props.selected !== ASSET ? null :  
+    props.selected !== ASSET ? null :
         props.listItems.map((item, i) => (
-            <AssetListItem
-                isSelected={props.activeDetail.name === item.name}
-                key={i}
-                item={item}
-                {...props}
-            />
+                <AssetListItem
+                    isSelected={props.activeDetail.data.name === item.name}
+                    key={i}
+                    item={item}
+                    {...props}
+                />
+            )
         )
-    )
 )
 
 export const ConnectionList = (props: ResourceListProps) => (
-    props.selected !== CONNECTION ? null :  
+    props.selected !== CONNECTION ? null :
         props.listItems.map((item, i) => (
-            <ConnectionListItem 
-                key={i}
-                item={item}
-                {...props}
-            />
+                <ConnectionListItem
+                    key={i}
+                    item={item}
+                    {...props}
+                />
+            )
         )
-    )
-) 
+)
 
 export const TagList = (props: ResourceListProps) => (
-    props.selected !== TAG ? null :  
+    props.selected !== TAG ? null :
         props.listItems.map((item, i) => (
-            <TagListItem 
-                key={i}
-                item={item}
-                {...props}
-            />
+                <TagListItem
+                    isSelected={props.activeDetail.data.name === item.name}
+                    key={i}
+                    item={item}
+                    {...props}
+                />
+            )
         )
-    )
 )
 
 
-export const ResourceList = (props: ResourceListProps) =>(
+export const ResourceList = (props: ResourceListProps) => (
     <ListContainer>
+        {console.info(props)}
         <AssetList      {...props}/>
         <ConnectionList {...props}/>
         <TagList        {...props}/>
@@ -135,35 +144,43 @@ export const ResourceList = (props: ResourceListProps) =>(
 export const ListItemByName = (props: ListItemProps) => (
     <ListItemBox
         selected={props.isSelected}
-        onClick={() => 
+        onClick={() =>
             props.onClick({
                 data: props.item,
                 // selected tab 
                 type: props.selected
             })
         }
-        >{props.item.name}
+    >{props.item.name}
     </ListItemBox>
 );
 
 export const AssetListItem = ListItemByName;
 
+// logic for ConnectionListItem selected field
+function connectionIsActiveDetail(item, activeDetail) {
+    if (activeDetail.type === CONNECTION) {
+        return item.source === activeDetail.data.source.name
+        && item.target === activeDetail.data.target.name
+    } else {
+        return false;
+    }
+}
+
 export const ConnectionListItem = (props: ListItemProps) => (
     <ListItemBox
-        selected={
-            props.item.source === props.activeDetail.source
-            && props.item.target === props.activeDetail.target
-        }
-        onClick={() => 
+        selected={connectionIsActiveDetail(props.item, props.activeDetail)}
+        onClick={() =>
             props.onClick({
-                data: props.item,
-                type: props.selected
-            }
-        )}
+                    data: props.item,
+                    type: props.selected
+                }
+            )}
     >
         {`${props.item.source} -> ${props.item.target}`}
+        {console.info(props)}
     </ListItemBox>
-)
+);
 
 export const TagListItem = ListItemByName;
 

@@ -28,7 +28,7 @@ const mapStateToProps = (state, ownProps = {}) => {
         connections: state.connections,
         tags: state.tags || [],
         activeMapping: state.activeMapping,
-        activeDetail: state.activeDetail.data,
+        activeDetail: state.activeDetail,
         activeDetailType: state.activeDetail.type,
         typeToItemsMap
     }

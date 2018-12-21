@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import * as detailFormActions from '../../../store/detail-form/detail-form.actions';
 import * as detailEditorActions from '../detail-editor.actions';
 
+import { Label, SelectionField,  FieldGroup, Select, FieldsContainer } from "../detail-editor.styled";
+
 import TagSelection from "./TagSelection";
 import DescriptionTextarea from "./DescriptionTextarea";
 
@@ -14,20 +16,23 @@ export const ConnectionSelections = () => (
     </React.Fragment>
 );
 
-const SelectRow = styled.div`
-    display: flex;
-    width: 100%;
-    justify-content: center;
+export const WrapFields = styled.div`
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  padding: 6px; 
+  margin: 6px 0;
+  background-color: ${p => p.theme.formFieldBackgroundColor};
+  flex-shrink: 1;
+  flex-grow: 3;
+  align-content: flex-start;
+   border: 1px solid rgba(255,255,255,0.15);
 `;
 
-const Select = styled.select`
-    padding: 4px;
-    margin: 6px;
-`;
 
 export const ConnectionForm = (props) => (
     <React.Fragment>
-        <SelectRow>
+        <WrapFields>
             <SelectSourceAsset
                 label={"source"}
                 onChange={props.onSourceSelection}
@@ -38,7 +43,7 @@ export const ConnectionForm = (props) => (
                 selected={props.target.name}
                 onChange={props.onTargetSelection}
                 {...props}/>
-        </SelectRow>
+        </WrapFields>
         <DescriptionTextarea/>
     </React.Fragment>
 );
@@ -74,12 +79,10 @@ export default connect(
     mapDispatchToProps
 )(ConnectionForm);
 
+/*
 const SelectAsset = (props) => {
     return <div>
-        <small>
-            <label for={`${props.label}-asset`}>{props.label}</label>
-            <br/>
-        </small>
+            <Label for={`${props.label}-asset`}>{props.label}</Label>
         <Select
             selected={"none"}
             onChange={(e) => {
@@ -96,4 +99,23 @@ const SelectAsset = (props) => {
             }
         </Select>
     </div>
+
+};
+*/
+const SelectAsset = (props) => {
+    return <SelectionField id={"select-asset-group"}>
+
+        <Label for={`${props.label}-asset`}>{props.label}</Label>
+        <Select
+        selected={"none"}
+        onChange={(e) => {
+            this.selected = e.target.value;
+            props.onChange((e.target.value: string));
+        }}>
+        {props.assets.map(option => (
+            <option
+                selected={option === props.selected}
+                value={option}
+            >{option}</option>))}
+    </Select></SelectionField>
 };

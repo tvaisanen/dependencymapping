@@ -35,7 +35,7 @@ const initialState = {
     description: "",
     errors: {},
     errorMsg: "",
-    formType: "ASSET",
+    formType: "CONNECTION",
     selections: true, // if there's the selects
     nodeShape: "ellipse",
     nodeColor: "black",

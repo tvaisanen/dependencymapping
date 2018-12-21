@@ -76,4 +76,6 @@ export const SelectionField = styled.div`
 export const Label = styled.div`
     font-size: small;
     padding-right: 8px;
+    min-width: 40px;
 `;
+
