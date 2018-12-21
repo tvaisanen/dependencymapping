@@ -14,13 +14,19 @@ import {
     SET_NODE_SHAPE_SELECTION,
     SET_NODE_COLOR_SELECTION,
     SET_FORM_EDIT_TRUE,
-    SET_FORM_EDIT_FALSE, SET_VALUES_FROM_DETAIL,
+    SET_FORM_EDIT_FALSE,
+    SET_VALUES_FROM_DETAIL,
     CLEAR_FORM,
     SET_SOURCE_VALUE,
     SET_TARGET_VALUE,
     SET_ERROR_VALUE,
     SET_ERRORS,
-    CLEAR_ERRORS
+    CLEAR_ERRORS,
+    SET_TARGET_ARROW_FALSE,
+    SET_TARGET_ARROW_TRUE,
+    SET_SOURCE_ARROW_FALSE,
+    SET_SOURCE_ARROW_TRUE,
+    SET_EDGE_LABEL_VALUE
 } from './detail-form.action-types';
 import type {Dispatch} from "../types";
 import type {Asset, Connection, Mapping, Tag} from "../types";
@@ -122,6 +128,26 @@ export function clearErrors(){
 
 export function setErrorMsg(value) {
     return {type: SET_ERROR_VALUE, value}
+}
+
+export function setSourceArrowTrue() {
+    return {type: SET_SOURCE_ARROW_TRUE}
+}
+
+export function setSourceArrowFalse() {
+    return {type: SET_SOURCE_ARROW_FALSE}
+}
+
+export function setTargetArrowTrue() {
+    return {type: SET_TARGET_ARROW_TRUE}
+}
+
+export function setTargetArrowFalse() {
+    return {type: SET_TARGET_ARROW_FALSE}
+}
+
+export function setEdgeLabelValue(value){
+    return {type: SET_EDGE_LABEL_VALUE, value}
 }
 
 // use to load active detail

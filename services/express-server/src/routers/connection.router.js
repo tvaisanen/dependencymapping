@@ -40,7 +40,10 @@ connectionRouter.delete('(/:id)?', (req, res) => {
 connectionRouter.put('(/:id)?', (req, res) => {
     console.log("update");
     console.log(req.body)
-    Connection.update(req.query, req.body)
+    Connection.update({
+        source: req.body.source,
+        target: req.body.target
+    }, req.body)
         .then(response => {
             console.log(response);
             console.log(req.query);

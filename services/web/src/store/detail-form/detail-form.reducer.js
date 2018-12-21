@@ -21,7 +21,12 @@ import {
     SET_TARGET_VALUE,
     SET_ERROR_VALUE,
     SET_ERRORS,
-    CLEAR_ERRORS
+    CLEAR_ERRORS,
+    SET_EDGE_LABEL_VALUE,
+    SET_SOURCE_ARROW_FALSE,
+    SET_SOURCE_ARROW_TRUE,
+    SET_TARGET_ARROW_FALSE,
+    SET_TARGET_ARROW_TRUE
 } from "./detail-form.action-types";
 
 const initialState = {
@@ -42,6 +47,9 @@ const initialState = {
     group: "none",
     source: "",
     target: "",
+    sourceArrow: false,
+    targetArrow: false,
+    edgeLabel: "",
 };
 
 export default function (state = initialState, action) {
@@ -54,9 +62,6 @@ export default function (state = initialState, action) {
             return initialState;
 
         case SET_VALUES_FROM_DETAIL:
-            console.group("set detail to form");
-            console.info(action.detail);
-            console.groupEnd();
             return {...state, ...action.detail};
 
         case SET_DETAIL_FORM_TYPE:
@@ -121,8 +126,22 @@ export default function (state = initialState, action) {
             return {...state, errors: (value: string)};
 
         case CLEAR_ERRORS:
-            return {...state, errors: {}, errorMsg: ""}
+            return {...state, errors: {}, errorMsg: ""};
 
+        case SET_SOURCE_ARROW_TRUE:
+            return {...state, sourceArrow: true};
+
+        case SET_SOURCE_ARROW_FALSE:
+            return {...state, sourceArrow: false};
+
+        case SET_TARGET_ARROW_TRUE:
+            return {...state, targetArrow: true};
+
+        case SET_TARGET_ARROW_FALSE:
+            return {...state, targetArrow: false};
+
+        case SET_EDGE_LABEL_VALUE:
+            return {...state, edgeLabel: (value: string)};
 
         default:
             return state;

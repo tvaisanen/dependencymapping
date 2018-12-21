@@ -20,7 +20,7 @@ export const FormColumn = styled.div`
     flex-direction: column;
     flex-grow: 1;
     flex-shrink: 1;
-    padding: 6px 12px;
+    padding: 6px 6px;
     margin-right: 6px;
     flex-basis: 50%;
     background-color: white;
@@ -73,7 +73,7 @@ export const SelectionField = styled.div`
     flex-basis: 100%;
 `;
 
-export const Label = styled.div`
+export const Label = styled.span`
     font-size: small;
     padding-right: 8px;
     min-width: 40px;

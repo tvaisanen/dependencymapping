@@ -43,6 +43,12 @@ export function addResourceToActiveMapping(asset) {
     return function (dispatch, getState) {
 
         const {activeMapping, assets, graph} = getState();
+
+        if (activeMapping.name === "no selection"){
+            alert("Create or select a mapping first, before adding assets.")
+            return;
+        }
+
         const newAssetName = asset.name;
 
         const edgeElements = asset.connected_to.map(

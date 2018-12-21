@@ -38,7 +38,10 @@ const connectionSchema = new mongoose.Schema({
     source: {type: String, required: true},
     target: {type: String, required: true},
     tags: {type: [String], default: null},
-    description: {type: String, default: ""}
+    description: {type: String, default: ""},
+    targetArrow: {type: Boolean, default: false},
+    sourceArrow: {type: Boolean, default: false},
+    edgeLabel: String
 });
 
 const groupSchema = new mongoose.Schema({

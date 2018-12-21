@@ -99,8 +99,8 @@ const SelectionBlock = styled.div`
   flex-shrink: 4;
   border: ${p=>p.theme.cardBorder};
   background-color: ${p => p.theme.formFieldBackgroundColor};
-  :first-of-type {
-    margin-bottom: 0;
+  :nth-of-type(2) {
+    margin-top: 0;
   }
 `;
 

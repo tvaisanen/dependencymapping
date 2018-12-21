@@ -99,7 +99,10 @@ type FormProps = {
     nodeShape: string | void,
     nodeColor: string | void,
     source: string,
-    target: string
+    target: string,
+    sourceArrow: boolean,
+    targetArrow: boolean,
+    edgeLabel: string,
 }
 
 /**
@@ -120,7 +123,10 @@ const getForm = {
         source: detailForm.source,
         target: detailForm.target,
         description: detailForm.description,
-        tags: detailForm.selectedTags
+        tags: detailForm.selectedTags,
+        edgeLabel: detailForm.edgeLabel,
+        sourceArrow: detailForm.sourceArrow,
+        targetArrow: detailForm.targetArrow,
     }),
     MAPPING: (detailForm) => ({
         name: detailForm.name,
@@ -244,17 +250,19 @@ export function onDelete(): Dispatch {
              *   after the action have
              *   been executed
              */
-            function callback() {
+            const callback = () => {
                 dispatch(activeDetailActions.clearActiveDetail());
                 dispatch(detailFormActions.clearForm());
                 dispatch(closeEdit());
                 dispatch(detailFormActions.setFormEditFalse());
-            }
+            };
 
             const args = formType === CONNECTION ?
-                {source, target}
+                {source: source.name, target: target.name}
                 : name
             ;
+
+            alert(JSON.stringify(args))
 
 
             try {
@@ -378,5 +386,37 @@ export function onSourceSelection(value: string) {
 export function onTargetSelection(value: string) {
     return function (dispatch: Dispatch): void {
         dispatch(detailFormActions.setTargetValue((value: string)));
+    }
+}
+
+export function toggleSourceArrow() {
+    return function (dispatch: Dispatch, getState): void {
+        const { sourceArrow } = getState().detailForm;
+
+        if (sourceArrow) {
+           dispatch(detailFormActions.setSourceArrowFalse())
+        } else {
+            dispatch(detailFormActions.setSourceArrowTrue())
+        }
+    }
+}
+
+export function toggleTargetArrow() {
+    return function (dispatch: Dispatch, getState): void {
+        const { targetArrow } = getState().detailForm;
+
+        if (targetArrow) {
+           dispatch(detailFormActions.setTargetArrowFalse())
+        } else {
+            dispatch(detailFormActions.setTargetArrowTrue())
+        }
+    }
+}
+
+export function onEdgeLabelChange(value: string) {
+    console.info("edge change: ")
+    console.info(value)
+    return function (dispatch: Dispatch): void {
+        dispatch(detailFormActions.setEdgeLabelValue((value: string)));
     }
 }

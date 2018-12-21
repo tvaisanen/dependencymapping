@@ -11,8 +11,10 @@ export const graphStyle = [
             'width': 3,
             'curve-style': 'bezier',
             'line-color': '#454545',
-            'target-arrow-color': '#ccc',
-            'target-arrow-shape': null,
+            'target-arrow-color': '#454545',
+            'target-arrow-shape': 'triangle',
+            'source-arrow-color': '#454545',
+            'source-arrow-shape': 'triangle'
         }
     },
     {

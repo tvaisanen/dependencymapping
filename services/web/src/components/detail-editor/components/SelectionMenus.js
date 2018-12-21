@@ -62,7 +62,7 @@ const Container = styled.div`
   flex-flow: column nowrap;
   justify-content: flex-start;
   padding: 6px; 
-  margin: 6px 0;
+  margin-bottom: 6px;
   background-color: ${p => p.theme.formFieldBackgroundColor};
   flex-shrink: 1;
   flex-grow: 3;
