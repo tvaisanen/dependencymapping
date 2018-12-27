@@ -120,8 +120,8 @@ const getForm = {
         nodeColor: detailForm.nodeColor
     }),
     CONNECTION: (detailForm: FormProps) => ({
-        source: detailForm.source,
-        target: detailForm.target,
+        source: detailForm.source.name ? detailForm.source.name : detailForm.source,
+        target: detailForm.target.name ? detailForm.target.name : detailForm.target,
         description: detailForm.description,
         tags: detailForm.selectedTags,
         edgeLabel: detailForm.edgeLabel,
@@ -175,14 +175,16 @@ export function onSave(): Dispatch {
              *  this function is called  by form action
              *  after resolving api actions
              */
-            function callback(responseData) {
-                dispatch(closeFormAndSetActiveDetail({
-                    type: formType,
-                    data: responseData
+            const callback = (responseData) => {
+                dispatch(
+                    closeFormAndSetActiveDetail({
+                        type: formType,
+                        data: responseData
                 }));
                 dispatch(detailFormActions.clearForm());
                 dispatch(detailFormActions.setFormEditFalse());
-            }
+
+            };
 
 
             await // async store action

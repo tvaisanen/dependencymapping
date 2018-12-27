@@ -8,6 +8,7 @@ export const graphStyle = [
     {
         selector: 'edge',
         style: {
+            'content': 'data(label)',
             'width': 3,
             'curve-style': 'bezier',
             'line-color': '#454545',

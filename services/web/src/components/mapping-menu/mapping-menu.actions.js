@@ -4,19 +4,8 @@ import * as activeDetailActions from '../../store/active-detail/active-detail.ac
 import * as dependencyMapHelpers from '../../common/dependency-map.helpers';
 
 export function onMappingItemClick(mappingName){
-    return function(dispatch, getState){
-
-        console.info(mappingName);
-
-        dependencyMapHelpers.loadDependencyMap(
-            mappingName,
-            getState().graph,
-            getState().mappings,
-            getState().assets,
-            dispatch,
-            getState().app.graph.selectedLayout
-        );
-        //dispatch(actions.loadActiveMapping(mapping));
+    return function(dispatch){
+        dispatch(dependencyMapHelpers.loadDependencyMap(mappingName));
         dispatch(actions.setBottomPanelView(views.BROWSE));
     }
 }

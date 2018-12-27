@@ -91,10 +91,11 @@ export function updateAsset(asset: Asset, callback: (any) => void): Dispatch {
             if (inActiveMap) {
                 // if the status of asset group has been changed
                 // the node need to be moved to the appropriate parent group
-                graphHelpers
+                dispatch(graphHelpers
                     .activeMappingAssetUpdateActions(
                         graph, (asset: Asset)
-                    );
+                    )
+                );
             }
 
             callback ? callback(updatedAsset) : null;

@@ -71,6 +71,7 @@ export const ConnectionForm = (props) => (
             <SpaceAround>
                 <Label>label</Label>
                 <Input
+                    value={props.edgeLabel}
                     onChange={(e) => props.onEdgeLabelChange(e.target.value)}
                     type="text"/>
                 <CheckBoxes>

@@ -100,32 +100,8 @@ export function onNodeClick(event) {
             console.group("Clicked asset noded");
             console.info(createEdgesFromThese);
 
-            const getEdgeFromConnection = (connection: Connection) => {
-                const{ source, target} = connection;
 
-                let classes = "";
-
-                if (connection.targetArrow){
-                    classes = "targetArrow ";
-                }
-
-                if (connection.sourceArrow){
-                    classes = `${classes} sourceArrow`;
-                }
-
-                return {
-                    group: "edges",
-                    data: {
-                        id: helpers.getEdgeId(source, target),
-                        label: connection.edgeLabel,
-                        source: source,
-                        target: target
-                    },
-                    classes: classes
-                }
-            };
-
-            const edges = createEdgesFromThese.map(c => getEdgeFromConnection(c));
+            const edges = createEdgesFromThese.map(c => helpers.getEdgeFromConnection(c));
 
             console.info(edges);
             console.groupEnd();

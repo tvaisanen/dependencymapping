@@ -167,11 +167,19 @@ export function updateConnection(connection: Connection, callback: (any) => void
             await
                 GwClientApi.putConnection(connection);
 
+
+            dispatch(updateConnectionSuccess(connection));
             console.groupEnd();
 
             // the source asset needs to know about the new connection
-            const assetToUpdate = assets.filter(
-                asset => asset.name === connection.source)[0];
+            const assetToUpdate = assets
+                .filter(asset => {
+                        console.info(`${asset.name} === ${connection.source}`)
+                        return asset.name === connection.source
+                    }
+                )[0];
+
+            console.info(assetToUpdate)
 
             // make a updated version
             // of the updated asset
@@ -188,18 +196,21 @@ export function updateConnection(connection: Connection, callback: (any) => void
                     `Updated connection: ${connection.source} \
                      to ${connection.target}`));
 
-            dispatch(updateConnectionSuccess(connection));
             dispatch(assetActions.updateAsset(updatedAsset));
 
             // if callback provided, run it with response data
             callback ? callback(connection) : null;
 
         } catch (err) {
-
+            console.info(err);
+            alert('catch')
         }
     }
 }
 
 export function updateConnectionSuccess(connection) {
+    console.group("updateConnectionSuccess");
+    console.info(connection);
+    console.groupEnd();
     return {type: UPDATE_CONNECTION, connection}
 }

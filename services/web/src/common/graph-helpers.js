@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import {edgeStyles, nodeStyles} from "../configs/graph.styles";
 import {layoutOptions} from "../configs/configs.cytoscape";
-import type {Asset} from "../store/asset/asset.types";
+import type {Asset, Connection} from "../store/types";
 
 
 const LAYOUT = 'cola';
@@ -20,7 +20,7 @@ export function getEdgeId(source = required(), target = required()) {
 }
 
 export function nodeElementFromResource(asset: Asset = required()) {
-    const node =  {
+    const node = {
         group: 'nodes',
         data: {
             id: asset.name,
@@ -31,6 +31,31 @@ export function nodeElementFromResource(asset: Asset = required()) {
     console.info(node);
     return node;
 }
+
+export function getEdgeFromConnection(connection: Connection) {
+    const {source, target} = connection;
+
+    let classes = "";
+
+    if (connection.targetArrow) {
+        classes = "targetArrow ";
+    }
+
+    if (connection.sourceArrow) {
+        classes = `${classes} sourceArrow`;
+    }
+
+    return {
+        group: "edges",
+        data: {
+            id: getEdgeId(source, target),
+            label: connection.edgeLabel,
+            source: source,
+            target: target
+        },
+        classes: classes
+    }
+};
 
 export function edgeElementFromResource(sourceId = required(), targetId = required()) {
     return {'group': 'edges', data: {id: getEdgeId(sourceId, targetId), source: sourceId, target: targetId}};
@@ -219,16 +244,31 @@ export function updateNodeParent(cy, asset: Asset): void {
 }
 
 export function activeMappingAssetUpdateActions(cy, asset: Asset) {
-    console.group(`activeMappingASsetUpdateActions(${asset.name})`);
-    console.info(asset);
-    console.groupEnd();
-    updateNodeParent(cy, (asset: Asset));
-    updateShapeAndColor(cy, (asset: Asset));
-    removeResourceEdges(cy, (asset: Asset));
-    drawResourceEdges(cy, (asset: Asset));
+    return function (dispatch, getState) {
+
+        console.info(dispatch);
+        console.group(`activeMappingAssetUpdateActions(${asset.name})`);
+        console.info(asset);
+
+        const { connections } = getState();
+
+        const edges = connections
+            .filter(c => c.source === asset.name)
+            .map(c => getEdgeFromConnection(c));
+
+        console.info(edges);
+        console.groupEnd();
+
+        updateNodeParent(cy, (asset: Asset));
+        updateShapeAndColor(cy, (asset: Asset));
+        removeResourceEdges(cy, (asset: Asset));
+        cy.add(edges);
+        //drawResourceEdges(cy, (asset: Asset));
+    }
 }
 
-export function updateShapeAndColor(cy, asset: Asset){
+export function updateShapeAndColor(cy, asset: Asset) {
     // replace old nodeShape and nodeColor
+    alert('updateshapeandcolor')
     cy.getElementById(asset.name).classes(`${asset.nodeShape} ${asset.nodeColor}`)
 }

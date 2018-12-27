@@ -4,74 +4,106 @@ import * as activeDetailActions from '../store/active-detail/active-detail.actio
 import * as parser from './parser';
 import * as resourceHelpers from './graph-helpers';
 import * as types from '../constants/types';
+import * as _ from 'lodash';
 
 export function getMappingById(mapId, mappings) {
     return mappings.filter(g => g.name === mapId)[0];
 }
 
-export function loadDependencyMap(mapId, cy, mappings, assets, dispatch, layout) {
-    // load graph resources to the active mapping
+//export function loadDependencyMap(mapId, cy, mappings, assets, dispatch, getState) {
+export function loadDependencyMap(mapId) {
 
-    // current state of cy graph needs to be cleared
-    graphHelpers.clearGraph(cy);
+    return function (dispatch, getState) {
+        // load graph resources to the active mapping
+        const {graph, mappings, assets, connections} = getState();
+        const layout = getState().app.graph.selectedLayout;
+        const cy = graph;
 
-    const mapping = getMappingById(mapId, mappings);
+        // clear graph
+        graphHelpers.clearGraph(cy);
 
-    // By default this is an array of objects.
-    const assetNameList = mapping ? mapping.assets : [];
-    const tagNameList = mapping ? mapping.tags : [];
+        const mapping = getMappingById(mapId, mappings);
 
-    console.group("LoadDependencyMap()");
-    console.info(assets);
-    console.info(mapping);
+        // By default this is an array of objects.
+        const assetNameList = mapping ? mapping.assets : [];
+        const tagNameList = mapping ? mapping.tags : [];
 
-    // Set mapping as active.
-    dispatch(activeMappingActions.setActiveMapping(mapping));
+        console.group("LoadDependencyMap()");
+        console.info(assets);
+        console.info(mapping);
 
-    /**
-     * This is because at the moment there's no back end solution.
-     *  Current dev. environment returns mapping resources as objects,
-     * which is not too efficient. Preferred method would be using
-     * just an array of id's which would be used in a following manner.
-     */
+        // get connections between assets in the mapping
 
-    // if resource is a string
-    // map resource id's to resource objects
-    const activeMappingAssetObjects = parser.filterObjectsByName({
-        names: assetNameList,
-        objectList: assets
-    });
+        const createEdgesFromThese = connections.filter(
+            c => {
+                console.info(`${c.name} in ${JSON.stringify(assetNameList)}`);
+                return (
+                    _.includes(assetNameList, c.source) &&
+                    _.includes(assetNameList, c.target)
+                );
+            }
+        );
 
-    const activeMappingTagObjects = parser.filterObjectsByName({
-        names: assetNameList,
-        objectList: assets
-    });
+        const edges = createEdgesFromThese
+            .map(
+                c => graphHelpers.getEdgeFromConnection(c)
+            );
+
+        console.info(createEdgesFromThese);
+        console.info(edges);
+
+        // Set mapping as active.
+        dispatch(activeMappingActions.setActiveMapping(mapping));
+
+        /**
+         * This is because at the moment there's no back end solution.
+         *  Current dev. environment returns mapping resources as objects,
+         * which is not too efficient. Preferred method would be using
+         * just an array of id's which would be used in a following manner.
+         */
+
+            // if resource is a string
+            // map resource id's to resource objects
+        const activeMappingAssetObjects = parser.filterObjectsByName({
+                names: assetNameList,
+                objectList: assets
+            });
+
+        const activeMappingTagObjects = parser.filterObjectsByName({
+            names: assetNameList,
+            objectList: assets
+        });
 
 
-    // objects for redux state
-    const connections = parser.getConnectionsFromResources(assets);
+        // todo: check if this is obsolete?
+        // objects for redux state
+        // const connections = parser.getConnectionsFromResources(assets);
+        // dispatch(activeMappingActions.setActiveMappingConnections(connections));
 
-    dispatch(activeMappingActions.setActiveMappingConnections(connections));
+
+        // json for graphing
+        //console.info(activeMappingAssetObjects)
+        // get cy.element objects from active mapping assets
+        //const edges = parser.parseEdgeElementsFromResources(activeMappingAssetObjects);
 
 
-    // json for graphing
-    console.info(activeMappingAssetObjects)
-    // get cy.element objects from active mapping assets
-    const edges = parser.parseEdgeElementsFromResources(activeMappingAssetObjects);
-    console.info(edges);
-    const nodes = activeMappingAssetObjects.map(resource => resourceHelpers.nodeElementFromResource(resource));
+        const nodes = activeMappingAssetObjects
+            .map(
+                resource => resourceHelpers.nodeElementFromResource(resource)
+            );
 
-    graphHelpers.addElements(cy, nodes);
-    graphHelpers.addElements(cy, edges);
+        graphHelpers.addElements(cy, nodes);
+        graphHelpers.addElements(cy, edges);
 
-    // update activeDetail store
-    dispatch(activeDetailActions.setActiveMappingAsDetail({
-            data: mapping,
-            type: types.MAPPING
-        })
-    );
+        // update activeDetail store
+        dispatch(activeDetailActions.setActiveMappingAsDetail({
+                data: mapping,
+                type: types.MAPPING
+            })
+        );
 
-    // update the graph layout
-    graphHelpers.updateLayout(cy, layout);
-    console.groupEnd();
+        // update the graph layout
+        graphHelpers.updateLayout(cy, layout);
+        console.groupEnd();
+    }
 };
