@@ -11,10 +11,24 @@ export const graphStyle = [
             'width': 3,
             'curve-style': 'bezier',
             'line-color': '#454545',
-            'target-arrow-color': '#454545',
-            'target-arrow-shape': 'triangle',
+            //'target-arrow-color': '#454545',
+            //'target-arrow-shape': 'triangle',
+            //'source-arrow-color': '#454545',
+            //'source-arrow-shape': 'triangle'
+        }
+    },
+    {
+        selector: 'edge.sourceArrow',
+        style: {
             'source-arrow-color': '#454545',
             'source-arrow-shape': 'triangle'
+        }
+    },
+    {
+        selector: 'edge.targetArrow',
+        style: {
+            'target-arrow-color': '#454545',
+            'target-arrow-shape': 'triangle'
         }
     },
     {

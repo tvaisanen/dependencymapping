@@ -31,12 +31,14 @@ export function onNodeClick(event) {
         // alert('if setWaitSelection === true');
         // alert('take the next step');
 
-        const { assets, eventHook } = getState();
+        const { assets, connections, eventHook } = getState();
 
         if (eventHook.hook === "onNodeClick"){
+            // if there's an event hook, ignore
+            // default click event
             eventHook.callback(event.target.id());
-        } else {
 
+        } else {
 
             const cy = event.target.cy();
 
@@ -87,13 +89,55 @@ export function onNodeClick(event) {
 
             const nodesToCreate = helpers.assetsToNodes((connectedAssets: Array<Asset>));
 
+            const createEdgesFromThese = connections.filter(
+                connection => {
+                    console.info(`${connection.source} == ${resourceName}`)
+                    return connection.source === resourceName
+                }
+            );
+
+            // get filter connections
+            console.group("Clicked asset noded");
+            console.info(createEdgesFromThese);
+
+            const getEdgeFromConnection = (connection: Connection) => {
+                const{ source, target} = connection;
+
+                let classes = "";
+
+                if (connection.targetArrow){
+                    classes = "targetArrow ";
+                }
+
+                if (connection.sourceArrow){
+                    classes = `${classes} sourceArrow`;
+                }
+
+                return {
+                    group: "edges",
+                    data: {
+                        id: helpers.getEdgeId(source, target),
+                        label: connection.edgeLabel,
+                        source: source,
+                        target: target
+                    },
+                    classes: classes
+                }
+            };
+
+            const edges = createEdgesFromThese.map(c => getEdgeFromConnection(c));
+
+            console.info(edges);
+            console.groupEnd();
+
             const edgesToCreate = helpers.createEdgeElementsBetween({
                 source: resourceName,
                 targets: clickedAssetIsConnectedTo
             });
 
             helpers.addElements(cy, nodesToCreate);
-            helpers.addElements(cy, edgesToCreate);
+            //helpers.addElements(cy, edgesToCreate);
+            helpers.addElements(cy, edges);
 
             if (nodesToCreate.length > 0) {
                 // nodes are created, update the layout
