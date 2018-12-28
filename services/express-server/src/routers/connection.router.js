@@ -9,7 +9,7 @@ connectionRouter.get('(/:id)?', (req, res) => {
         Connection.findOne(req.query)
             .then(tag => {
                 if (tag == null) {
-                    console.log("Tag does not exist.");
+                    console.log("connection does not exist.");
                     res.status(404).json("Resource does not exist.")
                 } else {
                     console.log(tag);

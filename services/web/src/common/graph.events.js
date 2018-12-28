@@ -1,4 +1,4 @@
-import { ASSET } from "../constants";
+import {ASSET} from "../constants";
 import * as _ from 'lodash';
 import * as helpers from './graph-helpers';
 import * as resourceHelpers from "./resource-helpers";
@@ -7,19 +7,19 @@ import * as activeDetailActions from '../store/active-detail/active-detail.actio
 
 
 export function onNodeMouseOver(event) {
-    return function(dispatch, getState){
+    return function (dispatch, getState) {
         helpers.hoverIndicationOn(event.target.cy(), event.target.id());
     }
 }
 
 export function onEdgeHover(event) {
-    return function(dispatch, getState) {
+    return function (dispatch, getState) {
         console.info("edgehover")
     }
 }
 
 export function onNodeMouseOut(event) {
-    return function(dispatch, getState){
+    return function (dispatch, getState) {
         helpers.hoverIndicationOff(event.target.cy(), event.target.id());
     }
 }
@@ -31,9 +31,9 @@ export function onNodeClick(event) {
         // alert('if setWaitSelection === true');
         // alert('take the next step');
 
-        const { assets, connections, eventHook } = getState();
+        const {assets, connections, eventHook} = getState();
 
-        if (eventHook.hook === "onNodeClick"){
+        if (eventHook.hook === "onNodeClick") {
             // if there's an event hook, ignore
             // default click event
             eventHook.callback(event.target.id());
@@ -52,10 +52,13 @@ export function onNodeClick(event) {
                     objectList: assets
                 });
 
-            dispatch(activeDetailActions.setActiveDetailWithResourceCollecting({
-                type: ASSET,
-                data: clickedAsset
-            }));
+            dispatch(
+                activeDetailActions
+                    .setAsActiveDetail({
+                        type: ASSET,
+                        data: clickedAsset
+                    })
+            );
 
             const clickedAssetIsConnectedTo = clickedAsset.connected_to;
 
@@ -128,7 +131,7 @@ export function onEdgeClick(event) {
 }
 
 export function onCtxClick(event) {
-    return function(dispatch, getState) {
+    return function (dispatch, getState) {
         console.info("right button click");
         console.info(event);
     }

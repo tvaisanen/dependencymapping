@@ -90,20 +90,16 @@ class GwClientApi {
         return axios.get(CONNECTIONS_URL);
     }
 
+    static getConnectionsByAsset(assetName) {
+        return axios.get(`${CONNECTIONS_URL}?source=${encodeURIComponent(assetName)}`)
+    }
+
     static getAssets() {
         return axios.get(RESOURCES_URL);
     }
 
-    static getAssetGroups() {
-        return axios.get(ASSET_GROUPS_URL, {
-            Authorization: setAuthHeader()
-        });
-    }
-
     static getTags() {
-        return axios.get(TAGS_URL, {
-            Authorization: setAuthHeader()
-        });
+        return axios.get(TAGS_URL);
     }
 
 

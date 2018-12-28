@@ -1,14 +1,14 @@
 import * as types from './graph.action-types';
 
-import { ASSET, CONNECTION } from "../../constants";
-import { setEventHook, clearEventHook } from "../event-hook";
+import {ASSET, CONNECTION} from "../../constants";
+import {setEventHook, clearEventHook} from "../event-hook";
 
-import * as activeDetailActions     from '../active-detail/active-detail.actions';
-import * as activeMappingActions    from '../active-mapping/active-mapping.actions';
-import * as appActions              from '../../actions/app.actions';
-import * as assetActions            from '../asset/asset.actions';
-import * as detailFormActions       from '../detail-form/detail-form.actions';
-import * as connectionActions       from '../connection/connection.actions';
+import * as activeDetailActions from '../active-detail/active-detail.actions';
+import * as activeMappingActions from '../active-mapping/active-mapping.actions';
+import * as appActions from '../../actions/app.actions';
+import * as assetActions from '../asset/asset.actions';
+import * as detailFormActions from '../detail-form/detail-form.actions';
+import * as connectionActions from '../connection/connection.actions';
 
 import cytoscape from 'cytoscape';
 import style, {graphStyle} from '../../configs/configs.cytoscape';
@@ -18,9 +18,9 @@ import cola from 'cytoscape-cola';
 cytoscape.use(cola);
 cytoscape.use(cxtmenu);
 
-export function initGraph({eventHandlers}){
+export function initGraph({eventHandlers}) {
 
-    return function(dispatch, getState){
+    return function (dispatch, getState) {
         const cy = newGraphInstance(
             eventHandlers,
             dispatch,
@@ -31,7 +31,7 @@ export function initGraph({eventHandlers}){
     }
 }
 
-function enhancedInit(cy){
+function enhancedInit(cy) {
     return {type: types.INIT_GRAPH, cy};
 }
 
@@ -48,11 +48,11 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
         }
     });
 
-    function getAssetByName(assetName: string){
+    function getAssetByName(assetName: string) {
         return getState().assets.filter(asset => asset.name === assetName)[0];
     }
 
-    function getConnectionByName(name){
+    function getConnectionByName(name) {
 
         const [sourceName, targetName] = name.split("_to_")
 
@@ -66,7 +66,7 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
 
 
     /**
-        Graph context menu actions
+     Graph context menu actions
 
      */
 
@@ -80,10 +80,13 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                     const assetToGroup = getAssetByName((ele.id(): string));
 
                     // set active for editing
-                    dispatch(activeDetailActions.setActiveDetailWithResourceCollecting({
-                        data: assetToGroup,
-                        type: ASSET
-                    }));
+                    dispatch(
+                        activeDetailActions
+                            .setAsActiveDetail({
+                                data: assetToGroup,
+                                type: ASSET
+                            })
+                    );
 
                     dispatch(appActions.editDetail());
                     dispatch(detailFormActions.setFormEditTrue());
@@ -175,10 +178,13 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                     const connectionToEdit = getConnectionByName(ele.id())
 
                     // set active for editing
-                    dispatch(activeDetailActions.setActiveDetailWithResourceCollecting({
-                        data: connectionToEdit,
-                        type: CONNECTION
-                    }));
+                    dispatch(
+                        activeDetailActions
+                            .setAsActiveDetail({
+                                data: connectionToEdit,
+                                type: CONNECTION
+                            })
+                    );
 
                     dispatch(appActions.editDetail());
                     dispatch(detailFormActions.setFormEditTrue());

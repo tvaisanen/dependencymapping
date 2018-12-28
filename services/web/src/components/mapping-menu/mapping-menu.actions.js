@@ -31,7 +31,11 @@ export function onActiveAssetClick(activeDetail){
            data: assetData,
            type: activeDetail.type
         };
-        dispatch(activeDetailActions.setActiveDetailWithResourceCollecting(activeDetailWithData));
+        dispatch(
+            activeDetailActions
+                .setAsActiveDetail(activeDetailWithData)
+        );
+
         dispatch(actions.setBottomPanelView(views.BROWSE));
         console.groupEnd();
     }

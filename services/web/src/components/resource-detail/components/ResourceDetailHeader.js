@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
 
-import { setActiveDetailWithResourceCollecting } from "../../../store/active-detail/active-detail.actions";
+import { setAsActiveDetail } from "../../../store/active-detail/active-detail.actions";
 
 import {ASSET, CONNECTION, MAPPING, TAG, EMPTY} from '../../../constants/types';
 import {HeaderBar} from "../resource-detail.styled";
@@ -93,7 +93,7 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
     return ({
-        setActiveDetail: (detail) => dispatch(setActiveDetailWithResourceCollecting(detail))
+        setActiveDetail: (detail) => dispatch(setAsActiveDetail(detail))
     })
 }
 

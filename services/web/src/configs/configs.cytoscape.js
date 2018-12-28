@@ -9,13 +9,13 @@ export const graphStyle = [
         selector: 'edge',
         style: {
             'content': 'data(label)',
+            'text-rotation': 'autorotate',
+            'color': '#fafafa',
+            'text-outline-color': '#232323',
+            'text-outline-width': '1px',
             'width': 3,
             'curve-style': 'bezier',
             'line-color': '#454545',
-            //'target-arrow-color': '#454545',
-            //'target-arrow-shape': 'triangle',
-            //'source-arrow-color': '#454545',
-            //'source-arrow-shape': 'triangle'
         }
     },
     {

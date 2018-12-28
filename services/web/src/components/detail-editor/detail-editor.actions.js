@@ -17,29 +17,25 @@ import * as dependencyMapHelpers from "../../common/dependency-map.helpers";
 
 
 export function closeFormAndSetActiveDetail(activeDetail) {
+    /**
+     * Use this for closing the form and setting
+     * the active detail
+     */
     return function (dispatch, getState) {
-        console.group("Debug !");
-        console.info(activeDetail);
-        console.groupEnd();
+        dispatch(
+            activeDetailActions
+                .setAsActiveDetail(activeDetail));
 
-        dispatch(activeDetailActions.setActiveDetailWithResourceCollecting(activeDetail));
         dispatch(closeEdit());
+
         // if active detail is mapping
-
         const isMapping = activeDetail.type === types.MAPPING;
-
         if (isMapping) {
-
             // if the detail is a type of MAPPING
             // it needs to be loaded
-            dependencyMapHelpers.loadDependencyMap(
-                activeDetail.data.name || "None",
-                getState().graph,
-                getState().mappings,
-                getState().assets,
-                dispatch,
-                getState().app.graph.selectedLayout
-            )
+            dispatch(dependencyMapHelpers
+                .loadDependencyMap(
+                    activeDetail.data.name || "None", dispatch, getState))
         }
 
     }

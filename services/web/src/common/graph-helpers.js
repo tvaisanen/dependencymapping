@@ -252,10 +252,16 @@ export function activeMappingAssetUpdateActions(cy, asset: Asset) {
 
         const { connections } = getState();
 
-        const edges = connections
-            .filter(c => c.source === asset.name)
-            .map(c => getEdgeFromConnection(c));
+        const updatedEdgesFromThese = connections
+            .filter(c => {
+                console.info(`${c.source}_to_${c.target}`)
+                console.info(`${c.source} === ${asset.name}`);
+                return c.source === asset.name
+            });
 
+        const edges = updatedEdgesFromThese.map(c => getEdgeFromConnection(c));
+
+        console.info(updatedEdgesFromThese);
         console.info(edges);
         console.groupEnd();
 
@@ -267,8 +273,18 @@ export function activeMappingAssetUpdateActions(cy, asset: Asset) {
     }
 }
 
+export function updateConnectionEdge(connection){
+   return function(dispatch, getState){
+       const { graph } = getState();
+       const updatedEdge = getEdgeFromConnection(connection);
+       const id = getEdgeId(connection.source, connection.target);
+       const el = graph.getElementById(id);
+       graph.remove(el);
+       graph.add(updatedEdge);
+   }
+}
+
 export function updateShapeAndColor(cy, asset: Asset) {
     // replace old nodeShape and nodeColor
-    alert('updateshapeandcolor')
     cy.getElementById(asset.name).classes(`${asset.nodeShape} ${asset.nodeColor}`)
 }

@@ -95,8 +95,7 @@ export function loadDependencyMap(mapId) {
         graphHelpers.addElements(cy, nodes);
         graphHelpers.addElements(cy, edges);
 
-        // update activeDetail store
-        dispatch(activeDetailActions.setActiveMappingAsDetail({
+        dispatch(activeDetailActions.setAsActiveDetail({
                 data: mapping,
                 type: types.MAPPING
             })

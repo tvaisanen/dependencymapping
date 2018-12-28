@@ -8,6 +8,7 @@ import * as apiHelpers from '../../common/api.helpers';
 import * as appActions from '../../actions/app.actions';
 import * as mappingActions from '../mapping/mapping.actions';
 import * as detailFormActions from '../detail-form/detail-form.actions';
+import { connectionActions } from '../actions';
 
 import type {Asset, Dispatch, GetState} from "../types";
 
@@ -33,6 +34,19 @@ export function postAsset(asset: Asset, callback: (any) => void): Dispatch {
             );
 
             dispatch(postAssetSuccess(storedAsset));
+
+
+            // create connections after creating the asset
+            // todo: create postConnections
+
+            const connections = storedAsset
+                .connected_to
+                .map(target => ({source: storedAsset.name, target: target}));
+
+            connections.forEach(
+                connection => dispatch(connectionActions.addConnection(connection))
+            );
+
 
             // execute callback from caller if there's one
             callback ? callback(storedAsset) : null;
@@ -97,6 +111,18 @@ export function updateAsset(asset: Asset, callback: (any) => void): Dispatch {
                     )
                 );
             }
+
+            // todo: check no duplicates
+            const connections = updatedAsset
+                .connected_to
+                .filter(target => (
+                    true // filter here 
+                ))
+                .map(target => ({source: updatedAsset.name, target: target}));
+
+            connections.forEach(
+                connection => dispatch(connectionActions.addConnection(connection))
+            );
 
             callback ? callback(updatedAsset) : null;
 

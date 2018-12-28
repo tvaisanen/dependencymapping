@@ -76,7 +76,7 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = dispatch => ({
     setActiveDetail: (activeDetail) => dispatch(
-        activeDetailActions.setActiveDetailWithResourceCollecting(activeDetail)
+        activeDetailActions.setAsActiveDetail(activeDetail)
     ),
 });
 

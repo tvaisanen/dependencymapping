@@ -96,6 +96,10 @@ export function postConnectionSuccess(connection) {
     return {type: ADD_CONNECTION, connection}
 }
 
+export function addConnection(connection){
+    return {type: ADD_CONNECTION, connection}
+}
+
 
 export function deleteConnection(connection: Connection, callback: (any) => void) {
     return async function (dispatch: Dispatch, getState: State) {
@@ -183,20 +187,23 @@ export function updateConnection(connection: Connection, callback: (any) => void
 
             // make a updated version
             // of the updated asset
-            const updatedAsset = {
+            /*const updatedAsset = {
                 ...assetToUpdate,
                 connected_to: assetToUpdate
                     .connected_to.filter(
                         asset => asset !== connection.source
                     )
-            };
+            };*/
+
+            //alert(JSON.stringify(updatedAsset.connected_to))
 
             dispatch(
                 appActions.setInfoMessage(
                     `Updated connection: ${connection.source} \
                      to ${connection.target}`));
 
-            dispatch(assetActions.updateAsset(updatedAsset));
+            //dispatch(assetActions.updateAsset(updatedAsset));
+            dispatch(graphHelpers.updateConnectionEdge(connection));
 
             // if callback provided, run it with response data
             callback ? callback(connection) : null;
@@ -208,9 +215,16 @@ export function updateConnection(connection: Connection, callback: (any) => void
     }
 }
 
+
 export function updateConnectionSuccess(connection) {
     console.group("updateConnectionSuccess");
     console.info(connection);
     console.groupEnd();
     return {type: UPDATE_CONNECTION, connection}
+}
+
+// public namespace
+export default {
+    addConnection: addConnection,
+    postConnection: postConnection
 }

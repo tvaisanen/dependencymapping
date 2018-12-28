@@ -10,7 +10,8 @@ export function closeFormAndSetActiveDetail(activeDetail) {
         console.info(activeDetail);
         console.groupEnd();
 
-        dispatch(activeDetailActions.setActiveDetailWithResourceCollecting(activeDetail));
+        dispatch(
+            activeDetailActions.setAsActiveDetail(activeDetail));
         dispatch(closeEdit());
         // if active detail is mapping
 
