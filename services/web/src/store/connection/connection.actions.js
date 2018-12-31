@@ -14,6 +14,7 @@ import {
     SET_CONNECTIONS,
     ADD_CONNECTION,
     DELETE_CONNECTION,
+    DELETE_CONNECTIONS,
     UPDATE_CONNECTION,
     ADD_CONNECTIONS
 } from "./connection.action-types";
@@ -234,26 +235,62 @@ export function updateConnectionSuccess(connection) {
 
 export function updateAssetConnections(asset: Asset) {
     return function (dispatch: Dispatch, getState: State) {
+        console.group("updateAssetConnections");
+        console.info(asset);
 
-        // todo: check no duplicates
-        const connections = asset
-            .connected_to
-            .filter(target => true)
-            .map(target => ({
-                source: asset.name,
-                target: target,
-                tags: [],
-                description: "",
-                targetArrow: true,
-                sourceArrow: false,
-                edgeLabel: ""
-            }));
+        let deleteList = [];
+        let createList = [];
+        let keepList = [];
 
-        dispatch(addConnections(connections));
+        // todo: refactor to a reducer
+        const c = getState()
+            .connections
+            .forEach(connection => {
+                const assetIsSource = asset.name === connection.source;
+                const targetIsConnectedTo = _.includes(asset.connected_to, connection.target);
+
+                if (assetIsSource && targetIsConnectedTo) {
+                    // connection exists
+                    keepList.push(connection.target);
+
+                } else if (assetIsSource && !targetIsConnectedTo) {
+                    // connection should be deleted
+                    deleteList.push(connection);
+                }
+            });
+
+
+        asset.connected_to.forEach(target => {
+            if (!_.includes(keepList, target)) {
+                createList.push({
+                    source: asset.name,
+                    target: target,
+                    tags: [],
+                    description: "",
+                    targetArrow: true,
+                    sourceArrow: false,
+                    edgeLabel: ""
+                });
+            }
+        })
+
+        console.info("deletelist");
+        console.info(deleteList);
+        console.info("createList");
+        console.info(createList);
+        console.info("keeplist");
+        console.info(keepList);
+
+        dispatch(deleteConnections(deleteList));
+        dispatch(addConnections(createList));
+        console.groupEnd();
 
     }
 }
 
+export function deleteConnections(connections){
+    return {type:DELETE_CONNECTIONS, connections};
+}
 
 // public namespace
 export default {

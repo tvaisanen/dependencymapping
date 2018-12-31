@@ -248,12 +248,6 @@ export function activeMappingAssetUpdateActions(asset: Asset) {
         try {
             const {connections, graph} = getState();
 
-            console.group(`activeMappingAssetUpdateActions(${asset.name})`);
-            console.info(graph);
-            console.info(dispatch);
-            console.info(asset);
-
-
             // filter the edges so that there's no edges created
             // to nonexistent nodes
             const updatedEdgesFromThese = connections
@@ -267,11 +261,6 @@ export function activeMappingAssetUpdateActions(asset: Asset) {
                 });
 
             const edges = updatedEdgesFromThese.map(c => getEdgeFromConnection(c));
-
-            console.info(updatedEdgesFromThese);
-            console.info(edges);
-            console.groupEnd();
-
 
             updateNodeParent(graph, (asset: Asset));
             updateShapeAndColor(graph, (asset: Asset));
