@@ -7,8 +7,9 @@ import * as _ from 'lodash';
 import * as apiHelpers from '../../common/api.helpers';
 import * as appActions from '../../actions/app.actions';
 import * as mappingActions from '../mapping/mapping.actions';
+import * as activeMappingActions from '../active-mapping/active-mapping.actions';
 import * as detailFormActions from '../detail-form/detail-form.actions';
-import { connectionActions } from '../actions';
+import {connectionActions} from '../actions';
 
 import type {Asset, Dispatch, GetState} from "../types";
 
@@ -20,9 +21,7 @@ export function postAsset(asset: Asset, callback: (any) => void): Dispatch {
 
         try {
 
-            const response = await
-                GwClientApi.postAsset(asset);
-
+            const response = await GwClientApi.postAsset(asset);
             const storedAsset: Asset = response.data;
 
             // resolving a request is done in form container
@@ -35,18 +34,8 @@ export function postAsset(asset: Asset, callback: (any) => void): Dispatch {
 
             dispatch(postAssetSuccess(storedAsset));
 
-
-            // create connections after creating the asset
-            // todo: create postConnections
-
-            const connections = storedAsset
-                .connected_to
-                .map(target => ({source: storedAsset.name, target: target}));
-
-            connections.forEach(
-                connection => dispatch(connectionActions.addConnection(connection))
-            );
-
+            dispatch(connectionActions
+                .updateAssetConnections(storedAsset));
 
             // execute callback from caller if there's one
             callback ? callback(storedAsset) : null;
@@ -84,45 +73,18 @@ export function updateAsset(asset: Asset, callback: (any) => void): Dispatch {
     return async function (dispatch: Dispatch, getState: GetState): AssetAction {
 
         try {
-            const {graph} = getState();
+            const {activeMapping, graph} = getState();
             const response = await GwClientApi.putAsset(asset);
             const updatedAsset = response.data;
 
             // set the redux store state
-            dispatch(
-                updateAssetSuccess({asset: asset}));
-
+            dispatch(updateAssetSuccess({asset: asset}));
             // add info message to the top bar
-            dispatch(
-                appActions
-                    .setInfoMessage(
-                        `Updated asset: ${asset.name}`));
-
-            // check if updated asset is in the active mapping
-            const activeMapAssets = getState().activeMapping.assets;
-            const inActiveMap = _.includes(activeMapAssets, asset.name);
-
-            if (inActiveMap) {
-                // if the status of asset group has been changed
-                // the node need to be moved to the appropriate parent group
-                dispatch(graphHelpers
-                    .activeMappingAssetUpdateActions(
-                        graph, (asset: Asset)
-                    )
-                );
-            }
-
-            // todo: check no duplicates
-            const connections = updatedAsset
-                .connected_to
-                .filter(target => (
-                    true // filter here 
-                ))
-                .map(target => ({source: updatedAsset.name, target: target}));
-
-            connections.forEach(
-                connection => dispatch(connectionActions.addConnection(connection))
-            );
+            dispatch(appActions.setInfoMessage(`Updated asset: ${asset.name}`));
+            // pass the updated asset to connection actions
+            // for checking that the connections are up to date
+            dispatch(connectionActions.updateAssetConnections(updatedAsset));
+            dispatch(activeMappingActions.updateAssetState(updatedAsset));
 
             callback ? callback(updatedAsset) : null;
 

@@ -14,7 +14,8 @@ import {
     SET_CONNECTIONS,
     ADD_CONNECTION,
     DELETE_CONNECTION,
-    UPDATE_CONNECTION
+    UPDATE_CONNECTION,
+    ADD_CONNECTIONS
 } from "./connection.action-types";
 
 export function setConnections(connections: Array<Connection>): ConnectionAction {
@@ -96,8 +97,16 @@ export function postConnectionSuccess(connection) {
     return {type: ADD_CONNECTION, connection}
 }
 
-export function addConnection(connection){
-    return {type: ADD_CONNECTION, connection}
+export function addConnection(connection: Connection) {
+    return {type: ADD_CONNECTION, connection};
+}
+
+/**
+ *  Add a array of connections
+ *
+ */
+export function addConnections(connections: Array<Connection>) {
+    return {type: ADD_CONNECTIONS, connections};
 }
 
 
@@ -223,8 +232,33 @@ export function updateConnectionSuccess(connection) {
     return {type: UPDATE_CONNECTION, connection}
 }
 
+export function updateAssetConnections(asset: Asset) {
+    return function (dispatch: Dispatch, getState: State) {
+
+        // todo: check no duplicates
+        const connections = asset
+            .connected_to
+            .filter(target => true)
+            .map(target => ({
+                source: asset.name,
+                target: target,
+                tags: [],
+                description: "",
+                targetArrow: true,
+                sourceArrow: false,
+                edgeLabel: ""
+            }));
+
+        dispatch(addConnections(connections));
+
+    }
+}
+
+
 // public namespace
 export default {
     addConnection: addConnection,
-    postConnection: postConnection
+    addConnections: addConnections,
+    postConnection: postConnection,
+    updateAssetConnections: updateAssetConnections
 }

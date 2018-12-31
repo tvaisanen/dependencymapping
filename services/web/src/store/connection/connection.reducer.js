@@ -5,7 +5,8 @@ import {
     ADD_CONNECTION,
     DELETE_CONNECTION,
     SET_CONNECTIONS,
-    UPDATE_CONNECTION
+    UPDATE_CONNECTION,
+    ADD_CONNECTIONS
 } from "./connection.action-types";
 
 const initialState = [{source: "TestPageOne", target: "TestPageTwo", tags: [], description: "no description"}];
@@ -20,6 +21,9 @@ export default function (state: ConnectionState = initialState, action: Connecti
 
         case ADD_CONNECTION:
             return [action.connection, ...state];
+
+        case ADD_CONNECTIONS:
+            return [...action.connections, ...state];
 
         case DELETE_CONNECTION:
             return state.filter(
