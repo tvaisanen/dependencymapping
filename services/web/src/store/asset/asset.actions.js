@@ -25,17 +25,9 @@ export function postAsset(asset: Asset, callback: (any) => void): Dispatch {
             const storedAsset: Asset = response.data;
 
             // resolving a request is done in form container
-            dispatch(
-                appActions
-                    .setInfoMessage(
-                        `Created asset: ${storedAsset.name}`
-                    )
-            );
-
             dispatch(postAssetSuccess(storedAsset));
-
-            dispatch(connectionActions
-                .updateAssetConnections(storedAsset));
+            dispatch(appActions.setInfoMessage(`Created asset: ${storedAsset.name}`));
+            dispatch(connectionActions.updateAssetConnections(storedAsset));
 
             // execute callback from caller if there's one
             callback ? callback(storedAsset) : null;
@@ -70,19 +62,14 @@ export function updateAsset(asset: Asset, callback: (any) => void): Dispatch {
 
     // updates asset/resource to the database
     // and refreshes the nodes edges in the graph
-    return async function (dispatch: Dispatch, getState: GetState): AssetAction {
+    return async function (dispatch: Dispatch): AssetAction {
 
         try {
-            const {activeMapping, graph} = getState();
             const response = await GwClientApi.putAsset(asset);
             const updatedAsset = response.data;
 
-            // set the redux store state
             dispatch(updateAssetSuccess({asset: asset}));
-            // add info message to the top bar
             dispatch(appActions.setInfoMessage(`Updated asset: ${asset.name}`));
-            // pass the updated asset to connection actions
-            // for checking that the connections are up to date
             dispatch(connectionActions.updateAssetConnections(updatedAsset));
             dispatch(activeMappingActions.updateAssetState(updatedAsset));
 
@@ -111,6 +98,7 @@ export function deleteAsset(name: string, callback: (any) => void) {
 
 
         // todo: refactor to a function to appropriate location
+        // -> mapping-actions.removeDeletedAsset(asset)
         mappings.forEach(mapping => {
 
             let update = false;
@@ -146,6 +134,7 @@ export function deleteAsset(name: string, callback: (any) => void) {
 
 
         // todo: refactor to appropriate location
+        // -> asset-actions.removeConnectionsToAsset(asset)
         assets.forEach(asset => {
             console.group(`check if ${asset.name} needs to be deleted`)
             let update = false;
