@@ -68,6 +68,7 @@ export const ConnectionForm = (props) => (
                 selected={props.target.name}
                 onChange={props.onTargetSelection}
                 {...props}/>
+            <Label>edge</Label>
             <SpaceAround>
                 <Label>label</Label>
                 <Input
@@ -75,7 +76,7 @@ export const ConnectionForm = (props) => (
                     onChange={(e) => props.onEdgeLabelChange(e.target.value)}
                     type="text"/>
                 <CheckBoxes>
-                    <label>show arrow for</label><br/>
+                    <br/>
                     <Label>source</Label>
                     <input
                         type="checkbox"

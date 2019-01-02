@@ -38,6 +38,11 @@ const groupEdge = {
 
 
 const nodesStylePassive = {
+    'text-background-color': '#fafafa',
+    'text-background-opacity': '0.9',
+    'text-border-color': "#232323",
+    'text-border-opacity': "0.5",
+    'text-border-style': "solid",
     'content': 'data(id)',
     shape: 'roundrectangle',
     'color': '#818181',

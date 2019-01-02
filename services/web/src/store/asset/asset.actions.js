@@ -15,6 +15,8 @@ import type {Asset, Dispatch, GetState} from "../types";
 
 type AssetAction = { promise: Promise<any>, resolveCallback: (asset: Asset) => void }
 
+/************** POST ******************/
+
 export function postAsset(asset: Asset, callback: (any) => void): Dispatch {
 
     return async function (dispatch: Dispatch): Asset {
@@ -58,6 +60,8 @@ export function postAssetSuccess(asset: Asset) {
     return {type: types.POST_ASSET_SUCCESS, asset}
 }
 
+/************** UPDATE ******************/
+
 export function updateAsset(asset: Asset, callback: (any) => void): Dispatch {
 
     // updates asset/resource to the database
@@ -91,56 +95,36 @@ export function deleteAsset(name: string, callback: (any) => void) {
 
     return async function (dispatch: Dispatch, getState: GetState) {
 
-        const {assets, mappings} = getState();
+        await GwClientApi.deleteAsset(name);
 
-        const response = await GwClientApi.deleteAsset(name);
-        // resolving a request is done in form container
+        dispatch(deleteAssetSuccess(name));
+        dispatch(removeReferencesToDeletedAsset(name));
+        dispatch(mappingActions.removeDeletedAssetFromMappings(name));
+        dispatch(appActions.setInfoMessage(`Deleted asset: ${name}`));
 
+        // caller callback
+        callback ? callback() : null;
+    }
+}
 
-        // todo: refactor to a function to appropriate location
-        // -> mapping-actions.removeDeletedAsset(asset)
-        mappings.forEach(mapping => {
+export function deleteAssetSuccess(name: string) {
+    console.info('Delete mapping success.');
+    return {type: types.DELETE_ASSET_SUCCESS, name};
+}
 
-            let update = false;
+/*********************************************** */
 
-            const filteredAssets = mapping.assets.filter(asset => {
-                console.info(`${asset} === ${name}`);
-                const deletedFound = asset === name;
-                if (!update && deletedFound) {
-                    update = deletedFound;
-                }
-                return !deletedFound;
-            });
+function removeReferencesToDeletedAsset(assetName: string){
 
-            if (update) {
-                try {
-                    const {
-                        promise,
-                        resolveCallback
-                    } = dispatch(mappingActions.updateMapping({
-                        ...mapping,
-                        assets: filteredAssets
-                    }));
-                    promise.then(response => {
-                        resolveCallback(response.data);
-                    });
-                }
-                catch (err) {
-                    console.warn(err)
-                }
-            }
+    return function (dispatch: Dispatch, getState: State): void {
+       const { assets } = getState();
 
-        });
-
-
-        // todo: refactor to appropriate location
-        // -> asset-actions.removeConnectionsToAsset(asset)
-        assets.forEach(asset => {
+       assets.forEach(asset => {
             console.group(`check if ${asset.name} needs to be deleted`)
             let update = false;
             const filteredAssets = asset.connected_to.filter(a => {
-                console.info(`${a} === ${name}`);
-                const deletedFound = a === name;
+                console.info(`${a} === ${assetName}`);
+                const deletedFound = a === assetName;
                 if (!update && deletedFound) {
                     update = deletedFound;
                     console.info(`asset: ${a} needs to be udpated`)
@@ -167,22 +151,8 @@ export function deleteAsset(name: string, callback: (any) => void) {
             console.groupEnd();
 
         });
-
-        dispatch(appActions.setInfoMessage(`Deleted asset: ${name}`));
-        dispatch(deleteAssetSuccess(name));
-
-        // caller callback
-        callback ? callback() : null;
     }
 }
-
-export function deleteAssetSuccess(name: string) {
-    console.info('Delete mapping success.');
-    return {type: types.DELETE_ASSET_SUCCESS, name};
-}
-
-/*********************************************** */
-
 
 export function loadAssetsSuccess(assets: Array<Asset>) {
     return {type: types.LOAD_ASSETS_SUCCESS, assets}

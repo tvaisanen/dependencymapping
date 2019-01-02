@@ -7,9 +7,14 @@ import * as apiHelpers from '../../common/api.helpers';
 import * as mappingHelpers from '../../common/dependency-map.helpers';
 import {routeApiActionError} from "../error-handling";
 
-import type {Mapping} from "./mapping.types";
+import type {Dispatch, State, Mapping} from "../types";
 
-/*************** MAPPING *************/
+
+export function addMapping(mapping) {
+    return {type: types.ADD_MAPPING, mapping};
+}
+
+/*************** POST *************/
 
 export function postMapping(mapping: Mapping, callback: (any) => void): Dispatch {
 
@@ -27,7 +32,7 @@ export function postMapping(mapping: Mapping, callback: (any) => void): Dispatch
             // with response data
             callback ? callback(storedMapping) : null;
         } catch (err) {
-           routeApiActionError(err)
+            routeApiActionError(err)
         }
 
     }
@@ -37,11 +42,6 @@ export function postMappingSuccess(mapping) {
     console.info('Post mapping success.');
     return {type: types.POST_MAPPING_SUCCESS, mapping}
 }
-
-export function addMapping(mapping) {
-    return {type: types.ADD_MAPPING, mapping};
-}
-
 
 /*************** UPDATE **************/
 
@@ -89,7 +89,6 @@ function updateMappingSuccess({mapping}) {
     console.info("updateMappingSuccess");
     return {type: types.UPDATE_MAPPING_SUCCESS, mapping};
 }
-
 
 /*************** DELETE **************/
 
@@ -148,10 +147,55 @@ export function loadAllMappings(auth) {
     }
 }
 
-export function saveMapping(mapping) {
-    // not async
-    // todo: when backend
-    // -> follow the pattern showed by
-    // async actions before
-    return {type: types.SAVE_MAPPING, mapping};
+/************************************************/
+
+export function removeDeletedAssetFromMappings(assetName: string) {
+
+    /**
+
+     Remove pointers to deleted mapping
+
+     */
+
+    return function (dispatch: Dispatch, getState: State): void {
+
+        const {mappings} = getState();
+
+        /*
+            For each mapping, check
+            if deleted mapping listed
+            as an asset.
+
+            If found, remove reference.
+         */
+        mappings.forEach(mapping => {
+
+            let update = false;
+
+            const filteredAssets = mapping.assets.filter(asset => {
+
+                // deleted listed as an asset
+                const deletedFound = asset === assetName;
+
+                if (!update && deletedFound) {
+
+                    // set update mapping flag
+                    update = deletedFound;
+                }
+
+                return !deletedFound;
+            });
+
+            if (update) {
+                dispatch(updateMapping({
+                    ...mapping,
+                    assets: filteredAssets
+                }));
+            }
+
+        });
+
+    }
 }
+
+
