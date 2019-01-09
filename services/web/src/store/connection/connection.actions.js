@@ -51,42 +51,38 @@ export function loadAllConnections() {
     }
 }
 
+const infoMessages = {
+    post: {
+        success: (connection: Connection) => {
+           return  `Created connection between: ${connection.source} \
+                     and ${connection.target}`;
+        }
+    }
+};
+
 export function postConnection(connection: Connection, callback: (any) => void) {
     return async function (dispatch: Dispatch, getState: State) {
 
         try {
             // for updating the source assets
             // connected to list
-            const {assets} = getState();
 
             const response = await
                 GwClientApi.postConnection(connection);
 
+            // after response is resolved store
+            // the received data as storedConnection
             const storedConnection = response.data;
 
-            // the source asset needs to know about the new connection
-            const assetToUpdate = assets.filter(
-                asset => asset.name === storedConnection.source)[0];
+            // update the state and sync related assets
+            dispatch(postConnectionSuccess(storedConnection));
+            dispatch(assetActions.syncConnectionSourceAsset(storedConnection));
+            dispatch(appActions.setInfoMessage(infoMessages.post.success(connection)));
 
-            // make a updated version of the
-            // updated asset
-            const updatedAsset = {
-                ...assetToUpdate,
-                connected_to: [
-                    ...assetToUpdate.connected_to,
-                    storedConnection.target
-                ]
-            };
-
-            dispatch(
-                appActions.setInfoMessage(
-                    `Created connection between: ${connection.source} \
-                     and ${connection.target}`));
-            dispatch(postConnectionSuccess(connection));
-            dispatch(assetActions.updateAsset(updatedAsset));
-
-            // if callback provided, run it with response data
+            // finally if caller provided callback function,
+            // execute it with the response data as an argument
             callback ? callback(storedConnection) : null;
+
 
         } catch (err) {
 

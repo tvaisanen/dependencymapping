@@ -191,3 +191,32 @@ export function loadAllAssets() {
 export function addAsset(asset: Asset) {
     return {type: types.ADD_ASSET, asset}
 }
+
+export function syncConnectionSourceAsset(connection: Connection){
+    /**
+        Add a target asset.name to connected_to list
+     */
+
+    return function (dispatch: Dispatch, getState: State): void {
+
+            // assets keep track of the target connections
+            // so if the connection is created separately
+            // from the asset form. The source assets
+            // connected_to list need to be updated
+            const assetToUpdate = getState().assets.filter(
+                asset => asset.name === connection.source
+            )[0];
+
+            // create updated version from the asset
+            // with the new connection target pointer
+            const updatedAsset = {
+                ...assetToUpdate,
+                connected_to: [
+                    ...assetToUpdate.connected_to,
+                    connection.target
+                ]
+            };
+
+            dispatch(updateAsset(updatedAsset));
+    }
+}
