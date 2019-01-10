@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 // set defaults for testing if env variables not provided
 const MONGO_PATH = process.env.MONGO_PATH || "mongo";
 const MONGO_PORT = process.env.MONGO_PORT || "27017";
-const DB_NAME = process.env.DB_NAME       || "test";
+const DB_NAME    = process.env.DB_NAME    || "test";
 
 
 function initDatabaseConnection() {
