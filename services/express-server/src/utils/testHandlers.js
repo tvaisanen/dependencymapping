@@ -7,17 +7,16 @@ const mappings = require(`../__test__/unit-tests/mappings.json`);
 const tags = require(`../__test__/unit-tests/tags.json`);
 
 
-function resetModels() {
+async function resetModels() {
     try {
-
-        clearDB();
-        loadDataToDb();
+        await clearDB();
+        await loadDataToDb();
     } catch (err) {
         console.error(err)
     }
 }
 
-function loadDataToDb() {
+async function loadDataToDb() {
     assets.forEach(item => {
         const asset = new Asset({...item});
         asset.save()
@@ -43,11 +42,11 @@ function loadDataToDb() {
     })
 }
 
-function clearDB () {
-    Asset.collection.drop();
-    Connection.collection.drop();
-    Tag.collection.drop();
-    Mapping.collection.drop();
+async function clearDB () {
+    await Asset.collection.drop();
+    await Connection.collection.drop();
+    await Tag.collection.drop();
+    await Mapping.collection.drop();
 }
 
 
@@ -55,4 +54,5 @@ function clearDB () {
 module.exports = {
     resetModels: resetModels,
     clearDB: clearDB,
+    loadDataToDB: loadDataToDb
 };

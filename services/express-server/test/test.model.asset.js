@@ -1,10 +1,11 @@
 const assert = require('assert').assert;
 const expect = require('chai').expect;
 const Asset = require('../src/models').Asset;
+const Connection = require('../src/models').Connection;
 const path = require('path');
 
 const initDatabaseConnection = require('../src/database');
-const resetModels = require('../src/utils/testHandlers').resetModels;
+const {resetModels, loadDataToDB, clearDB } = require('../src/utils/testHandlers');
 
 
 try {
@@ -20,18 +21,18 @@ describe('Asset model tests', function () {
         await resetModels();
     });
 
-    after(function () {
-        console.log('after')
+    after(async function () {
+        //await clearDB();
     });
 
-    beforeEach(function () {
-        console.log('before each')
-        // runs before each test in this block
+    beforeEach(async function () {
+        await resetModels();
+        console.log('before each load data to db')
     });
 
-    afterEach(function () {
-        console.log("after each")
-        // runs after each test in this block
+    afterEach(async function () {
+        //await clearDB();
+        console.log('after each clear data from db')
     });
 
     it('should be invalid if name is empty', function (done) {
@@ -76,13 +77,17 @@ describe('Asset model tests', function () {
     });
 
     it('Asset should save with proper values', function (done) {
-
-        const a = new Asset({
+        const expectedValues = {
             name: "test asset",
             connected_to: ["test asset two", "test asset three"],
             tags: ["tag one", "tag two"],
+            description: "describing test asset",
+            nodeShape: "triangle",
+            nodeColor: "blue"
 
-        });
+        };
+
+        const a = new Asset(expectedValues);
 
         const assetPromise = a.save();
 
@@ -103,9 +108,51 @@ describe('Asset model tests', function () {
                         ["tag one", "tag two"]
                     );
 
+                // description saves correctly
+                expect(asset.description).to
+                    .equal(expectedValues.description);
 
+
+                // description saves correctly
+                expect(asset.nodeShape).to
+                    .equal(expectedValues.nodeShape);
+
+
+                // description saves correctly
+                expect(asset.nodeColor).to
+                    .equal(expectedValues.nodeColor);
 
                 done()
+            })
+            .catch(err => done(err))
+    });
+
+    it('On asset save the connections should be created', function (done) {
+
+        const expectedValues = {
+            name: "test asset",
+            connected_to: ["foo", "bar"]
+        };
+
+        const a = new Asset(expectedValues);
+
+        const assetPromise = a.save();
+
+        assetPromise
+            .then(asset => {
+               Connection.find({source: expectedValues.name})
+                   .then(connections => {
+                       connections.forEach(c => {
+                           console.log(c)
+                       })
+                       /*expect(connections).to
+                           .include.members(
+                           [{source: "test asset"}]
+                       );*/
+                       expect(connections.length).to.equal(2);
+                       done();
+                   })
+                   .catch(err => done(err))
             })
             .catch(err => done(err))
     });
