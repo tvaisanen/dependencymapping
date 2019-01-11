@@ -5,12 +5,12 @@ const Connection = require('../src/models').Connection;
 const path = require('path');
 
 const initDatabaseConnection = require('../src/database');
-const {resetModels, loadDataToDB, clearDB } = require('../src/utils/testHandlers');
+const {resetModels, loadDataToDB, clearDB} = require('../src/utils/testHandlers');
 
 
 try {
     initDatabaseConnection({database: "unit-tests"});
-} catch (err){
+} catch (err) {
     console.log("error with db connection")
 }
 
@@ -25,8 +25,9 @@ describe('Asset model tests', function () {
         //await clearDB();
     });
 
+
     beforeEach(async function () {
-        await resetModels();
+        //await resetModels();
         console.log('before each load data to db')
     });
 
@@ -45,7 +46,6 @@ describe('Asset model tests', function () {
         });
 
     });
-
 
 
     it('Asset should save without error', function (done) {
@@ -99,14 +99,14 @@ describe('Asset model tests', function () {
                 // connected_to saves correctly
                 expect(asset.connected_to).to
                     .include.members(
-                        ["test asset two", "test asset three"]
-                    );
+                    ["test asset two", "test asset three"]
+                );
 
                 // connected_to saves correctly
                 expect(asset.tags).to
                     .include.members(
-                        ["tag one", "tag two"]
-                    );
+                    ["tag one", "tag two"]
+                );
 
                 // description saves correctly
                 expect(asset.description).to
@@ -130,7 +130,7 @@ describe('Asset model tests', function () {
     it('On asset save the connections should be created', function (done) {
 
         const expectedValues = {
-            name: "test asset",
+            name: "source asset",
             connected_to: ["foo", "bar"]
         };
 
@@ -140,19 +140,32 @@ describe('Asset model tests', function () {
 
         assetPromise
             .then(asset => {
-               Connection.find({source: expectedValues.name})
-                   .then(connections => {
-                       connections.forEach(c => {
-                           console.log(c)
-                       })
-                       /*expect(connections).to
-                           .include.members(
-                           [{source: "test asset"}]
-                       );*/
-                       expect(connections.length).to.equal(2);
-                       done();
-                   })
-                   .catch(err => done(err))
+                Connection.find({source: expectedValues.name})
+                    .then(connections => {
+                        // debug
+                        connections.forEach(c => {
+                            console.log(`source: ${c.source}, target: ${c.target}`)
+                        });
+
+                        // expect to find two connections where
+                        // expectedValues.name is the source
+                        expect(connections.length).to.equal(2);
+
+                        const sourceTargetArray = connections.map(c => ({
+                            source: c.source, target: c.target
+                        }));
+
+                        console.log(sourceTargetArray)
+
+                        expect(sourceTargetArray)
+                            .to.have.deep.members([
+                                {source: "source asset", target: "foo"},
+                                {source: "source asset", target: "bar"},
+                            ]);
+
+                        done();
+                    })
+                    .catch(err => done(err))
             })
             .catch(err => done(err))
     });
