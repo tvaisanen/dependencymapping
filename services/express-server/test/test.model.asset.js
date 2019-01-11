@@ -22,7 +22,7 @@ describe('Asset model tests', function () {
     });
 
     after(async function () {
-        //await clearDB();
+        // await clearDB();
     });
 
 
@@ -44,7 +44,31 @@ describe('Asset model tests', function () {
             expect(err.errors.name).to.exist;
             done();
         });
+    });
 
+
+    it('should be invalid if name is not unique', function (done) {
+
+        const a = new Asset({name: "named asset"});
+        const b = new Asset({name: "named asset"});
+
+        const aPromise = a.save();
+        const bPromise = b.save();
+
+        aPromise
+            .then(aAsset => {
+
+                console.log(aAsset);
+
+            bPromise
+                .then(bAsset => {
+                    console.log(bAsset)
+                    //expect(false).is.ok;
+
+                    done();
+                })
+                .catch(err => done(err))
+            })
     });
 
 

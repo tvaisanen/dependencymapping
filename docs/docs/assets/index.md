@@ -1,5 +1,5 @@
 
-# Asset
+# Schema 
 
 Asset is defined as following:
 
@@ -16,13 +16,13 @@ Asset is defined as following:
 
 Assets are created on the server side.
 
-## Textual requirements
+## Requirements
 
 **R1 ) ID is unique**: 
 > Automated by the database.
 
 **R2 ) Name is unique**: 
-> Post handler enforces.
+> API endpoint is responsible 
     
 **R3 ) Every asset pointed in connected_to need to exist after success **:
 > On Save hook?
@@ -35,30 +35,42 @@ Assets are created on the server side.
 
 ___
 
+## API 
 
+### Get
+
+* `/assets/<name>`
+* `assets/?<query>`
+
+### Post
+
+* `/assets/`, body: JSON asset object
+
+
+## Client
 
 Accessing the API from the application is done via
 asset actions (`asset.actions.js`).
 
-## Get a asset detail
+### Get a asset detail
 
 ![Post asset sequence diagram](/assets/fig:get-asset.svg)
 
-## Post a new asset 
+### Post a new asset 
 
 Create a new asset.
 
 ![Post asset sequence diagram](/assets/fig:post-asset.svg)
 
 
-## Update an asset 
+### Update an asset 
 
 Update asset by a set of key-value pairs. The updated
 version of the asset is created by the client.
 
 ![Post asset sequence diagram](/assets/fig:update-asset.svg)
 
-## Delete an asset 
+### Delete an asset 
 
 Delete an asset. If server returns OK delete asset reference
 on client application.

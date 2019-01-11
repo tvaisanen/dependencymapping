@@ -26,13 +26,17 @@ assetRouter.get('(/:id)?', (req, res) => {
 });
 
 assetRouter.post('(/:id)?', (req, res) => {
+
     console.log(`post: ${req.params.id}`);
+
     const query = {name: req.param.id};
     const asset = new Asset(req.body);
 
     if (!asset.name) {
         res.status(400).json({error: "name is required field"})
+
     } else {
+
         Asset.findOne({name: asset.name})
             .then(existing => {
                 if (existing) {
