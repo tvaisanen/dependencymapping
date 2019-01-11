@@ -1,3 +1,4 @@
+const assert = require('assert').assert;
 const expect = require('chai').expect;
 const Asset = require('../src/models').Asset;
 const path = require('path');
@@ -46,16 +47,66 @@ describe('Asset model tests', function () {
 
 
 
-    it('Asset should store in database', async function (done) {
+    it('Asset should save without error', function (done) {
+        const asset = new Asset({name: "test asset"});
+        asset.save(done);
+    });
+
+    it('Asset should save with defaults', function (done) {
+
         const a = new Asset({name: "test asset"});
-        const promise = a.save();
-        promise.then(a => {
 
-                expect(a.name).to.equal("test asset")
-                done();
-            }
-        ).catch(e => assert(false))
+        const assetPromise = a.save();
+
+        assetPromise
+            .then(asset => {
+                expect(asset).to.have.property('_id');
+                expect(asset).to.have.property('name');
+                expect(asset).to.have.property('connected_to');
+                expect(asset).to.have.property('tags');
+                expect(asset).to.have.property('nodeShape');
+                expect(asset).to.have.property('nodeColor');
+                //expect(asset).to.have.any.keys(
+                //    '_id', 'name', 'connected_to',
+                //    'tags', 'nodeShape', 'nodeColor'
+                //);
+                done()
+            })
+            .catch(err => done(err))
+    });
+
+    it('Asset should save with proper values', function (done) {
+
+        const a = new Asset({
+            name: "test asset",
+            connected_to: ["test asset two", "test asset three"],
+            tags: ["tag one", "tag two"],
+
+        });
+
+        const assetPromise = a.save();
+
+        assetPromise
+            .then(asset => {
+                // name saves correctly
+                expect(asset.name).to.equal("test asset");
+
+                // connected_to saves correctly
+                expect(asset.connected_to).to
+                    .include.members(
+                        ["test asset two", "test asset three"]
+                    );
+
+                // connected_to saves correctly
+                expect(asset.tags).to
+                    .include.members(
+                        ["tag one", "tag two"]
+                    );
 
 
+
+                done()
+            })
+            .catch(err => done(err))
     });
 });
