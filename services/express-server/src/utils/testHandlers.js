@@ -19,11 +19,14 @@ async function resetModels() {
 async function loadDataToDb() {
     assets.forEach(item => {
         const asset = new Asset({...item});
+
         asset.save()
             .then()
             .catch(err => {
                 console.log(err);
             })
+
+        console.log("CREATED assets")
     });
 
     tags.forEach(item => {
