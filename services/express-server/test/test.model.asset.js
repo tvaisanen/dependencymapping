@@ -7,7 +7,7 @@ const resetModels = require('../src/utils/testHandlers').resetModels;
 
 
 try {
-    initDatabaseConnection();
+    initDatabaseConnection({database: "unit-tests"});
 } catch (err){
     console.log("error with db connection")
 }
@@ -15,8 +15,8 @@ try {
 
 describe('Asset model tests', function () {
 
-    before(function () {
-        resetModels();
+    before(async function () {
+        await resetModels();
     });
 
     after(function () {
@@ -34,11 +34,28 @@ describe('Asset model tests', function () {
     });
 
     it('should be invalid if name is empty', function (done) {
+
         const a = new Asset();
 
         a.validate(function (err) {
             expect(err.errors.name).to.exist;
             done();
         });
+
+    });
+
+
+
+    it('Asset should store in database', async function (done) {
+        const a = new Asset({name: "test asset"});
+        const promise = a.save();
+        promise.then(a => {
+
+                expect(a.name).to.equal("test asset")
+                done();
+            }
+        ).catch(e => assert(false))
+
+
     });
 });
