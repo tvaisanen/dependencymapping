@@ -247,7 +247,6 @@ export function updateAssetState(asset: Asset) {
         const {activeMapping} = getState();
 
         if (_.includes(activeMapping.assets, asset.name)) {
-            alert('update asset state')
             dispatch(graphHelpers.activeMappingAssetUpdateActions(asset));
         }
     }

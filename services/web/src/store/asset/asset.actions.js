@@ -100,6 +100,7 @@ export function deleteAsset(name: string, callback: (any) => void) {
         dispatch(deleteAssetSuccess(name));
         dispatch(removeReferencesToDeletedAsset(name));
         dispatch(mappingActions.removeDeletedAssetFromMappings(name));
+        dispatch(activeMappingActions.removeResourceFromActiveMapping({name}));
         dispatch(appActions.setInfoMessage(`Deleted asset: ${name}`));
 
         // caller callback

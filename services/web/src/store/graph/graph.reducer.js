@@ -48,7 +48,6 @@ const newGraphInstance = ({eventHandlers}) => {
                     content: 'Connect', // html/text content to be displayed in the menu
                     contentStyle: {}, // css key:value pairs to set the command's css in js if you want
                     select: function (ele) { // a function to execute when the command is selected
-                        alert('helo')
                     },
                     enabled: true // whether the command is selectable
                 },

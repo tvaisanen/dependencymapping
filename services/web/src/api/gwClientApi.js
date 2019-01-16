@@ -26,7 +26,6 @@ function tagDetailUrl({name}) {
 }
 
 function connectionDetailUrl(connection) {
-    alert('here')
     return `${CONNECTIONS_URL}?source=${encodeURI(connection.source)}&target=${encodeURI(connection.target)}`;
 }
 

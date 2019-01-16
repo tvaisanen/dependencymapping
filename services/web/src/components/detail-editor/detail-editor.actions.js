@@ -260,7 +260,6 @@ export function onDelete(): Dispatch {
                 : name
             ;
 
-            alert(JSON.stringify(args))
 
 
             try {
