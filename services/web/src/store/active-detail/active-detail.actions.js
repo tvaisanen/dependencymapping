@@ -1,6 +1,8 @@
 import * as types from './active-detail.action-types';
 import * as resourceTypes from '../../constants/types';
 import * as _ from 'lodash';
+import { ASSET, CONNECTION, MAPPING, TAG } from "../../constants/types";
+import { Asset, Connection, Mapping, Tag} from "../types";
 
 
 export function setActiveDetail(activeDetail) {
@@ -111,6 +113,7 @@ type SetAsActiveProps = {
    type: ASSET | CONNECTION | MAPPING | TAG,
    data: Asset | Connection | Mapping | Tag
 }
+
 
 export function setAsActiveDetail(activeDetail: SetAsActiveProps){
 

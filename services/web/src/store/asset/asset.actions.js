@@ -115,32 +115,40 @@ export function deleteAssetSuccess(name: string) {
 
 /*********************************************** */
 
-function removeReferencesToDeletedAsset(assetName: string){
+function removeReferencesToDeletedAsset(assetName: string) {
 
     return function (dispatch: Dispatch, getState: State): void {
-       const { assets } = getState();
+        const {assets} = getState();
 
-       assets.forEach(asset => {
-            console.group(`check if ${asset.name} needs to be deleted`)
+        assets.forEach(asset => {
+
+            // for debugging
+            // console.group(`check if ${asset.name} needs to be deleted`)
+
             let update = false;
+
             const filteredAssets = asset.connected_to.filter(a => {
-                console.info(`${a} === ${assetName}`);
+
+                // console.debug(`${a} === ${assetName}`);
+
                 const deletedFound = a === assetName;
+
                 if (!update && deletedFound) {
                     update = deletedFound;
-                    console.info(`asset: ${a} needs to be udpated`)
+                    // console.debug(`asset: ${a} needs to be udpated`)
                 }
+
                 return !deletedFound;
             });
             if (update) {
                 try {
-                    const {
-                        promise,
-                        resolveCallback
-                    } = dispatch(updateAsset({
-                        ...asset,
-                        connected_to: filteredAssets
-                    }));
+                    const {promise, resolveCallback} = dispatch(
+                        updateAsset({
+                            ...asset,
+                            connected_to: filteredAssets
+                        })
+                    );
+
                     promise.then(response => {
                         resolveCallback(response.data);
                     });
@@ -149,7 +157,7 @@ function removeReferencesToDeletedAsset(assetName: string){
                     console.warn(err)
                 }
             }
-            console.groupEnd();
+            //console.groupEnd();
 
         });
     }
@@ -193,31 +201,31 @@ export function addAsset(asset: Asset) {
     return {type: types.ADD_ASSET, asset}
 }
 
-export function syncConnectionSourceAsset(connection: Connection){
+export function syncConnectionSourceAsset(connection: Connection) {
     /**
-        Add a target asset.name to connected_to list
+     Add a target asset.name to connected_to list
      */
 
     return function (dispatch: Dispatch, getState: State): void {
 
-            // assets keep track of the target connections
-            // so if the connection is created separately
-            // from the asset form. The source assets
-            // connected_to list need to be updated
-            const assetToUpdate = getState().assets.filter(
-                asset => asset.name === connection.source
-            )[0];
+        // assets keep track of the target connections
+        // so if the connection is created separately
+        // from the asset form. The source assets
+        // connected_to list need to be updated
+        const assetToUpdate = getState().assets.filter(
+            asset => asset.name === connection.source
+        )[0];
 
-            // create updated version from the asset
-            // with the new connection target pointer
-            const updatedAsset = {
-                ...assetToUpdate,
-                connected_to: [
-                    ...assetToUpdate.connected_to,
-                    connection.target
-                ]
-            };
+        // create updated version from the asset
+        // with the new connection target pointer
+        const updatedAsset = {
+            ...assetToUpdate,
+            connected_to: [
+                ...assetToUpdate.connected_to,
+                connection.target
+            ]
+        };
 
-            dispatch(updateAsset(updatedAsset));
+        dispatch(updateAsset(updatedAsset));
     }
 }

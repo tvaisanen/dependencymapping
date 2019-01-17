@@ -47,15 +47,17 @@ test('Asset validator should return false if no name provided', () => {
 
     const { formIsValid, fieldErrors } = assetFormValidator(invalidForm);
 
-    console.log({formIsValid, fieldErrors})
     expect(formIsValid).toEqual(false);
 });
 
 
 test('Asset validator should return true if name provided', () => {
+
     const invalidForm = {
         name: "name provided",
     };
+
     const { formIsValid, fieldErrors } = assetFormValidator(invalidForm);
+
     expect(formIsValid).toEqual(true);
 });
