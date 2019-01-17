@@ -37,7 +37,6 @@ const SpaceAround = styled.div`
   padding: 6px;
 `;
 
-
 const Input = styled.input`
   flex-grow:1;
 `;
@@ -49,22 +48,22 @@ const CheckBoxes = styled.div`
   > label {
     font-size: 0.8em;
   }
- 
-
+  
 `;
 
 
 export const ConnectionForm = (props) => (
     <React.Fragment>
-        {console.info(props)}
         <WrapFields>
-            <SelectSourceAsset
+            <AssetSelectOrLabel
                 label={"source"}
                 onChange={props.onSourceSelection}
                 selected={props.source.name}
+                error={props.errors.source}
                 {...props}/>
-            <SelectTargetAsset
+            <AssetSelectOrLabel
                 label={"target"}
+                error={props.errors.target}
                 selected={props.target.name}
                 onChange={props.onTargetSelection}
                 {...props}/>
@@ -96,15 +95,12 @@ export const ConnectionForm = (props) => (
     </React.Fragment>
 );
 
-type SelectAssetProp = { selected: string, edit: boolean };
+type SelectAssetProp = { selected: string, edit: boolean, error: string | null };
 
-export const SelectSourceAsset = (props: SelectAssetProp) => (
+export const AssetSelectOrLabel = (props: SelectAssetProp) => (
     props.edit ? <div>{props.selected}</div> : <SelectAsset {...props}/>
 );
 
-export const SelectTargetAsset = (props: SelectAssetProp) => (
-    props.edit ? <div>{props.selected}</div> : <SelectAsset {...props}/>
-);
 
 function mapStateToProps(state, props) {
     return {
@@ -114,9 +110,11 @@ function mapStateToProps(state, props) {
         target: state.detailForm.target,
         sourceArrow: state.detailForm.sourceArrow,
         targetArrow: state.detailForm.targetArrow,
-        edgeLabel: state.detailForm.edgeLabel
+        edgeLabel: state.detailForm.edgeLabel,
+        errors: state.detailForm.errors
     }
 }
+
 
 function mapDispatchToProps(dispatch) {
     return {
@@ -135,13 +133,17 @@ export default connect(
 
 const SelectAsset = (props) => (
     <SelectionField id={"select-asset-group"}>
-        <Label for={`${props.label}-asset`}>{props.label}</Label>
+        <Label
+            color={props.error ? 'red': null}
+            for={`${props.label}-asset`}
+        >{props.label}</Label>
         <Select
             selected={"none"}
             onChange={(e) => {
                 this.selected = e.target.value;
                 props.onChange((e.target.value: string));
             }}>
+            <option value="" disabled selected>Select asset</option>
             {props.assets.map(option => (
                 <option
                     selected={option === props.selected}
