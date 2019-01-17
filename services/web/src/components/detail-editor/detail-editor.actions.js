@@ -182,10 +182,10 @@ export function onSave(): Dispatch {
         if (!formIsValid) {
            alert('form needs to be valid')
            console.info(fieldErrors)
+            dispatch(appActions.setInfoMessage("INVALID FORM"));
            dispatch(detailFormActions.setErrors(fieldErrors));
            return
         }
-        alert("form was valid")
         // get the right action and wrap with dispatch
         const formActions = dispatchFormActions(dispatch);
 

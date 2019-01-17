@@ -18,15 +18,29 @@ function validateConnectionForm(form) {
 }
 
 function validateAssetForm (form){
-    alert('todo validate asset form')
+
+    const name = form.name === "" ? "asset name is required" : false;
+
+    return {
+        formIsValid: !name,
+        fieldErrors: {name}
+    }
 }
 
 function validateMappingForm (form){
     alert('todo mapping asset form')
+     return {
+        formIsValid: true,
+        fieldErrors: false
+    }
 }
 
 function validateTagForm (form){
     alert('todo tag asset form')
+    return {
+        formIsValid: true,
+        fieldErrors: false
+    }
 }
 
 export default {
