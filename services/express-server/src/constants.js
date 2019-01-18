@@ -20,3 +20,10 @@ module.exports = {
         RESOURCE_NOT_FOUND
     }
 }
+
+const paths = {
+    ASSET: "asset/",
+    CONNETION: "connection/",
+    MAPPING: "mapping/",
+    TAG: "tag/"
+};

@@ -1,25 +1,35 @@
 const express = require('express');
 const Asset = require('../models').Asset;
 const assetRouter = express.Router();
-
+const hal = require('../utils/hal.utils');
 
 assetRouter.get('(/:id)?', (req, res) => {
-    if (req.params.id) {
-        Asset.findOne({name: req.params.id})
-            .then(asset => {
 
-                console.log(asset)
+    // if id provided, get detail
+    if (req.params.id) {
+        Asset.findOne({_id: req.params.id})
+
+            .then(asset => {
                 if (!asset) {
                     res.status(404).json("Resource does not exist.")
                 } else {
-                    console.log(asset);
+                    const halAsset = hal.serializeAsset(req.headers.host, asset);
                     res.status(200).json(asset);
                 }
 
             }).catch(err => res.status(400).json(err));
+
     } else {
+        // get list view and if query filter.
         Asset.find()
-            .then(assets => res.send(assets))
+            .then(assets => {
+                const HALJSONAssets = assets
+                    .map(
+                        asset => hal.serializeAsset(`${req.headers.host}`, asset)
+                    );
+
+                res.send(HALJSONAssets)
+            })
             .catch(err => res.send(err));
     }
 

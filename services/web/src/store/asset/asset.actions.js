@@ -1,15 +1,15 @@
 //@flow
-
 import GwClientApi from '../../api/gwClientApi';
 import * as types from './asset.action-types';
-import * as graphHelpers from '../../common/graph-helpers';
-import * as _ from 'lodash';
 import * as apiHelpers from '../../common/api.helpers';
 import * as appActions from '../../actions/app.actions';
 import * as mappingActions from '../mapping/mapping.actions';
 import * as activeMappingActions from '../active-mapping/active-mapping.actions';
 import * as detailFormActions from '../detail-form/detail-form.actions';
 import {connectionActions} from '../actions';
+import { parseHALResponseData } from "../response-parser";
+
+import { ASSET } from '../../constants/';
 
 import type {Asset, Dispatch, GetState} from "../types";
 
@@ -24,7 +24,7 @@ export function postAsset(asset: Asset, callback: (any) => void): Dispatch {
         try {
 
             const response = await GwClientApi.postAsset(asset);
-            const storedAsset: Asset = response.data;
+            const storedAsset: Asset = parseHALResponseData(ASSET, response.data);
 
             // resolving a request is done in form container
             dispatch(postAssetSuccess(storedAsset));
@@ -180,8 +180,9 @@ export function loadAllAssets() {
         promise.then(response => {
             // dispatch success message with the data
             // returned assets
+            const parsedAssets = response.data.map(asset => parseHALResponseData(ASSET, asset));
             dispatch(appActions.setInfoMessage("Loaded all resources successfully"));
-            dispatch(loadAssetsSuccess(response.data));
+            dispatch(loadAssetsSuccess(parsedAssets));
 
         }).catch(error => {
             if (error.message && error.message === "Network Error") {
