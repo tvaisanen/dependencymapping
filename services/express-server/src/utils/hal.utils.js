@@ -35,7 +35,9 @@ function serializeAsset(host, resource) {
             ],
             "group": {
                 name: resource._doc.group,
-                href: resource._doc.group !== "" ? `${host}/asset/?name=${encodeURI(asset)}` : "",
+                href: resource._doc.group !== "" ?
+                    `${host}/asset/?name=${encodeURI(resource._doc.group)}`
+                    : "",
             }
         },
         ...resource._doc

@@ -58,7 +58,8 @@ assetRouter.post('(/:id)?', (req, res) => {
                     console.log('here')
                     asset.save().then(saved => {
                         console.log(`saved: ${saved.name}`);
-                        res.status(201).json(saved);
+                        const halAsset = hal.serializeAsset(`${req.headers.host}`, saved);
+                        res.status(201).json(halAsset);
                     }).catch(err => {
                         console.log(err);
                     })
