@@ -94,34 +94,26 @@ export function onNodeClick(event) {
 
             const createEdgesFromThese = connections.filter(
                 connection => {
-                    console.info(`${connection.source} == ${resourceName}`)
+                    // console.debug(`${connection.source} == ${resourceName}`)
                     return connection.source === resourceName
                 }
             );
 
             // get filter connections
-            console.group("Clicked asset noded");
-            console.info(createEdgesFromThese);
 
 
             const edges = createEdgesFromThese.map(c => helpers.getEdgeFromConnection(c));
 
-            console.info(edges);
-            console.groupEnd();
 
-            const edgesToCreate = helpers.createEdgeElementsBetween({
-                source: resourceName,
-                targets: clickedAssetIsConnectedTo
-            });
 
             helpers.addElements(cy, nodesToCreate);
-            //helpers.addElements(cy, edgesToCreate);
             helpers.addElements(cy, edges);
 
             if (nodesToCreate.length > 0) {
                 // nodes are created, update the layout
                 helpers.updateLayout(cy, layout);
             }
+
         }
     };
 };

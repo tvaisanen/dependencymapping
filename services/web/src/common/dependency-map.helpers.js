@@ -28,15 +28,12 @@ export function loadDependencyMap(mapId) {
         const assetNameList = mapping ? mapping.assets : [];
         const tagNameList = mapping ? mapping.tags : [];
 
-        console.group("LoadDependencyMap()");
-        console.info(assets);
-        console.info(mapping);
 
         // get connections between assets in the mapping
 
         const createEdgesFromThese = connections.filter(
             c => {
-                console.info(`${c.name} in ${JSON.stringify(assetNameList)}`);
+                // console.debug(`${c.name} in ${JSON.stringify(assetNameList)}`);
                 return (
                     _.includes(assetNameList, c.source) &&
                     _.includes(assetNameList, c.target)
@@ -49,8 +46,6 @@ export function loadDependencyMap(mapId) {
                 c => graphHelpers.getEdgeFromConnection(c)
             );
 
-        console.info(createEdgesFromThese);
-        console.info(edges);
 
         // Set mapping as active.
         dispatch(activeMappingActions.setActiveMapping(mapping));
@@ -75,16 +70,6 @@ export function loadDependencyMap(mapId) {
         });
 
 
-        // todo: check if this is obsolete?
-        // objects for redux state
-        // const connections = parser.getConnectionsFromResources(assets);
-        // dispatch(activeMappingActions.setActiveMappingConnections(connections));
-
-
-        // json for graphing
-        //console.info(activeMappingAssetObjects)
-        // get cy.element objects from active mapping assets
-        //const edges = parser.parseEdgeElementsFromResources(activeMappingAssetObjects);
 
 
         const nodes = activeMappingAssetObjects
@@ -103,6 +88,12 @@ export function loadDependencyMap(mapId) {
 
         // update the graph layout
         graphHelpers.updateLayout(cy, layout);
-        console.groupEnd();
+
+        // console.group("LoadDependencyMap()");
+        // console.debug(assets);
+        // console.debug(mapping);
+        // console.debug(createEdgesFromThese);
+        // console.debug(edges);
+        // console.groupEnd();
     }
 };

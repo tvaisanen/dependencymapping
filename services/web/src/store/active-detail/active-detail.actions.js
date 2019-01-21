@@ -89,6 +89,9 @@ export function setAssetAsActiveDetail(activeDetail) {
         const parseAssets = data.connected_to ? _.isString(data.connected_to[0]) : [];
         const parseTags = data.tags ? _.isString(data.tags[0]) : [];
 
+
+        // active detail needs the
+        // assets and tags in more detail
         const collectedDetail = {
             type: activeDetail.type,
             data: {
@@ -101,7 +104,9 @@ export function setAssetAsActiveDetail(activeDetail) {
                     : data.tags
             }
         };
-        console.info(collectedDetail);
+
+        // console.debug(collectedDetail);
+
         dispatch(setActiveDetail(collectedDetail));
 
 
