@@ -10,7 +10,7 @@ import { Label, SelectionField, FieldGroup, Select } from "../detail-editor.styl
 type SelectionMenusProps = {
     formType: string,
     assets: Array<String>,
-    setValue: (object) => void,
+    setValue: (any) => void,
     onAssetGroupSelection: (value:string) => void,
     onNodeColorSelection: (value:string) => void,
     onNodeShapeSelection: (value:string) => void,
@@ -78,7 +78,6 @@ const NodeGroupSelection = (props) => {
         <Select
         selected={"none"}
         onChange={(e) => {
-            this.selected = e.target.value;
             props.onChange((e.target.value: string));
         }}>
 

@@ -1,13 +1,13 @@
-import React from 'react';
+import React, {Suspense, Lazy} from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import ResourceBrowserContainer from '../resource-browser/ResourceBrowserContainer';
 import {connect} from 'react-redux'
 import * as views from './../../constants/views';
 import PanelNavTabs from './bottom-panel.components';
-import ResourceControllerContainer from '../resource-controller/ResourceControllerContainer';
-import DetailEditor from '../detail-editor/DetailEditor';
-import ConnectionManager from '../connection-manager/ConnectionManager';
+//import DetailEditor from '../detail-editor/DetailEditor';
+
+const DetailEditor = React.lazy(() => import('../detail-editor/DetailEditor'))
 
 const panelViews = {
     [views.BROWSE]: {
@@ -19,11 +19,6 @@ const panelViews = {
         //component: ResourceControllerContainer,
         component: DetailEditor
     },
-
-    [views.CONNECTIONS]: {
-        header: "connections",
-        component: ConnectionManager
-    }
 };
 
 const BottomPanelContainer = (props) => {
@@ -32,7 +27,10 @@ const BottomPanelContainer = (props) => {
         <BottomPanel id="bottom-panel-container">
             <PanelNavTabs/>
             <PanelContent id="panel-content">
-                <SelectedViewComponent id="active-panel-view"/>
+                    <Suspense fallback={<div>Loading...</div>}>
+
+                        <SelectedViewComponent id="active-panel-view"/>
+      </Suspense>
             </PanelContent>
         </BottomPanel>
     );

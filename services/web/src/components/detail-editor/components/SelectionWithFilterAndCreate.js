@@ -9,7 +9,7 @@ import {ASSET, TAG} from '../../../constants/types';
 
 export type SelectionProps = {
     title: string,
-    onFilterChange: () => void,
+    onFilterChange: (string) => void,
     options: Array<string>,
     selected: Array<string>,
     select: (value: string) => void,
