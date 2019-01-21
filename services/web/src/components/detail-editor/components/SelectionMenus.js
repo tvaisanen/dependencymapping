@@ -81,6 +81,8 @@ const NodeGroupSelection = (props) => {
             this.selected = e.target.value;
             props.onChange((e.target.value: string));
         }}>
+
+            <option value="" disabled selected>select group</option>
         {props.assets.map(option => (
             <option
                 selected={option === props.selected}
@@ -97,6 +99,8 @@ const NodeShapeSelection = (props) => {
     return <SelectionField>
         <Label for="node-shape">shape</Label>
         <Select name="node-shape" onChange={(e) => {props.onChange((e.target.value:string));}}>
+
+            <option value="" disabled selected>select shape</option>
         {nodeShapes.map(option => <option
             selected={option === props.selected}
             value={option}>{option}</option>)}
@@ -109,6 +113,7 @@ const NodeColorSelection = (props) => {
     return<SelectionField>
             <Label for="node-color">color</Label>
     <Select name="node-color" onChange={(e) => {props.onChange((e.target.value:string));}}>
+        <option value="" disabled selected>select color</option>
         {colorOptions.map(option => <option
             selected={option === props.selected}
             value={option}>{option}</option>)}

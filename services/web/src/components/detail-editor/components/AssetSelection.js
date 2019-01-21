@@ -60,7 +60,7 @@ function createAndSelect(name: string): Dispatch {
             // create the tag and add it to selected
             const promise = GwClientApi.postAsset({name: name});
             promise.then(response => {
-                console.info(response.data)
+                // console.debug(response.data)
                 dispatch(assetActions.postAssetSuccess(response.data));
                 dispatch(detailEditorActions.addAssetToSelected((name:string)));
             });

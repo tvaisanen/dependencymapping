@@ -21,19 +21,19 @@ function serializeAsset(host, resource) {
             }
         },
         _embedded: {
-            "connected_to": [
-                ...resource._doc.connected_to.map(asset => ({
+            connected_to: [
+                ...resouce._doc.connected_to.map(asset => ({
                     name: asset,
                     href: `${host}/asset/?name=${encodeURI(asset)}`
                 }))
             ],
-            "tags": [
+            tags: [
                 ...resource._doc.tags.map(tag => ({
                     name: tag,
                     href: `${host}/tag/?name=${encodeURI(tag)}`
                 }))
             ],
-            "group": {
+            group: {
                 name: resource._doc.group,
                 href: resource._doc.group !== "" ?
                     `${host}/asset/?name=${encodeURI(resource._doc.group)}`
@@ -44,7 +44,19 @@ function serializeAsset(host, resource) {
     }
 }
 
+function serializeTag(host, resource){
+    return {
+        _links: {
+            self: {
+                href: `${host}/tag/${resource._id}`
+            }
+        },
+        ...resource._doc
+    }
+}
+
 
 module.exports = {
-    serializeAsset
+    serializeAsset,
+    serializeTag
 };
