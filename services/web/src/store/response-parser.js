@@ -1,4 +1,4 @@
-import {ASSET} from "../constants";
+import {ASSET, TAG} from "../constants";
 
 export function parseHALResponseData(resourceType, data){
     // console.group("parseHALResponseData()");
@@ -9,7 +9,8 @@ export function parseHALResponseData(resourceType, data){
 }
 
 const HALResourceParser = {
-    ASSET: parseHALAsset
+    [ASSET]: parseHALAsset,
+    [TAG]: parseTag,
 };
 
 function parseHALAsset(data){
@@ -23,6 +24,18 @@ function parseHALAsset(data){
        nodeColor: data.nodeColor,
        nodeShape: data.nodeShape,
    }
+}
+
+function parseTag(data){
+    const parsed = {
+        _id: data._id,
+        name: data.name,
+        description: data.description,
+    };
+    console.info(data);
+    console.info(parsed);
+
+    return parsed;
 }
 
 const parsers = {

@@ -12,18 +12,19 @@ import { parseHALResponseData } from "../response-parser";
 
 import { ASSET } from '../../constants/';
 
-import type {Asset, Dispatch, GetState} from "../types";
+import type {Asset, Connection, Dispatch, State} from "../types";
 
 type AssetAction = { promise: Promise<any>, resolveCallback: (asset: Asset) => void }
+type AssetAndOptionalCallback = {asset: Asset, callback: ?(any) => void};
 
 /************** POST ******************/
 
-export function postAsset(asset: Asset, callback: (any) => void): Dispatch {
+export function postAsset(props: AssetAndOptionalCallback): Dispatch {
 
     return async function (dispatch: Dispatch): Asset {
 
         try {
-
+            const { asset, callback } = props;
             const response = await GwClientApi.postAsset(asset);
             const storedAsset: Asset = parseHALResponseData(ASSET, response.data);
 
@@ -64,14 +65,15 @@ export function postAssetSuccess(asset: Asset) {
 
 /************** UPDATE ******************/
 
-export function updateAsset(asset: Asset, callback: (any) => void): Dispatch {
+//export function updateAsset(asset: Asset, callback: (any) => void): Dispatch {
+export function updateAsset(props: AssetAndOptionalCallback): Dispatch {
 
     // updates asset/resource to the database
     // and refreshes the nodes edges in the graph
-    return async function (dispatch: Dispatch): AssetAction {
+    return async function (dispatch: Dispatch): Promise<any> {
 
         try {
-
+            const {asset, callback} = props;
             const response = await GwClientApi.putAsset(asset);
             const updatedAsset = response.data;
 
@@ -96,7 +98,7 @@ function updateAssetSuccess({asset}) {
 
 export function deleteAsset(name: string, callback: (any) => void) {
 
-    return async function (dispatch: Dispatch, getState: GetState) {
+    return async function (dispatch: Dispatch, getState: State) {
 
         await GwClientApi.deleteAsset(name);
 

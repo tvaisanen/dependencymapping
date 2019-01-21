@@ -167,7 +167,7 @@ class GwClientApi {
             {name, description})
     }
 
-    static deleteTag(name: string) {
+    static deleteTag(name: string): Promise<any> {
         return axios.delete(tagDetailUrl({name}));
     }
 }

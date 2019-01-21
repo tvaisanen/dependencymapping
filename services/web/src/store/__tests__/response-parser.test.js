@@ -1,4 +1,4 @@
-import {ASSET} from "../../constants";
+import {ASSET, TAG} from "../../constants";
 import {
     parseHALResponseData
 } from "../response-parser";
@@ -42,6 +42,18 @@ const HALAsset =     {
         ]
     };
 
+const HALTag = {
+        "__v": 0,
+        "_id": "5c45b2754238a2002ddea5fd",
+        "_links": {
+            "self": {
+                "href": "localhost:3000/tag/5c45b2754238a2002ddea5fd"
+            }
+        },
+        "description": "Describe gwikicategory / tag TestPage here.",
+        "name": "TestPage"
+    };
+
 
 
 
@@ -66,7 +78,18 @@ it("Should parse HAL asset to Asset", () => {
     };
 
 
+    expect(result).toEqual(expected);
+});
 
+
+it("Should parse HAL tag to Tag", () => {
+
+    const result = parseHALResponseData(TAG, HALTag);
+    const expected = {
+        "_id": "5c45b2754238a2002ddea5fd",
+        "description": "Describe gwikicategory / tag TestPage here.",
+        "name": "TestPage"
+    };
 
     expect(result).toEqual(expected);
-})
+});

@@ -19,7 +19,7 @@ type InActiveMappingToggleProps = {
 
 const InActiveMappingToggle = (props: InActiveMappingToggleProps) => {
 
-    const onClick = props.inMap ?
+    const onClick: (any) => void = props.inMap ?
         props.removeFromMap
         : props.addToMap
     ;
