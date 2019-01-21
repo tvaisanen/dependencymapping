@@ -14,7 +14,9 @@ import {
     SET_CONNECTIONS,
     ADD_CONNECTION,
     DELETE_CONNECTION,
-    UPDATE_CONNECTION
+    DELETE_CONNECTIONS,
+    UPDATE_CONNECTION,
+    ADD_CONNECTIONS
 } from "./connection.action-types";
 
 export function setConnections(connections: Array<Connection>): ConnectionAction {
@@ -49,42 +51,38 @@ export function loadAllConnections() {
     }
 }
 
+const infoMessages = {
+    post: {
+        success: (connection: Connection) => {
+           return  `Created connection between: ${connection.source} \
+                     and ${connection.target}`;
+        }
+    }
+};
+
 export function postConnection(connection: Connection, callback: (any) => void) {
     return async function (dispatch: Dispatch, getState: State) {
 
         try {
             // for updating the source assets
             // connected to list
-            const {assets} = getState();
 
             const response = await
                 GwClientApi.postConnection(connection);
 
+            // after response is resolved store
+            // the received data as storedConnection
             const storedConnection = response.data;
 
-            // the source asset needs to know about the new connection
-            const assetToUpdate = assets.filter(
-                asset => asset.name === storedConnection.source)[0];
+            // update the state and sync related assets
+            dispatch(postConnectionSuccess(storedConnection));
+            dispatch(assetActions.syncConnectionSourceAsset(storedConnection));
+            dispatch(appActions.setInfoMessage(infoMessages.post.success(connection)));
 
-            // make a updated version of the
-            // updated asset
-            const updatedAsset = {
-                ...assetToUpdate,
-                connected_to: [
-                    ...assetToUpdate.connected_to,
-                    storedConnection.target
-                ]
-            };
-
-            dispatch(
-                appActions.setInfoMessage(
-                    `Created connection between: ${connection.source} \
-                     and ${connection.target}`));
-            dispatch(postConnectionSuccess(connection));
-            dispatch(assetActions.updateAsset(updatedAsset));
-
-            // if callback provided, run it with response data
+            // finally if caller provided callback function,
+            // execute it with the response data as an argument
             callback ? callback(storedConnection) : null;
+
 
         } catch (err) {
 
@@ -96,8 +94,16 @@ export function postConnectionSuccess(connection) {
     return {type: ADD_CONNECTION, connection}
 }
 
-export function addConnection(connection){
-    return {type: ADD_CONNECTION, connection}
+export function addConnection(connection: Connection) {
+    return {type: ADD_CONNECTION, connection};
+}
+
+/**
+ *  Add a array of connections
+ *
+ */
+export function addConnections(connections: Array<Connection>) {
+    return {type: ADD_CONNECTIONS, connections};
 }
 
 
@@ -223,8 +229,69 @@ export function updateConnectionSuccess(connection) {
     return {type: UPDATE_CONNECTION, connection}
 }
 
+export function updateAssetConnections(asset: Asset) {
+    return function (dispatch: Dispatch, getState: State) {
+        console.group("updateAssetConnections");
+        console.info(asset);
+
+        let deleteList = [];
+        let createList = [];
+        let keepList = [];
+
+        // todo: refactor to a reducer
+        const c = getState()
+            .connections
+            .forEach(connection => {
+                const assetIsSource = asset.name === connection.source;
+                const targetIsConnectedTo = _.includes(asset.connected_to, connection.target);
+
+                if (assetIsSource && targetIsConnectedTo) {
+                    // connection exists
+                    keepList.push(connection.target);
+
+                } else if (assetIsSource && !targetIsConnectedTo) {
+                    // connection should be deleted
+                    deleteList.push(connection);
+                }
+            });
+
+
+        asset.connected_to.forEach(target => {
+            if (!_.includes(keepList, target)) {
+                createList.push({
+                    source: asset.name,
+                    target: target,
+                    tags: [],
+                    description: "",
+                    targetArrow: true,
+                    sourceArrow: false,
+                    edgeLabel: ""
+                });
+            }
+        })
+
+        console.info("deletelist");
+        console.info(deleteList);
+        console.info("createList");
+        console.info(createList);
+        console.info("keeplist");
+        console.info(keepList);
+
+        dispatch(deleteConnections(deleteList));
+        dispatch(addConnections(createList));
+        console.groupEnd();
+
+    }
+}
+
+export function deleteConnections(connections){
+    return {type:DELETE_CONNECTIONS, connections};
+}
+
 // public namespace
 export default {
     addConnection: addConnection,
-    postConnection: postConnection
+    addConnections: addConnections,
+    postConnection: postConnection,
+    updateAssetConnections: updateAssetConnections
 }

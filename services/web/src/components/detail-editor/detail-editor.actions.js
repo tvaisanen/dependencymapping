@@ -15,6 +15,8 @@ import * as activeDetailActions from '../../store/active-detail/active-detail.ac
 import * as appActions from '../../actions/app.actions';
 import * as dependencyMapHelpers from "../../common/dependency-map.helpers";
 
+import formValidators from '../../store/detail-form/form.validators';
+
 
 export function closeFormAndSetActiveDetail(activeDetail) {
     /**
@@ -136,6 +138,17 @@ const getForm = {
     }),
 };
 
+
+
+function collectFormData(detailForm){
+        console.info(detailForm)
+        return {
+            form: getForm[detailForm.formType](detailForm),
+            formType: detailForm.formType,
+            method:detailForm.edit ? 'put' : 'post',
+        };
+}
+
 export function onSave(): Dispatch {
     /**
      *  onSave click handler action for
@@ -156,15 +169,35 @@ export function onSave(): Dispatch {
         // clear detail form errors
         dispatch(detailFormActions.clearErrors());
 
-        const {detailForm} = getState();
-        const {formType} = detailForm;
+        const { detailForm } = getState();
+        const { form, formType, method } = collectFormData(detailForm);
 
+        const {
+            formIsValid,
+            fieldErrors
+        } = formValidators[formType](form);
+
+        alert(JSON.stringify({formIsValid, fieldErrors}))
+
+        if (!formIsValid) {
+           alert('form needs to be valid')
+           console.info(fieldErrors)
+            dispatch(appActions.setInfoMessage("INVALID FORM"));
+           dispatch(detailFormActions.setErrors(fieldErrors));
+           return
+        }
         // get the right action and wrap with dispatch
         const formActions = dispatchFormActions(dispatch);
-        const form = getForm[formType](detailForm);
 
         // if edit use put if new use post
-        const method = detailForm.edit ? 'put' : 'post';
+
+        console.group("Validate form here first!");
+        console.info(form);
+        console.info(formType);
+        console.info(method);
+        console.groupEnd();
+
+
 
         try {
             /**
@@ -260,7 +293,6 @@ export function onDelete(): Dispatch {
                 : name
             ;
 
-            alert(JSON.stringify(args))
 
 
             try {

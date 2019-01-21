@@ -243,45 +243,50 @@ export function updateNodeParent(cy, asset: Asset): void {
     el.move({parent: asset.group === "none" ? null : asset.group});
 }
 
-export function activeMappingAssetUpdateActions(cy, asset: Asset) {
+export function activeMappingAssetUpdateActions(asset: Asset) {
     return function (dispatch, getState) {
+        try {
+            const {connections, graph} = getState();
 
-        console.info(dispatch);
-        console.group(`activeMappingAssetUpdateActions(${asset.name})`);
-        console.info(asset);
+            // filter the edges so that there's no edges created
+            // to nonexistent nodes
+            const updatedEdgesFromThese = connections
+                .filter(c => {
+                    // console.info(`${c.source}_to_${c.target}`)
+                    // console.info(`${c.source} === ${asset.name}`);
+                    return (
+                        c.source === asset.name &&
+                        graph.getElementById(c.target).isNode()
+                    );
+                });
 
-        const { connections } = getState();
+            const edges = updatedEdgesFromThese.map(c => getEdgeFromConnection(c));
 
-        const updatedEdgesFromThese = connections
-            .filter(c => {
-                console.info(`${c.source}_to_${c.target}`)
-                console.info(`${c.source} === ${asset.name}`);
-                return c.source === asset.name
-            });
-
-        const edges = updatedEdgesFromThese.map(c => getEdgeFromConnection(c));
-
-        console.info(updatedEdgesFromThese);
-        console.info(edges);
-        console.groupEnd();
-
-        updateNodeParent(cy, (asset: Asset));
-        updateShapeAndColor(cy, (asset: Asset));
-        removeResourceEdges(cy, (asset: Asset));
-        cy.add(edges);
-        //drawResourceEdges(cy, (asset: Asset));
+            updateNodeParent(graph, (asset: Asset));
+            updateShapeAndColor(graph, (asset: Asset));
+            removeResourceEdges(graph, (asset: Asset));
+            graph.add(edges);
+            //drawResourceEdges(cy, (asset: Asset));
+        } catch (err) {
+            console.error(err)
+            alert('activeMappingAsset')
+        }
     }
 }
 
-export function updateConnectionEdge(connection){
-   return function(dispatch, getState){
-       const { graph } = getState();
-       const updatedEdge = getEdgeFromConnection(connection);
-       const id = getEdgeId(connection.source, connection.target);
-       const el = graph.getElementById(id);
-       graph.remove(el);
-       graph.add(updatedEdge);
-   }
+export function updateConnectionEdge(connection) {
+    return function (dispatch, getState) {
+        const {graph} = getState();
+        const updatedEdge = getEdgeFromConnection(connection);
+        const id = getEdgeId(connection.source, connection.target);
+        const el = graph.getElementById(id);
+        try {
+            graph.remove(el);
+            graph.add(updatedEdge);
+        } catch (err) {
+            console.warn(err)
+        }
+    }
 }
 
 export function updateShapeAndColor(cy, asset: Asset) {

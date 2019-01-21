@@ -21,6 +21,7 @@ services:
           - 3000:3000
         volumes:
           - ./services/express-server/src/:/usr/local/src/express/src
+          - ./services/express-server/test/:/usr/local/src/express/test
         env_file:
          - .env-development
         networks:

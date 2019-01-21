@@ -86,7 +86,6 @@ const NodeGroupSelection = (props) => {
                 selected={option === props.selected}
                 onClick={(e)=>{
                     e.preventDefault();
-                    alert('here')
                 }}
                 value={option}
             >{option}</option>))}

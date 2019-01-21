@@ -1,0 +1,14 @@
+site_name: My Docs
+
+nav:
+  - Home: index.md
+  - Assets: assets/index.md
+  - Connections: connections/index.md
+  - Mappings: mappings/index.md
+  - Tags: tags/index.md
+
+theme:
+  name: readthedocs
+  highlightjs: true
+  hljs_languages:
+    - javascript

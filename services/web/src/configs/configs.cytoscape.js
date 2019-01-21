@@ -10,6 +10,11 @@ export const graphStyle = [
         style: {
             'content': 'data(label)',
             'text-rotation': 'autorotate',
+            'text-background-color': '#fafafa',
+            'text-background-opacity': '0.9',
+            'text-border-color': "#232323",
+            'text-border-opacity': "0.5",
+            'letter-spacing': "0.05rem",
             'color': '#fafafa',
             'text-outline-color': '#232323',
             'text-outline-width': '1px',

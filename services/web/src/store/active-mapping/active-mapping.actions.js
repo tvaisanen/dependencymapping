@@ -7,8 +7,7 @@ import type {
     ActiveMappingAction
 } from "./active-mapping.types";
 
-export
-function setActiveMapping(mapping: ActiveMappingState)
+export function setActiveMapping(mapping: ActiveMappingState)
     : ActiveMappingAction {
     return {type: types.SET_ACTIVE_MAPPING, mapping}
 }
@@ -44,7 +43,7 @@ export function addResourceToActiveMapping(asset) {
 
         const {activeMapping, assets, graph} = getState();
 
-        if (activeMapping.name === "no selection"){
+        if (activeMapping.name === "no selection") {
             alert("Create or select a mapping first, before adding assets.")
             return;
         }
@@ -161,18 +160,8 @@ export function removeResourceFromActiveMapping(asset) {
 
 function removeAsset(asset) {
     return {type: types.REMOVE_ACTIVE_MAPPING_ASSET, asset};
-
 }
 
-
-function createGroupNode(name) {
-    return {
-        group: "nodes",
-        data: {
-            id: name,
-        }
-    }
-}
 
 export function groupByTag(tagName) {
     return function (dispatch, getState) {
@@ -245,6 +234,21 @@ export function ungroupByTag(tagName) {
         }
 
         dispatch({type: types.UNGROUP_BY_TAG, tagName});
+    }
+}
+
+export function updateAssetState(asset: Asset) {
+    /**
+     If asset is included in active mapping,
+     update the asset related elements in
+     the graph
+     */
+    return function (dispatch, getState) {
+        const {activeMapping} = getState();
+
+        if (_.includes(activeMapping.assets, asset.name)) {
+            dispatch(graphHelpers.activeMappingAssetUpdateActions(asset));
+        }
     }
 }
 

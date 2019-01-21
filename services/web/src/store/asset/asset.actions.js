@@ -1,20 +1,22 @@
 //@flow
-
 import GwClientApi from '../../api/gwClientApi';
 import * as types from './asset.action-types';
-import * as graphHelpers from '../../common/graph-helpers';
-import * as _ from 'lodash';
 import * as apiHelpers from '../../common/api.helpers';
 import * as appActions from '../../actions/app.actions';
 import * as mappingActions from '../mapping/mapping.actions';
+import * as activeMappingActions from '../active-mapping/active-mapping.actions';
 import * as detailFormActions from '../detail-form/detail-form.actions';
 import {connectionActions} from '../actions';
 
-import { default as RF } from '../../common/resource.factory';
+import { parseHALResponseData } from "../response-parser";
+
+import { ASSET } from '../../constants/';
 
 import type {Asset, Dispatch, GetState} from "../types";
 
 type AssetAction = { promise: Promise<any>, resolveCallback: (asset: Asset) => void }
+
+/************** POST ******************/
 
 export function postAsset(asset: Asset, callback: (any) => void): Dispatch {
 
@@ -22,38 +24,14 @@ export function postAsset(asset: Asset, callback: (any) => void): Dispatch {
 
         try {
 
-            const response = await
-                GwClientApi.postAsset(asset);
-
-            const storedAsset: Asset = response.data;
+            const response = await GwClientApi.postAsset(asset);
+            const storedAsset: Asset = parseHALResponseData(ASSET, response.data);
 
             // resolving a request is done in form container
-            dispatch(
-                appActions
-                    .setInfoMessage(
-                        `Created asset: ${storedAsset.name}`
-                    )
-            );
-
             dispatch(postAssetSuccess(storedAsset));
 
-
-            // create connections after creating the asset
-            // todo: create postConnections
-
-            const connections = storedAsset
-                .connected_to
-                .map(target => (
-                    RF.newConnection({
-                        source: storedAsset.name,
-                        target: target
-                    }))
-                );
-
-            connections.forEach(
-                connection => dispatch(connectionActions.addConnection(connection))
-            );
-
+            dispatch(appActions.setInfoMessage(`Created asset: ${storedAsset.name}`));
+            dispatch(connectionActions.updateAssetConnections(storedAsset));
 
             // execute callback from caller if there's one
             callback ? callback(storedAsset) : null;
@@ -84,67 +62,23 @@ export function postAssetSuccess(asset: Asset) {
     return {type: types.POST_ASSET_SUCCESS, asset}
 }
 
+/************** UPDATE ******************/
+
 export function updateAsset(asset: Asset, callback: (any) => void): Dispatch {
 
     // updates asset/resource to the database
     // and refreshes the nodes edges in the graph
-    return async function (dispatch: Dispatch, getState: GetState): AssetAction {
+    return async function (dispatch: Dispatch): AssetAction {
 
         try {
-            const {activeMapping, connections, graph} = getState();
-
-            const activeMapAssets = activeMapping.assets;
-            const inActiveMap = _.includes(activeMapAssets, asset.name);
 
             const response = await GwClientApi.putAsset(asset);
             const updatedAsset = response.data;
 
-            // set the redux store state
-            dispatch(
-                updateAssetSuccess({asset: asset}));
-
-            // add info message to the top bar
-            dispatch(
-                appActions
-                    .setInfoMessage(
-                        `Updated asset: ${asset.name}`));
-
-            /**
-             * check if updated asset is in the active mapping
-             * if the status of asset group has been changed
-             * the node need to be moved to the appropriate parent group
-             */
-
-            if (inActiveMap) {
-                dispatch(graphHelpers
-                    .activeMappingAssetUpdateActions(
-                        graph, (asset: Asset)
-                    )
-                );
-            }
-
-            // connections where updated as source
-            const updatedAssetsConnections = connections
-                .filter(connection => (
-                    connection.source === asset.name
-                ));
-
-            // todo: check no duplicates
-            const connectionsToCreate = updatedAsset
-                .connected_to
-                .filter(target => (
-                     !_.includes(updatedAssetsConnections, {target})
-                ))
-                .map(target => ({source: updatedAsset.name, target: target}));
-
-            console.group("asset.actions chekkaa connections");
-            console.info(updatedAssetsConnections);
-            console.info(connectionsToCreate);
-            console.groupEnd();
-
-            connectionsToCreate.forEach(
-                connection => dispatch(connectionActions.addConnection(connection))
-            );
+            dispatch(updateAssetSuccess({asset: asset}));
+            dispatch(appActions.setInfoMessage(`Updated asset: ${asset.name}`));
+            dispatch(connectionActions.updateAssetConnections(updatedAsset));
+            dispatch(activeMappingActions.updateAssetState(updatedAsset));
 
             callback ? callback(updatedAsset) : null;
 
@@ -164,81 +98,13 @@ export function deleteAsset(name: string, callback: (any) => void) {
 
     return async function (dispatch: Dispatch, getState: GetState) {
 
-        const {assets, mappings} = getState();
+        await GwClientApi.deleteAsset(name);
 
-        const response = await GwClientApi.deleteAsset(name);
-        // resolving a request is done in form container
-
-
-        // todo: refactor to a function to appropriate location
-        mappings.forEach(mapping => {
-
-            let update = false;
-
-            const filteredAssets = mapping.assets.filter(asset => {
-                console.info(`${asset} === ${name}`);
-                const deletedFound = asset === name;
-                if (!update && deletedFound) {
-                    update = deletedFound;
-                }
-                return !deletedFound;
-            });
-
-            if (update) {
-                try {
-                    const {
-                        promise,
-                        resolveCallback
-                    } = dispatch(mappingActions.updateMapping({
-                        ...mapping,
-                        assets: filteredAssets
-                    }));
-                    promise.then(response => {
-                        resolveCallback(response.data);
-                    });
-                } catch (err) {
-                    console.warn(err)
-                }
-            }
-
-        });
-
-
-        // todo: refactor to appropriate location
-        assets.forEach(asset => {
-            console.group(`check if ${asset.name} needs to be deleted`)
-            let update = false;
-            const filteredAssets = asset.connected_to.filter(a => {
-                console.info(`${a} === ${name}`);
-                const deletedFound = a === name;
-                if (!update && deletedFound) {
-                    update = deletedFound;
-                    console.info(`asset: ${a} needs to be udpated`)
-                }
-                return !deletedFound;
-            });
-            if (update) {
-                try {
-                    const {
-                        promise,
-                        resolveCallback
-                    } = dispatch(updateAsset({
-                        ...asset,
-                        connected_to: filteredAssets
-                    }));
-                    promise.then(response => {
-                        resolveCallback(response.data);
-                    });
-                } catch (err) {
-                    console.warn(err)
-                }
-            }
-            console.groupEnd();
-
-        });
-
-        dispatch(appActions.setInfoMessage(`Deleted asset: ${name}`));
         dispatch(deleteAssetSuccess(name));
+        dispatch(removeReferencesToDeletedAsset(name));
+        dispatch(mappingActions.removeDeletedAssetFromMappings(name));
+        dispatch(activeMappingActions.removeResourceFromActiveMapping({name}));
+        dispatch(appActions.setInfoMessage(`Deleted asset: ${name}`));
 
         // caller callback
         callback ? callback() : null;
@@ -252,6 +118,53 @@ export function deleteAssetSuccess(name: string) {
 
 /*********************************************** */
 
+function removeReferencesToDeletedAsset(assetName: string) {
+
+    return function (dispatch: Dispatch, getState: State): void {
+
+        const {assets} = getState();
+
+        assets.forEach(asset => {
+
+            // for debugging
+            // console.group(`check if ${asset.name} needs to be deleted`)
+
+            let update = false;
+
+            const filteredAssets = asset.connected_to.filter(a => {
+
+                // console.debug(`${a} === ${assetName}`);
+
+                const deletedFound = a === assetName;
+
+                if (!update && deletedFound) {
+                    update = deletedFound;
+                    // console.debug(`asset: ${a} needs to be udpated`)
+                }
+
+                return !deletedFound;
+            });
+            if (update) {
+                try {
+                    const {promise, resolveCallback} = dispatch(
+                        updateAsset({
+                            ...asset,
+                            connected_to: filteredAssets
+                        })
+                    );
+
+                    promise.then(response => {
+                        resolveCallback(response.data);
+                    });
+                } catch (err) {
+                    console.warn(err)
+                }
+            }
+            //console.groupEnd();
+
+        });
+    }
+}
 
 export function loadAssetsSuccess(assets: Array<Asset>) {
     return {type: types.LOAD_ASSETS_SUCCESS, assets}
@@ -270,8 +183,9 @@ export function loadAllAssets() {
         promise.then(response => {
             // dispatch success message with the data
             // returned assets
+            const parsedAssets = response.data.map(asset => parseHALResponseData(ASSET, asset));
             dispatch(appActions.setInfoMessage("Loaded all resources successfully"));
-            dispatch(loadAssetsSuccess(response.data));
+            dispatch(loadAssetsSuccess(parsedAssets));
 
         }).catch(error => {
             if (error.message && error.message === "Network Error") {
@@ -289,4 +203,33 @@ export function loadAllAssets() {
 
 export function addAsset(asset: Asset) {
     return {type: types.ADD_ASSET, asset}
+}
+
+export function syncConnectionSourceAsset(connection: Connection) {
+    /**
+     Add a target asset.name to connected_to list
+     */
+
+    return function (dispatch: Dispatch, getState: State): void {
+
+        // assets keep track of the target connections
+        // so if the connection is created separately
+        // from the asset form. The source assets
+        // connected_to list need to be updated
+        const assetToUpdate = getState().assets.filter(
+            asset => asset.name === connection.source
+        )[0];
+
+        // create updated version from the asset
+        // with the new connection target pointer
+        const updatedAsset = {
+            ...assetToUpdate,
+            connected_to: [
+                ...assetToUpdate.connected_to,
+                connection.target
+            ]
+        };
+
+        dispatch(updateAsset(updatedAsset));
+    }
 }

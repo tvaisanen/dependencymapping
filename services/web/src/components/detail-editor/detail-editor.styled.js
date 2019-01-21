@@ -77,5 +77,6 @@ export const Label = styled.span`
     font-size: small;
     padding-right: 8px;
     min-width: 40px;
+    color: ${p=>p.color};
 `;
 

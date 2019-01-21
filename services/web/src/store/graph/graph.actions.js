@@ -104,7 +104,6 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                     dispatch(setEventHook({
                         hook: "onNodeClick",
                         callback: (assetName: string) => {
-                            alert(`${assetToGroup.name} to ${JSON.stringify(assetName)}`);
                             const updatedAsset = {
                                 ...assetToGroup,
                                 group: assetName
