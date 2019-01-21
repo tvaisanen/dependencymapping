@@ -24,7 +24,8 @@ type Props = {
     selected: ASSET | CONNECTION | TAG,
     //  todo: specify the following
     activeDetail: any,
-    setActiveDetail: (any) => void
+    setActiveDetail: (any) => void,
+    typeToItemsMap: any,
 }
 
 type State = {
