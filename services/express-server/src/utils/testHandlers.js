@@ -1,4 +1,4 @@
-const { Asset, Connection, Tag, Mapping } = require('../models');
+const {Asset, Connection, Tag, Mapping} = require('../models');
 
 
 // TEST DATA
@@ -45,13 +45,28 @@ async function loadDataToDb() {
     })
 }
 
-async function clearDB () {
-    await Asset.collection.drop();
-    await Connection.collection.drop();
-    await Tag.collection.drop();
-    await Mapping.collection.drop();
-}
+async function clearDB() {
+    try {
+        await Asset.collection.drop();
+    } catch (e) {
+    }
+    try {
+        
+        await Connection.collection.drop();
 
+    } catch (e) {
+    }
+    try {
+        await Tag.collection.drop();
+
+    } catch (e) {
+    }
+    try {
+        await Mapping.collection.drop();
+
+    } catch (e) {
+    }
+}
 
 
 module.exports = {

@@ -8,7 +8,6 @@ const DB_NAME    = process.env.DB_NAME    || "test";
 
 function initDatabaseConnection() {
 
-
     console.log("initDatabaseConnection");
     console.log(MONGO_PATH);
     console.log(MONGO_PORT);

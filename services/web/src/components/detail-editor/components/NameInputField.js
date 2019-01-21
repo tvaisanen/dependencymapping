@@ -23,7 +23,6 @@ const Input = styled.input`
 `;
 
 const NameInputField = (props) => {
-    console.info(props)
     return (
         <Container>
             {props.error ?

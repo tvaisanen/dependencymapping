@@ -133,7 +133,6 @@ export const TagList = (props: ResourceListProps) => (
 
 export const ResourceList = (props: ResourceListProps) => (
     <ListContainer>
-        {console.info(props)}
         <AssetList      {...props}/>
         <ConnectionList {...props}/>
         <TagList        {...props}/>

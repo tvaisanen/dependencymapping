@@ -231,8 +231,7 @@ export function updateConnectionSuccess(connection) {
 
 export function updateAssetConnections(asset: Asset) {
     return function (dispatch: Dispatch, getState: State) {
-        console.group("updateAssetConnections");
-        console.info(asset);
+
 
         let deleteList = [];
         let createList = [];
@@ -269,17 +268,18 @@ export function updateAssetConnections(asset: Asset) {
                 });
             }
         })
-
-        console.info("deletelist");
-        console.info(deleteList);
-        console.info("createList");
-        console.info(createList);
-        console.info("keeplist");
-        console.info(keepList);
+        // console.group("updateAssetConnections");
+        // console.debug(asset);
+        // console.debug("deletelist");
+        // console.debug(deleteList);
+        // console.debug("createList");
+        // console.debug(createList);
+        // console.debug("keeplist");
+        // console.debug(keepList);
+        // console.groupEnd();
 
         dispatch(deleteConnections(deleteList));
         dispatch(addConnections(createList));
-        console.groupEnd();
 
     }
 }
