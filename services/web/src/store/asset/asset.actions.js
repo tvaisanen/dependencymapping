@@ -8,7 +8,9 @@ import * as apiHelpers from '../../common/api.helpers';
 import * as appActions from '../../actions/app.actions';
 import * as mappingActions from '../mapping/mapping.actions';
 import * as detailFormActions from '../detail-form/detail-form.actions';
-import { connectionActions } from '../actions';
+import {connectionActions} from '../actions';
+
+import { default as RF } from '../../common/resource.factory';
 
 import type {Asset, Dispatch, GetState} from "../types";
 
@@ -41,7 +43,12 @@ export function postAsset(asset: Asset, callback: (any) => void): Dispatch {
 
             const connections = storedAsset
                 .connected_to
-                .map(target => ({source: storedAsset.name, target: target}));
+                .map(target => (
+                    RF.newConnection({
+                        source: storedAsset.name,
+                        target: target
+                    }))
+                );
 
             connections.forEach(
                 connection => dispatch(connectionActions.addConnection(connection))
@@ -84,7 +91,11 @@ export function updateAsset(asset: Asset, callback: (any) => void): Dispatch {
     return async function (dispatch: Dispatch, getState: GetState): AssetAction {
 
         try {
-            const {graph} = getState();
+            const {activeMapping, connections, graph} = getState();
+
+            const activeMapAssets = activeMapping.assets;
+            const inActiveMap = _.includes(activeMapAssets, asset.name);
+
             const response = await GwClientApi.putAsset(asset);
             const updatedAsset = response.data;
 
@@ -98,13 +109,13 @@ export function updateAsset(asset: Asset, callback: (any) => void): Dispatch {
                     .setInfoMessage(
                         `Updated asset: ${asset.name}`));
 
-            // check if updated asset is in the active mapping
-            const activeMapAssets = getState().activeMapping.assets;
-            const inActiveMap = _.includes(activeMapAssets, asset.name);
+            /**
+             * check if updated asset is in the active mapping
+             * if the status of asset group has been changed
+             * the node need to be moved to the appropriate parent group
+             */
 
             if (inActiveMap) {
-                // if the status of asset group has been changed
-                // the node need to be moved to the appropriate parent group
                 dispatch(graphHelpers
                     .activeMappingAssetUpdateActions(
                         graph, (asset: Asset)
@@ -112,15 +123,26 @@ export function updateAsset(asset: Asset, callback: (any) => void): Dispatch {
                 );
             }
 
+            // connections where updated as source
+            const updatedAssetsConnections = connections
+                .filter(connection => (
+                    connection.source === asset.name
+                ));
+
             // todo: check no duplicates
-            const connections = updatedAsset
+            const connectionsToCreate = updatedAsset
                 .connected_to
                 .filter(target => (
-                    true // filter here 
+                     !_.includes(updatedAssetsConnections, {target})
                 ))
                 .map(target => ({source: updatedAsset.name, target: target}));
 
-            connections.forEach(
+            console.group("asset.actions chekkaa connections");
+            console.info(updatedAssetsConnections);
+            console.info(connectionsToCreate);
+            console.groupEnd();
+
+            connectionsToCreate.forEach(
                 connection => dispatch(connectionActions.addConnection(connection))
             );
 
@@ -174,8 +196,7 @@ export function deleteAsset(name: string, callback: (any) => void) {
                     promise.then(response => {
                         resolveCallback(response.data);
                     });
-                }
-                catch (err) {
+                } catch (err) {
                     console.warn(err)
                 }
             }
@@ -208,8 +229,7 @@ export function deleteAsset(name: string, callback: (any) => void) {
                     promise.then(response => {
                         resolveCallback(response.data);
                     });
-                }
-                catch (err) {
+                } catch (err) {
                     console.warn(err)
                 }
             }
