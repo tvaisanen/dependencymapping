@@ -5,6 +5,7 @@ const hal = require('../utils/hal.utils');
 
 assetRouter.get('(/:id)?', (req, res) => {
 
+    console.log("\nWhy am i not returning data?\n");
     // if id provided, get detail
     if (req.params.id) {
         Asset.findOne({_id: req.params.id})
@@ -14,7 +15,7 @@ assetRouter.get('(/:id)?', (req, res) => {
                     res.status(404).json("Resource does not exist.")
                 } else {
                     const halAsset = hal.serializeAsset(req.headers.host, asset);
-                    res.status(200).json(asset);
+                    res.status(200).json(halAsset);
                 }
 
             }).catch(err => res.status(400).json(err));
@@ -23,12 +24,13 @@ assetRouter.get('(/:id)?', (req, res) => {
         // get list view and if query filter.
         Asset.find()
             .then(assets => {
+                console.log(assets.length)
                 const HALJSONAssets = assets
                     .map(
-                        asset => hal.serializeAsset(`${req.headers.host}`, asset)
+                        asset => hal.serializeAsset(req.headers.host, asset)
                     );
-
-                res.send(HALJSONAssets)
+                console.log(HALJSONAssets)
+                res.json(HALJSONAssets)
             })
             .catch(err => res.send(err));
     }

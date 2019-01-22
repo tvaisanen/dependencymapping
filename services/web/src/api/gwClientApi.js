@@ -1,8 +1,8 @@
 // @flow
 import axios from 'axios';
+import type { Asset, Connection, Mapping, Tag } from "../store/types";
 
-const API_HOST = process.env.REACT_APP_API_HOST;
-//const API_URL = `https://${API_HOST}/`;
+const API_HOST = process.env.REACT_APP_API_HOST || "localhost"
 const API_URL = `http://${API_HOST}/`;
 
 // const MAPPINGS_URL = `${API_URL}mappings/`;
@@ -65,6 +65,7 @@ function setAuthHeader() {
 
 class GwClientApi {
 
+    /*
     static login({email, username, password}) {
         return axios.post(LOGIN_URL, {
             username: username,
@@ -72,8 +73,12 @@ class GwClientApi {
             password: password,
         });
     }
+    */
 
     static resetModels () {
+        /** for development
+            reset the test data on refresh
+         */
         axios.get("http://localhost:3000/reset-models");
     }
 
@@ -89,7 +94,7 @@ class GwClientApi {
         return axios.get(CONNECTIONS_URL);
     }
 
-    static getConnectionsByAsset(assetName) {
+    static getConnectionsByAsset(assetName: string) {
         return axios.get(`${CONNECTIONS_URL}?source=${encodeURIComponent(assetName)}`)
     }
 
@@ -104,11 +109,11 @@ class GwClientApi {
 
     /********************** ConnectionMETHODS **********************/
 
-    static postConnection(connection: Connection): Promise<T> {
+    static postConnection(connection: Connection): Promise<any> {
         return axios.post(CONNECTIONS_URL, connection)
     }
 
-    static putConnection(connection: Connection): Promise<T> {
+    static putConnection(connection: Connection): Promise<any> {
         console.info(connection)
         const {source, target} = connection;
         const uri = connectionDetailUrl({source, target});
@@ -116,7 +121,7 @@ class GwClientApi {
         return axios.put(uri, connection);
     }
 
-    static deleteConnection(source: string, target:string): Promise<T> {
+    static deleteConnection(source: string, target:string): Promise<any> {
         const uri = connectionDetailUrl({source, target});
         return axios.delete(uri);
     }
@@ -125,11 +130,11 @@ class GwClientApi {
 
     /********************** MAPPING METHODS **********************/
 
-    static postMapping(mapping: Mapping): Promise<T> {
+    static postMapping(mapping: Mapping): Promise<any> {
         return axios.post(MAPPINGS_URL, mapping)
     }
 
-    static putMapping(mapping: Mapping): Promise<T> {
+    static putMapping(mapping: Mapping): Promise<any> {
         return axios.put(mappingsDetailUrl({name:mapping.name}),mapping);
     }
 
@@ -139,15 +144,15 @@ class GwClientApi {
 
     /** ***********************************************************/
 
-    static deleteAsset(name: string): Promise<T> {
+    static deleteAsset(name: string): Promise<any> {
         return axios.delete(resourceDetailUrl({name}));
     }
 
-    static postAsset(asset: Asset): Promise<T> {
+    static postAsset(asset: Asset): Promise<any> {
         return axios.post(RESOURCES_URL, asset);
     }
 
-    static putAsset(asset: Asset): Promise<T> {
+    static putAsset(asset: Asset): Promise<any> {
         console.groupCollapsed("putMapping(asset)");
         console.info(asset)
         console.groupEnd();
@@ -157,14 +162,13 @@ class GwClientApi {
         );
     }
 
-    static postTag({name, description}) {
-        return axios.post(TAGS_URL, {name, description})
+    static postTag(tag: Tag) {
+        return axios.post(TAGS_URL, tag)
     }
 
-    static putTag({name, description}) {
-        return axios.put(
-            tagDetailUrl({name}),
-            {name, description})
+    static putTag(tag: Tag) {
+        const path = tagDetailUrl(tag);
+        return axios.put(path, tag)
     }
 
     static deleteTag(name: string): Promise<any> {

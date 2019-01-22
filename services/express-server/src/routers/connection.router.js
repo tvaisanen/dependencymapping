@@ -1,6 +1,7 @@
 const express = require('express');
 const Connection = require('../models').Connection;
 const connectionRouter = express.Router();
+const hal = require('../utils/hal.utils');
 
 connectionRouter.get('(/:id)?', (req, res) => {
     if (req.query.source || req.query.target) {
@@ -19,7 +20,10 @@ connectionRouter.get('(/:id)?', (req, res) => {
 
     } else {
         Connection.find()
-            .then(tags => res.status(200).json(tags))
+            .then(connections => {
+                const HALConnections = connections.map(c => hal.serializeConnection(req.headers.host, c));
+                res.status(200).json(HALConnections)
+            })
             .catch(err => res.status(400).json(err));
     }
 });

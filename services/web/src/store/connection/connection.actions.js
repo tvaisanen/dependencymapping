@@ -3,6 +3,8 @@
 import GwClientApi from '../../api/gwClientApi';
 import * as _ from 'lodash';
 
+import { CONNECTION } from "../../constants";
+
 import type {
     Asset,
     Connection,
@@ -15,6 +17,7 @@ import * as assetActions from '../../store/asset/asset.actions';
 import * as apiHelpers from '../../common/api.helpers';
 import * as graphHelpers from '../../common/graph-helpers';
 
+import { parseHALResponseData } from "../response-parser";
 
 import {
     SET_CONNECTIONS,
@@ -36,7 +39,10 @@ export function loadAllConnections() {
         try {
 
             const response = await GwClientApi.getConnections();
-            const connections: Array<Connection> = response.data;
+            const connections: Array<Connection> = response
+                .data
+                .map(c =>
+                    parseHALResponseData(CONNECTION, c));
 
             dispatch(
                 appActions.setInfoMessage(
@@ -78,7 +84,7 @@ export function postConnection(connection: Connection, callback: (any) => void) 
 
             // after response is resolved store
             // the received data as storedConnection
-            const storedConnection = response.data;
+            const storedConnection = parseHALResponseData(CONNECTION, response.data);
 
             // update the state and sync related assets
             dispatch(postConnectionSuccess(storedConnection));

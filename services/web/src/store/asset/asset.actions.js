@@ -77,6 +77,7 @@ export function updateAsset(props: AssetAndOptionalCallback): Dispatch {
             const response = await GwClientApi.putAsset(asset);
             const updatedAsset = response.data;
 
+
             dispatch(updateAssetSuccess({asset: asset}));
             dispatch(appActions.setInfoMessage(`Updated asset: ${asset.name}`));
             dispatch(connectionActions.updateAssetConnections(updatedAsset));
@@ -85,7 +86,8 @@ export function updateAsset(props: AssetAndOptionalCallback): Dispatch {
             callback ? callback(updatedAsset) : null;
 
         } catch (err) {
-            throw new Error(`asset.actions.updateTag() :: ${err} `)
+            console.error(err)
+            throw new Error(`asset.actions.assetTag() \n:: ${err} `)
         }
     }
 }

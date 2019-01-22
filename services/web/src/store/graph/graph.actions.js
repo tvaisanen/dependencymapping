@@ -109,7 +109,7 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                                 group: assetName
                             };
 
-                            dispatch(assetActions.updateAsset(updatedAsset));
+                            dispatch(assetActions.updateAsset({asset: updatedAsset}));
                             dispatch(clearEventHook())
                             dispatch(appActions.setInfoMessage("grouping should be done."));
                         }
