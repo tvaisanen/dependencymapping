@@ -1,4 +1,4 @@
-import {ASSET, CONNECTION, TAG} from "../../constants";
+import {ASSET, CONNECTION, MAPPING, TAG} from "../../constants";
 import {
     parseHALResponseData
 } from "../response-parser";
@@ -129,6 +129,68 @@ it("Should parse HAL connection to Connection", () => {
     };
 
     const result = parseHALResponseData(CONNECTION, HALConnection);
+
+
+    expect(result).toEqual(expected);
+});
+
+
+const HALMapping = {
+    "__v": 0,
+    "_embedded": {
+        "assets": [
+            {
+                "href": "localhost:3000/asset/?name=TestPageOne",
+                "name": "TestPageOne"
+            },
+            {
+                "href": "localhost:3000/asset/?name=TestPageTwo",
+                "name": "TestPageTwo"
+            },
+            {
+                "href": "localhost:3000/asset/?name=TestPageThree",
+                "name": "TestPageThree"
+            }
+        ],
+        "tags": [
+            {
+                "href": "localhost:3000/tag/?name=TestPage",
+                "name": "TestPage"
+            },
+            {
+                "href": "localhost:3000/tag/?name=TestTag",
+                "name": "TestTag"
+            }
+        ]
+    },
+    "_id": "5c4712c3dc6f2e0064e79384",
+    "_links": {
+        "self": {
+            "href": "localhost:3000/mapping/5c4712c3dc6f2e0064e79384"
+        }
+    },
+    "description": "Describe TestMappingOne here.",
+    "name": "TestMappingOne",
+};
+
+it("Should parse HAL mapping to Mapping", () => {
+
+    const expected = {
+        "_id": "5c4712c3dc6f2e0064e79384",
+        "assets": [
+            "TestPageOne",
+            "TestPageTwo",
+            "TestPageThree"
+        ],
+        "description": "Describe TestMappingOne here.",
+        "name": "TestMappingOne",
+        "tags": [
+            "TestPage",
+            "TestTag"
+        ]
+    };
+
+    const result = parseHALResponseData(MAPPING, HALMapping);
 
 
     expect(result).toEqual(expected);

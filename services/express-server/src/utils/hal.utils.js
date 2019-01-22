@@ -88,9 +88,44 @@ function serializeConnection(host, resource) {
     }
 }
 
+function serializeMapping(host, resource) {
+
+    console.log(`serialize: ${resource.name}`)
+    console.log(resource)
+    try {
+        return {
+            _links: {
+                self: {
+                    // todo: use constants
+                    href: `${host}/mapping/${resource._id}`
+                }
+            },
+            _embedded: {
+                assets: [
+                    ...resource._doc.assets.map(asset => ({
+                        name: asset,
+                        href: `${host}/asset/?name=${encodeURI(asset)}`
+                    }))
+                ],
+                tags: [
+                    ...resource._doc.tags.map(tag => ({
+                        name: tag,
+                        href: `${host}/tag/?name=${encodeURI(tag)}`
+                    }))
+                ],
+            },
+            ...resource._doc
+        }
+
+    } catch (err) {
+        console.error(err)
+    }
+}
+
 
 module.exports = {
     serializeAsset,
     serializeConnection,
+    serializeMapping,
     serializeTag
 };

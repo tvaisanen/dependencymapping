@@ -1,7 +1,7 @@
-import {ASSET, CONNECTION, TAG} from "../constants";
+import {ASSET, CONNECTION, MAPPING, TAG} from "../constants";
 
 export function parseHALResponseData(resourceType, data) {
-    if (resourceType === CONNECTION) {
+    if (resourceType === MAPPING) {
         console.group("parseHALResponseData()");
         console.info(data);
         console.groupEnd()
@@ -13,6 +13,7 @@ export function parseHALResponseData(resourceType, data) {
 const HALResourceParser = {
     [ASSET]: parseHALAsset,
     [CONNECTION]: parseHALConnection,
+    [MAPPING]: parseHALMapping,
     [TAG]: parseTag,
 };
 
@@ -39,6 +40,16 @@ function parseHALConnection(data) {
         edgeLabel: data.edgeLabel,
         sourceArrow: data.sourceArrow,
         targetArrow: data.targetArrow,
+    }
+}
+
+function parseHALMapping(data) {
+    return {
+        _id: data._id,
+        name: data.name,
+        description: data.description,
+        assets: data._embedded.assets.map(o => o.name),
+        tags: data._embedded.tags.map(o => o.name),
     }
 }
 
