@@ -67,7 +67,6 @@ export function postAssetSuccess(asset: Asset) {
 
 //export function updateAsset(asset: Asset, callback: (any) => void): Dispatch {
 export function updateAsset(props: AssetAndOptionalCallback): Dispatch {
-
     // updates asset/resource to the database
     // and refreshes the nodes edges in the graph
     return async function (dispatch: Dispatch): Promise<any> {
@@ -124,14 +123,19 @@ export function deleteAssetSuccess(name: string) {
 
 function removeReferencesToDeletedAsset(assetName: string) {
 
+    /**
+     * When asset is deleted, all the pointers
+     * need to be cleaned. This function takes
+     * an asset name as a parameter and iterates
+     * through assets that have the deleted asset
+     * as target in asset.connected_to and clears
+     * the occurences.
+     */
     return function (dispatch: Dispatch, getState: State): void {
 
         const {assets} = getState();
 
         assets.forEach(asset => {
-
-            // for debugging
-            // console.group(`check if ${asset.name} needs to be deleted`)
 
             let update = false;
 
@@ -150,16 +154,14 @@ function removeReferencesToDeletedAsset(assetName: string) {
             });
             if (update) {
                 try {
-                    const {promise, resolveCallback} = dispatch(
-                        updateAsset({
+
+                    const updatedAsset = {
                             ...asset,
                             connected_to: filteredAssets
-                        })
-                    );
+                    };
 
-                    promise.then(response => {
-                        resolveCallback(response.data);
-                    });
+                    dispatch(updateAsset({asset: updatedAsset}));
+
                 } catch (err) {
                     console.warn(err)
                 }
