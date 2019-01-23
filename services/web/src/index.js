@@ -14,9 +14,11 @@ import apiClient from './api/gwClientApi';
 
 const store = configureStore();
 
-if (process.env.REACT_APP_ENV === "development"
-    && !process.env.REACT_APP_PERSIST_DATA){
-    apiClient.resetModels();
+if (
+    process.env.REACT_APP_ENV === "development"
+    && !process.env.REACT_APP_PERSIST_DATA
+){
+    const promise = apiClient.resetModels();
 }
 
 // store.dispatch(storeActions.loginSuccess(auth));

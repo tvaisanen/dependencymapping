@@ -1,6 +1,8 @@
 // @flow
 import axios from 'axios';
-import type { Asset, Connection, Mapping, Tag } from "../store/types";
+import type {Asset, Connection, Mapping, Tag} from "../store/types";
+
+import {parsers} from "../store/response-parser";
 
 const API_HOST = process.env.REACT_APP_API_HOST || "localhost"
 const API_URL = `http://${API_HOST}/`;
@@ -16,6 +18,7 @@ const RESOURCES_URL = `${API_URL}asset/`;
 const ASSET_GROUPS_URL = `${API_URL}asset-group/`;
 
 const LOGIN_URL = `${API_URL}rest-auth/login/`;
+
 
 console.group("Api client config");
 console.info(`api host: ${API_HOST}`);
@@ -37,57 +40,91 @@ function resourceDetailUrl({name}) {
     return `${RESOURCES_URL}${encodeURI(name)}/`;
 }
 
-//;
-//axios.get('https://something.com/foo', { httpsAgent: agent });
 
-//console.group("Process ENVIRONMENT");
-/*
-let agent;
-if (process.env.NODE_ENV === "development") {
-    console.info("set TLS :: rejectUnauthorized = false");
-    agent = new https.Agent({
-        rejectUnauthorized: false
-    });
-} else {
-    agent = new https.Agent();
+class ParserConfig {
+
+    constructor(resourceType) {
+        this.test = () => console.info(this.data);
+        this.parseResponseData = parsers.hal[resourceType]
+    }
 }
-*/
-// console.info(process.env);
-// console.groupEnd();
 
-function setAuthHeader() {
-    /*
-    const token = JSON.parse(localStorage.getItem('auth')).key;
+function createApiResponse(promise, config) {
+    return new Promise((resolve, reject) => {
+        promise
+            .then(response => {
+                Object.setPrototypeOf(response, new ApiResponse(response, config));
 
-    axios.defaults.headers.common['Authorization'] =  `Token ${token}`;
-    */
+                console.groupCollapsed(
+                    `  %cOK %cAPI::${response.config.method}:${response.config.url}`,
+                    "color: green",
+                    "color:black"
+                );
+
+                console.info(response);
+                console.groupEnd();
+
+                resolve(response);
+            })
+            .catch(err => {
+
+
+                console.info(err)
+                console.info(Object.keys(err));
+                console.groupCollapsed(`%cERROR %cAPI::${err.response}`, "color: red", "color:black");
+                reject(err)
+            })
+            .finally();
+    })
 }
+
+class ApiResponse {
+    constructor(serverResponse, config) {
+
+        this.config = config;
+
+        this.parseResponseContent = () => {
+            //? all actions migrated to use this?
+            //  console.groupCollapsed("parserResponseData");
+            //  console.info(serverResponse.data);
+            //  console.groupEnd();
+            //  if collection -> if response is an array
+            if (Array.isArray(serverResponse.data)) {
+                return serverResponse
+                    .data
+                    .map(o =>
+                        config.parseResponseData(o))
+
+            } else {
+                // response.data.map(:w
+                // o => config.parseResponseData(o))
+                // if detail -> if response is an object
+                return config.parseResponseData(serverResponse.data);
+            }
+
+
+        };
+
+        this.test = config.test;
+    }
+}
+
 
 class GwClientApi {
 
-    /*
-    static login({email, username, password}) {
-        return axios.post(LOGIN_URL, {
-            username: username,
-            email: email,
-            password: password,
-        });
-    }
-    */
-
-    static resetModels () {
+    static resetModels() {
         /** for development
-            reset the test data on refresh
+         reset the test data on refresh
          */
-        axios.get("http://localhost:3000/reset-models");
+        return new createApiResponse(
+            axios.get("http://localhost:3000/reset-models"),
+            new ParserConfig("ASSET")
+        );
     }
 
     // todo: refactor to getMappings
     static getGraphs() {
-        console.log(MAPPINGS_URL);
-        return axios.get(MAPPINGS_URL, {
-            Authorization: setAuthHeader()
-        });
+        return axios.get(MAPPINGS_URL);
     }
 
     static getConnections() {
@@ -99,7 +136,10 @@ class GwClientApi {
     }
 
     static getAssets() {
-        return axios.get(RESOURCES_URL);
+        return createApiResponse(
+            axios.get(RESOURCES_URL),
+            new ParserConfig("ASSET")
+        );
     }
 
     static getTags() {
@@ -121,7 +161,7 @@ class GwClientApi {
         return axios.put(uri, connection);
     }
 
-    static deleteConnection(source: string, target:string): Promise<any> {
+    static deleteConnection(source: string, target: string): Promise<any> {
         const uri = connectionDetailUrl({source, target});
         return axios.delete(uri);
     }
@@ -135,7 +175,7 @@ class GwClientApi {
     }
 
     static putMapping(mapping: Mapping): Promise<any> {
-        return axios.put(mappingsDetailUrl({name:mapping.name}),mapping);
+        return axios.put(mappingsDetailUrl({name: mapping.name}), mapping);
     }
 
     static deleteMapping(name: string) {

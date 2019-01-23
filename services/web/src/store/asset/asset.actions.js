@@ -181,19 +181,18 @@ export function loadAssetSuccess(asset: Asset) {
 }
 
 export function loadAllAssets() {
-    return function (dispatch: Dispatch) {
+    return async function (dispatch: Dispatch) {
 
         // get all assets from the api
-        const promise = GwClientApi.getAssets();
+        const response = await GwClientApi.getAssets();
 
-        promise.then(response => {
+        try {
             // dispatch success message with the data
-            // returned assets
-            const parsedAssets = response.data.map(asset => parseHALResponseData(ASSET, asset));
+            const parsedAssets = response.parseResponseContent();
             dispatch(appActions.setInfoMessage("Loaded all resources successfully"));
             dispatch(loadAssetsSuccess(parsedAssets));
 
-        }).catch(error => {
+        } catch (error) {
             if (error.message && error.message === "Network Error") {
                 dispatch(apiHelpers.handleNetworkError(error));
             } else {
@@ -202,7 +201,7 @@ export function loadAllAssets() {
                 console.groupEnd();
             }
 
-        });
+        }
     }
 }
 

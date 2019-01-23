@@ -130,7 +130,6 @@ export function loadAllMappings(auth) {
         const promise = GwClientApi.getGraphs({auth});
 
         promise.then(response => {
-            console.info("loadAllMappings.then")
             dispatch(appActions.setInfoMessage("Loaded all mappings successfully"));
             dispatch(loadMappingsSuccess(response.data))
         }).catch(error => {

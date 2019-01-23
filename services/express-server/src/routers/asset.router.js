@@ -3,6 +3,55 @@ const Asset = require('../models').Asset;
 const assetRouter = express.Router();
 const hal = require('../utils/hal.utils');
 
+assetRouter.get('/', (req, res) => {
+        // get list view and if query filter.
+        Asset.find()
+            .then(assets => {
+                console.log(assets.length)
+                const HALJSONAssets = assets
+                    .map(
+                        asset => hal.serializeAsset(req.headers.host, asset)
+                    );
+                console.log(HALJSONAssets)
+                res.json(HALJSONAssets)
+            })
+            .catch(err => res.send(err));
+
+});
+
+assetRouter.post('/', (req, res) => {
+
+    const asset = new Asset(req.body);
+
+    if (!asset.name) {
+        res.status(400).json({error: "name is required field"})
+
+    } else {
+
+        Asset.findOne({name: asset.name})
+            .then(existing => {
+                if (existing) {
+                    res.status(409).json({
+                        error: `Asset ${existing.name} already exists.`,
+                        pathToExisting: `/asset/${existing.name}`
+                    });
+                } else {
+                    console.log('here')
+                    asset.save().then(saved => {
+                        console.log(`saved: ${saved.name}`);
+                        const halAsset = hal.serializeAsset(`${req.headers.host}`, saved);
+                        res.status(201).json(halAsset);
+                    }).catch(err => {
+                        console.log(err);
+                    })
+                }
+            })
+            .catch(err => {
+                console.log(`err: ${err}`)
+            });
+    }
+});
+
 assetRouter.get('(/:id)?', (req, res) => {
 
     console.log("\nWhy am i not returning data?\n");
@@ -21,18 +70,7 @@ assetRouter.get('(/:id)?', (req, res) => {
             }).catch(err => res.status(400).json(err));
 
     } else {
-        // get list view and if query filter.
-        Asset.find()
-            .then(assets => {
-                console.log(assets.length)
-                const HALJSONAssets = assets
-                    .map(
-                        asset => hal.serializeAsset(req.headers.host, asset)
-                    );
-                console.log(HALJSONAssets)
-                res.json(HALJSONAssets)
-            })
-            .catch(err => res.send(err));
+
     }
 
 });
