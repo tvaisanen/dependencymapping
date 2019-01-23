@@ -23,7 +23,9 @@ assetRouter.post('/', (req, res) => {
 
     const asset = new Asset(req.body);
 
+
     if (!asset.name) {
+        console.log(asset)
         res.status(400).json({error: "name is required field"})
 
     } else {
@@ -117,12 +119,11 @@ assetRouter.put('(/:id)?', (req, res) => {
     console.log(query);
 
     Asset.update(query, req.body)
+
         .then(ok => {
-            console.log("HERE")
-            console.log(ok);
             Asset.findOne(query)
                 .then(asset => {
-                    console.log(asset);
+                    // ! HAL
                     res.status(200).json(asset);
                 })
                 .catch(err => res.status(400).json(err))

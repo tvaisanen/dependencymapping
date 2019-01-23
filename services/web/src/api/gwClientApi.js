@@ -1,7 +1,7 @@
 // @flow
 import axios from 'axios';
 import type {Asset, Connection, Mapping, Tag} from "../store/types";
-
+import { ASSET } from "../constants";
 import {parsers} from "../store/response-parser";
 
 const API_HOST = process.env.REACT_APP_API_HOST || "localhost"
@@ -24,6 +24,8 @@ console.group("Api client config");
 console.info(`api host: ${API_HOST}`);
 console.groupEnd();
 
+// * refactor to utils.js or something
+
 function tagDetailUrl({name}) {
     return `${TAGS_URL}${encodeURI(name)}/`;
 }
@@ -39,6 +41,8 @@ function mappingsDetailUrl({name}) {
 function resourceDetailUrl({name}) {
     return `${RESOURCES_URL}${encodeURI(name)}/`;
 }
+
+/* ****************************************** */
 
 
 class ParserConfig {
@@ -56,7 +60,7 @@ function createApiResponse(promise, config) {
                 Object.setPrototypeOf(response, new ApiResponse(response, config));
 
                 console.groupCollapsed(
-                    `  %cOK %cAPI::${response.config.method}:${response.config.url}`,
+                    `  %cOK\t%cAPI::${response.config.method}:${response.config.url}`,
                     "color: green",
                     "color:black"
                 );
@@ -69,9 +73,14 @@ function createApiResponse(promise, config) {
             .catch(err => {
 
 
-                console.info(err)
+                console.groupCollapsed(
+                    `%c\tERROR %cAPI::${err.response.config.method}:${err.response.config.url}`,
+                    "color: red",
+                    "color:black"
+                );
                 console.info(Object.keys(err));
-                console.groupCollapsed(`%cERROR %cAPI::${err.response}`, "color: red", "color:black");
+                console.info(err)
+                console.groupEnd();
                 reject(err)
             })
             .finally();
@@ -101,8 +110,6 @@ class ApiResponse {
                 // if detail -> if response is an object
                 return config.parseResponseData(serverResponse.data);
             }
-
-
         };
 
         this.test = config.test;
@@ -138,7 +145,7 @@ class GwClientApi {
     static getAssets() {
         return createApiResponse(
             axios.get(RESOURCES_URL),
-            new ParserConfig("ASSET")
+            new ParserConfig(ASSET)
         );
     }
 
@@ -150,7 +157,9 @@ class GwClientApi {
     /********************** ConnectionMETHODS **********************/
 
     static postConnection(connection: Connection): Promise<any> {
-        return axios.post(CONNECTIONS_URL, connection)
+        return new ApiResponse(
+            axios.post(CONNECTIONS_URL, connection),
+        )
     }
 
     static putConnection(connection: Connection): Promise<any> {
@@ -189,13 +198,17 @@ class GwClientApi {
     }
 
     static postAsset(asset: Asset): Promise<any> {
-        return axios.post(RESOURCES_URL, asset);
+        return createApiResponse(
+            axios.post(RESOURCES_URL, asset),
+            new ParserConfig(ASSET)
+        )
+
     }
 
     static putAsset(asset: Asset): Promise<any> {
-        console.groupCollapsed("putMapping(asset)");
-        console.info(asset)
-        console.groupEnd();
+        // console.groupCollapsed("putMapping(asset)");
+        // console.info(asset)
+        // console.groupEnd();
         return axios.put(
             resourceDetailUrl({name: asset.name}),
             asset

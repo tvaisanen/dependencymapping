@@ -25,6 +25,7 @@ export function postAsset(props: AssetAndOptionalCallback): Dispatch {
 
         try {
             const { asset, callback } = props;
+            alert(JSON.stringify(asset))
             const response = await GwClientApi.postAsset(asset);
             const storedAsset: Asset = parseHALResponseData(ASSET, response.data);
 

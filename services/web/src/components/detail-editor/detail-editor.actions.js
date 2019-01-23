@@ -54,7 +54,8 @@ export function closeEdit() {
 const dispatchFormActions = (dispatch) => ({
     [types.ASSET]: {
         post: (asset: Asset, callback) => {
-            dispatch(actionsAsset.postAsset(asset, callback));
+            // ! check the spread for every action
+            dispatch(actionsAsset.postAsset({asset, callback}));
         },
         put: (asset: Asset, callback) => {
             dispatch(actionsAsset.updateAsset(asset, callback));
@@ -139,14 +140,16 @@ const getForm = {
 };
 
 
+class DetailForm {
+    constructor(detailForm) {
+        this.form = getForm[detailForm.formType](detailForm);
+        this.formType = detailForm.formType;
+        this.method = detailForm.edit ? 'put' : 'post';
+    }
+}
 
-function collectFormData(detailForm){
-        console.info(detailForm)
-        return {
-            form: getForm[detailForm.formType](detailForm),
-            formType: detailForm.formType,
-            method:detailForm.edit ? 'put' : 'post',
-        };
+function collectFormData(detailForm) {
+    return new DetailForm(detailForm);
 }
 
 export function onSave(): Dispatch {
@@ -169,8 +172,8 @@ export function onSave(): Dispatch {
         // clear detail form errors
         dispatch(detailFormActions.clearErrors());
 
-        const { detailForm } = getState();
-        const { form, formType, method } = collectFormData(detailForm);
+        const {detailForm} = getState();
+        const {form, formType, method} = collectFormData(detailForm);
 
         const {
             formIsValid,
@@ -180,23 +183,21 @@ export function onSave(): Dispatch {
         alert(JSON.stringify({formIsValid, fieldErrors}))
 
         if (!formIsValid) {
-           alert('form needs to be valid')
-           console.info(fieldErrors)
+            alert('form needs to be valid')
+            console.info(fieldErrors)
             dispatch(appActions.setInfoMessage("INVALID FORM"));
-           dispatch(detailFormActions.setErrors(fieldErrors));
-           return
+            dispatch(detailFormActions.setErrors(fieldErrors));
+            return
         }
         // get the right action and wrap with dispatch
         const formActions = dispatchFormActions(dispatch);
 
-        // if edit use put if new use post
-
-        console.group("Validate form here first!");
-        console.info(form);
-        console.info(formType);
-        console.info(method);
-        console.groupEnd();
-
+        // ? is this still relevant for development?
+        // console.group("Validate form here first!");
+        // console.info(form);
+        // console.info(formType);
+        // console.info(method);
+        // console.groupEnd();
 
 
         try {
@@ -209,7 +210,7 @@ export function onSave(): Dispatch {
                     closeFormAndSetActiveDetail({
                         type: formType,
                         data: responseData
-                }));
+                    }));
                 dispatch(detailFormActions.clearForm());
                 dispatch(detailFormActions.setFormEditFalse());
 
@@ -250,6 +251,7 @@ export function onSave(): Dispatch {
 
                 }
             } else {
+                console.error(err)
                 throw new Error(`Unhandled exception :: detail-editor.actions.onSave() :: ${err}`)
             }
 
@@ -261,8 +263,7 @@ export function onSave(): Dispatch {
 export function onDelete(): Dispatch {
 
     return async function (dispatch: Dispatch, getState: State)
-        : void
-    {
+        : void {
         const {detailForm} = getState();
         const {formType, name, source, target} = detailForm;
 
@@ -292,7 +293,6 @@ export function onDelete(): Dispatch {
                 {source: source.name, target: target.name}
                 : name
             ;
-
 
 
             try {
@@ -421,10 +421,10 @@ export function onTargetSelection(value: string) {
 
 export function toggleSourceArrow() {
     return function (dispatch: Dispatch, getState): void {
-        const { sourceArrow } = getState().detailForm;
+        const {sourceArrow} = getState().detailForm;
 
         if (sourceArrow) {
-           dispatch(detailFormActions.setSourceArrowFalse())
+            dispatch(detailFormActions.setSourceArrowFalse())
         } else {
             dispatch(detailFormActions.setSourceArrowTrue())
         }
@@ -433,10 +433,10 @@ export function toggleSourceArrow() {
 
 export function toggleTargetArrow() {
     return function (dispatch: Dispatch, getState): void {
-        const { targetArrow } = getState().detailForm;
+        const {targetArrow} = getState().detailForm;
 
         if (targetArrow) {
-           dispatch(detailFormActions.setTargetArrowFalse())
+            dispatch(detailFormActions.setTargetArrowFalse())
         } else {
             dispatch(detailFormActions.setTargetArrowTrue())
         }
