@@ -5,6 +5,7 @@ const hal = require('../utils/hal.utils');
 
 assetRouter.get('/', (req, res) => {
         // get list view and if query filter.
+        console.log("assetRouter.get('/')")
         Asset.find()
             .then(assets => {
                 console.log(assets.length)

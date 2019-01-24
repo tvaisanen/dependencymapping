@@ -1,7 +1,7 @@
 // @flow
 import axios from 'axios';
 import type {Asset, Connection, Mapping, Tag} from "../store/types";
-import { ASSET } from "../constants";
+import {ASSET} from "../constants";
 import {parsers} from "../store/response-parser";
 
 const API_HOST = process.env.REACT_APP_API_HOST || "localhost"
@@ -54,7 +54,9 @@ class ParserConfig {
 }
 
 function createApiResponse(promise, config) {
+
     return new Promise((resolve, reject) => {
+
         promise
             .then(response => {
                 Object.setPrototypeOf(response, new ApiResponse(response, config));
@@ -88,36 +90,45 @@ function createApiResponse(promise, config) {
 }
 
 class ApiResponse {
-    constructor(serverResponse, config) {
-
+    constructor(serverPromise, config) {
         this.config = config;
-
-        this.parseResponseContent = () => {
+        this.promise = serverPromise;
+        this.test = config.test;
+    }
+    async parseResponseContent () {
             //? all actions migrated to use this?
             //  console.groupCollapsed("parserResponseData");
             //  console.info(serverResponse.data);
             //  console.groupEnd();
             //  if collection -> if response is an array
-            if (Array.isArray(serverResponse.data)) {
-                return serverResponse
-                    .data
-                    .map(o =>
-                        config.parseResponseData(o))
 
-            } else {
-                // response.data.map(:w
-                // o => config.parseResponseData(o))
-                // if detail -> if response is an object
-                return config.parseResponseData(serverResponse.data);
+            console.info(this.promise)
+            try {
+
+                const serverResponse = await this.promise;
+                console.info(serverResponse)
+
+                if (Array.isArray(serverResponse.data)) {
+                    return serverResponse
+                        .data
+                        .map(o =>
+                            this.config.parseResponseData(o))
+
+                } else {
+                    // response.data.map(:w
+                    // o => config.parseResponseData(o))
+                    // if detail -> if response is an object
+                    return this.config.parseResponseData(serverResponse.data);
+                }
+            } catch (err) {
+                console.error(err);
+                throw new Error("ApiResponse.parseResponseContent", err.stack)
             }
         };
-
-        this.test = config.test;
-    }
 }
 
 
-class GwClientApi {
+class Client {
 
     static resetModels() {
         /** for development
@@ -128,6 +139,31 @@ class GwClientApi {
             new ParserConfig("ASSET")
         );
     }
+
+    static apiCall(fn, parserConfig, args = {}) {
+
+        const promise = fn(args);
+
+        console.groupCollapsed(
+            `%c  REQUEST \n%c> %capiClient.${fn.name}(${Object.keys(args)})`,
+            "color: purple",
+            "color: lightgrey",
+            "color:black"
+        );
+
+        console.info("%cargs:", "color: grey");
+        console.info(args);
+        console.info(promise);
+        console.groupEnd();
+
+        return new ApiResponse(promise, parserConfig);
+    }
+
+    static asset = {
+        getAll: args => Client.apiCall(Client.getAssets, new ParserConfig("ASSET"), args),
+        post: args => Client.apiCall(Client.postAsset, new ParserConfig("ASSET"), args)
+    }
+
 
     // todo: refactor to getMappings
     static getGraphs() {
@@ -143,10 +179,7 @@ class GwClientApi {
     }
 
     static getAssets() {
-        return createApiResponse(
-            axios.get(RESOURCES_URL),
-            new ParserConfig(ASSET)
-        );
+        return axios.get(RESOURCES_URL);
     }
 
     static getTags() {
@@ -157,9 +190,7 @@ class GwClientApi {
     /********************** ConnectionMETHODS **********************/
 
     static postConnection(connection: Connection): Promise<any> {
-        return new ApiResponse(
-            axios.post(CONNECTIONS_URL, connection),
-        )
+        return axios.post(CONNECTIONS_URL, connection)
     }
 
     static putConnection(connection: Connection): Promise<any> {
@@ -229,4 +260,31 @@ class GwClientApi {
     }
 }
 
-export default GwClientApi;
+type APIRequest = {
+    resource: string,
+    method: string
+}
+
+
+export function apiCall(apiRequest: APIRequest) {
+    /*
+    console.groupCollapsed(
+        `%c\tapiCall.${apiRequest.resource}.${apiRequest.method}`,
+        "color: blue",
+        "color:black"
+    );
+    */
+
+    return {
+        asset: assetCall
+    }
+
+}
+
+apiCall.defaultProps = {resource: "", method: "get"};
+
+const assetCall = {
+    getAll: (test) => console.log('apiCall.asset')
+}
+
+export default Client;

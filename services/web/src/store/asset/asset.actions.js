@@ -8,6 +8,8 @@ import * as activeMappingActions from '../active-mapping/active-mapping.actions'
 import * as detailFormActions from '../detail-form/detail-form.actions';
 import {connectionActions} from '../actions';
 
+
+
 import { parseHALResponseData } from "../response-parser";
 
 import { ASSET } from '../../constants/';
@@ -17,6 +19,8 @@ import type {Asset, Connection, Dispatch, State} from "../types";
 type AssetAction = { promise: Promise<any>, resolveCallback: (asset: Asset) => void }
 type AssetAndOptionalCallback = {asset: Asset, callback: ?(any) => void};
 
+// refactor to use api
+const api = GwClientApi;
 /************** POST ******************/
 
 export function postAsset(props: AssetAndOptionalCallback): Dispatch {
@@ -25,9 +29,13 @@ export function postAsset(props: AssetAndOptionalCallback): Dispatch {
 
         try {
             const { asset, callback } = props;
-            alert(JSON.stringify(asset))
-            const response = await GwClientApi.postAsset(asset);
-            const storedAsset: Asset = parseHALResponseData(ASSET, response.data);
+
+            //const response = await api.asset.post(asset);
+            //const storedAsset = response.parseResponseContent();
+
+            const storedAsset = await
+                api.asset.post(asset)
+                    .parseResponseContent();
 
             // resolving a request is done in form container
             dispatch(postAssetSuccess(storedAsset));
@@ -184,12 +192,13 @@ export function loadAssetSuccess(asset: Asset) {
 export function loadAllAssets() {
     return async function (dispatch: Dispatch) {
 
-        // get all assets from the api
-        const response = await GwClientApi.getAssets();
 
         try {
-            // dispatch success message with the data
-            const parsedAssets = response.parseResponseContent();
+            const parsedAssets = await api
+                .asset
+                .getAll()
+                .parseResponseContent();
+
             dispatch(appActions.setInfoMessage("Loaded all resources successfully"));
             dispatch(loadAssetsSuccess(parsedAssets));
 
