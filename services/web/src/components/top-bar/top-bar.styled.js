@@ -37,6 +37,7 @@ export const TopBar = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 2px 24px;
+    min-height: 34px;
 `;
 
 export const MenuToggle = styled.div`

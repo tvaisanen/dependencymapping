@@ -28,9 +28,10 @@ import {
     SET_SOURCE_ARROW_TRUE,
     SET_EDGE_LABEL_VALUE
 } from './detail-form.action-types';
-import type {Dispatch} from "../types";
+import type {Action, Dispatch, State} from "../types";
 import type {Asset, Connection, Mapping, Tag} from "../types";
 
+type Detail = Asset | Connection | Mapping | Tag;
 
 export function setDetailFormType(type: ASSET | MAPPING | TAG) {
     return {type: SET_DETAIL_FORM_TYPE, formType: type}
@@ -89,7 +90,7 @@ export function setNodeShapeSelection(value: string) {
     return {type: SET_NODE_SHAPE_SELECTION, value}
 }
 
-export function setValuesFromDetail(detail) {
+export function setValuesFromDetail(detail: Detail) {
     return {type: SET_VALUES_FROM_DETAIL, detail};
 }
 
@@ -118,7 +119,7 @@ export function clearForm(){
 }
 
 
-export function setErrors(value) {
+export function setErrors(value: any) {
     return {type: SET_ERRORS, value}
 }
 
@@ -126,7 +127,7 @@ export function clearErrors(){
     return {type: CLEAR_ERRORS};
 }
 
-export function setErrorMsg(value) {
+export function setErrorMsg(value: string) {
     return {type: SET_ERROR_VALUE, value}
 }
 
@@ -146,7 +147,7 @@ export function setTargetArrowFalse() {
     return {type: SET_TARGET_ARROW_FALSE}
 }
 
-export function setEdgeLabelValue(value){
+export function setEdgeLabelValue(value: string){
     return {type: SET_EDGE_LABEL_VALUE, value}
 }
 

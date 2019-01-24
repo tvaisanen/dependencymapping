@@ -11,7 +11,8 @@ type EditorButtonProps = {
     onCancel: () => void,
     onDelete: () => void,
     onSave: () => void,
-    edit: boolean
+    edit: boolean,
+    view: CREATE | BROWSE
 }
 
 //{cancel, save, remove, edit}

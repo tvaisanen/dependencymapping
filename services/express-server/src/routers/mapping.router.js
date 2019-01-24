@@ -1,7 +1,7 @@
 const express = require('express');
 const Mapping = require('../models').Mapping;
 const mappingRouter = express.Router();
-
+const hal = require('../utils/hal.utils');
 const msg = require('../constants').messages;
 const err = require('../constants').errors;
 
@@ -20,7 +20,8 @@ mappingRouter.get('(/:id)?', (req, res) => {
     } else {
         Mapping.find()
             .then(mappings => {
-                res.status(200).send(mappings);
+                const HALMappings = mappings.map(m => hal.serializeMapping(req.headers.host, m));
+                res.status(200).json(HALMappings);
             }).catch(err => res.send(err));
     }
 
@@ -62,7 +63,7 @@ mappingRouter.post('(/:id)?', (req, res) => {
 
                     mapping.save().then(saved => {
                         console.log(`saved: ${saved.name}`);
-                        res.status(201).json(saved);
+                        res.status(201).json(hal.serializeMapping(req.headers.host, saved));
                     }).catch(err => {
                         console.log(err);
                     })
@@ -86,8 +87,8 @@ mappingRouter.put('(/:id)?', (req, res) => {
     })
         .then(ok => {
             Mapping.findOne(query)
-                .then(mapping => res.status(200).json(mapping))
-                .catch(err => res.status(400).json(err))
+                .then(mapping => res.status(200).json(hal.serializeMapping(req.headers.host,mapping)))
+                .catch(err => res.status(400).json(err));
         })
         .catch(err => res.status(400).send(err));
 });

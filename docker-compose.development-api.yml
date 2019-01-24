@@ -22,8 +22,17 @@ services:
         volumes:
           - ./services/express-server/src/:/usr/local/src/express/src
           - ./services/express-server/test/:/usr/local/src/express/test
-        env_file:
-         - .env-development
+
+        # env_file:
+        # - .env-development
+
+        environment:
+          NODE_ENV: development
+          MONGO_PATH: mongo
+          MONGO_PORT: 27017
+          DB_NAME: test
+          TEST_DATA: __test__/unit-tests
+
         networks:
           - overlay
 

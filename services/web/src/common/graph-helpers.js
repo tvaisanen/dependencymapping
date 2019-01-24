@@ -28,7 +28,6 @@ export function nodeElementFromResource(asset: Asset = required()) {
         },
         classes: `${asset.nodeShape} ${asset.nodeColor}`
     };
-    console.info(node);
     return node;
 }
 
@@ -122,7 +121,7 @@ export function updateLayout(cy = required(), layout = required()) {
     cy.elements().forEach(el => {
         const w = el.children().length;
         el.data('weight', w)
-        console.info(`${el.id()} : childCount: ${w}, weight: ${el.data('weight')}`)
+        // console.debug(`${el.id()} : childCount: ${w}, weight: ${el.data('weight')}`)
     })
     try {
         // if selected layout has additional options

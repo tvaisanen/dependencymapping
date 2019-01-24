@@ -28,12 +28,6 @@ assetSchema.post('save', (asset) => {
 });
 
 
-
-assetSchema.pre('save', next => {
-    // pre save hook
-    next();
-});
-
 try {
     // FOR TESTING WITH MOCHA --WATCH
     // Throws an error if "Name" hasn't been registered

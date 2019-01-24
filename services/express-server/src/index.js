@@ -62,7 +62,6 @@ app.use(router);
 app.use('/test', express.static('src/pages'));
 // serve API endpoints
 app.use('/asset', assetRouter);
-app.use('/asset-group', assetGroupRouter);
 app.use('/mapping', mappingRouter);
 app.use('/tag', tagRouter);
 app.use('/connection', connectionRouter);

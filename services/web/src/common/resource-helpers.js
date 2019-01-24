@@ -34,8 +34,6 @@ export function getObjectByName({name, objectList}){
 }
 
 export function getAllResourcesWithTag({tagName, resources}) {
-    console.info(tagName);
-    console.info(resources);
     return resources.filter(resource => {
         const index = _.findIndex(resource.tags, (tag) => tag === tagName);
         return index > -1;

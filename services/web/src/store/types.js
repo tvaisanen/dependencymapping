@@ -11,7 +11,6 @@ export * from './tag/tag.types';
 
 export const emptyArray: Array<any> = [];
 
-type Action = {}
 
 export type State = {
     app: any,

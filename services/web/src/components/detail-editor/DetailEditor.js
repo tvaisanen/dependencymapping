@@ -1,15 +1,15 @@
 //@flow
-import React from 'react';
+import React, {Suspense} from 'react';
 import {ASSET, CONNECTION, MAPPING, TAG} from "../../constants";
 import {connect} from 'react-redux';
-import SelectionMenus from './components/SelectionMenus';
+//import SelectionMenus from './components/SelectionMenus';
 import FormButtons from './components/ControllerNavTabs';
 import {AssetSelection, TagSelection, DescriptionTextarea} from "./components/";
 import NameInputField from "./components/NameInputField";
-
 import ConnectionForm, {ConnectionSelections} from './components/connection-form-components';
-
 import {Container, FormColumn, FormWrapper, SelectionColumn} from "./detail-editor.styled";
+
+const SelectionMenus = React.lazy (() => import('./components/SelectionMenus'));
 
 type DetailEditorProps = {
     formType: ASSET | CONNECTION | MAPPING | TAG
@@ -88,12 +88,15 @@ const DetailEditor = (props: DetailEditorProps) => {
         <Container>
             <FormButtons/>
             <FormWrapper>
+
+                <Suspense fallback={<div>Loading...</div>}>
                 <FormColumn>
                     <Form/>
                 </FormColumn>
                 <SelectionColumn visible={Selection()}>
                     <Selection/>
                 </SelectionColumn>
+                </Suspense>
             </FormWrapper>
         </Container>)
 };

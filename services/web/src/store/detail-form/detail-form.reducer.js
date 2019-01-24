@@ -29,6 +29,33 @@ import {
     SET_TARGET_ARROW_TRUE
 } from "./detail-form.action-types";
 
+import { ASSET, CONNECTION, MAPPING, TAG} from "../../constants";
+import { Asset, Connection, Mapping, Tag} from "../types";
+
+
+type DetailFormState = {
+    showFormSelection: boolean,
+    assetFilter: string,
+    selectedAssets: [string] | Array<any>,
+    tagFilter: string,
+    selectedTags: [string],
+    name: string,
+    edit: boolean,
+    description: string,
+    errors: any,
+    errorMsg: string,
+    formType: ASSET | CONNECTION | MAPPING | TAG,
+    selections: boolean,
+    nodeShape: string,
+    nodeColor: string,
+    group: string,
+    source: string,
+    target: string,
+    sourceArrow: boolean,
+    targetArrow: boolean,
+    edgeLabel: string,
+};
+
 const initialState = {
     showFormSelection: true,
     assetFilter: "",
@@ -52,7 +79,14 @@ const initialState = {
     edgeLabel: "",
 };
 
-export default function (state = initialState, action) {
+type DetailFormAction = {
+    type: string,
+    formType: ASSET | CONNECTION | MAPPING | TAG,
+    detail: Asset | Connection | Mapping | Tag,
+    value: any
+}
+
+export default function (state: DetailFormState = initialState, action: DetailFormAction) {
 
     const {formType, detail, value} = action;
 
@@ -88,13 +122,19 @@ export default function (state = initialState, action) {
         case REMOVE_ASSET_FROM_SELECTED:
             return !value ? state : {
                 ...state,
-                selectedAssets: state.selectedAssets.filter(selected => selected !== value)
+                selectedAssets: (
+                    state.selectedAssets.filter(selected => selected !== value)
+                    : Array<string>
+                )
             };
 
         case REMOVE_TAG_FROM_SELECTED:
             return !value ? state : {
                 ...state,
-                selectedTags: state.selectedTags.filter(selected => selected !== value)
+                selectedTags: (
+                    state.selectedTags.filter(selected => selected !== value)
+                    : Array<string>
+                )
             };
 
         case SET_ASSET_GROUP_SELECTION:

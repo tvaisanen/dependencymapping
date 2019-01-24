@@ -36,7 +36,7 @@ const testConfig = () => ({
 const configs = {
     development: devConfig(),
     test: testConfig()
-}
+};
 
 function getConfig() {
     console.log(`Get config: ${process.env.NODE_ENV}`);
@@ -60,15 +60,3 @@ function initDatabaseConnection(props) {
 
 module.exports = initDatabaseConnection;
 
-/*
-mongoose.connection.on('connected', function () {
-    console.log('Mongoose successful connection:');
-    console.log(`running in: ${process.env.NODE_ENV} mode`)
-    console.log(`using database: ${process.env.DB_NAME}`);
-});
-
-// If the connection throws an error
-mongoose.connection.on('error', function (err) {
-    console.log('Mongoose default connection error: ' + err);
-});
-*/

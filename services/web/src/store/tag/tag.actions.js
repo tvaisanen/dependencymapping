@@ -5,6 +5,9 @@ import * as types from './tag.action-types';
 import * as apiHelpers from '../../common/api.helpers';
 import * as appActions from '../../actions/app.actions';
 import * as detailFormActions from '../detail-form/detail-form.actions';
+import { TAG } from "../../constants";
+
+import { parseHALResponseData } from "../response-parser";
 
 import { routeApiActionError } from "../error-handling";
 
@@ -20,29 +23,21 @@ export function postTag(tag: Tag, callback: (any) => void): Dispatch {
      *  @return server response data
      * */
 
-    return async function (dispatch: Dispatch): void {
+    return async function (dispatch: Dispatch): Promise<any> {
 
         try {
 
             // wait for the response
-            const response = await
-                GwClientApi.postTag(tag);
+            const response = await GwClientApi.postTag(tag);
 
             // response data should be of a type Tag
-            const storedTag: Tag = response.data;
+            const storedTag: Tag = parseHALResponseData(TAG, response.data);
 
-            // set info message
-            dispatch(appActions
-                .setInfoMessage(
-                    `Created tag: ${storedTag.name}`
-                )
-            );
-
-            // update tag reducer state
+            dispatch(appActions.setInfoMessage(`Created tag: ${storedTag.name}`));
             dispatch(postTagSuccess(storedTag));
 
             // run callers callback function
-            callback(storedTag);
+            callback ? callback(storedTag) : null;
 
         } catch (err) {
             routeApiActionError(err);
@@ -50,14 +45,15 @@ export function postTag(tag: Tag, callback: (any) => void): Dispatch {
     }
 }
 
-export function postTagSuccess(tag) {
+export function postTagSuccess(tag: Tag) {
     return {type: types.POST_TAG_SUCCESS, tag}
 }
 
 /*************** TAG UPDATE **************/
 
-export function updateTag(tag) {
-    return async function (dispatch) {
+export function updateTag(tag: Tag) {
+
+    return async function (dispatch: Dispatch) {
 
         try {
             const response = await GwClientApi.putTag(tag);
@@ -81,23 +77,24 @@ export function updateTag(tag) {
     }
 }
 
-export function updateTagSuccess(tag) {
+export function updateTagSuccess(tag: Tag) {
     return {type: types.UPDATE_TAG_SUCCESS, tag};
 }
 
 /*************** DELETE **************/
 
-export function deleteTag(name) {
+export function deleteTag(name: string) {
     /**
      *  Async redux action
      */
-    return async function (dispatch) {
+    return async function (dispatch: Dispatch) {
         try {
             const response = await GwClientApi.deleteTag(name);
             dispatch(appActions.setInfoMessage(`Deleted tag: ${name}`));
-            dispatch(deleteTagSuccess({tagName: name}));
+            dispatch(deleteTagSuccess(name));
 
             // delete action does not need a response
+            // this is not yet supported (err: {response: ?any}) ?
         } catch (err) {
             // if error occurs
             // handle updateTag related errors here
@@ -116,14 +113,14 @@ export function deleteTag(name) {
     }
 }
 
-export function deleteTagSuccess({tagName}) {
+export function deleteTagSuccess(tagName: string) {
     return {type: types.DELETE_TAG_SUCCESS, tagName};
 }
 
 /******************************************/
 
 export function loadAllTags() {
-    return function (dispatch) {
+    return function (dispatch: Dispatch) {
         const promise = GwClientApi.getTags();
         promise.then(response => {
             dispatch(appActions.setInfoMessage("Loaded all tags successfully"));
@@ -144,7 +141,7 @@ export function loadAllTags() {
 }
 
 
-export function loadTagsSuccess(tags) {
+export function loadTagsSuccess(tags: Array<Tag>) {
     return {type: types.LOAD_TAGS_SUCCESS, tags}
 }
 

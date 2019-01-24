@@ -3,12 +3,21 @@
 import GwClientApi from '../../api/gwClientApi';
 import * as _ from 'lodash';
 
-import type {Connection, ConnectionAction} from "./connection.types";
+import { CONNECTION } from "../../constants";
+
+import type {
+    Asset,
+    Connection,
+    ConnectionAction,
+    Dispatch,
+    State
+} from "../types";
 import * as appActions from '../../actions/app.actions';
 import * as assetActions from '../../store/asset/asset.actions';
 import * as apiHelpers from '../../common/api.helpers';
 import * as graphHelpers from '../../common/graph-helpers';
 
+import { parseHALResponseData } from "../response-parser";
 
 import {
     SET_CONNECTIONS,
@@ -25,12 +34,15 @@ export function setConnections(connections: Array<Connection>): ConnectionAction
 
 export function loadAllConnections() {
 
-    return async function (dispatch) {
+    return async function (dispatch: Dispatch) {
 
         try {
 
             const response = await GwClientApi.getConnections();
-            const connections: Array<Connection> = response.data;
+            const connections: Array<Connection> = response
+                .data
+                .map(c =>
+                    parseHALResponseData(CONNECTION, c));
 
             dispatch(
                 appActions.setInfoMessage(
@@ -72,7 +84,7 @@ export function postConnection(connection: Connection, callback: (any) => void) 
 
             // after response is resolved store
             // the received data as storedConnection
-            const storedConnection = response.data;
+            const storedConnection = parseHALResponseData(CONNECTION, response.data);
 
             // update the state and sync related assets
             dispatch(postConnectionSuccess(storedConnection));
@@ -90,7 +102,7 @@ export function postConnection(connection: Connection, callback: (any) => void) 
     }
 }
 
-export function postConnectionSuccess(connection) {
+export function postConnectionSuccess(connection: Connection) {
     return {type: ADD_CONNECTION, connection}
 }
 
@@ -156,7 +168,7 @@ export function deleteConnection(connection: Connection, callback: (any) => void
     }
 }
 
-export function deleteConnectionSuccess(connection) {
+export function deleteConnectionSuccess(connection: Connection) {
     return {type: DELETE_CONNECTION, connection}
 }
 
@@ -222,17 +234,13 @@ export function updateConnection(connection: Connection, callback: (any) => void
 }
 
 
-export function updateConnectionSuccess(connection) {
-    console.group("updateConnectionSuccess");
-    console.info(connection);
-    console.groupEnd();
+export function updateConnectionSuccess(connection: Connection) {
     return {type: UPDATE_CONNECTION, connection}
 }
 
 export function updateAssetConnections(asset: Asset) {
     return function (dispatch: Dispatch, getState: State) {
-        console.group("updateAssetConnections");
-        console.info(asset);
+
 
         let deleteList = [];
         let createList = [];
@@ -269,22 +277,23 @@ export function updateAssetConnections(asset: Asset) {
                 });
             }
         })
-
-        console.info("deletelist");
-        console.info(deleteList);
-        console.info("createList");
-        console.info(createList);
-        console.info("keeplist");
-        console.info(keepList);
+        // console.group("updateAssetConnections");
+        // console.debug(asset);
+        // console.debug("deletelist");
+        // console.debug(deleteList);
+        // console.debug("createList");
+        // console.debug(createList);
+        // console.debug("keeplist");
+        // console.debug(keepList);
+        // console.groupEnd();
 
         dispatch(deleteConnections(deleteList));
         dispatch(addConnections(createList));
-        console.groupEnd();
 
     }
 }
 
-export function deleteConnections(connections){
+export function deleteConnections(connections: Array<Connection>){
     return {type:DELETE_CONNECTIONS, connections};
 }
 

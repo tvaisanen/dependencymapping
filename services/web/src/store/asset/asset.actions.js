@@ -1,9 +1,6 @@
 //@flow
-
 import GwClientApi from '../../api/gwClientApi';
 import * as types from './asset.action-types';
-import * as graphHelpers from '../../common/graph-helpers';
-import * as _ from 'lodash';
 import * as apiHelpers from '../../common/api.helpers';
 import * as appActions from '../../actions/app.actions';
 import * as mappingActions from '../mapping/mapping.actions';
@@ -11,23 +8,40 @@ import * as activeMappingActions from '../active-mapping/active-mapping.actions'
 import * as detailFormActions from '../detail-form/detail-form.actions';
 import {connectionActions} from '../actions';
 
-import type {Asset, Dispatch, GetState} from "../types";
+
+import {parseHALResponseData} from "../response-parser";
+
+import {ASSET} from '../../constants/';
+
+import type {Asset, Connection, Dispatch, State} from "../types";
 
 type AssetAction = { promise: Promise<any>, resolveCallback: (asset: Asset) => void }
+type AssetAndOptionalCallback = { asset: Asset, callback: ?(any) => void };
+
+// refactor to use api
+const api = GwClientApi;
 
 /************** POST ******************/
 
-export function postAsset(asset: Asset, callback: (any) => void): Dispatch {
+export function postAsset(props: AssetAndOptionalCallback): Dispatch {
 
     return async function (dispatch: Dispatch): Asset {
 
         try {
+            const {asset, callback} = props;
 
-            const response = await GwClientApi.postAsset(asset);
-            const storedAsset: Asset = response.data;
+            //const response = await api.asset.post(asset);
+            //const storedAsset = response.parseResponseContent();
+
+            const storedAsset = await
+                api
+                    .asset
+                    .post(asset)
+                    .parseResponseContent();
 
             // resolving a request is done in form container
             dispatch(postAssetSuccess(storedAsset));
+
             dispatch(appActions.setInfoMessage(`Created asset: ${storedAsset.name}`));
             dispatch(connectionActions.updateAssetConnections(storedAsset));
 
@@ -62,26 +76,31 @@ export function postAssetSuccess(asset: Asset) {
 
 /************** UPDATE ******************/
 
-export function updateAsset(asset: Asset, callback: (any) => void): Dispatch {
-
+//export function updateAsset(asset: Asset, callback: (any) => void): Dispatch {
+export function updateAsset(props: AssetAndOptionalCallback): Dispatch {
     // updates asset/resource to the database
     // and refreshes the nodes edges in the graph
-    return async function (dispatch: Dispatch): AssetAction {
+    return async function (dispatch: Dispatch): Promise<any> {
 
-        try {
-            const response = await GwClientApi.putAsset(asset);
-            const updatedAsset = response.data;
+        const {asset, callback} = props;
+        //const response = await GwClientApi.putAsset(asset);
+        //const updatedAsset = response.data;
 
-            dispatch(updateAssetSuccess({asset: asset}));
-            dispatch(appActions.setInfoMessage(`Updated asset: ${asset.name}`));
-            dispatch(connectionActions.updateAssetConnections(updatedAsset));
-            dispatch(activeMappingActions.updateAssetState(updatedAsset));
+        alert(JSON.stringify(props))
 
-            callback ? callback(updatedAsset) : null;
+        const updatedAsset = await
+            api
+                .asset
+                .put(asset)
+                .parseResponseContent();
 
-        } catch (err) {
-            throw new Error(`asset.actions.updateTag() :: ${err} `)
-        }
+        dispatch(updateAssetSuccess({asset: asset}));
+        dispatch(appActions.setInfoMessage(`Updated asset: ${asset.name}`));
+        dispatch(connectionActions.updateAssetConnections(updatedAsset));
+        dispatch(activeMappingActions.updateAssetState(updatedAsset));
+
+        callback ? callback(updatedAsset) : null;
+
     }
 }
 
@@ -93,7 +112,7 @@ function updateAssetSuccess({asset}) {
 
 export function deleteAsset(name: string, callback: (any) => void) {
 
-    return async function (dispatch: Dispatch, getState: GetState) {
+    return async function (dispatch: Dispatch, getState: State) {
 
         await GwClientApi.deleteAsset(name);
 
@@ -115,41 +134,52 @@ export function deleteAssetSuccess(name: string) {
 
 /*********************************************** */
 
-function removeReferencesToDeletedAsset(assetName: string){
+function removeReferencesToDeletedAsset(assetName: string) {
 
+    /**
+     * When asset is deleted, all the pointers
+     * need to be cleaned. This function takes
+     * an asset name as a parameter and iterates
+     * through assets that have the deleted asset
+     * as target in asset.connected_to and clears
+     * the occurences.
+     */
     return function (dispatch: Dispatch, getState: State): void {
-       const { assets } = getState();
 
-       assets.forEach(asset => {
-            console.group(`check if ${asset.name} needs to be deleted`)
+        const {assets} = getState();
+
+        assets.forEach(asset => {
+
             let update = false;
+
             const filteredAssets = asset.connected_to.filter(a => {
-                console.info(`${a} === ${assetName}`);
+
+                // console.debug(`${a} === ${assetName}`);
+
                 const deletedFound = a === assetName;
+
                 if (!update && deletedFound) {
                     update = deletedFound;
-                    console.info(`asset: ${a} needs to be udpated`)
+                    // console.debug(`asset: ${a} needs to be udpated`)
                 }
+
                 return !deletedFound;
             });
             if (update) {
                 try {
-                    const {
-                        promise,
-                        resolveCallback
-                    } = dispatch(updateAsset({
+
+                    const updatedAsset = {
                         ...asset,
                         connected_to: filteredAssets
-                    }));
-                    promise.then(response => {
-                        resolveCallback(response.data);
-                    });
-                }
-                catch (err) {
+                    };
+
+                    dispatch(updateAsset({asset: updatedAsset}));
+
+                } catch (err) {
                     console.warn(err)
                 }
             }
-            console.groupEnd();
+            //console.groupEnd();
 
         });
     }
@@ -164,18 +194,19 @@ export function loadAssetSuccess(asset: Asset) {
 }
 
 export function loadAllAssets() {
-    return function (dispatch: Dispatch) {
+    return async function (dispatch: Dispatch) {
 
-        // get all assets from the api
-        const promise = GwClientApi.getAssets();
 
-        promise.then(response => {
-            // dispatch success message with the data
-            // returned assets
+        try {
+            const parsedAssets = await api
+                .asset
+                .getAll()
+                .parseResponseContent();
+
             dispatch(appActions.setInfoMessage("Loaded all resources successfully"));
-            dispatch(loadAssetsSuccess(response.data));
+            dispatch(loadAssetsSuccess(parsedAssets));
 
-        }).catch(error => {
+        } catch (error) {
             if (error.message && error.message === "Network Error") {
                 dispatch(apiHelpers.handleNetworkError(error));
             } else {
@@ -184,7 +215,7 @@ export function loadAllAssets() {
                 console.groupEnd();
             }
 
-        });
+        }
     }
 }
 
@@ -193,31 +224,31 @@ export function addAsset(asset: Asset) {
     return {type: types.ADD_ASSET, asset}
 }
 
-export function syncConnectionSourceAsset(connection: Connection){
+export function syncConnectionSourceAsset(connection: Connection) {
     /**
-        Add a target asset.name to connected_to list
+     Add a target asset.name to connected_to list
      */
 
     return function (dispatch: Dispatch, getState: State): void {
 
-            // assets keep track of the target connections
-            // so if the connection is created separately
-            // from the asset form. The source assets
-            // connected_to list need to be updated
-            const assetToUpdate = getState().assets.filter(
-                asset => asset.name === connection.source
-            )[0];
+        // assets keep track of the target connections
+        // so if the connection is created separately
+        // from the asset form. The source assets
+        // connected_to list need to be updated
+        const assetToUpdate = getState().assets.filter(
+            asset => asset.name === connection.source
+        )[0];
 
-            // create updated version from the asset
-            // with the new connection target pointer
-            const updatedAsset = {
-                ...assetToUpdate,
-                connected_to: [
-                    ...assetToUpdate.connected_to,
-                    connection.target
-                ]
-            };
+        // create updated version from the asset
+        // with the new connection target pointer
+        const updatedAsset = {
+            ...assetToUpdate,
+            connected_to: [
+                ...assetToUpdate.connected_to,
+                connection.target
+            ]
+        };
 
-            dispatch(updateAsset(updatedAsset));
+        dispatch(updateAsset(updatedAsset));
     }
 }

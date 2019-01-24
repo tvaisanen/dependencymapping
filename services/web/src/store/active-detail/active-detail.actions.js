@@ -1,6 +1,8 @@
 import * as types from './active-detail.action-types';
 import * as resourceTypes from '../../constants/types';
 import * as _ from 'lodash';
+import { ASSET, CONNECTION, MAPPING, TAG } from "../../constants/types";
+import { Asset, Connection, Mapping, Tag} from "../types";
 
 
 export function setActiveDetail(activeDetail) {
@@ -87,6 +89,9 @@ export function setAssetAsActiveDetail(activeDetail) {
         const parseAssets = data.connected_to ? _.isString(data.connected_to[0]) : [];
         const parseTags = data.tags ? _.isString(data.tags[0]) : [];
 
+
+        // active detail needs the
+        // assets and tags in more detail
         const collectedDetail = {
             type: activeDetail.type,
             data: {
@@ -99,7 +104,9 @@ export function setAssetAsActiveDetail(activeDetail) {
                     : data.tags
             }
         };
-        console.info(collectedDetail);
+
+        // console.debug(collectedDetail);
+
         dispatch(setActiveDetail(collectedDetail));
 
 
@@ -111,6 +118,7 @@ type SetAsActiveProps = {
    type: ASSET | CONNECTION | MAPPING | TAG,
    data: Asset | Connection | Mapping | Tag
 }
+
 
 export function setAsActiveDetail(activeDetail: SetAsActiveProps){
 

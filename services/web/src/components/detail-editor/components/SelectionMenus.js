@@ -10,7 +10,7 @@ import { Label, SelectionField, FieldGroup, Select } from "../detail-editor.styl
 type SelectionMenusProps = {
     formType: string,
     assets: Array<String>,
-    setValue: (object) => void,
+    setValue: (any) => void,
     onAssetGroupSelection: (value:string) => void,
     onNodeColorSelection: (value:string) => void,
     onNodeShapeSelection: (value:string) => void,
@@ -78,9 +78,10 @@ const NodeGroupSelection = (props) => {
         <Select
         selected={"none"}
         onChange={(e) => {
-            this.selected = e.target.value;
             props.onChange((e.target.value: string));
         }}>
+
+            <option value="" disabled selected>select group</option>
         {props.assets.map(option => (
             <option
                 selected={option === props.selected}
@@ -97,6 +98,8 @@ const NodeShapeSelection = (props) => {
     return <SelectionField>
         <Label for="node-shape">shape</Label>
         <Select name="node-shape" onChange={(e) => {props.onChange((e.target.value:string));}}>
+
+            <option value="" disabled selected>select shape</option>
         {nodeShapes.map(option => <option
             selected={option === props.selected}
             value={option}>{option}</option>)}
@@ -109,6 +112,7 @@ const NodeColorSelection = (props) => {
     return<SelectionField>
             <Label for="node-color">color</Label>
     <Select name="node-color" onChange={(e) => {props.onChange((e.target.value:string));}}>
+        <option value="" disabled selected>select color</option>
         {colorOptions.map(option => <option
             selected={option === props.selected}
             value={option}>{option}</option>)}

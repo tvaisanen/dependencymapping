@@ -1,11 +1,11 @@
 import React from 'react';
 
-import TopBarContainer from '../top-bar/TopBarContainer';
+import TopBarContainer from '../top-bar/LazyTopBar';
 import BottomPanelContainer from '../bottom-panel/BottomPanelContainer';
-import MappingMenuContainer from '../mapping-menu/MappingMenuContainer';
+//import MappingMenuContainer from '../mapping-menu/MappingMenuContainer';
+import MappingMenuContainer from '../mapping-menu/LazyMappingMenu';
 import CollapseMenuContainer from '../collapse-menu/CollapseMenuContainer';
-import GroupTogglePanel from '../group-toggle-panel/';
-import DetailEditor from '../detail-editor/DetailEditor';
+
 
 import {
     AppContainer,
@@ -14,6 +14,7 @@ import {
     GraphCanvasInflater,
     GraphCanvasContainer
 } from './app.styled';
+
 
 
 const App = () => (
