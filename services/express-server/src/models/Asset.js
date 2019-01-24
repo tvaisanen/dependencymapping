@@ -30,8 +30,7 @@ assetSchema.post('save', (asset) => {
 
 
 assetSchema.pre('save', next => {
-    console.log(this)
-    console.log(`\nsaving: ${this.name}\n`)
+    // pre save hook
     next();
 });
 
