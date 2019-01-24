@@ -1,15 +1,11 @@
 // @flow
 import axios from 'axios';
 import type {Asset, Connection, Mapping, Tag} from "../store/types";
-import {ASSET} from "../constants";
+import {ASSET, CONNECTION, MAPPING, TAG} from "../constants";
 import {parsers} from "../store/response-parser";
 
 const API_HOST = process.env.REACT_APP_API_HOST || "localhost"
 const API_URL = `http://${API_HOST}/`;
-
-// const MAPPINGS_URL = `${API_URL}mappings/`;
-// const TAGS_URL = `${API_URL}tags/`;
-// const RESOURCES_URL = `${API_URL}assets/`;
 
 const MAPPINGS_URL = `${API_URL}mapping/`;
 const CONNECTIONS_URL = `${API_URL}connection/`;
@@ -103,6 +99,11 @@ class ApiResponse {
             //  if collection -> if response is an array
 
             console.info(this.promise)
+            if(!this.promise){
+                console.debug(this)
+                alert("no promise");
+                return
+            }
             try {
 
                 const serverResponse = await this.promise;
@@ -118,10 +119,12 @@ class ApiResponse {
                     // response.data.map(:w
                     // o => config.parseResponseData(o))
                     // if detail -> if response is an object
+                    console.debug(serverResponse)
                     return this.config.parseResponseData(serverResponse.data);
                 }
             } catch (err) {
                 console.error(err);
+                console.info("refactor all api response related error handling here")
                 throw new Error("ApiResponse.parseResponseContent", err.stack)
             }
         };
@@ -142,6 +145,7 @@ class Client {
 
     static apiCall(fn, parserConfig, args = {}) {
 
+        alert(JSON.stringify(args))
         const promise = fn(args);
 
         console.groupCollapsed(
@@ -159,10 +163,51 @@ class Client {
         return new ApiResponse(promise, parserConfig);
     }
 
+    static parserConfig = {
+       hal: {
+           asset: new ParserConfig(ASSET),
+           connection: new ParserConfig(CONNECTION),
+           mapping: new ParserConfig(MAPPING),
+           tag: new ParserConfig(TAG)
+       }
+    };
+
+
+    /** asset api calls */
     static asset = {
-        getAll: args => Client.apiCall(Client.getAssets, new ParserConfig("ASSET"), args),
-        post: args => Client.apiCall(Client.postAsset, new ParserConfig("ASSET"), args)
-    }
+        getAll: args => Client.apiCall(Client.getAssets, Client.parserConfig.hal.asset, args),
+        //get:    args => Client.apiCall(Client.getAsset, new ParserConfig(ASSET), args),
+        put:    args => Client.apiCall(Client.putAsset, Client.parserConfig.hal.asset, args),
+        post:   args => Client.apiCall(Client.postAsset, Client.parserConfig.hal.asset, args),
+        delete: args => Client.apiCall(Client.deleteAsset, Client.parserConfig.hal.asset, args),
+    };
+
+    /** connection api calls */
+    static connection = {
+        getAll: args => Client.apiCall(Client.getConnections, Client.parserConfig.hal.connection, args),
+        //get:    args => Client.apiCall(Client.getAsset, new ParserConfig(ASSET), args),
+        put:    args => Client.apiCall(Client.putConnection, Client.parserConfig.hal.connection, args),
+        post:   args => Client.apiCall(Client.postConnection, Client.parserConfig.hal.connection, args),
+        delete: args => Client.apiCall(Client.deleteConnection, Client.parserConfig.hal.connection, args),
+    };
+
+    /** mapping api calls */
+    static mapping = {
+        getAll: args => Client.apiCall(Client.getGraphs, Client.parserConfig.hal.mapping, args),
+        //get:    args => Client.apiCall(Client.getAsset, new ParserConfig(ASSET), args),
+        put:    args => Client.apiCall(Client.putMapping, Client.parserConfig.hal.mapping, args),
+        post:   args => Client.apiCall(Client.postMapping, Client.parserConfig.hal.mapping, args),
+        delete: args => Client.apiCall(Client.deleteMapping, Client.parserConfig.hal.mapping, args),
+    };
+
+    /** tag api calls */
+    static tag = {
+        getAll: args => Client.apiCall(Client.getTags, Client.parserConfig.hal.tag, args),
+        //get:    args => Client.apiCall(Client.getAsset, new ParserConfig(ASSET), args),
+        put:    args => Client.apiCall(Client.putTag, Client.parserConfig.hal.tag, args),
+        post:   args => Client.apiCall(Client.postTag, Client.parserConfig.hal.tag, args),
+        delete: args => Client.apiCall(Client.deleteTag, Client.parserConfig.hal.tag, args),
+    };
 
 
     // todo: refactor to getMappings
@@ -260,31 +305,5 @@ class Client {
     }
 }
 
-type APIRequest = {
-    resource: string,
-    method: string
-}
-
-
-export function apiCall(apiRequest: APIRequest) {
-    /*
-    console.groupCollapsed(
-        `%c\tapiCall.${apiRequest.resource}.${apiRequest.method}`,
-        "color: blue",
-        "color:black"
-    );
-    */
-
-    return {
-        asset: assetCall
-    }
-
-}
-
-apiCall.defaultProps = {resource: "", method: "get"};
-
-const assetCall = {
-    getAll: (test) => console.log('apiCall.asset')
-}
 
 export default Client;

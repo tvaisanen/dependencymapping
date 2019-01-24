@@ -9,18 +9,18 @@ import * as detailFormActions from '../detail-form/detail-form.actions';
 import {connectionActions} from '../actions';
 
 
+import {parseHALResponseData} from "../response-parser";
 
-import { parseHALResponseData } from "../response-parser";
-
-import { ASSET } from '../../constants/';
+import {ASSET} from '../../constants/';
 
 import type {Asset, Connection, Dispatch, State} from "../types";
 
 type AssetAction = { promise: Promise<any>, resolveCallback: (asset: Asset) => void }
-type AssetAndOptionalCallback = {asset: Asset, callback: ?(any) => void};
+type AssetAndOptionalCallback = { asset: Asset, callback: ?(any) => void };
 
 // refactor to use api
 const api = GwClientApi;
+
 /************** POST ******************/
 
 export function postAsset(props: AssetAndOptionalCallback): Dispatch {
@@ -28,13 +28,15 @@ export function postAsset(props: AssetAndOptionalCallback): Dispatch {
     return async function (dispatch: Dispatch): Asset {
 
         try {
-            const { asset, callback } = props;
+            const {asset, callback} = props;
 
             //const response = await api.asset.post(asset);
             //const storedAsset = response.parseResponseContent();
 
             const storedAsset = await
-                api.asset.post(asset)
+                api
+                    .asset
+                    .post(asset)
                     .parseResponseContent();
 
             // resolving a request is done in form container
@@ -80,23 +82,25 @@ export function updateAsset(props: AssetAndOptionalCallback): Dispatch {
     // and refreshes the nodes edges in the graph
     return async function (dispatch: Dispatch): Promise<any> {
 
-        try {
-            const {asset, callback} = props;
-            const response = await GwClientApi.putAsset(asset);
-            const updatedAsset = response.data;
+        const {asset, callback} = props;
+        //const response = await GwClientApi.putAsset(asset);
+        //const updatedAsset = response.data;
 
+        alert(JSON.stringify(props))
 
-            dispatch(updateAssetSuccess({asset: asset}));
-            dispatch(appActions.setInfoMessage(`Updated asset: ${asset.name}`));
-            dispatch(connectionActions.updateAssetConnections(updatedAsset));
-            dispatch(activeMappingActions.updateAssetState(updatedAsset));
+        const updatedAsset = await
+            api
+                .asset
+                .put(asset)
+                .parseResponseContent();
 
-            callback ? callback(updatedAsset) : null;
+        dispatch(updateAssetSuccess({asset: asset}));
+        dispatch(appActions.setInfoMessage(`Updated asset: ${asset.name}`));
+        dispatch(connectionActions.updateAssetConnections(updatedAsset));
+        dispatch(activeMappingActions.updateAssetState(updatedAsset));
 
-        } catch (err) {
-            console.error(err)
-            throw new Error(`asset.actions.assetTag() \n:: ${err} `)
-        }
+        callback ? callback(updatedAsset) : null;
+
     }
 }
 
@@ -165,8 +169,8 @@ function removeReferencesToDeletedAsset(assetName: string) {
                 try {
 
                     const updatedAsset = {
-                            ...asset,
-                            connected_to: filteredAssets
+                        ...asset,
+                        connected_to: filteredAssets
                     };
 
                     dispatch(updateAsset({asset: updatedAsset}));

@@ -51,6 +51,8 @@ export function closeEdit() {
     }
 }
 
+// TODO: refactor arguments to props ObjectAndCallback or StringAndCallback
+
 const dispatchFormActions = (dispatch) => ({
     [types.ASSET]: {
         post: (asset: Asset, callback) => {
@@ -58,7 +60,7 @@ const dispatchFormActions = (dispatch) => ({
             dispatch(actionsAsset.postAsset({asset, callback}));
         },
         put: (asset: Asset, callback) => {
-            dispatch(actionsAsset.updateAsset(asset, callback));
+            dispatch(actionsAsset.updateAsset({asset, callback}));
         },
         delete: (name: string, callback) => {
             dispatch(actionsAsset.deleteAsset(name, callback));
