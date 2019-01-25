@@ -12,7 +12,8 @@ export function setActiveMapping(mapping: ActiveMappingState)
     return {type: types.SET_ACTIVE_MAPPING, mapping}
 }
 
-export function clearActiveMappingSelection() {
+export function clearActiveMappingSelection(graph) {
+    graphHelpers.clearGraph(graph);
     return {type: types.CLEAR_ACTIVE_MAPPING_SELECTION}
 }
 

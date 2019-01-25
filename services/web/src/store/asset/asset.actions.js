@@ -9,10 +9,9 @@ import * as detailFormActions from '../detail-form/detail-form.actions';
 import {connectionActions} from '../actions';
 
 
+import {parseHALResponseData} from "../response-parser";
 
-import { parseHALResponseData } from "../response-parser";
-
-import { ASSET } from '../../constants/';
+import {ASSET} from '../../constants/';
 
 import type {Asset, Connection, Dispatch, State} from "../types";
 import type {FormAndOptionalCallback} from "../store-action.arg-types";
@@ -20,9 +19,11 @@ import type {FormAndOptionalCallback} from "../store-action.arg-types";
 type AssetAction = { promise: Promise<any>, resolveCallback: (asset: Asset) => void }
 
 
+
 // ! refactor to use api
 // ? can be deleted already?
 const api = GwClientApi;
+
 /************** POST ******************/
 
 
@@ -32,6 +33,9 @@ export function postAsset(props: FormAndOptionalCallback): Dispatch {
 
         try {
             const { form, callback } = props;
+
+            //const response = await api.asset.post(asset);
+            //const storedAsset = response.parseResponseContent();
 
             const storedAsset = await
                 api
@@ -89,13 +93,15 @@ export function updateAsset(props: FormAndOptionalCallback): Dispatch {
                     .asset
                     .put(form)
                     .parseResponseContent();
+        //const response = await GwClientApi.putAsset(asset);
+        //const updatedAsset = response.data;
 
+        alert(JSON.stringify(props))
 
             dispatch(updateAssetSuccess({asset: updatedAsset}));
             dispatch(appActions.setInfoMessage(`Updated asset: ${updatedAsset.name}`));
             dispatch(connectionActions.updateAssetConnections(updatedAsset));
             dispatch(activeMappingActions.updateAssetState(updatedAsset));
-
             callback ? callback(updatedAsset) : null;
 
         } catch (err) {
@@ -170,8 +176,8 @@ function removeReferencesToDeletedAsset(assetName: string) {
                 try {
 
                     const updatedAsset = {
-                            ...asset,
-                            connected_to: filteredAssets
+                        ...asset,
+                        connected_to: filteredAssets
                     };
 
                     dispatch(updateAsset({asset: updatedAsset}));

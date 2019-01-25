@@ -9,7 +9,7 @@ const {resetModels, loadDataToDB, clearDB} = require('../src/utils/testHandlers'
 
 
 try {
-    initDatabaseConnection({database: "unit-tests"});
+    initDatabaseConnection({database: "unit-tests", env: "tests"});
 } catch (err) {
     console.log("error with db connection")
 }
@@ -25,15 +25,14 @@ describe('Asset model tests', function () {
         // await clearDB();
     });
 
-
     beforeEach(async function () {
         //await resetModels();
-        console.log('before each load data to db')
+        //console.log('before each load data to db')
     });
 
     afterEach(async function () {
         //await clearDB();
-        console.log('after each clear data from db')
+        //console.log('after each clear data from db')
     });
 
     it('should be invalid if name is empty', function (done) {
@@ -57,17 +56,16 @@ describe('Asset model tests', function () {
 
         aPromise
             .then(aAsset => {
+                //console.log(aAsset);
 
-                console.log(aAsset);
+                bPromise
+                    .then(bAsset => {
+                        //console.log(bAsset)
+                        //expect(false).is.ok;
 
-            bPromise
-                .then(bAsset => {
-                    console.log(bAsset)
-                    //expect(false).is.ok;
-
-                    done();
-                })
-                .catch(err => done(err))
+                        done();
+                    })
+                    .catch(err => done(err))
             })
     });
 
@@ -183,9 +181,9 @@ describe('Asset model tests', function () {
 
                         expect(sourceTargetArray)
                             .to.have.deep.members([
-                                {source: "source asset", target: "foo"},
-                                {source: "source asset", target: "bar"},
-                            ]);
+                            {source: "source asset", target: "foo"},
+                            {source: "source asset", target: "bar"},
+                        ]);
 
                         done();
                     })

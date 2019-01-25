@@ -119,7 +119,7 @@ assetRouter.put('(/:id)?', (req, res) => {
     const query = {name: req.params.id};
     console.log(query);
 
-    Asset.update(query, req.body)
+    Asset.updateOne(query, req.body)
 
         .then(ok => {
             Asset.findOne(query)

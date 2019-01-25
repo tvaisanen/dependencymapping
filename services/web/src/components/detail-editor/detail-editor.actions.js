@@ -53,6 +53,7 @@ export function closeEdit() {
 
 
 // Todo: unify props, move dispatch back one step
+
 const dispatchFormActions = (dispatch) => ({
     [types.ASSET]: {
         post: (asset: Asset, callback) => {

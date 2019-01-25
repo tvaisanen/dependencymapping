@@ -7,10 +7,6 @@ import {parsers} from "../store/response-parser";
 const API_HOST = process.env.REACT_APP_API_HOST || "localhost"
 const API_URL = `http://${API_HOST}/`;
 
-// const MAPPINGS_URL = `${API_URL}mappings/`;
-// const TAGS_URL = `${API_URL}tags/`;
-// const RESOURCES_URL = `${API_URL}assets/`;
-
 const MAPPINGS_URL = `${API_URL}mapping/`;
 const CONNECTIONS_URL = `${API_URL}connection/`;
 const TAGS_URL = `${API_URL}tag/`;
@@ -102,6 +98,11 @@ class ApiResponse {
             //  if collection -> if response is an array
 
             console.info(this.promise)
+            if(!this.promise){
+                console.debug(this)
+                alert("no promise");
+                return
+            }
             try {
 
                 const serverResponse = await this.promise;
@@ -117,15 +118,21 @@ class ApiResponse {
                     // response.data.map(:w
                     // o => config.parseResponseData(o))
                     // if detail -> if response is an object
+                    console.debug(serverResponse)
                     return this.config.parseResponseData(serverResponse.data);
                 }
             } catch (err) {
                 console.error(err);
+                console.info("refactor all api response related error handling here")
                 throw new Error("ApiResponse.parseResponseContent", err.stack)
             }
         };
 }
 
+const assetParser = new ParserConfig(ASSET)
+const connectionParser = new ParserConfig(CONNECTION)
+const mappingParser = new ParserConfig(MAPPING)
+const tagParser = new ParserConfig(TAG)
 
 class Client {
 
@@ -155,16 +162,50 @@ class Client {
         return new ApiResponse(promise, parserConfig);
     }
 
-    static asset = {
-        getAll: args => Client.apiCall(Client.getAssets, new ParserConfig(ASSET), args),
-        post: args => Client.apiCall(Client.postAsset, new ParserConfig(ASSET), args),
-        put: args => Client.apiCall(Client.putAsset, new ParserConfig(ASSET), args)
+    static parserConfig = {
+       hal: {
+           asset: new ParserConfig(ASSET),
+           connection: new ParserConfig(CONNECTION),
+           mapping: new ParserConfig(MAPPING),
+           tag: new ParserConfig(TAG)
+       }
     };
 
+
+    /** asset api calls */
+    static asset = {
+        getAll: args => Client.apiCall(Client.getAssets, assetParser, args),
+        //get:    args => Client.apiCall(Client.getAsset, new ParserConfig(ASSET), args),
+        put:    args => Client.apiCall(Client.putAsset, assetParser, args),
+        post:   args => Client.apiCall(Client.postAsset, assetParser, args),
+        delete: args => Client.apiCall(Client.deleteAsset, assetParser,  args),
+    };
+
+    /** connection api calls */
+    static connection = {
+        getAll: args => Client.apiCall(Client.getConnections, connectionParser, args),
+        //get:    args => Client.apiCall(Client.getAsset, new ParserConfig(ASSET), args),
+        put:    args => Client.apiCall(Client.putConnection, connectionParser, args),
+        post:   args => Client.apiCall(Client.postConnection, connectionParser, args),
+        delete: args => Client.apiCall(Client.deleteConnection, connectionParser, args),
+    };
+
+    /** mapping api calls */
     static mapping = {
-        getAll: args => Client.apiCall(Client.getMappings, new ParserConfig(MAPPING), args),
-        post: args => Client.apiCall(Client.postMapping, new ParserConfig(MAPPING), args),
-        put: args => Client.apiCall(Client.putMapping, new ParserConfig(MAPPING), args)
+        getAll: args => Client.apiCall(Client.getMappings, mappingParser, args),
+        //get:    args => Client.apiCall(Client.getAsset, new ParserConfig(ASSET), args),
+        put:    args => Client.apiCall(Client.putMapping, mappingParser, args),
+        post:   args => Client.apiCall(Client.postMapping, mappingParser, args),
+        delete: args => Client.apiCall(Client.deleteMapping, mappingParser, args),
+    };
+
+    /** tag api calls */
+    static tag = {
+        getAll: args => Client.apiCall(Client.getTags, tagParser, args),
+        //get:    args => Client.apiCall(Client.getAsset, new ParserConfig(ASSET), args),
+        put:    args => Client.apiCall(Client.putTag, tagParser, args),
+        post:   args => Client.apiCall(Client.postTag, tagParser, args),
+        delete: args => Client.apiCall(Client.deleteTag, tagParser, args),
     };
 
 
@@ -263,31 +304,5 @@ class Client {
     }
 }
 
-type APIRequest = {
-    resource: string,
-    method: string
-}
-
-
-export function apiCall(apiRequest: APIRequest) {
-    /*
-    console.groupCollapsed(
-        `%c\tapiCall.${apiRequest.resource}.${apiRequest.method}`,
-        "color: blue",
-        "color:black"
-    );
-    */
-
-    return {
-        asset: assetCall
-    }
-
-}
-
-apiCall.defaultProps = {resource: "", method: "get"};
-
-const assetCall = {
-    getAll: (test) => console.log('apiCall.asset')
-}
 
 export default Client;

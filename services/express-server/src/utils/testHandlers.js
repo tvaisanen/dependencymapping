@@ -25,8 +25,6 @@ async function loadDataToDb() {
             .catch(err => {
                 console.log(err);
             })
-
-        console.log("CREATED assets")
     });
 
     tags.forEach(item => {

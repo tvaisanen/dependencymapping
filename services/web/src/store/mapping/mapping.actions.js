@@ -16,6 +16,7 @@ export function addMapping(mapping) {
 }
 
 const api = GwClientApi;
+
 /*************** POST *************/
 
 export function postMapping(props: FormAndOptionalCallback): Dispatch {
@@ -104,15 +105,13 @@ export function deleteMapping(name: string, callback: (any) => void) {
     return async function (dispatch, getState) {
 
         try {
-            await GwClientApi.deleteMapping((name: string));
+            //await GwClientApi.deleteMapping((name: string));
 
-            /**
-             Do after delete actions here
-             */
+            await api.mapping.delete()
+
             dispatch(deleteMappingSuccess(name));
             dispatch(appActions.setInfoMessage(`Deleted mapping: ${name}`));
-            dispatch(activeMappingActions.clearActiveMappingSelection());
-            graphHelpers.clearGraph(getState().graph);
+            dispatch(activeMappingActions.clearActiveMappingSelection(getState().graph));
 
             // run caller callback
             callback ? callback() : null;
@@ -132,9 +131,9 @@ export function loadMappingsSuccess(mappings) {
     return {type: types.LOAD_MAPPINGS_SUCCESS, mappings}
 }
 
-export function loadAllMappings(auth) {
+export function loadAllMappings() {
+
     return async function (dispatch) {
-        //const promise = GwClientApi.getGraphs({auth});
 
         const mappings = await
             api
@@ -142,8 +141,9 @@ export function loadAllMappings(auth) {
                 .getAll()
                 .parseResponseContent()
 
-            dispatch(appActions.setInfoMessage("Loaded all mappings successfully"));
-            dispatch(loadMappingsSuccess(mappings))
+        // todo: refactor messages to consts
+        dispatch(appActions.setInfoMessage("Loaded all mappings successfully"));
+        dispatch(loadMappingsSuccess(mappings))
 
     }
 }
