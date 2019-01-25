@@ -83,7 +83,7 @@ export function postAssetSuccess(asset: Asset) {
 export function updateAsset(props: FormAndOptionalCallback): Dispatch {
     // updates asset/resource to the database
     // and refreshes the nodes edges in the graph
-    return async function (dispatch: Dispatch): Promise<any> {
+    return async function (dispatch: Dispatch): void {
 
         try {
             const {form, callback} = props;

@@ -86,9 +86,9 @@ function createApiResponse(promise, config) {
 
 class ApiResponse {
     constructor(serverPromise, config={}) {
-        this.config = config || null;
+        console.info(config)
+        this.config = config;
         this.promise = serverPromise;
-        this.test = config.test;
     }
     async parseResponseContent () {
             //? all actions migrated to use this?
@@ -98,11 +98,7 @@ class ApiResponse {
             //  if collection -> if response is an array
 
             console.info(this.promise)
-            if(!this.promise){
-                console.debug(this)
-                alert("no promise");
-                return
-            }
+            console.info(this)
             try {
 
                 const serverResponse = await this.promise;
@@ -129,10 +125,10 @@ class ApiResponse {
         };
 }
 
-const assetParser = new ParserConfig(ASSET)
-const connectionParser = new ParserConfig(CONNECTION)
-const mappingParser = new ParserConfig(MAPPING)
-const tagParser = new ParserConfig(TAG)
+const assetParser = new ParserConfig(ASSET);
+const connectionParser = new ParserConfig(CONNECTION);
+const mappingParser = new ParserConfig(MAPPING);
+const tagParser = new ParserConfig(TAG);
 
 class Client {
 
@@ -143,7 +139,7 @@ class Client {
         return createApiResponse(axios.get("http://localhost:3000/reset-models"));
     }
 
-    static apiCall(fn, parserConfig, args = {}) {
+    static apiCall(fn, parserConfig, args = {}): ApiResponse {
 
         const promise = fn(args);
 
@@ -155,6 +151,7 @@ class Client {
         );
 
         console.info("%cargs:", "color: grey");
+        console.info(parserConfig)
         console.info(args);
         console.info(promise);
         console.groupEnd();

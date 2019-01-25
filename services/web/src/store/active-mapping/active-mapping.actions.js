@@ -7,6 +7,8 @@ import type {
     ActiveMappingAction
 } from "./active-mapping.types";
 
+import * as mappingHelpers from '../../common/dependency-map.helpers';
+
 export function setActiveMapping(mapping: ActiveMappingState)
     : ActiveMappingAction {
     return {type: types.SET_ACTIVE_MAPPING, mapping}
@@ -250,6 +252,23 @@ export function updateAssetState(asset: Asset) {
         if (_.includes(activeMapping.assets, asset.name)) {
             dispatch(graphHelpers.activeMappingAssetUpdateActions(asset));
         }
+    }
+}
+
+export function updateMapping(mapping) {
+    return function (dispatch: Dispatch, getState: State){
+            // if edited mapping is active mapping
+            if (mapping.name === getState().activeMapping.name) {
+                mappingHelpers.loadDependencyMap(
+                    mapping.name,
+                    getState().graph,
+                    getState().mappings,
+                    getState().assets,
+                    dispatch,
+                    getState().app.graph.selectedLayout
+                );
+                dispatch(setActiveMapping(mapping));
+            }
     }
 }
 

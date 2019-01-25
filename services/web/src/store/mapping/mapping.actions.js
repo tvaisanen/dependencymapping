@@ -19,26 +19,27 @@ const api = GwClientApi;
 
 /*************** POST *************/
 
-export function postMapping(props: FormAndOptionalCallback): Dispatch {
+export function postMapping(props: FormAndOptionalCallback): void {
 
     return async function (dispatch) {
         try {
 
             const {form, callback} = props;
 
-            const mapping = form;
+            //const response = await GwClientApi.postMapping((mapping: Mapping));
+            //const storedMapping: Mapping = response.data
 
-            const response = await GwClientApi.postMapping((mapping: Mapping));
-            const storedMapping: Mapping = response.data
+            const storedMapping = await
+                api
+                    .mapping
+                    .post(form)
+                    .parseResponseData();
 
-            dispatch(
-                appActions.setInfoMessage(
-                    `Created mapping: ${storedMapping.name}`));
+            dispatch(appActions.setInfoMessage(`Created mapping: ${storedMapping.name}`));
             dispatch(postMappingSuccess(storedMapping));
 
-            // run callers callback
-            // with response data
             callback ? callback(storedMapping) : null;
+
         } catch (err) {
             routeApiActionError(err)
         }
@@ -53,37 +54,24 @@ export function postMappingSuccess(mapping) {
 
 /*************** UPDATE **************/
 
-export function updateMapping(mapping: Mapping, callback: (any) => void) {
+export function updateMapping(props: FormAndOptionalCallback) {
 
-    return async function (dispatch: Dispatch, getState: State): void {
+    return async function (dispatch: Dispatch): void {
 
         try {
 
-            const response = await GwClientApi.putMapping((mapping: Mapping));
-            const updatedMapping: Mapping = response.data;
+            const {form, callback} = props;
 
+            const updatedMapping = await
+                api
+                    .mapping
+                    .put(form)
+                    .parseResponseContent();
 
-            dispatch(
-                appActions.setInfoMessage(
-                    `Updated mapping: ${updatedMapping.name}`));
+            dispatch(appActions.setInfoMessage(`Updated mapping: ${updatedMapping.name}`));
             dispatch(updateMappingSuccess({mapping: updatedMapping}));
+            dispatch(activeMappingActions.updateMapping(updatedMapping));
 
-            // if edited mapping is active mapping
-            if (updatedMapping.name === getState().activeMapping.name) {
-                mappingHelpers.loadDependencyMap(
-                    mapping.name,
-                    getState().graph,
-                    getState().mappings,
-                    getState().assets,
-                    dispatch,
-                    getState().app.graph.selectedLayout
-                );
-                dispatch(
-                    activeMappingActions
-                        .setActiveMapping(updatedMapping));
-            }
-
-            // run callers callback function with response data
             callback ? callback(updatedMapping) : null;
 
         } catch (err) {
