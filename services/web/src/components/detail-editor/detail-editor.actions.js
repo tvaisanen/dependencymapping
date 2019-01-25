@@ -3,19 +3,17 @@ import type {Dispatch} from "../../store/types";
 import {BROWSE} from "../../constants/views";
 
 import * as detailFormActions from '../../store/detail-form/detail-form.actions';
-import * as actionsAsset from '../../store/asset/asset.actions';
-import * as actionsConnection from '../../store/connection/connection.actions';
-import * as actionsMapping from '../../store/mapping/mapping.actions';
-import * as actionsTag from '../../store/tag/tag.actions';
+
 
 import * as types from '../../constants/types';
-import type {Asset, Connection, Mapping, Tag} from "../../store/types";
 
 import * as activeDetailActions from '../../store/active-detail/active-detail.actions';
 import * as appActions from '../../actions/app.actions';
 import * as dependencyMapHelpers from "../../common/dependency-map.helpers";
 
 import formValidators from '../../store/detail-form/form.validators';
+
+import { collectFormData, typeToActionMap } from "./detail-editor.utils";
 
 
 export function closeFormAndSetActiveDetail(activeDetail) {
@@ -44,12 +42,11 @@ export function closeFormAndSetActiveDetail(activeDetail) {
                     )
             )
         }
-
     }
 }
 
 export function closeEdit() {
-    return function (dispatch: Dispatch, getState: State): void {
+    return function (dispatch: Dispatch): void {
         dispatch(appActions.setEditFalse());
         dispatch(detailFormActions.setFormEditFalse());
         dispatch(appActions.setBottomPanelView(BROWSE))
@@ -57,92 +54,6 @@ export function closeEdit() {
 }
 
 
-const typeToActionMap = {
-    [types.ASSET]: {
-        post: actionsAsset.postAsset,
-        put: actionsAsset.updateAsset,
-        delete: actionsAsset.deleteAsset
-    },
-    [types.CONNECTION]: {
-        post: actionsConnection.postConnection,
-        put: actionsConnection.updateConnection,
-        delete: actionsConnection.deleteConnection,
-    },
-    [types.MAPPING]: {
-        post: actionsMapping.postMapping,
-        put: actionsMapping.updateMapping,
-        delete: actionsMapping.deleteMapping,
-    },
-    [types.TAG]: {
-        post: actionsTag.postTag,
-        put: actionsTag.updateTag,
-        delete: actionsTag.deleteTag,
-    }
-};
-//***********************''
-
-type FormProps = {
-    name: string,
-    description: string,
-    selectedAssets: Array<string> | void,
-    selectedTags: Array<string> | void,
-    group: string | void,
-    nodeShape: string | void,
-    nodeColor: string | void,
-    source: string,
-    target: string,
-    sourceArrow: boolean,
-    targetArrow: boolean,
-    edgeLabel: string,
-}
-
-/**
- *  map from detailForm to resource form
- */
-
-const getForm = {
-    ASSET: (detailForm: FormProps) => ({
-        name: detailForm.name,
-        description: detailForm.description,
-        connected_to: detailForm.selectedAssets,
-        tags: detailForm.selectedTags,
-        group: detailForm.group,
-        nodeShape: detailForm.nodeShape,
-        nodeColor: detailForm.nodeColor
-    }),
-    CONNECTION: (detailForm: FormProps) => ({
-        source: detailForm.source.name ? detailForm.source.name : detailForm.source,
-        target: detailForm.target.name ? detailForm.target.name : detailForm.target,
-        description: detailForm.description,
-        tags: detailForm.selectedTags,
-        edgeLabel: detailForm.edgeLabel,
-        sourceArrow: detailForm.sourceArrow,
-        targetArrow: detailForm.targetArrow,
-    }),
-    MAPPING: (detailForm) => ({
-        name: detailForm.name,
-        description: detailForm.description,
-        assets: detailForm.selectedAssets,
-        tags: detailForm.selectedTags,
-    }),
-    TAG: (detailForm) => ({
-        name: detailForm.name,
-        description: detailForm.description,
-    }),
-};
-
-
-class DetailForm {
-    constructor(detailForm) {
-        this.form = getForm[detailForm.formType](detailForm);
-        this.formType = detailForm.formType;
-        this.method = detailForm.edit ? 'put' : 'post';
-    }
-}
-
-function collectFormData(detailForm) {
-    return new DetailForm(detailForm);
-}
 
 export function onSave(): Dispatch {
     /**
@@ -172,31 +83,16 @@ export function onSave(): Dispatch {
             fieldErrors
         } = formValidators[formType](form);
 
-        // alert(JSON.stringify({formIsValid, fieldErrors}))
 
         if (!formIsValid) {
-            alert('form needs to be valid')
             console.info(fieldErrors)
             dispatch(appActions.setInfoMessage("INVALID FORM"));
             dispatch(detailFormActions.setErrors(fieldErrors));
             return
         }
-        // get the right action and wrap with dispatch
-        // const formActions = dispatchFormActions(dispatch);
 
-        // ? is this still relevant for development?
-        // console.group("Validate form here first!");
-        // console.info(form);
-        // console.info(formType);
-        // console.info(method);
-        // console.groupEnd();
 
         const formAction = typeToActionMap[formType][method];
-
-        console.debug(typeToActionMap)
-        console.debug(typeToActionMap[formType][method])
-        alert(JSON.stringify(formAction));
-
 
         try {
             /**
@@ -215,16 +111,6 @@ export function onSave(): Dispatch {
             };
 
             dispatch(formAction({form, callback}))
-
-            //?  refactored totally?
-            /*
-            await // async store action
-                formActions[formType][method](
-                    form,
-                    callback
-                );
-            */
-
 
         } catch (err) {
 
@@ -271,6 +157,7 @@ export function onDelete(): Dispatch {
 
         const confirmDelete = window
             .confirm(
+                //! todo: refactor texts to constants
                 `Are you sure that you want to delete: ${name}?`
             );
 
@@ -313,27 +200,18 @@ export function clickDetailType(type: ASSET | TAG | MAPPING): Dispatch {
     }
 }
 
-/**
- *  Track changes in asset selection filter
- */
 export function onAssetFilterChange(value: string): Dispatch {
     return function (dispatch: Dispatch): void {
         dispatch(detailFormActions.setAssetFilterValue(value))
     }
 }
 
-/**
- *  Track changes in tag selection filter
- */
 export function onTagFilterChange(value: string): Dispatch {
     return function (dispatch: Dispatch): void {
         dispatch(detailFormActions.setTagFilterValue(value))
     }
 }
 
-/**
- *  Track changes in resource name input
- */
 export function onResourceNameChange(value: string): Dispatch {
     //alert(`detail-editor.actions.onResourceNameChange(${value})`);
     return function (dispatch: Dispatch): void {
@@ -341,9 +219,6 @@ export function onResourceNameChange(value: string): Dispatch {
     }
 }
 
-/**
- *  Track changes in resource description text area
- */
 export function onResourceDescriptionChange(value: string): Dispatch {
     //alert(`detail-editor.actions.onResourceNameChange(${value})`);
     return function (dispatch: Dispatch): void {
@@ -351,9 +226,6 @@ export function onResourceDescriptionChange(value: string): Dispatch {
     }
 }
 
-/**
- *  Track changes in resource description text area
- */
 export function addAssetToSelected(value: string): Dispatch {
     //alert(`detail-editor.actions.onResourceNameChange(${value})`);
     return function (dispatch: Dispatch): void {
@@ -361,9 +233,6 @@ export function addAssetToSelected(value: string): Dispatch {
     }
 }
 
-/**
- *  Track changes in resource description text area
- */
 export function addTagToSelected(value: string): Dispatch {
     //alert(`detail-editor.actions.onResourceNameChange(${value})`);
     return function (dispatch: Dispatch): void {
@@ -371,9 +240,6 @@ export function addTagToSelected(value: string): Dispatch {
     }
 }
 
-/**
- *  Track changes in resource description text area
- */
 export function removeAssetFromSelected(value: string): Dispatch {
     //alert(`detail-editor.actions.onResourceNameChange(${value})`);
     return function (dispatch: Dispatch): void {
@@ -381,9 +247,6 @@ export function removeAssetFromSelected(value: string): Dispatch {
     }
 }
 
-/**
- *  Track changes in resource description text area
- */
 export function removeTagFromSelected(value: string): Dispatch {
     //alert(`detail-editor.actions.onResourceNameChange(${value})`);
     return function (dispatch: Dispatch): void {
@@ -435,6 +298,7 @@ export function toggleSourceArrow() {
 
 export function toggleTargetArrow() {
     return function (dispatch: Dispatch, getState): void {
+
         const {targetArrow} = getState().detailForm;
 
         if (targetArrow) {
@@ -446,8 +310,6 @@ export function toggleTargetArrow() {
 }
 
 export function onEdgeLabelChange(value: string) {
-    console.info("edge change: ")
-    console.info(value)
     return function (dispatch: Dispatch): void {
         dispatch(detailFormActions.setEdgeLabelValue((value: string)));
     }

@@ -177,7 +177,6 @@ export const ConnectionListItem = (props: ListItemProps) => (
             )}
     >
         {`${props.item.source} -> ${props.item.target}`}
-        {console.info(props)}
     </ListItemBox>
 );
 

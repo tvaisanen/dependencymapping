@@ -1,5 +1,14 @@
 import { ASSET, CONNECTION, MAPPING, TAG } from "../../constants";
 
+function logTodo(message){
+
+    console.info(
+        `%cTODO: %c${message}`,
+        "color:orange;font-size:24px",
+        "color:black;font-size:24px",
+        );
+}
+
 function validateConnectionForm(form) {
 
     const source = form.source === "" ? "source asset is required" : false;
@@ -7,6 +16,7 @@ function validateConnectionForm(form) {
 
     // form is valid if no errors
     const formIsValid = !(source || target);
+
 
     return {
         formIsValid,
@@ -28,7 +38,7 @@ function validateAssetForm (form){
 }
 
 function validateMappingForm (form){
-    alert('todo mapping asset form')
+    logTodo("Validate Mapping Form!");
      return {
         formIsValid: true,
         fieldErrors: false
@@ -36,7 +46,7 @@ function validateMappingForm (form){
 }
 
 function validateTagForm (form){
-    alert('todo tag asset form')
+    logTodo("Validate Tag Form!");
     return {
         formIsValid: true,
         fieldErrors: false

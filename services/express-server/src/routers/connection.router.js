@@ -44,14 +44,29 @@ connectionRouter.delete('(/:id)?', (req, res) => {
 connectionRouter.put('(/:id)?', (req, res) => {
     console.log("update");
     console.log(req.body)
-    Connection.update({
+    const query = {
         source: req.body.source,
         target: req.body.target
-    }, req.body)
-        .then(response => {
-            console.log(response);
-            console.log(req.query);
-            res.status(200).json({msg: "removed"})
+    }
+    Connection.update(query, req.body)
+        .then(ok => {
+
+            Connection.findOne(query)
+
+                .then(updatedConnection => {
+
+                        res.status(200).json(
+                            hal.serializeConnection(
+                                req.headers.host,
+                                updatedConnection
+                            )
+                        )
+                    }
+                ).catch(err => {
+
+                console.log(err);
+                res.status(500).json({error: err})
+            });
         })
         .catch(err => {
             res.status(500).json({msg: err.toString()})
@@ -59,13 +74,19 @@ connectionRouter.put('(/:id)?', (req, res) => {
 });
 
 connectionRouter.post('(/:id)?', (req, res) => {
+
     const {source, target} = req.body;
+
     Connection.findOne({source: source, target: target})
+
         .then((connection) => {
+
             console.log("already exist?")
             console.log(connection)
+
             if (connection) {
                 res.status(409).json({msg: "already exists"})
+
             } else {
                 const newConnection = new Connection(req.body);
                 newConnection.save()

@@ -1,10 +1,9 @@
-import GwClientApi from '../../api/gwClientApi';
+import api from '../../api/gwClientApi';
+
 import * as types from './mapping.action-types';
-import * as graphHelpers from '../../common/graph-helpers';
-import * as activeMappingActions from '../active-mapping/active-mapping.actions';
-import * as appActions from '../../actions/app.actions';
-import * as apiHelpers from '../../common/api.helpers';
-import * as mappingHelpers from '../../common/dependency-map.helpers';
+import {clearActiveMappingSelection, updateActiveMapping} from '../active-mapping/active-mapping.actions';
+import { setInfoMessage } from '../../actions/app.actions';
+
 import {routeApiActionError} from "../error-handling";
 
 import type {FormAndOptionalCallback} from "../store-action.arg-types";
@@ -15,11 +14,11 @@ export function addMapping(mapping) {
     return {type: types.ADD_MAPPING, mapping};
 }
 
-const api = GwClientApi;
 
 /*************** POST *************/
 
 export function postMapping(props: FormAndOptionalCallback): void {
+
 
     return async function (dispatch) {
         try {
@@ -30,15 +29,15 @@ export function postMapping(props: FormAndOptionalCallback): void {
                 api
                     .mapping
                     .post(form)
-                    .parseResponseData();
+                    .parseResponseContent();
 
-            dispatch(appActions.setInfoMessage(`Created mapping: ${storedMapping.name}`));
+            dispatch(setInfoMessage(`Created mapping: ${storedMapping.name}`));
             dispatch(postMappingSuccess(storedMapping));
 
             callback ? callback(storedMapping) : null;
 
         } catch (err) {
-            routeApiActionError(err)
+            console.error(err)
         }
 
     }
@@ -64,9 +63,9 @@ export function updateMapping(props: FormAndOptionalCallback) {
                     .put(form)
                     .parseResponseContent();
 
-            dispatch(appActions.setInfoMessage(`Updated mapping: ${updatedMapping.name}`));
+            dispatch(setInfoMessage(`Updated mapping: ${updatedMapping.name}`));
             dispatch(updateMappingSuccess({mapping: updatedMapping}));
-            dispatch(activeMappingActions.updateMapping(updatedMapping));
+            dispatch(updateActiveMapping(updatedMapping));
 
             callback ? callback(updatedMapping) : null;
 
@@ -92,8 +91,8 @@ export function deleteMapping(name: string, callback: (any) => void) {
             await api.mapping.delete();
 
             dispatch(deleteMappingSuccess(name));
-            dispatch(appActions.setInfoMessage(`Deleted mapping: ${name}`));
-            dispatch(activeMappingActions.clearActiveMappingSelection(getState().graph));
+            dispatch(setInfoMessage(`Deleted mapping: ${name}`));
+            dispatch(clearActiveMappingSelection(getState().graph));
 
             // run caller callback
             callback ? callback() : null;
@@ -124,7 +123,7 @@ export function loadAllMappings() {
                 .parseResponseContent()
 
         // todo: refactor messages to consts
-        dispatch(appActions.setInfoMessage("Loaded all mappings successfully"));
+        dispatch(setInfoMessage("Loaded all mappings successfully"));
         dispatch(loadMappingsSuccess(mappings))
 
     }

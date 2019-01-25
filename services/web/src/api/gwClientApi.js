@@ -54,7 +54,11 @@ function createApiResponse(promise, config) {
 
         promise
             .then(response => {
-                Object.setPrototypeOf(response, new ApiResponse(response, config));
+
+                Object.setPrototypeOf(
+                    response,
+                    new ApiResponse(response, config)
+                );
 
                 console.groupCollapsed(
                     `  %cOK\t%cAPI::${response.config.method}:${response.config.url}`,
@@ -69,7 +73,6 @@ function createApiResponse(promise, config) {
             })
             .catch(err => {
 
-
                 console.groupCollapsed(
                     `%c\tERROR %cAPI::${err.response.config.method}:${err.response.config.url}`,
                     "color: red",
@@ -78,6 +81,7 @@ function createApiResponse(promise, config) {
                 console.info(Object.keys(err));
                 console.info(err)
                 console.groupEnd();
+
                 reject(err)
             })
             .finally();

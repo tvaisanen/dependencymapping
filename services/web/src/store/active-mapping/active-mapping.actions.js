@@ -208,18 +208,8 @@ export function groupByTag(tagName) {
             }
         });
 
-        // console.info(newEdges)
-        // graph.add(newEdges);
-
-        // newEdges.forEach(e => graph.getElementById(e).addClass("is-in-group"))
-
-
-        // newEdges.forEach(e => console.info(
-        //     graph.getElementById(e).hasClass("is-in-group"))
-        // )
-
-        //    as children
         dispatch({type: types.GROUP_BY_TAG, tagName})
+
         console.groupEnd();
     }
 }
@@ -255,7 +245,7 @@ export function updateAssetState(asset: Asset) {
     }
 }
 
-export function updateMapping(mapping) {
+export function updateActiveMapping(mapping) {
     return function (dispatch: Dispatch, getState: State){
             // if edited mapping is active mapping
             if (mapping.name === getState().activeMapping.name) {
