@@ -26,9 +26,6 @@ export function postMapping(props: FormAndOptionalCallback): void {
 
             const {form, callback} = props;
 
-            //const response = await GwClientApi.postMapping((mapping: Mapping));
-            //const storedMapping: Mapping = response.data
-
             const storedMapping = await
                 api
                     .mapping
@@ -48,7 +45,6 @@ export function postMapping(props: FormAndOptionalCallback): void {
 }
 
 export function postMappingSuccess(mapping) {
-    console.info('Post mapping success.');
     return {type: types.POST_MAPPING_SUCCESS, mapping}
 }
 
@@ -82,7 +78,6 @@ export function updateMapping(props: FormAndOptionalCallback) {
 }
 
 function updateMappingSuccess({mapping}) {
-    console.info("updateMappingSuccess");
     return {type: types.UPDATE_MAPPING_SUCCESS, mapping};
 }
 
@@ -93,9 +88,8 @@ export function deleteMapping(name: string, callback: (any) => void) {
     return async function (dispatch, getState) {
 
         try {
-            //await GwClientApi.deleteMapping((name: string));
 
-            await api.mapping.delete()
+            await api.mapping.delete();
 
             dispatch(deleteMappingSuccess(name));
             dispatch(appActions.setInfoMessage(`Deleted mapping: ${name}`));
@@ -177,8 +171,10 @@ export function removeDeletedAssetFromMappings(assetName: string) {
 
             if (update) {
                 dispatch(updateMapping({
-                    ...mapping,
-                    assets: filteredAssets
+                    form: {
+                        ...mapping,
+                        assets: filteredAssets
+                    },
                 }));
             }
 

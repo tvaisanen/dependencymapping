@@ -180,7 +180,7 @@ function removeReferencesToDeletedAsset(assetName: string) {
                         connected_to: filteredAssets
                     };
 
-                    dispatch(updateAsset({asset: updatedAsset}));
+                    dispatch(updateAsset({form: updatedAsset}));
 
                 } catch (err) {
                     console.warn(err)

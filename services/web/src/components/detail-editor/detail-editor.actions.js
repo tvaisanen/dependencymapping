@@ -24,20 +24,25 @@ export function closeFormAndSetActiveDetail(activeDetail) {
      * the active detail
      */
     return function (dispatch, getState) {
-        dispatch(
-            activeDetailActions
-                .setAsActiveDetail(activeDetail));
 
+        dispatch(activeDetailActions.setAsActiveDetail(activeDetail));
         dispatch(closeEdit());
 
         // if active detail is mapping
         const isMapping = activeDetail.type === types.MAPPING;
+
         if (isMapping) {
+
             // if the detail is a type of MAPPING
             // it needs to be loaded
-            dispatch(dependencyMapHelpers
-                .loadDependencyMap(
-                    activeDetail.data.name || "None", dispatch, getState))
+            dispatch(
+                dependencyMapHelpers
+                    .loadDependencyMap(
+                    activeDetail.data.name || "None",
+                        dispatch,
+                        getState
+                    )
+            )
         }
 
     }
@@ -52,43 +57,6 @@ export function closeEdit() {
 }
 
 
-// Todo: unify props, move dispatch back one step
-
-const dispatchFormActions = (dispatch) => ({
-    [types.ASSET]: {
-        post: (asset: Asset, callback) => {
-            dispatch(actionsAsset.postAsset({asset, callback}));
-        },
-        put: (asset: Asset, callback) => {
-            dispatch(actionsAsset.updateAsset({asset, callback}));
-        },
-        delete: (name: string, callback) => {
-            dispatch(actionsAsset.deleteAsset({name, callback}));
-        }
-    },
-    [types.CONNECTION]: {
-        post: (connection: Connection, callback) => {
-            dispatch(actionsConnection.postConnection(connection, callback))
-        },
-        put: (connection: Connection, callback) => {
-            dispatch(actionsConnection.updateConnection(connection, callback))
-        },
-        delete: (name: string, callback) => {
-            dispatch(actionsConnection.deleteConnection(name, callback))
-        },
-    },
-    [types.MAPPING]: {
-        post: (mapping: Mapping, callback) => dispatch(actionsMapping.postMapping(mapping, callback)),
-        put: (mapping: Mapping, callback) => dispatch(actionsMapping.updateMapping(mapping, callback)),
-        delete: (name: string, callback) => dispatch(actionsMapping.deleteMapping(name, callback)),
-    },
-
-    [types.TAG]: {
-        post: (tag: Tag, callback) => dispatch(actionsTag.postTag(tag, callback)),
-        put: (tag: Tag, callback) => dispatch(actionsTag.updateTag(tag, callback)),
-        delete: (name: string, callback) => dispatch(actionsTag.deleteTag(name, callback)),
-    }
-});
 const typeToActionMap = {
     [types.ASSET]: {
         post: actionsAsset.postAsset,
@@ -306,7 +274,7 @@ export function onDelete(): Dispatch {
                 `Are you sure that you want to delete: ${name}?`
             );
 
-        const formActions = dispatchFormActions(dispatch);
+        //const formActions = dispatchFormActions(dispatch);
 
         if (confirmDelete) {
 
@@ -325,13 +293,13 @@ export function onDelete(): Dispatch {
 
             const args = formType === CONNECTION ?
                 {source: source.name, target: target.name}
-                : name
+                : {name}
             ;
 
 
             try {
                 await
-                    formActions[formType].delete(args, callback);
+                    dispatch(typeToActionMap[formType].delete({...args, callback}));
             } catch (err) {
                 throw err;
             }
