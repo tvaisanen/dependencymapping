@@ -67,4 +67,5 @@ function parseTag(data) {
 
 export const parsers = {
     hal: HALResourceParser,
+
 };

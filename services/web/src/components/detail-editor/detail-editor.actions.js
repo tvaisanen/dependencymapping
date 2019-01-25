@@ -51,17 +51,18 @@ export function closeEdit() {
     }
 }
 
+
+// Todo: unify props, move dispatch back one step
 const dispatchFormActions = (dispatch) => ({
     [types.ASSET]: {
         post: (asset: Asset, callback) => {
-            // ! check the spread for every action
             dispatch(actionsAsset.postAsset({asset, callback}));
         },
         put: (asset: Asset, callback) => {
-            dispatch(actionsAsset.updateAsset(asset, callback));
+            dispatch(actionsAsset.updateAsset({asset, callback}));
         },
         delete: (name: string, callback) => {
-            dispatch(actionsAsset.deleteAsset(name, callback));
+            dispatch(actionsAsset.deleteAsset({name, callback}));
         }
     },
     [types.CONNECTION]: {
@@ -87,7 +88,29 @@ const dispatchFormActions = (dispatch) => ({
         delete: (name: string, callback) => dispatch(actionsTag.deleteTag(name, callback)),
     }
 });
-
+const typeToActionMap = {
+    [types.ASSET]: {
+        post: actionsAsset.postAsset,
+        put: actionsAsset.updateAsset,
+        delete: actionsAsset.deleteAsset
+    },
+    [types.CONNECTION]: {
+        post: actionsConnection.postConnection,
+        put: actionsConnection.updateConnection,
+        delete: actionsConnection.deleteConnection,
+    },
+    [types.MAPPING]: {
+        post: actionsMapping.postMapping,
+        put: actionsMapping.updateMapping,
+        delete: actionsMapping.deleteMapping,
+    },
+    [types.TAG]: {
+        post: actionsTag.postTag,
+        put: actionsTag.updateTag,
+        delete: actionsTag.deleteTag,
+    }
+};
+//***********************''
 
 type FormProps = {
     name: string,
@@ -180,7 +203,7 @@ export function onSave(): Dispatch {
             fieldErrors
         } = formValidators[formType](form);
 
-        alert(JSON.stringify({formIsValid, fieldErrors}))
+        // alert(JSON.stringify({formIsValid, fieldErrors}))
 
         if (!formIsValid) {
             alert('form needs to be valid')
@@ -190,7 +213,7 @@ export function onSave(): Dispatch {
             return
         }
         // get the right action and wrap with dispatch
-        const formActions = dispatchFormActions(dispatch);
+        // const formActions = dispatchFormActions(dispatch);
 
         // ? is this still relevant for development?
         // console.group("Validate form here first!");
@@ -198,6 +221,12 @@ export function onSave(): Dispatch {
         // console.info(formType);
         // console.info(method);
         // console.groupEnd();
+
+        const formAction = typeToActionMap[formType][method];
+
+        console.debug(typeToActionMap)
+        console.debug(typeToActionMap[formType][method])
+        alert(JSON.stringify(formAction));
 
 
         try {
@@ -216,12 +245,16 @@ export function onSave(): Dispatch {
 
             };
 
+            dispatch(formAction({form, callback}))
 
+            //?  refactored totally?
+            /*
             await // async store action
                 formActions[formType][method](
                     form,
                     callback
                 );
+            */
 
 
         } catch (err) {

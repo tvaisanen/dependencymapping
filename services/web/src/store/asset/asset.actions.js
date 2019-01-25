@@ -15,31 +15,32 @@ import { parseHALResponseData } from "../response-parser";
 import { ASSET } from '../../constants/';
 
 import type {Asset, Connection, Dispatch, State} from "../types";
+import type {FormAndOptionalCallback} from "../store-action.arg-types";
 
 type AssetAction = { promise: Promise<any>, resolveCallback: (asset: Asset) => void }
-type AssetAndOptionalCallback = {asset: Asset, callback: ?(any) => void};
 
-// refactor to use api
+
+// ! refactor to use api
+// ? can be deleted already?
 const api = GwClientApi;
 /************** POST ******************/
 
-export function postAsset(props: AssetAndOptionalCallback): Dispatch {
+
+export function postAsset(props: FormAndOptionalCallback): Dispatch {
 
     return async function (dispatch: Dispatch): Asset {
 
         try {
-            const { asset, callback } = props;
-
-            //const response = await api.asset.post(asset);
-            //const storedAsset = response.parseResponseContent();
+            const { form, callback } = props;
 
             const storedAsset = await
-                api.asset.post(asset)
+                api
+                    .asset
+                    .post(form)
                     .parseResponseContent();
 
             // resolving a request is done in form container
             dispatch(postAssetSuccess(storedAsset));
-
             dispatch(appActions.setInfoMessage(`Created asset: ${storedAsset.name}`));
             dispatch(connectionActions.updateAssetConnections(storedAsset));
 
@@ -74,20 +75,24 @@ export function postAssetSuccess(asset: Asset) {
 
 /************** UPDATE ******************/
 
-//export function updateAsset(asset: Asset, callback: (any) => void): Dispatch {
-export function updateAsset(props: AssetAndOptionalCallback): Dispatch {
+
+export function updateAsset(props: FormAndOptionalCallback): Dispatch {
     // updates asset/resource to the database
     // and refreshes the nodes edges in the graph
     return async function (dispatch: Dispatch): Promise<any> {
 
         try {
-            const {asset, callback} = props;
-            const response = await GwClientApi.putAsset(asset);
-            const updatedAsset = response.data;
+            const {form, callback} = props;
+
+            const updatedAsset = await
+                api
+                    .asset
+                    .put(form)
+                    .parseResponseContent();
 
 
-            dispatch(updateAssetSuccess({asset: asset}));
-            dispatch(appActions.setInfoMessage(`Updated asset: ${asset.name}`));
+            dispatch(updateAssetSuccess({asset: updatedAsset}));
+            dispatch(appActions.setInfoMessage(`Updated asset: ${updatedAsset.name}`));
             dispatch(connectionActions.updateAssetConnections(updatedAsset));
             dispatch(activeMappingActions.updateAssetState(updatedAsset));
 
@@ -95,7 +100,6 @@ export function updateAsset(props: AssetAndOptionalCallback): Dispatch {
 
         } catch (err) {
             console.error(err)
-            throw new Error(`asset.actions.assetTag() \n:: ${err} `)
         }
     }
 }
@@ -106,9 +110,11 @@ function updateAssetSuccess({asset}) {
 
 /*************** DELETE **************/
 
-export function deleteAsset(name: string, callback: (any) => void) {
+export function deleteAsset(props: {name: string, callback:(any)=>void}) {
 
     return async function (dispatch: Dispatch, getState: State) {
+
+        const {name, callback} = props;
 
         await GwClientApi.deleteAsset(name);
 
@@ -124,7 +130,6 @@ export function deleteAsset(name: string, callback: (any) => void) {
 }
 
 export function deleteAssetSuccess(name: string) {
-    console.info('Delete mapping success.');
     return {type: types.DELETE_ASSET_SUCCESS, name};
 }
 

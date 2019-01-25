@@ -7,6 +7,7 @@ import * as apiHelpers from '../../common/api.helpers';
 import * as mappingHelpers from '../../common/dependency-map.helpers';
 import {routeApiActionError} from "../error-handling";
 
+import type {FormAndOptionalCallback} from "../store-action.arg-types";
 import type {Dispatch, State, Mapping} from "../types";
 
 
@@ -14,12 +15,18 @@ export function addMapping(mapping) {
     return {type: types.ADD_MAPPING, mapping};
 }
 
+const api = GwClientApi;
 /*************** POST *************/
 
-export function postMapping(mapping: Mapping, callback: (any) => void): Dispatch {
+export function postMapping(props: FormAndOptionalCallback): Dispatch {
 
     return async function (dispatch) {
         try {
+
+            const {form, callback} = props;
+
+            const mapping = form;
+
             const response = await GwClientApi.postMapping((mapping: Mapping));
             const storedMapping: Mapping = response.data
 
@@ -126,23 +133,18 @@ export function loadMappingsSuccess(mappings) {
 }
 
 export function loadAllMappings(auth) {
-    return function (dispatch) {
-        const promise = GwClientApi.getGraphs({auth});
+    return async function (dispatch) {
+        //const promise = GwClientApi.getGraphs({auth});
 
-        promise.then(response => {
+        const mappings = await
+            api
+                .mapping
+                .getAll()
+                .parseResponseContent()
+
             dispatch(appActions.setInfoMessage("Loaded all mappings successfully"));
-            dispatch(loadMappingsSuccess(response.data))
-        }).catch(error => {
-            console.warn(error)
-            if (apiHelpers.isNetworkError(error)) {
-                console.log(error.response)
-                dispatch(apiHelpers.handleNetworkError(error));
-            } else {
-                console.groupCollapsed("loadAllMappings()");
-                console.info(error);
-                console.groupEnd();
-            }
-        });
+            dispatch(loadMappingsSuccess(mappings))
+
     }
 }
 

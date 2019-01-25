@@ -1,7 +1,7 @@
 // @flow
 import axios from 'axios';
 import type {Asset, Connection, Mapping, Tag} from "../store/types";
-import {ASSET} from "../constants";
+import {ASSET, CONNECTION, MAPPING, TAG} from "../constants";
 import {parsers} from "../store/response-parser";
 
 const API_HOST = process.env.REACT_APP_API_HOST || "localhost"
@@ -48,7 +48,6 @@ function resourceDetailUrl({name}) {
 class ParserConfig {
 
     constructor(resourceType) {
-        this.test = () => console.info(this.data);
         this.parseResponseData = parsers.hal[resourceType]
     }
 }
@@ -90,8 +89,8 @@ function createApiResponse(promise, config) {
 }
 
 class ApiResponse {
-    constructor(serverPromise, config) {
-        this.config = config;
+    constructor(serverPromise, config={}) {
+        this.config = config || null;
         this.promise = serverPromise;
         this.test = config.test;
     }
@@ -134,10 +133,7 @@ class Client {
         /** for development
          reset the test data on refresh
          */
-        return new createApiResponse(
-            axios.get("http://localhost:3000/reset-models"),
-            new ParserConfig("ASSET")
-        );
+        return createApiResponse(axios.get("http://localhost:3000/reset-models"));
     }
 
     static apiCall(fn, parserConfig, args = {}) {
@@ -160,13 +156,20 @@ class Client {
     }
 
     static asset = {
-        getAll: args => Client.apiCall(Client.getAssets, new ParserConfig("ASSET"), args),
-        post: args => Client.apiCall(Client.postAsset, new ParserConfig("ASSET"), args)
-    }
+        getAll: args => Client.apiCall(Client.getAssets, new ParserConfig(ASSET), args),
+        post: args => Client.apiCall(Client.postAsset, new ParserConfig(ASSET), args),
+        put: args => Client.apiCall(Client.putAsset, new ParserConfig(ASSET), args)
+    };
+
+    static mapping = {
+        getAll: args => Client.apiCall(Client.getMappings, new ParserConfig(MAPPING), args),
+        post: args => Client.apiCall(Client.postMapping, new ParserConfig(MAPPING), args),
+        put: args => Client.apiCall(Client.putMapping, new ParserConfig(MAPPING), args)
+    };
 
 
     // todo: refactor to getMappings
-    static getGraphs() {
+    static getMappings() {
         return axios.get(MAPPINGS_URL);
     }
 

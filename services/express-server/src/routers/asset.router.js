@@ -124,10 +124,13 @@ assetRouter.put('(/:id)?', (req, res) => {
         .then(ok => {
             Asset.findOne(query)
                 .then(asset => {
-                    // ! HAL
-                    res.status(200).json(asset);
+                    const halAsset = hal.serializeAsset(req.headers.host, asset)
+                    res.status(200).json(halAsset);
                 })
-                .catch(err => res.status(400).json(err))
+                .catch(err => {
+                    console.log(err)
+                    res.status(400).json(err)
+                })
         })
         .catch(err => res.status(400).send(err));
 });
