@@ -15,6 +15,8 @@ import {
     GraphCanvasContainer
 } from './app.styled';
 
+import ActionNotifier from '../action-notifier/ActionNotifier';
+
 
 
 const App = () => (
@@ -24,6 +26,7 @@ const App = () => (
             <MappingContent id="mapping-content-container">
                 <MappingMenuContainer id="mapping-menu-container"/>
                 <GraphCanvasInflater id="graph-canvas-wrapper">
+                    <ActionNotifier id="action-notifier"/>
                     <GraphCanvasContainer id="cy"/>
                 </GraphCanvasInflater>
                 <CollapseMenuContainer/>

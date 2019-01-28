@@ -114,6 +114,7 @@ export const nodeShapeClasses =  () => nodeShapes.map(shape => ({
     })
 );
 
+
 export const nodeShapes = [
     "ellipse",
     "triangle",

@@ -8,7 +8,7 @@ import logger from 'redux-logger';
 export default function configureStore() {  
   return createStore(
       rootReducer,
-      applyMiddleware(thunk),
-      //applyMiddleware(thunk,logger),
+      //applyMiddleware(thunk),
+      applyMiddleware(thunk,logger),
   );
 }
