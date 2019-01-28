@@ -4,6 +4,7 @@ import * as helpers from './graph-helpers';
 import * as resourceHelpers from "./resource-helpers";
 import * as activeMappingActions from '../store/active-mapping/active-mapping.actions';
 import * as activeDetailActions from '../store/active-detail/active-detail.actions';
+import * as eventHookActions from '../store/event-hook/event-hook.reducer';
 
 
 export function onNodeMouseOver(event) {
@@ -21,6 +22,17 @@ export function onEdgeHover(event) {
 export function onNodeMouseOut(event) {
     return function (dispatch, getState) {
         helpers.hoverIndicationOff(event.target.cy(), event.target.id());
+    }
+}
+
+export function onCanvasClick(event) {
+    return function (dispatch: Dispatch, getState: State) {
+        alert('click')
+        if (event.target === getState().graph){
+            alert("clicked canvas")
+            dispatch(eventHookActions.clearEventHook())
+        }
+
     }
 }
 

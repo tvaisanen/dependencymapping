@@ -195,11 +195,12 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
         ]
     });
 
-    Object.keys(eventHandlers).forEach(key => {
-        const selector = eventHandlers[key][0];
-        const handler = eventHandlers[key][1];
-        cy.on(key, selector, handler);
+    eventHandlers.forEach(event => {
+        const {action, selector, callback} = event;
+        console.log(event)
+        cy.on(action, selector, callback);
     });
+
 
     return cy;
 }
