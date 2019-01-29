@@ -75,24 +75,35 @@ const infoMessages = {
     }
 };
 
-export function postConnection(connection: Connection, callback: (any) => void) {
+export function postConnection(props: FormAndOptionalCallback) {
     return async function (dispatch: Dispatch, getState: State) {
 
         try {
             // for updating the source assets
             // connected to list
 
-            const response = await
-                GwClientApi.postConnection(connection);
+            const { form, callback } = props;
+
+            //const response = await
+            //    GwClientApi.postConnection(connection);
 
             // after response is resolved store
             // the received data as storedConnection
-            const storedConnection = parseHALResponseData(CONNECTION, response.data);
+            // const storedConnection = parseHALResponseData(CONNECTION, response.data);
+
+
+            const storedConnection = await
+                api
+                    .connection
+                    .post(form)
+                    .parseResponseContent();
+
+            console.info(storedConnection)
 
             // update the state and sync related assets
             dispatch(postConnectionSuccess(storedConnection));
             dispatch(assetActions.syncConnectionSourceAsset(storedConnection));
-            dispatch(appActions.setInfoMessage(infoMessages.post.success(connection)));
+            dispatch(appActions.setInfoMessage(infoMessages.post.success(storedConnection)));
 
             // finally if caller provided callback function,
             // execute it with the response data as an argument

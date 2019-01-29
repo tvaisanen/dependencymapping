@@ -90,8 +90,10 @@ connectionRouter.post('(/:id)?', (req, res) => {
             } else {
                 const newConnection = new Connection(req.body);
                 newConnection.save()
-                    .then(saved => res.status(201).json(saved))
-                    .catch(err => res.status(500).json(err))
+                    .then(saved => {
+                        const halConnection = hal.serializeConnection(req.headers.host, saved)
+                        res.status(201).json(halConnection)
+                    }).catch(err => res.status(500).json(err))
             }
 
         }).catch(err => {

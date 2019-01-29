@@ -31,6 +31,9 @@ function parseHALAsset(data) {
 }
 
 function parseHALConnection(data) {
+    console.group("parse hal connection");
+    console.info(data)
+    console.groupEnd();
     return {
         _id: data._id,
         description: data.description,

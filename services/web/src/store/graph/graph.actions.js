@@ -122,7 +122,6 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                 content: 'connect to', // html/text content to be displayed in the menu
                 contentStyle: {}, // css key:value pairs to set the command's css in js if you want
                 select: function (ele) {
-                    const assetToGroup = getAssetByName((ele.id(): string));
                     // set event hook to call
                     // callback on event
                     dispatch(appActions.setInfoMessage("Select node to connect to."));
@@ -135,7 +134,9 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                                 target: assetName
                             };
 
-                            dispatch(connectionActions.postConnection(newConnection));
+                            alert(JSON.stringify(newConnection))
+
+                            dispatch(connectionActions.postConnection({form:newConnection}));
                             dispatch(clearEventHook())
                             dispatch(appActions.setInfoMessage("connection should be made."));
 
