@@ -2,10 +2,6 @@ import * as actionsAsset from '../../store/asset/asset.actions';
 import * as actionsConnection from '../../store/connection/connection.actions';
 import * as actionsMapping from '../../store/mapping/mapping.actions';
 import * as actionsTag from '../../store/tag/tag.actions';
-
-import type {Asset, Connection, Mapping, Tag} from "../../store/types";
-
-
 import * as types from '../../constants/types';
 
 export class DetailForm {

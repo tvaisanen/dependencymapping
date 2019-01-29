@@ -1,9 +1,9 @@
 /**
  * Controller for lists holding mappings and active mapping data
  */
-import {
-    hoverIndicationOff, hoverIndicationOn
-} from './../../common/graph-helpers';
+//import {
+//    hoverIndicationOff, hoverIndicationOn
+//} from './../../common/graph-helpers';
 
 import * as actions from './mapping-menu.actions';
 

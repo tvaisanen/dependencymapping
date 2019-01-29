@@ -1,6 +1,5 @@
 import * as types from './active-mapping.action-types';
 import * as graphHelpers from '../../common/graph-helpers';
-import * as resourceHelpers from '../../common/resource-helpers';
 import * as _ from 'lodash';
 import type {
     ActiveMappingState,
@@ -59,16 +58,6 @@ export function addResourceToActiveMapping(asset) {
         );
 
 
-        const activeMappingAssetsConnectingIntoNewAsset =
-            activeMapping.assets.filter(
-                activeMappingAsset => resourceHelpers.isResourceConnectedToId({
-                        resource: asset,
-                        id: activeMappingAsset
-                    }
-                )
-            )
-        ;
-
         const cy = getState().graph;
         const node = graphHelpers.nodeElementFromResource(asset);
 
@@ -101,7 +90,7 @@ export function addResourceToActiveMapping(asset) {
 
 
         //graphHelpers.addElement(cy, node);
-        const newElement = graph.add(node);
+        graph.add(node);
         graphHelpers.addElements(cy, preMappedToNewEdges);
         graphHelpers.addElements(cy, edgeElements);
 
@@ -132,11 +121,6 @@ export function addResourceToActiveMapping(asset) {
 export function removeResourceFromActiveMapping(asset) {
     return function (dispatch, getState) {
         const {graph} = getState();
-
-        console.info(asset);
-
-        // todo: refactor.. set type
-        const assetName = asset.name ? asset.name : asset;
 
         const el = graph.getElementById(asset.name);
 
@@ -193,7 +177,9 @@ export function groupByTag(tagName) {
         console.info(assetObjects);
 
         // 2. add all the assets which has the tag
+        /*
         const newEdges = assetObjects.map(asset => {
+
             const n = graph.getElementById(asset.name);
             // if asset is moved from other group
             // create edge from the tag node
@@ -207,6 +193,7 @@ export function groupByTag(tagName) {
                 return edge;
             }
         });
+        */
 
         dispatch({type: types.GROUP_BY_TAG, tagName})
 

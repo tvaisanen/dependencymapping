@@ -2,10 +2,9 @@ import React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
 
-import * as detailFormActions from '../../../store/detail-form/detail-form.actions';
 import * as detailEditorActions from '../detail-editor.actions';
 
-import {Label, SelectionField, FieldGroup, Select, FieldsContainer} from "../detail-editor.styled";
+import {Label, SelectionField, Select, FieldsContainer} from "../detail-editor.styled";
 
 import TagSelection from "./TagSelection";
 import DescriptionTextarea from "./DescriptionTextarea";

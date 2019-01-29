@@ -88,6 +88,8 @@ export function updateAsset(props: FormAndOptionalCallback): Dispatch {
             dispatch(connectionActions.updateAssetConnections(updatedAsset));
             dispatch(activeMappingActions.updateAssetState(updatedAsset));
 
+            if (callback) { callback(updatedAsset) }
+
         } catch (err) {
             console.error(err)
         }

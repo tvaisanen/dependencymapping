@@ -67,7 +67,7 @@ export function updateMapping(props: FormAndOptionalCallback) {
             dispatch(updateMappingSuccess({mapping: updatedMapping}));
             dispatch(updateActiveMapping(updatedMapping));
 
-            callback ? callback(updatedMapping) : null;
+            if (callback) { callback(updatedMapping) };
 
         } catch (err) {
             routeApiActionError(err);
