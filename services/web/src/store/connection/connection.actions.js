@@ -3,7 +3,7 @@
 import GwClientApi from '../../api/gwClientApi';
 import * as _ from 'lodash';
 
-import { CONNECTION } from "../../constants";
+import {CONNECTION} from "../../constants";
 
 import type {
     Asset,
@@ -17,7 +17,7 @@ import * as assetActions from '../../store/asset/asset.actions';
 import * as apiHelpers from '../../common/api.helpers';
 import * as graphHelpers from '../../common/graph-helpers';
 
-import { parseHALResponseData } from "../response-parser";
+import {parseHALResponseData} from "../response-parser";
 
 import {
     SET_CONNECTIONS,
@@ -69,7 +69,7 @@ export function loadAllConnections() {
 const infoMessages = {
     post: {
         success: (connection: Connection) => {
-           return  `Created connection between: ${connection.source} \
+            return `Created connection between: ${connection.source} \
                      and ${connection.target}`;
         }
     }
@@ -82,7 +82,7 @@ export function postConnection(props: FormAndOptionalCallback) {
             // for updating the source assets
             // connected to list
 
-            const { form, callback } = props;
+            const {form, callback} = props;
 
             //const response = await
             //    GwClientApi.postConnection(connection);
@@ -107,7 +107,9 @@ export function postConnection(props: FormAndOptionalCallback) {
 
             // finally if caller provided callback function,
             // execute it with the response data as an argument
-            callback ? callback(storedConnection) : null;
+            if (callback) {
+                callback(storedConnection)
+            }
 
 
         } catch (err) {
@@ -133,22 +135,23 @@ export function addConnections(connections: Array<Connection>) {
 }
 
 
-export function deleteConnection(connection: Connection, callback: (any) => void) {
+export function deleteConnection(props: FormAndOptionalCallback) {
     return async function (dispatch: Dispatch, getState: State) {
 
         try {
 
             // for updating the source assets
             // connected to list
-            const {activeMapping, assets, graph} = getState();
-            const activeMapAssets = activeMapping.assets;
+            const {form, callback} = props;
+            const connection = form;
+            const {assets} = getState();
 
-            await
-                GwClientApi
-                    .deleteConnection(
-                        connection.source,
-                        connection.target
-                    );
+            await api.connection.delete(form);
+            //GwClientApi
+            //   .deleteConnection(
+            //      connection.source,
+            //     connection.target
+            //);
 
             // the source asset needs to know about the new connection
             const assetToUpdate = assets.filter(
@@ -174,7 +177,9 @@ export function deleteConnection(connection: Connection, callback: (any) => void
             dispatch(assetActions.updateAsset(updatedAsset));
 
             // if callback provided, run it with response data
-            callback ? callback(connection) : null;
+            if (callback) {
+                callback(connection);
+            }
 
         } catch (err) {
 
@@ -195,17 +200,7 @@ export function updateConnection(props: FormAndOptionalCallback) {
 
             // for updating the source assets
             // connected to list
-            const { form, callback } = props;
-            const {assets} = getState();
-            /*
-            const connection = form;
-
-            console.group("update connection");
-            console.info(connection);
-
-            await
-                GwClientApi.putConnection(connection);
-                */
+            const {form, callback} = props;
             const updatedConnection = await
                 api
                     .connection
@@ -216,28 +211,6 @@ export function updateConnection(props: FormAndOptionalCallback) {
             dispatch(updateConnectionSuccess(updatedConnection));
             console.groupEnd();
 
-            // the source asset needs to know about the new connection
-            const assetToUpdate = assets
-                .filter(asset => {
-                        console.info(`${asset.name} === ${updatedConnection.source}`)
-                        return asset.name === updatedConnection.source
-                    }
-                )[0];
-
-            console.info(assetToUpdate)
-
-            // make a updated version
-            // of the updated asset
-            /*const updatedAsset = {
-                ...assetToUpdate,
-                connected_to: assetToUpdate
-                    .connected_to.filter(
-                        asset => asset !== connection.source
-                    )
-            };*/
-
-            //alert(JSON.stringify(updatedAsset.connected_to))
-
             dispatch(
                 appActions.setInfoMessage(
                     `Updated connection: ${updatedConnection.source} \
@@ -247,7 +220,7 @@ export function updateConnection(props: FormAndOptionalCallback) {
             dispatch(graphHelpers.updateConnectionEdge(updatedConnection));
 
             // if callback provided, run it with response data
-            callback ? callback(updatedConnection) : null;
+            if (callback) { callback(updatedConnection) };
 
         } catch (err) {
             console.info(err);
@@ -264,14 +237,14 @@ export function updateConnectionSuccess(connection: Connection) {
 export function updateAssetConnections(asset: Asset) {
     return function (dispatch: Dispatch, getState: State) {
 
+        const { connections } = getState();
 
         let deleteList = [];
         let createList = [];
         let keepList = [];
 
         // todo: refactor to a reducer
-        const c = getState()
-            .connections
+        connections
             .forEach(connection => {
                 const assetIsSource = asset.name === connection.source;
                 const targetIsConnectedTo = _.includes(asset.connected_to, connection.target);
@@ -299,7 +272,9 @@ export function updateAssetConnections(asset: Asset) {
                     edgeLabel: ""
                 });
             }
-        })
+        });
+
+        // ! hold on to this debug just in case
         // console.group("updateAssetConnections");
         // console.debug(asset);
         // console.debug("deletelist");
@@ -316,8 +291,8 @@ export function updateAssetConnections(asset: Asset) {
     }
 }
 
-export function deleteConnections(connections: Array<Connection>){
-    return {type:DELETE_CONNECTIONS, connections};
+export function deleteConnections(connections: Array<Connection>) {
+    return {type: DELETE_CONNECTIONS, connections};
 }
 
 // public namespace

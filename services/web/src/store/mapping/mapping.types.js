@@ -8,7 +8,6 @@ import {
     UPDATE_MAPPING_SUCCESS
 } from "./mapping.action-types";
 
-import type { EmptyArray } from '../types';
 
 export type Mapping = {
     name: string,

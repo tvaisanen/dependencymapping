@@ -18,7 +18,6 @@ const CollapseMenuContainer = props => (
 CollapseMenuContainer.propTypes = {
     clearGraphSelection: PropTypes.func.isRequired,
     downloadImage: PropTypes.func.isRequired,
-    logout: PropTypes.func.logout,
     saveMapping: PropTypes.func.isRequired,
     visible: PropTypes.bool.isRequired,
 };

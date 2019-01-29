@@ -28,7 +28,7 @@ import {
     SET_SOURCE_ARROW_TRUE,
     SET_EDGE_LABEL_VALUE
 } from './detail-form.action-types';
-import type {Action, Dispatch, State} from "../types";
+import type { Dispatch, State} from "../types";
 import type {Asset, Connection, Mapping, Tag} from "../types";
 
 type Detail = Asset | Connection | Mapping | Tag;

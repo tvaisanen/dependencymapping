@@ -3,23 +3,6 @@ import {connect}        from 'react-redux';
 import styled           from 'styled-components';
 import MarkDownRenderer from 'react-markdown-renderer';
 
-const Header = styled.span`
-  font-size: large;
-  letter-spacing: 0.1rem;
-`;
-
-const NoSelection = () => <Header>No Selection</Header>;
-
-const Description = props => {
-    console.info(props)
-    return props.type === "EMPTY" ?
-        <NoSelection/>
-        :
-        <ActiveDetailDescription
-            id="resource-detail__detail-block__description"
-            description={props.description}/>
-};
-
 const ActiveDetailDescription = (props) => (
     <Container>
         <MarkDownRenderer
@@ -30,8 +13,7 @@ const ActiveDetailDescription = (props) => (
 export default connect(
     (state) => ({
         description: state.activeDetail.data.description,
-    }),
-    {}
+    }), {}
 )(ActiveDetailDescription)
 
 const Container = styled.div`

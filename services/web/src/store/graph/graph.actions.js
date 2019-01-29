@@ -11,7 +11,7 @@ import * as detailFormActions from '../detail-form/detail-form.actions';
 import * as connectionActions from '../connection/connection.actions';
 
 import cytoscape from 'cytoscape';
-import style, {graphStyle} from '../../configs/configs.cytoscape';
+import style from '../../configs/configs.cytoscape';
 import cxtmenu from 'cytoscape-cxtmenu';
 import cola from 'cytoscape-cola';
 
@@ -110,7 +110,7 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                                 group: assetName
                             };
 
-                            dispatch(assetActions.updateAsset({asset: updatedAsset}));
+                            dispatch(assetActions.updateAsset({form: updatedAsset}));
                             dispatch(clearEventHook());
                             dispatch(appActions.setInfoMessage("grouping should be done."));
                         }
@@ -166,8 +166,7 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                 contentStyle: {},
                 select: function (ele) {
                     const connectionToRemove = getConnectionByName(ele.id())
-                    dispatch(connectionActions.deleteConnection(connectionToRemove));
-
+                    dispatch(connectionActions.deleteConnection({form:connectionToRemove}));
                 },
                 enabled: true
             },

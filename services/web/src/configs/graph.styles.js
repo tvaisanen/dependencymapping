@@ -28,20 +28,9 @@ const groupStyle = {
     backgroundColor: 'lightgrey'
 }
 
-
-const groupEdge = {
-            'width': 6,
-            'line-color': '#2f2f2f',
-            'target-arrow-color': '#2f2f2f',
-            'target-arrow-shape': 'none'
-        };
-
-
 const nodesStylePassive = {
     'text-background-color': '#fafafa',
     'text-background-opacity': '0.9',
-    'text-border-color': "#232323",
-    'text-border-opacity': "0.5",
     'text-border-style': "solid",
     'content': 'data(id)',
     shape: 'roundrectangle',

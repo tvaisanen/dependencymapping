@@ -26,11 +26,8 @@ export function loadDependencyMap(mapId) {
 
         // By default this is an array of objects.
         const assetNameList = mapping ? mapping.assets : [];
-        const tagNameList = mapping ? mapping.tags : [];
-
 
         // get connections between assets in the mapping
-
         const createEdgesFromThese = connections.filter(
             c => {
                 // console.debug(`${c.name} in ${JSON.stringify(assetNameList)}`);
@@ -63,13 +60,6 @@ export function loadDependencyMap(mapId) {
                 names: assetNameList,
                 objectList: assets
             });
-
-        const activeMappingTagObjects = parser.filterObjectsByName({
-            names: assetNameList,
-            objectList: assets
-        });
-
-
 
 
         const nodes = activeMappingAssetObjects

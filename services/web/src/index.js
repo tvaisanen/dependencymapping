@@ -18,7 +18,7 @@ if (
     process.env.REACT_APP_ENV === "development"
     && !process.env.REACT_APP_PERSIST_DATA
 ){
-    const promise = apiClient.resetModels();
+    apiClient.resetModels();
 }
 
 // store.dispatch(storeActions.loginSuccess(auth));

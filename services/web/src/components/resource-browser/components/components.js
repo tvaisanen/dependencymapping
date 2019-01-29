@@ -59,8 +59,9 @@ export const ListTabItems = (props: ListTabItemsProps) => (
      *  the resource types in the list
      */
     <ListTabs>
-        {props.items.map(item => (
+        {props.items.map((item,index) => (
             <ListTab
+                key={index}
                 onClick={() => props.onSelect(item.type)}
                 selected={props.selected === item.type}>{item.label}
             </ListTab>

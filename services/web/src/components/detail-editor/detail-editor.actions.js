@@ -179,7 +179,7 @@ export function onDelete(): Dispatch {
             };
 
             const args = formType === CONNECTION ?
-                {source: source.name, target: target.name}
+                {form:{source: source.name, target: target.name}}
                 : {name}
             ;
 
