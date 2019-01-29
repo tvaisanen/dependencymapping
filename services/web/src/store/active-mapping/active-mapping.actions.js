@@ -7,12 +7,15 @@ import type {
     ActiveMappingAction
 } from "./active-mapping.types";
 
+import * as mappingHelpers from '../../common/dependency-map.helpers';
+
 export function setActiveMapping(mapping: ActiveMappingState)
     : ActiveMappingAction {
     return {type: types.SET_ACTIVE_MAPPING, mapping}
 }
 
-export function clearActiveMappingSelection() {
+export function clearActiveMappingSelection(graph) {
+    graphHelpers.clearGraph(graph);
     return {type: types.CLEAR_ACTIVE_MAPPING_SELECTION}
 }
 
@@ -205,18 +208,8 @@ export function groupByTag(tagName) {
             }
         });
 
-        // console.info(newEdges)
-        // graph.add(newEdges);
-
-        // newEdges.forEach(e => graph.getElementById(e).addClass("is-in-group"))
-
-
-        // newEdges.forEach(e => console.info(
-        //     graph.getElementById(e).hasClass("is-in-group"))
-        // )
-
-        //    as children
         dispatch({type: types.GROUP_BY_TAG, tagName})
+
         console.groupEnd();
     }
 }
@@ -249,6 +242,23 @@ export function updateAssetState(asset: Asset) {
         if (_.includes(activeMapping.assets, asset.name)) {
             dispatch(graphHelpers.activeMappingAssetUpdateActions(asset));
         }
+    }
+}
+
+export function updateActiveMapping(mapping) {
+    return function (dispatch: Dispatch, getState: State){
+            // if edited mapping is active mapping
+            if (mapping.name === getState().activeMapping.name) {
+                mappingHelpers.loadDependencyMap(
+                    mapping.name,
+                    getState().graph,
+                    getState().mappings,
+                    getState().assets,
+                    dispatch,
+                    getState().app.graph.selectedLayout
+                );
+                dispatch(setActiveMapping(mapping));
+            }
     }
 }
 

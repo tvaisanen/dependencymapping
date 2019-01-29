@@ -124,18 +124,11 @@ assetRouter.put('(/:id)?', (req, res) => {
         .then(ok => {
             Asset.findOne(query)
                 .then(asset => {
-                    // ! HAL
-                    const HALAsset = hal.serializeAsset(asset);
-                    console.log(HALAsset)
-                    res.status(200).json(HALAsset);
+                    const halAsset = hal.serializeAsset(req.headers.host, asset)
+                    res.status(200).json(halAsset);
                 })
                 .catch(err => {
                     console.log(err)
-                /* ! TypeError: Cannot read property 'name' of undefined
-                 *              at Object.serializeAsset
-                 *              (/usr/local/src/express/src/utils/hal.utils.js:17:40)
-                 */
-
                     res.status(400).json(err)
                 })
         })

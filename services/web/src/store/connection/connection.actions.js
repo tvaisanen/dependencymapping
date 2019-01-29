@@ -27,6 +27,9 @@ import {
     UPDATE_CONNECTION,
     ADD_CONNECTIONS
 } from "./connection.action-types";
+import type {FormAndOptionalCallback} from "../store-action.arg-types";
+
+const api = GwClientApi;
 
 export function setConnections(connections: Array<Connection>): ConnectionAction {
     return {type: SET_CONNECTIONS, connections}
@@ -173,7 +176,7 @@ export function deleteConnectionSuccess(connection: Connection) {
 }
 
 
-export function updateConnection(connection: Connection, callback: (any) => void) {
+export function updateConnection(props: FormAndOptionalCallback) {
 
     return async function (dispatch: Dispatch, getState: State) {
 
@@ -181,23 +184,32 @@ export function updateConnection(connection: Connection, callback: (any) => void
 
             // for updating the source assets
             // connected to list
+            const { form, callback } = props;
             const {assets} = getState();
+            /*
+            const connection = form;
 
             console.group("update connection");
             console.info(connection);
 
             await
                 GwClientApi.putConnection(connection);
+                */
+            const updatedConnection = await
+                api
+                    .connection
+                    .put(form)
+                    .parseResponseContent();
 
 
-            dispatch(updateConnectionSuccess(connection));
+            dispatch(updateConnectionSuccess(updatedConnection));
             console.groupEnd();
 
             // the source asset needs to know about the new connection
             const assetToUpdate = assets
                 .filter(asset => {
-                        console.info(`${asset.name} === ${connection.source}`)
-                        return asset.name === connection.source
+                        console.info(`${asset.name} === ${updatedConnection.source}`)
+                        return asset.name === updatedConnection.source
                     }
                 )[0];
 
@@ -217,14 +229,14 @@ export function updateConnection(connection: Connection, callback: (any) => void
 
             dispatch(
                 appActions.setInfoMessage(
-                    `Updated connection: ${connection.source} \
-                     to ${connection.target}`));
+                    `Updated connection: ${updatedConnection.source} \
+                     to ${updatedConnection.target}`));
 
             //dispatch(assetActions.updateAsset(updatedAsset));
-            dispatch(graphHelpers.updateConnectionEdge(connection));
+            dispatch(graphHelpers.updateConnectionEdge(updatedConnection));
 
             // if callback provided, run it with response data
-            callback ? callback(connection) : null;
+            callback ? callback(updatedConnection) : null;
 
         } catch (err) {
             console.info(err);

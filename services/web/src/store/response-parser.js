@@ -18,7 +18,6 @@ const HALResourceParser = {
 };
 
 function parseHALAsset(data) {
-    alert(JSON.stringify(data))
     return {
         _id: data._id,
         name: data.name,
@@ -68,4 +67,5 @@ function parseTag(data) {
 
 export const parsers = {
     hal: HALResourceParser,
+
 };

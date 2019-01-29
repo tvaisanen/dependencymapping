@@ -2,12 +2,14 @@
 export const SET = 'SET_EVENT_HOOK';
 export const CLEAR = 'CLEAR_EVENT_HOOK';
 
-const emptyHook = {hook:"", callback: null };
+export const clearEventHook = () => ({type: CLEAR});
+
+const emptyHook = {hook:"", callback: null, notification: "" };
 
 export default function (state=emptyHook, action) {
     switch(action.type){
         case SET:
-            return action.hook
+            return action.hook;
 
         case CLEAR:
             return emptyHook;
