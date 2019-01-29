@@ -78,20 +78,15 @@ export function postAssetSuccess(asset: Asset) {
 
 //export function updateAsset(asset: Asset, callback: (any) => void): Dispatch {
 export function updateAsset(props: AssetAndOptionalCallback): Dispatch {
+
     // updates asset/resource to the database
     // and refreshes the nodes edges in the graph
     return async function (dispatch: Dispatch): Promise<any> {
 
-        const {asset, callback} = props;
-        //const response = await GwClientApi.putAsset(asset);
-        //const updatedAsset = response.data;
-
-        alert(JSON.stringify(props))
-
         const updatedAsset = await
             api
                 .asset
-                .put(asset)
+                .put(props.asset)
                 .parseResponseContent();
 
         dispatch(updateAssetSuccess({asset: asset}));
@@ -99,7 +94,7 @@ export function updateAsset(props: AssetAndOptionalCallback): Dispatch {
         dispatch(connectionActions.updateAssetConnections(updatedAsset));
         dispatch(activeMappingActions.updateAssetState(updatedAsset));
 
-        callback ? callback(updatedAsset) : null;
+        props.callback ? props.callback(updatedAsset) : null;
 
     }
 }
