@@ -174,7 +174,11 @@ const detailToFormMapping = {
         name: tag.name,
         description: tag.description
     }),
-    CONNECTION: (connection: Connection) => ({...connection})
+    CONNECTION: (connection: Connection) => ({
+        ...connection,
+        selectedTags: connection.tags.map(t => t.name)
+
+    })
 }
 
 

@@ -57,10 +57,10 @@ const TagForm = () => (
 const TagSelections = () => null;
 
 const formComponentsByType = {
-    ASSET: {formComponent: AssetForm, selectionComponent: AssetSelections},
-    CONNECTION: {formComponent: ConnectionForm, selectionComponent: ConnectionSelections},
-    MAPPING: {formComponent: MappingForm, selectionComponent: MappingSelections},
-    TAG: {formComponent: TagForm, selectionComponent: TagSelections},
+    [ASSET]: {formComponent: AssetForm, selectionComponent: AssetSelections},
+    [CONNECTION]: {formComponent: ConnectionForm, selectionComponent: ConnectionSelections},
+    [MAPPING]: {formComponent: MappingForm, selectionComponent: MappingSelections},
+    [TAG]: {formComponent: TagForm, selectionComponent: TagSelections},
 }
 /**
  *  Asset:

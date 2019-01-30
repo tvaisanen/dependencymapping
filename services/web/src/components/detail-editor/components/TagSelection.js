@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import * as _ from 'lodash';
-import * as detailEditorActions from '../detail-editor.actions';
+import {addTagToSelected, onTagFilterChange, removeTagFromSelected} from '../detail-editor.actions';
 import SelectionWithFilterAndCreate from './SelectionWithFilterAndCreate';
 import { SelectionProps } from './SelectionWithFilterAndCreate';
 import {TAG} from "../../../constants";
@@ -35,10 +35,10 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        select: (value:string) => dispatch(detailEditorActions.addTagToSelected((value:string))),
-        deselect: (value:string) => dispatch(detailEditorActions.removeTagFromSelected((value:string))),
-        createAndSelect: (name:string) => dispatch(createAndSelect((name:string))),
-        onFilterChange: (value:string) => dispatch(detailEditorActions.onTagFilterChange((value:string)))
+        select:             (value:string) => dispatch(addTagToSelected((value:string))),
+        deselect:           (value:string) => dispatch(removeTagFromSelected((value:string))),
+        createAndSelect:    (name:string)  => dispatch(createAndSelect((name:string))),
+        onFilterChange:     (value:string) => dispatch(onTagFilterChange((value:string)))
     }
 };
 
@@ -56,7 +56,7 @@ function createAndSelect(tagName): Dispatch {
             // if tag already exists, just add the tag to selected
             // but do not allow duplicates
             if (!_.includes(selectedTags, tagName)) {
-                dispatch(detailEditorActions.addTagToSelected((tagName: string)));
+                dispatch(addTagToSelected((tagName: string)));
             }
 
         } else {
@@ -65,7 +65,7 @@ function createAndSelect(tagName): Dispatch {
             promise.then(response => {
                 console.info(response.data)
                 dispatch(tagActions.postTagSuccess(response.data));
-                dispatch(detailEditorActions.addTagToSelected((tagName: string)));
+                dispatch(addTagToSelected((tagName: string)));
             });
         }
 
