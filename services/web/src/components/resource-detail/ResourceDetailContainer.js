@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {connect} from 'react-redux';
 
 import resourceDetailCtrl from "./resource-detail.controller";
-import {DetailHeaderLinks, DetailGrid, DetailLayout} from './resource-detail.styled';
+import {DetailHeaderLinks, DetailGrid} from './resource-detail.styled';
 
 import ActiveDetailDescription from './components/ActiveDetailDescription';
 import ActiveDetailLists from './components/ActiveDetailLists';

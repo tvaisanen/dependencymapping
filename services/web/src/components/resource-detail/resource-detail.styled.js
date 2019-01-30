@@ -1,11 +1,14 @@
 import styled from 'styled-components';
 
 export const DetailGrid = styled.div`
+
   display: grid;
   grid-template:
   "detail-header  detail-actions" min-content
   "detail-content detail-lists  " 1fr
   / 60% 40%;
+  grid-row-gap: 4px;
+  
   height: 100%;
   width: inherit;
   border-radius: 3px;
@@ -27,7 +30,7 @@ export const DetailHeaderLinks = styled.div`
 export const DetailContent = styled.div`
     grid-area: detail-content;
     /*background:rgba(60,63,65,0.35);*/
-    background-color: rgba(255,255,255,0.8);
+    background: ${p=>p.theme.colorGraphBackground}; 
     color: black;
     border-radius: 3px;
     overflow-y: scroll;
@@ -50,46 +53,6 @@ export const DetailContent = styled.div`
     }
   
 `;
-
-export const DetailLayout = styled.div`
-    // detail layout
-    display: flex;
-    height: 100%;
-    width: inherit;
-    flex-grow: 3;
-    border-radius: 3px;
-    border: 1px solid grey;
-    
-    > div {
-       display: flex;
-       flex-direction: column;
-       flex-grow: 1;
-       
-       > div:nth-of-type(1) {
-         // detail title bar               
-         justify-content: space-between;
-         background-color: rgba(22,22,22, 0.5);
-         padding: 0 6px;
-        
-       }
-       
-       > div:nth-of-type(2){
-          // content boxes
-          margin: 4px;
-          border: 1px solid rgba(255,255,255,0.15);
-       }
-    }
-    
-    
-    > div:nth-of-type(1) {
-      // header
-      flex-basis: 60%;
-    
-    > div:nth-of-type(2) {
-      flex-basis: 40%;
-    }
-`;
-
 
 export const HeaderBar = styled.div`
     grid-area: detail-header;
@@ -126,11 +89,6 @@ export const ListWrapper = styled.div`
     //border: 1px solid grey;
     overflow-y: auto;
    background-color: rgba(60,63,65,0.35) 
-`;
-export const DetailHeader = styled.h2`
-   padding: 0;
-   margin: 4px 0;
-   color: rgba(255,255,255,0.9);
 `;
 
 export const List = styled.div`
