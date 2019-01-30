@@ -93,18 +93,23 @@ export function updateTagSuccess(tag: Tag) {
 
 /*************** DELETE **************/
 
-export function deleteTag(name: string) {
+export function deleteTag(props: FormAndOptionalCallback) {
     /**
      *  Async redux action
      */
     return async function (dispatch: Dispatch) {
         try {
-            const response = await GwClientApi.deleteTag(name);
-            dispatch(appActions.setInfoMessage(`Deleted tag: ${name}`));
-            dispatch(deleteTagSuccess(name));
+            //const response = await GwClientApi.deleteTag(name);
+            const {form, callback} = props;
+            await api.tag.delete(form);
 
-            // delete action does not need a response
-            // this is not yet supported (err: {response: ?any}) ?
+            dispatch(appActions.setInfoMessage(`Deleted tag: ${form.name}`));
+            dispatch(deleteTagSuccess(props.name));
+
+            if (callback) {
+                callback();
+            }
+
         } catch (err) {
             // if error occurs
             // handle updateTag related errors here

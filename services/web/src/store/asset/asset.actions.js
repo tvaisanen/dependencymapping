@@ -106,7 +106,7 @@ export function deleteAsset(props: {name: string, callback:(any)=>void}) {
 
     return async function (dispatch: Dispatch, getState: State) {
 
-        const {name, callback} = props;
+        const {form:{name}, callback} = props;
 
         await api.asset.delete(name);
 

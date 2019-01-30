@@ -13,7 +13,8 @@ import * as dependencyMapHelpers from "../../common/dependency-map.helpers";
 
 import formValidators from '../../store/detail-form/form.validators';
 
-import { collectFormData, typeToActionMap } from "./detail-editor.utils";
+import {collectFormData, typeToActionMap} from "./detail-editor.utils";
+import type {FormAndOptionalCallback} from "../../store/store-action.arg-types";
 
 
 export function closeFormAndSetActiveDetail(activeDetail) {
@@ -36,7 +37,7 @@ export function closeFormAndSetActiveDetail(activeDetail) {
             dispatch(
                 dependencyMapHelpers
                     .loadDependencyMap(
-                    activeDetail.data.name || "None",
+                        activeDetail.data.name || "None",
                         dispatch,
                         getState
                     )
@@ -52,7 +53,6 @@ export function closeEdit() {
         dispatch(appActions.setBottomPanelView(BROWSE))
     }
 }
-
 
 
 export function onSave(): Dispatch {
@@ -179,14 +179,19 @@ export function onDelete(): Dispatch {
             };
 
             const args = formType === CONNECTION ?
-                {form:{source: source.name, target: target.name}}
-                : {name}
+                {form: {source: source.name, target: target.name}}
+                : {form: {name}}
             ;
 
 
             try {
                 await
-                    dispatch(typeToActionMap[formType].delete({...args, callback}));
+                    dispatch(typeToActionMap[formType]
+                        .delete(({
+                            ...args,
+                            callback
+                        }: FormAndOptionalCallback))
+                    );
             } catch (err) {
                 throw err;
             }

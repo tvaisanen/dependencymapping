@@ -176,8 +176,10 @@ class Client {
         return axios.put(path, tag)
     }
 
-    static deleteTag(name: string): Promise<any> {
-        return axios.delete(tagDetailUrl({name}));
+    static deleteTag(props): Promise<any> {
+
+        alert(`deleteTag: ${JSON.stringify(props.name)}`);
+        return axios.delete(tagDetailUrl({name: props.name}));
     }
 }
 
