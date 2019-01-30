@@ -10,7 +10,7 @@ import ConnectionForm, {ConnectionSelections} from './components/connection-form
 import {
     Container,
     EditorGrid,
-    FormColumn,
+    FormColumn, InflateGridCell,
     ListSelection,
     ResourceDetails,
     SelectionColumn
@@ -61,7 +61,8 @@ const TagForm = () => (
     </React.Fragment>
 );
 
-const TagSelections = () => null;
+
+const TagSelections = () => <InflateGridCell>Tag does not have any selectable assets</InflateGridCell>;
 
 const formComponentsByType = {
     [ASSET]: {formComponent: AssetForm, selectionComponent: AssetSelections},

@@ -10,7 +10,8 @@ const Container = styled.div`
     padding: 6px;
     background-color: ${p=>p.theme.formFieldBackgroundColor};
     border-radius: 3px;
-    border: ${p=>p.theme.cardBorder};
+    
+    border: ${p=>p.theme.insetBorder}; 
 `;
 
 const Textarea = styled.textarea`

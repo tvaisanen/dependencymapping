@@ -6,6 +6,7 @@ export const EditorGrid = styled.div`
   grid-template:
   "resource-selection resource-details list-selection" 1fr
   / 16em 3fr 2fr;
+  grid-gap: 4px;
   height: 100%;
   width: 100%;
   border-radius: 3px;
@@ -21,13 +22,16 @@ export const ResourceSelection = styled.div`
     display: flex;
     flex-direction: column;
     height: inherit;
-    background-color: ${p=>p.theme.cardBackgroundColor}; 
+    /*background-color: ${p=>p.theme.cardBackgroundColor}; */
     border-radius: 3px;
+    border-right: ${p=>p.theme.cardBorder}; 
+    background-color: rgba(255,255,255,0.1);
 `;
 
 
 export const ResourceDetails = styled.div`
     grid-area: resource-details;
+    margin: 4px 0;
     max-height: 100%;
     display: flex;
     justify-content: space-between;
@@ -37,9 +41,11 @@ export const ResourceDetails = styled.div`
 export const ListSelection = styled.div`
     display: flex;
     flex-direction: column;
-    transform: ${p=>p.visible? 'scaleX(1)': 'scaleX(0)'};
-    transform-origin: right;
-    transition: all .3s ease-in-out;
+    transition: all 2s ease-in-out;
+    border-left: ${p=>p.theme.cardBorder}; 
+    width: 100%;
+    height: 100%;
+    
 `;
 
 export const Select = styled.select`
@@ -69,3 +75,9 @@ export const Label = styled.span`
     color: ${p=>p.color};
 `;
 
+export const InflateGridCell = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1; 
+`;

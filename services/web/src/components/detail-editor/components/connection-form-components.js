@@ -23,7 +23,6 @@ export const WrapFields = styled.div`
   margin-bottom: 6px;
   background-color: ${p => p.theme.formFieldBackgroundColor};
   flex-shrink: 1;
-  flex-grow: 3;
   align-content: flex-start;
    border: 1px solid rgba(255,255,255,0.15);
 `;
@@ -41,13 +40,10 @@ const Input = styled.input`
 `;
 
 const CheckBoxes = styled.div`
+  display: flex;
+  align-items: center;
   border: ${p => p.theme.cardBorder};
   margin-left: 6px;
-  
-  > label {
-    font-size: 0.8em;
-  }
-  
 `;
 
 
@@ -74,7 +70,6 @@ export const ConnectionForm = (props) => (
                     onChange={(e) => props.onEdgeLabelChange(e.target.value)}
                     type="text"/>
                 <CheckBoxes>
-                    <br/>
                     <Label>source</Label>
                     <input
                         type="checkbox"
