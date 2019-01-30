@@ -89,13 +89,7 @@ const SelectionBlock = styled.div`
   justify-content: center;
   height: 100%;
   border-radius: 3px;
-  margin: 6px;
-  flex-shrink: 4;
-  border: ${p => p.theme.cardBorder};
   background-color: ${p => p.theme.formFieldBackgroundColor};
-  :nth-of-type(2) {
-    margin-top: 0;
-  }
 `;
 
 export const Block = styled.div`

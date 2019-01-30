@@ -6,7 +6,7 @@ import * as detailEditorActions from '../detail-editor.actions';
 const Container = styled.div`
     display: flex;
     flex-direction: column;
-    flex-grow: 6;
+    flex-grow: 1;
     padding: 6px;
     background-color: ${p=>p.theme.formFieldBackgroundColor};
     border-radius: 3px;
@@ -14,7 +14,8 @@ const Container = styled.div`
 `;
 
 const Textarea = styled.textarea`
-    flex-basis: 100%;
+    grow: 1;
+    resize: none;
 `;
 
 const Label = styled.label`
@@ -27,7 +28,7 @@ const DescriptionTextarea = (props) => {
             <Label> description</Label>
             <Textarea
                 style={{flexGrow:1}}
-                rows="12"
+                rows="10"
                 value={props.description}
                 valid={true}
                 onChange={(e) => {
