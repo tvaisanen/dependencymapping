@@ -165,67 +165,18 @@ export function assetsToNodes(assets: Array<Asset>) {
 
 export function hoverIndicationOn(cy = required(), id) {
     const el = cy.getElementById(id);
-    if (!el.hasClass("group")) {
-
-        el.animate({
-            style: nodeStyles.expanded
-        }, {
-            duration: 300
-        });
-        el.neighborhood().clearQueue()
-            .forEach(e => {
-                    if (e.id() === id) {
-                        return null;
-                    } else if (e.isNode()) {
-                        e.delay(50).animate({
-                                style: nodeStyles.expandedNeighbor,
-                            },
-                            {
-                                duration: 300
-                            }
-                        )
-                    } else if (e.isEdge() && !e.hasClass('is-in-group')) {
-                        e.delay(40).animate({
-                            style: edgeStyles.expanded
-                        });
-                    }
-                }
-            )
-        ;
-
+    if (el.isNode) {
+        el.toggleClass('flash-shadow');
     }
     ;
 }
 
 export function hoverIndicationOff(cy = required(), id) {
     const el = cy.getElementById(id);
-
-    if (!el.hasClass("group")) {
-        el.animate({
-            style: nodeStyles.passive
-        }, {
-            duration: 250
-        });
-        el.neighborhood().clearQueue()
-            .forEach(e => {
-                if (e.id() === id) {
-                    return null;
-                } else if (e.isNode()) {
-                    e.delay(130).animate(
-                        {style: nodeStyles.passive},
-                        {duration: 300}
-                    )
-                } else if (e.isEdge() && !e.hasClass('is-in-group')) {
-                    e.delay(40).animate(
-                        {style: edgeStyles.passive},
-                        {duration: 250});
-
-
-                }
-
-            });
+    if (el.isNode) {
+        el.toggleClass('flash-shadow');
     }
-    ;
+
 }
 
 export function downloadPng(cy = required()) {

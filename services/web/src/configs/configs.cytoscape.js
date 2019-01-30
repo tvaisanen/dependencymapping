@@ -67,7 +67,8 @@ export const graphStyle = [
     {
         selector: 'node.flash-shadow',
         style: {
-            'background-color': 'rgb(244,0,0)',
+            'width': 50,
+            'height': 50
         }
     },
     {
