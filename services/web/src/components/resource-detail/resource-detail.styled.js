@@ -1,5 +1,56 @@
 import styled from 'styled-components';
 
+export const DetailGrid = styled.div`
+  display: grid;
+  grid-template:
+  "detail-header  detail-actions" min-content
+  "detail-content detail-lists  " 1fr
+  / 60% 40%;
+  height: 100%;
+  width: inherit;
+  border-radius: 3px;
+  border: 1px solid grey;
+  padding: 4px;
+  padding-top: 0;
+  background-color: rgba(22,22,22, 0.5);
+`;
+
+export const DetailHeaderLinks = styled.div`
+  display: flex;
+  grid-area: detail-actions;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  padding: 0 6px;
+`;
+
+
+export const DetailContent = styled.div`
+    grid-area: detail-content;
+    /*background:rgba(60,63,65,0.35);*/
+    background-color: rgba(255,255,255,0.8);
+    color: black;
+    border-radius: 3px;
+    overflow-y: scroll;
+    border: 1px solid rgba(255,255,255,0.15);
+    //height: 16em;
+    width: inherit;
+    text-align: justify;
+    text-justify: inter-character;
+    overflow-x: hidden;
+    overflow-y: auto;
+    
+    > * {
+      heigh: inherit;
+      width: inherit;
+      padding: 12px;
+      p {
+        text-wrap: wrap;
+      }
+      box-sizing: border-box;
+    }
+  
+`;
+
 export const DetailLayout = styled.div`
     // detail layout
     display: flex;
@@ -41,6 +92,7 @@ export const DetailLayout = styled.div`
 
 
 export const HeaderBar = styled.div`
+    grid-area: detail-header;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -101,8 +153,6 @@ export const ListLabel = styled.div`
 `;
 
 
-
-
 export const ListItem = styled.div`
     font-size: small;
     letter-spacing: 0.07em;
@@ -123,39 +173,16 @@ export const ListItem = styled.div`
     min-height: 1em;
 `;
 
-export const Col = styled.div`
-
-  display: flex;
-  flex-direction: column;
-`;
-
-export const Row = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    height: ${props =>
-    props.header ?
-        '36px' : '24px'
-    };
-            min-height: ${props =>
-    props.header ?
-        '36px' : '24px'
-    };
-            justify-content: ${props =>
-    props.center ? 'center' : 'space-between'
-    };
-            padding: 0 12px;
-
-            `;
 
 export const ActionLink = styled.small`
     flex-basis: auto;
     margin: 1px 6px;
     color: rgba(255,255,255,0.8);
     border-bottom: 2px solid transparent;
-    padding: 0 20px;
     text-transform: uppercase;
     letter-spacing: 0.06em;
+    shrink: 1;
+    
     :first-of-type{
        border-left: none;
     }

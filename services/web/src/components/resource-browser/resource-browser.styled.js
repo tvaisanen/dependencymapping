@@ -1,21 +1,8 @@
 import styled from 'styled-components';
 
-export const DivConnectionListItem = styled.div`
-    display: flex;
-    margin: 1px 6px;
-    letter-spacing: 0.05rem; 
-    > div {
-        flex-basis: 45%;
-    } 
-    > div:nth-of-type(2){
-        flex-basis: 10%;
-    }
-`;
-
 
 export const ResourceBrowserLayout = styled.div`
-    display: flex;
-
+  display: flex;
   width: 100%;
   height: 100%;
   color: rgba(255,255,255,0.8);
@@ -113,4 +100,5 @@ export const ListContainer = styled.div`
     align-items: stretch;
     width: inherit; 
     overflow-y: auto;
+   background-color: rgba(60,63,65,0.35) 
 `;
