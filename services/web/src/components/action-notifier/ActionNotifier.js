@@ -6,11 +6,13 @@ import styled from 'styled-components';
 import {clearEventHook} from '../../store/event-hook/'
 
 const Anchor = styled.div`
+
   display: flex;
   position: relative;
   z-index: 2;
   justify-content: center;
   height: 0; 
+  
   > * {
     visibility: ${p => p.visible ? "visible" : "hidden"};
   }
@@ -27,7 +29,7 @@ const Content = styled.div`
   position: relative;
   height: 60px;
   width: 200px;
-  background-color: #c4eec4; 
+  background-color: rgba(20,100,20,0.3); 
 `;
 
 const CancelBtn = styled.div`
@@ -35,10 +37,14 @@ const CancelBtn = styled.div`
   font-size: small;
   letter-spacing: 0.04rem;
   cursor: pointer;
- 
+  
   :hover{
     color: red; 
   }
+`;
+
+const Notification = styled.div`
+    letter-spacing: 0.04rem;
 `;
 
 type ActionNotifierProps = {
@@ -55,8 +61,7 @@ const ActionNotifier = (props: ActionNotifierProps) => {
 
         <Anchor visible={props.eventHook.hook}>
             <Content>
-                {props.eventHook.hook ? "true" : "false"}
-                {props.eventHook.notification}
+                <Notification>{props.eventHook.notification}</Notification>
                 <CancelBtn onClick={props.clearHook}>cancel</CancelBtn>
             </Content>
         </Anchor>

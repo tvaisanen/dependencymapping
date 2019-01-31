@@ -195,11 +195,14 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
         ]
     });
 
+    // ! canvas click not working
     eventHandlers.forEach(event => {
         const {action, selector, callback} = event;
         console.log(event)
         cy.on(action, selector, callback);
     });
+
+
 
 
     return cy;

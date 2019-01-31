@@ -27,9 +27,8 @@ export function onNodeMouseOut(event) {
 
 export function onCanvasClick(event) {
     return function (dispatch: Dispatch, getState: State) {
-        alert('click')
+        console.info(event.target)
         if (event.target === getState().graph){
-            alert("clicked canvas")
             dispatch(eventHookActions.clearEventHook())
         }
 
