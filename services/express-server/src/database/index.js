@@ -41,7 +41,6 @@ const configs = {
 function getConfig() {
     console.log(`Get config: ${process.env.NODE_ENV}`);
     const config = configs[process.env.NODE_ENV];
-    console.log(config)
     return config;
 }
 

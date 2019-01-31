@@ -6,6 +6,8 @@ const {resetModels, loadDataToDB, clearDB} = require('../src/utils/testHandlers'
 
 chai.use(chaiHttp);
 
+const HOST = 'http://localhost:3000';
+
 const expect = chai.expect;
 
 
@@ -32,8 +34,8 @@ describe('Asset API endpoint ', function () {
 
     it('gets asset by name', function (done) {
 
-        chai.request('http://localhost:3000/asset')
-            .get('')
+        chai.request(HOST)
+            .get('/asset')
             .end((err, res) => {
 
                 console.log("GET HERE\n")
@@ -50,6 +52,54 @@ describe('Asset API endpoint ', function () {
                 done();
             });
 
+    });
+
+
+    it('post returns 400 if asset does not have a name', (done) => {
+        chai.request(HOST)
+            .post("/asset")
+            .end((err, res) => {
+
+                console.log(res.body);
+
+                expect(res).to.have.header(
+                    'content-type',
+                    'application/json; charset=utf-8'
+                );
+
+
+                expect(res).to.have.status(400);
+
+                done();
+            });
+    });
+
+    it('post returns 200 and asset with defaults if name provided', (done) => {
+        chai.request(HOST)
+            .post("/asset")
+            .send({name: "asset name"})
+            .end((err, res) => {
+                expect(res.body.name).to.equal("asset name");
+                expect(res).to.have.status(201);
+                done();
+            });
+    });
+
+    it('post returns 200 and asset with defaults if name provided', (done) => {
+        chai.request(`${HOST}/asset`)
+            .post({name: "asset name"})
+            .end((err, res) => {
+
+                console.log(res.body);
+
+                expect(res).to.have.header(
+                    'content-type',
+                    'application/hal+json; charset=utf-8'
+                );
+
+
+                done();
+            });
     });
 });
 
