@@ -1,5 +1,6 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+const assetRouter = require('../src/routers/asset.router');
 
 const {resetModels, loadDataToDB, clearDB} = require('../src/utils/testHandlers');
 //const app = require('../src/index');
@@ -101,6 +102,13 @@ describe('Asset API endpoint ', function () {
                 done();
             });
     });
+
+    it("test if api endpoints can be called", (done)=> {
+
+
+        assetRouter.get();
+
+    })
 });
 
 

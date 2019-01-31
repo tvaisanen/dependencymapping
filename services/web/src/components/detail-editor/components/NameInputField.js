@@ -9,6 +9,7 @@ const Container = styled.div`
     padding: 6px;
     margin-bottom: 6px;
     align-items: center;
+    border-radius: 3px;  
     border: ${p=>p.theme.insetBorder}; 
 `;
 

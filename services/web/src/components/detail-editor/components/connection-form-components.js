@@ -25,6 +25,7 @@ export const WrapFields = styled.div`
   flex-shrink: 1;
   align-content: flex-start;
    border: 1px solid rgba(255,255,255,0.15);
+   border-radius: 3px;
 `;
 
 const SpaceAround = styled.div`

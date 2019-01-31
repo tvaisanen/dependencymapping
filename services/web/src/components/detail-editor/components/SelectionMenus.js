@@ -66,7 +66,8 @@ const Container = styled.div`
   background-color: ${p => p.theme.formFieldBackgroundColor};
   flex-shrink: 1;
   align-content: flex-start;
-   border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 3px;
 `;
 
 

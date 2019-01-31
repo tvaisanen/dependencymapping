@@ -80,4 +80,7 @@ export const InflateGridCell = styled.div`
   justify-content: center;
   align-items: center;
   flex-grow: 1; 
+  background: rgba(22,22,22,0.5);
+  font-weight: bold;
+  letter-spacing: 0.05rem;
 `;
