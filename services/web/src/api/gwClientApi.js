@@ -2,137 +2,31 @@
 import axios from 'axios';
 import type {Asset, Connection, Mapping, Tag} from "../store/types";
 import {ASSET, CONNECTION, MAPPING, TAG} from "../constants";
-import {parsers} from "../store/response-parser";
-
-const API_HOST = process.env.REACT_APP_API_HOST || "localhost"
-const API_URL = `http://${API_HOST}/`;
-
-const MAPPINGS_URL = `${API_URL}mapping/`;
-const CONNECTIONS_URL = `${API_URL}connection/`;
-const TAGS_URL = `${API_URL}tag/`;
-const RESOURCES_URL = `${API_URL}asset/`;
-const ASSET_GROUPS_URL = `${API_URL}asset-group/`;
-
-const LOGIN_URL = `${API_URL}rest-auth/login/`;
+import ResponseParserConfig from './response-parser.config';
+import {
+    tagDetailUrl,
+    connectionDetailUrl,
+    mappingsDetailUrl,
+    resourceDetailUrl,
+    API_HOST,
+    MAPPINGS_URL,
+    CONNECTIONS_URL,
+    RESOURCES_URL,
+    TAGS_URL
+} from "./paths";
+import { createApiResponse } from './api-client.utils';
+import ApiResponse from './ApiResponse';
 
 
 console.group("Api client config");
 console.info(`api host: ${API_HOST}`);
 console.groupEnd();
 
-// * refactor to utils.js or something
 
-function tagDetailUrl({name}) {
-    return `${TAGS_URL}${encodeURI(name)}/`;
-}
-
-function connectionDetailUrl(connection) {
-    return `${CONNECTIONS_URL}?source=${encodeURI(connection.source)}&target=${encodeURI(connection.target)}`;
-}
-
-function mappingsDetailUrl({name}) {
-    return `${MAPPINGS_URL}${encodeURI(name)}/`;
-}
-
-function resourceDetailUrl({name}) {
-    return `${RESOURCES_URL}${encodeURI(name)}/`;
-}
-
-/* ****************************************** */
-
-
-class ParserConfig {
-
-    constructor(resourceType) {
-        this.parseResponseData = parsers.hal[resourceType]
-    }
-}
-
-function createApiResponse(promise, config) {
-
-    return new Promise((resolve, reject) => {
-
-        promise
-            .then(response => {
-
-                Object.setPrototypeOf(
-                    response,
-                    new ApiResponse(response, config)
-                );
-
-                console.groupCollapsed(
-                    `  %cOK\t%cAPI::${response.config.method}:${response.config.url}`,
-                    "color: green",
-                    "color:black"
-                );
-
-                console.info(response);
-                console.groupEnd();
-
-                resolve(response);
-            })
-            .catch(err => {
-
-                console.groupCollapsed(
-                    `%c\tERROR %cAPI::${err.response.config.method}:${err.response.config.url}`,
-                    "color: red",
-                    "color:black"
-                );
-                console.info(Object.keys(err));
-                console.info(err)
-                console.groupEnd();
-
-                reject(err)
-            })
-            .finally();
-    })
-}
-
-class ApiResponse {
-    constructor(serverPromise, config={}) {
-        console.info(config)
-        this.config = config;
-        this.promise = serverPromise;
-    }
-    async parseResponseContent () {
-            //? all actions migrated to use this?
-            //  console.groupCollapsed("parserResponseData");
-            //  console.info(serverResponse.data);
-            //  console.groupEnd();
-            //  if collection -> if response is an array
-
-            console.info(this.promise)
-            console.info(this)
-            try {
-
-                const serverResponse = await this.promise;
-                console.info(serverResponse)
-
-                if (Array.isArray(serverResponse.data)) {
-                    return serverResponse
-                        .data
-                        .map(o =>
-                            this.config.parseResponseData(o))
-
-                } else {
-                    // response.data.map(:w
-                    // o => config.parseResponseData(o))
-                    // if detail -> if response is an object
-                    console.debug(serverResponse)
-                    return this.config.parseResponseData(serverResponse.data);
-                }
-            } catch (err) {
-                console.error(err);
-                console.info("refactor all api response related error handling here")
-                throw new Error("ApiResponse.parseResponseContent", err.stack)
-            }
-        };
-}
-
-const assetParser = new ParserConfig(ASSET);
-const connectionParser = new ParserConfig(CONNECTION);
-const mappingParser = new ParserConfig(MAPPING);
-const tagParser = new ParserConfig(TAG);
+const assetParser = new ResponseParserConfig(ASSET);
+const connectionParser = new ResponseParserConfig(CONNECTION);
+const mappingParser = new ResponseParserConfig(MAPPING);
+const tagParser = new ResponseParserConfig(TAG);
 
 class Client {
 
@@ -162,15 +56,6 @@ class Client {
 
         return new ApiResponse(promise, parserConfig);
     }
-
-    static parserConfig = {
-       hal: {
-           asset: new ParserConfig(ASSET),
-           connection: new ParserConfig(CONNECTION),
-           mapping: new ParserConfig(MAPPING),
-           tag: new ParserConfig(TAG)
-       }
-    };
 
 
     /** asset api calls */
@@ -246,12 +131,12 @@ class Client {
         return axios.put(uri, connection);
     }
 
-    static deleteConnection(source: string, target: string): Promise<any> {
+    static deleteConnection(connection: Connection): Promise<any> {
+        const { source, target } = connection;
         const uri = connectionDetailUrl({source, target});
         return axios.delete(uri);
     }
 
-    /** ***********************************************************/
 
     /********************** MAPPING METHODS **********************/
 
@@ -274,21 +159,12 @@ class Client {
     }
 
     static postAsset(asset: Asset): Promise<any> {
-        return createApiResponse(
-            axios.post(RESOURCES_URL, asset),
-            new ParserConfig(ASSET)
-        )
-
+        return axios.post(RESOURCES_URL, asset);
     }
 
     static putAsset(asset: Asset): Promise<any> {
-        // console.groupCollapsed("putMapping(asset)");
-        // console.info(asset)
-        // console.groupEnd();
-        return axios.put(
-            resourceDetailUrl({name: asset.name}),
-            asset
-        );
+        const path = resourceDetailUrl({name: asset.name});
+        return axios.put(path, asset);
     }
 
     static postTag(tag: Tag) {
@@ -300,8 +176,10 @@ class Client {
         return axios.put(path, tag)
     }
 
-    static deleteTag(name: string): Promise<any> {
-        return axios.delete(tagDetailUrl({name}));
+    static deleteTag(props): Promise<any> {
+
+        alert(`deleteTag: ${JSON.stringify(props.name)}`);
+        return axios.delete(tagDetailUrl({name: props.name}));
     }
 }
 

@@ -18,7 +18,7 @@ if (
     process.env.REACT_APP_ENV === "development"
     && !process.env.REACT_APP_PERSIST_DATA
 ){
-    const promise = apiClient.resetModels();
+    apiClient.resetModels();
 }
 
 // store.dispatch(storeActions.loginSuccess(auth));
@@ -40,7 +40,7 @@ console.groupEnd();
 // ! todo: continue here.. tap canvas and node separately
 const eventHandlers = [
     {action:'tap', selector:'node', callback:(event) => store.dispatch(graphEvents.onNodeClick(event))},
-    {action:'tap', selector:'cy', callback:(event) => store.dispatch(graphEvents.onCanvasClick(event))}
+    //{action:'tap', selector:'cy', callback:(event) => store.dispatch(graphEvents.onCanvasClick(event))}
         //mouseover: ['node',  (event) => store.dispatch(graphEvents.onNodeMouseOver(event))],
         //mouseout: ['node', (event) => store.dispatch(graphEvents.onNodeMouseOut(event))],
         //cxttap: ['node', (event) => store.dispatch(graphEvents.onCtxClick(event))]

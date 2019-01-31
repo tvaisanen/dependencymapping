@@ -1,11 +1,8 @@
 //@flow
 import React from 'react';
-import {connect} from 'react-redux';
 import styled from 'styled-components';
-import * as detailEditorActions from '../detail-editor.actions';
 import {AddInputField, FilterInputField} from "../../common.components";
 
-import {ASSET, TAG} from '../../../constants/types';
 
 export type SelectionProps = {
     title: string,
@@ -19,25 +16,21 @@ export type SelectionProps = {
     createAndSelect: (name: string) => void
 }
 
-const WrapLine = styled.div`
-    display:flex;
-    flex-flow: row wrap;
-`;
-
-
 const SelectionWithFilterAndCreate = (props: SelectionProps) => (
     <SelectionBlock id="selection-block">
         <Block id="block">
-            <SmallLabel>{props.title} ({props.options.length})
-            </SmallLabel>
-            <FilterInputField id="filter-input-field"
-                              onChange={(e) => props.onFilterChange(e.target.value)}
+            <SmallLabel>{props.title} ({props.options.length})</SmallLabel>
+
+            <FilterInputField
+                id="filter-input-field"
+                onChange={(e) => props.onFilterChange(e.target.value)}
 
             />
-            <OptionsToChooseFrom id="options-to-choose-from"
-                                 remove={false}
-                                 options={props.options}
-                                 onClick={props.select}
+            <OptionsToChooseFrom
+                id="options-to-choose-from"
+                remove={false}
+                options={props.options}
+                onClick={props.select}
             />
 
         </Block>
@@ -51,10 +44,11 @@ const SelectionWithFilterAndCreate = (props: SelectionProps) => (
                 addItem={props.createAndSelect}
                 placeholder={"create new"}
             />
-            <OptionsToChooseFrom id="options-to-choose-from"
-                                 remove={true}
-                                 options={props.selected}
-                                 onClick={props.deselect}
+            <OptionsToChooseFrom
+                id="options-to-choose-from"
+                remove={true}
+                options={props.selected}
+                onClick={props.deselect}
             />
         </Block>
     </SelectionBlock>
@@ -95,13 +89,7 @@ const SelectionBlock = styled.div`
   justify-content: center;
   height: 100%;
   border-radius: 3px;
-  margin: 6px;
-  flex-shrink: 4;
-  border: ${p=>p.theme.cardBorder};
   background-color: ${p => p.theme.formFieldBackgroundColor};
-  :nth-of-type(2) {
-    margin-top: 0;
-  }
 `;
 
 export const Block = styled.div`
@@ -123,8 +111,8 @@ export const SmallLabel = styled.small`
   letter-spacing: 0.05rem;
   min-height: 1.2em;
   padding: 3px 0;
-  background-color: ${p=>p.theme.cardHeaderBackgroundColor};
-  border-bottom: ${p=>p.theme.cardBorder};
+  background-color: ${p => p.theme.cardHeaderBackgroundColor};
+  border-bottom: ${p => p.theme.cardBorder};
 `;
 /*
 export const OptionItem = styled.div`
@@ -157,17 +145,17 @@ export const OptionItem = styled.div`
     padding: 2px; 
 
     background: ${p => p.selected ?
-        p.theme.listItemDarkBackground
-        : 'rgba(22,22,22, 0.6)'
+    p.theme.listItemDarkBackground
+    : 'rgba(22,22,22, 0.6)'
     };
 
    
     :hover {
         background-color: ${props =>
-            props.remove ?
-                'rgba(255,0,0,0.2)'
-                : 'rgba(0,255,0,0.2)'
-            };
+    props.remove ?
+        'rgba(255,0,0,0.2)'
+        : 'rgba(0,255,0,0.2)'
+    };
     }
     
     transition: all .15s ease-in-out;

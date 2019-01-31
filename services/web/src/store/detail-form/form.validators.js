@@ -54,8 +54,8 @@ function validateTagForm (form){
 }
 
 export default {
-    ASSET: validateAssetForm,
-    CONNECTION: validateConnectionForm,
-    MAPPING: validateMappingForm,
-    TAG: validateTagForm
+    [ASSET]: validateAssetForm,
+    [CONNECTION]: validateConnectionForm,
+    [MAPPING]: validateMappingForm,
+    [TAG]: validateTagForm
 }

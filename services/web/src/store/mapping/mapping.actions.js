@@ -7,7 +7,7 @@ import { setInfoMessage } from '../../actions/app.actions';
 import {routeApiActionError} from "../error-handling";
 
 import type {FormAndOptionalCallback} from "../store-action.arg-types";
-import type {Dispatch, State, Mapping} from "../types";
+import type {Dispatch, State} from "../types";
 
 
 export function addMapping(mapping) {
@@ -34,7 +34,7 @@ export function postMapping(props: FormAndOptionalCallback): void {
             dispatch(setInfoMessage(`Created mapping: ${storedMapping.name}`));
             dispatch(postMappingSuccess(storedMapping));
 
-            callback ? callback(storedMapping) : null;
+            if (callback) { callback(storedMapping) };
 
         } catch (err) {
             console.error(err)
@@ -67,7 +67,7 @@ export function updateMapping(props: FormAndOptionalCallback) {
             dispatch(updateMappingSuccess({mapping: updatedMapping}));
             dispatch(updateActiveMapping(updatedMapping));
 
-            callback ? callback(updatedMapping) : null;
+            if (callback) { callback(updatedMapping) };
 
         } catch (err) {
             routeApiActionError(err);

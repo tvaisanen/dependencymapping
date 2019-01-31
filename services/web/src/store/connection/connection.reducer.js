@@ -1,6 +1,6 @@
 //@flow
 import * as _ from 'lodash';
-import type {Connection, ConnectionAction, ConnectionState} from "./connection.types";
+import type {ConnectionAction, ConnectionState} from "./connection.types";
 import {
     ADD_CONNECTION,
     ADD_CONNECTIONS,

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {connect} from 'react-redux';
 
 import resourceDetailCtrl from "./resource-detail.controller";
-import {DetailLayout} from './resource-detail.styled';
+import {DetailHeaderLinks, DetailGrid} from './resource-detail.styled';
 
 import ActiveDetailDescription from './components/ActiveDetailDescription';
 import ActiveDetailLists from './components/ActiveDetailLists';
@@ -13,7 +13,7 @@ import EditButton from './components/EditButton';
 import {EMPTY} from "../../constants";
 
 
-const ResourceDetailContainer = props => (
+const ResourceDetail = props => (
         /**
          *  Resource detail layout
          *
@@ -28,7 +28,7 @@ const ResourceDetailContainer = props => (
          *  --------------------------------------------
          *  </div>
          */
-        <DetailLayout id="resource-detail-container">
+        <DetailGrid id="resource-detail-container">
             {props.detailType === EMPTY ?
                 <EmptyDetail>
                     <h1>
@@ -37,39 +37,32 @@ const ResourceDetailContainer = props => (
                 </EmptyDetail>
                 :
                 <React.Fragment>
-
-                    <div id={"detail-description"}>
-
-                        <ResourceDetailHeader id="resource-detail-header"/>
-                        <ActiveDetailDescription
-                            description={props.activeDetail.data.description}
-                            id="resource-detail__detail-block"
-                        />
-
-                    </div>
-
-                    <div id={"detail-assets-and-tags"}>
-
-                        <FlexReverseRow>
-                            <EditButton/>
-                            <InActiveMappingToggle/>
-                        </FlexReverseRow>
-
-                        <ActiveDetailLists id="resource-detail__detail-block__lists"/>
-
-                    </div>
+                    <ResourceDetailHeader id="resource-detail-header"/>
+                    <ActiveDetailDescription
+                        description={props.activeDetail.data.description}
+                        id="resource-detail__detail-block"
+                    />
+                    <HeaderActionLinks/>
+                    <ActiveDetailLists id="resource-detail__detail-block__lists"/>
                 </React.Fragment>
             }
 
-        </DetailLayout>
+        </DetailGrid>
     )
 ;
+
+const HeaderActionLinks = () => (
+    <DetailHeaderLinks>
+        <EditButton/>
+        <InActiveMappingToggle/>
+    </DetailHeaderLinks>
+);
 
 
 export default connect(
     resourceDetailCtrl.mapStateToProps,
     resourceDetailCtrl.mapDispatchToProps
-)(ResourceDetailContainer);
+)(ResourceDetail);
 
 const FlexReverseRow = styled.div`
   display: flex;
@@ -79,6 +72,8 @@ const FlexReverseRow = styled.div`
 
 const EmptyDetail = styled.div`
     display: flex;
+    grid-row: span 2;
+    grid-column: span 2;
     flex-direction: row;
     align-self: center;
     justify-content: center;

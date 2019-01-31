@@ -7,6 +7,7 @@ import * as actions from '../../../actions';
 // todo: needs to be refactored
 import * as detailEditorActions from '../detail-editor.actions';
 import EditorButtons from "./EditorButtons";
+import {ResourceSelection} from "../detail-editor.styled";
 
 const NavTab = styled.span`
     display: flex;
@@ -96,7 +97,7 @@ type Props = {
 const FormOptions = (props: Props) => {
     if (props.visible) {
         return (
-            <Container>
+            <ResourceSelection>
                 <Header>RESOURCE TYPE</Header>
 
                 <Inflater>
@@ -110,7 +111,7 @@ const FormOptions = (props: Props) => {
                 ))}
                     </div>
                 </Inflater>
-            </Container>
+            </ResourceSelection>
         )
     } else {
         return null;

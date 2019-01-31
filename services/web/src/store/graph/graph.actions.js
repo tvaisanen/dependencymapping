@@ -11,7 +11,7 @@ import * as detailFormActions from '../detail-form/detail-form.actions';
 import * as connectionActions from '../connection/connection.actions';
 
 import cytoscape from 'cytoscape';
-import style, {graphStyle} from '../../configs/configs.cytoscape';
+import style from '../../configs/configs.cytoscape';
 import cxtmenu from 'cytoscape-cxtmenu';
 import cola from 'cytoscape-cola';
 
@@ -110,7 +110,7 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                                 group: assetName
                             };
 
-                            dispatch(assetActions.updateAsset({asset: updatedAsset}));
+                            dispatch(assetActions.updateAsset({form: updatedAsset}));
                             dispatch(clearEventHook());
                             dispatch(appActions.setInfoMessage("grouping should be done."));
                         }
@@ -122,7 +122,6 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                 content: 'connect to', // html/text content to be displayed in the menu
                 contentStyle: {}, // css key:value pairs to set the command's css in js if you want
                 select: function (ele) {
-                    const assetToGroup = getAssetByName((ele.id(): string));
                     // set event hook to call
                     // callback on event
                     dispatch(appActions.setInfoMessage("Select node to connect to."));
@@ -135,7 +134,9 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                                 target: assetName
                             };
 
-                            dispatch(connectionActions.postConnection(newConnection));
+                            alert(JSON.stringify(newConnection))
+
+                            dispatch(connectionActions.postConnection({form:newConnection}));
                             dispatch(clearEventHook())
                             dispatch(appActions.setInfoMessage("connection should be made."));
 
@@ -165,8 +166,7 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                 contentStyle: {},
                 select: function (ele) {
                     const connectionToRemove = getConnectionByName(ele.id())
-                    dispatch(connectionActions.deleteConnection(connectionToRemove));
-
+                    dispatch(connectionActions.deleteConnection({form:connectionToRemove}));
                 },
                 enabled: true
             },

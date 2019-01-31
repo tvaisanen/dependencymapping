@@ -30,7 +30,7 @@ export function clearGraph() {
 export function saveMapping() {
     return async function (dispatch, getState) {
         try {
-            dispatch(mappingActions.updateMapping(getState().activeMapping));
+            dispatch(mappingActions.updateMapping({form:getState().activeMapping}));
             dispatch(appActions.toggleCollapseMenu());
         } catch (err) {
             alert(`collapse-menu.actions.saveMapping() :: ${err}`)

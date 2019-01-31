@@ -2,10 +2,9 @@ import React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
 
-import * as detailFormActions from '../../../store/detail-form/detail-form.actions';
 import * as detailEditorActions from '../detail-editor.actions';
 
-import {Label, SelectionField, FieldGroup, Select, FieldsContainer} from "../detail-editor.styled";
+import {Label, SelectionField, Select, FieldsContainer} from "../detail-editor.styled";
 
 import TagSelection from "./TagSelection";
 import DescriptionTextarea from "./DescriptionTextarea";
@@ -24,7 +23,6 @@ export const WrapFields = styled.div`
   margin-bottom: 6px;
   background-color: ${p => p.theme.formFieldBackgroundColor};
   flex-shrink: 1;
-  flex-grow: 3;
   align-content: flex-start;
    border: 1px solid rgba(255,255,255,0.15);
 `;
@@ -42,13 +40,10 @@ const Input = styled.input`
 `;
 
 const CheckBoxes = styled.div`
+  display: flex;
+  align-items: center;
   border: ${p => p.theme.cardBorder};
   margin-left: 6px;
-  
-  > label {
-    font-size: 0.8em;
-  }
-  
 `;
 
 
@@ -75,7 +70,6 @@ export const ConnectionForm = (props) => (
                     onChange={(e) => props.onEdgeLabelChange(e.target.value)}
                     type="text"/>
                 <CheckBoxes>
-                    <br/>
                     <Label>source</Label>
                     <input
                         type="checkbox"

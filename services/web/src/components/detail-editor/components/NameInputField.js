@@ -9,7 +9,7 @@ const Container = styled.div`
     padding: 6px;
     margin-bottom: 6px;
     align-items: center;
-    border: 1px solid rgba(255,255,255,0.15);
+    border: ${p=>p.theme.insetBorder}; 
 `;
 
 const Label = styled.label`

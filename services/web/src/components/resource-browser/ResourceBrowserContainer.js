@@ -10,12 +10,11 @@ import ResourceDetail from '../resource-detail/ResourceDetailContainer';
 import type {Asset, Connection, Tag} from '../../store/types';
 import resourceBrowserCtrl from './resource-browser.controller';
 
-import {ResourceBrowser, ResourceList} from './components/components';
+import {ResourceBrowser} from './components/components';
 
 import {
     ResourceBrowserLayout,
 } from './resource-browser.styled.js';
-
 
 type Props = {
     assets: Array<Asset>,
@@ -35,9 +34,9 @@ type State = {
 
 class ResourceBrowserContainer extends Component <Props, State> {
 
-   state = {
-            filterValue: "",
-            selected: this.props.selected,
+    state = {
+        filterValue: "",
+        selected: this.props.selected,
     };
 
     onFilterChange(e) {
@@ -47,7 +46,6 @@ class ResourceBrowserContainer extends Component <Props, State> {
 
     render() {
 
-        const {assets, connections, tags} = this.props;
         const {filterValue, selected} = this.state;
 
         // todo: refactor all to selected

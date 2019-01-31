@@ -65,7 +65,6 @@ const Container = styled.div`
   margin-bottom: 6px;
   background-color: ${p => p.theme.formFieldBackgroundColor};
   flex-shrink: 1;
-  flex-grow: 3;
   align-content: flex-start;
    border: 1px solid rgba(255,255,255,0.15);
 `;

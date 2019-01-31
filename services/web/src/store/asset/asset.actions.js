@@ -7,25 +7,14 @@ import * as mappingActions from '../mapping/mapping.actions';
 import * as activeMappingActions from '../active-mapping/active-mapping.actions';
 import * as detailFormActions from '../detail-form/detail-form.actions';
 import {connectionActions} from '../actions';
-
-
-import {parseHALResponseData} from "../response-parser";
-
-import {ASSET} from '../../constants/';
-
 import type {Asset, Connection, Dispatch, State} from "../types";
 import type {FormAndOptionalCallback} from "../store-action.arg-types";
-
-type AssetAction = { promise: Promise<any>, resolveCallback: (asset: Asset) => void }
-
-
 
 // ! refactor to use api
 // ? can be deleted already?
 const api = GwClientApi;
 
 /************** POST ******************/
-
 
 export function postAsset(props: FormAndOptionalCallback): Dispatch {
 
@@ -49,7 +38,7 @@ export function postAsset(props: FormAndOptionalCallback): Dispatch {
             dispatch(connectionActions.updateAssetConnections(storedAsset));
 
             // execute callback from caller if there's one
-            callback ? callback(storedAsset) : null;
+            if (callback) { callback(storedAsset) };
 
         } catch (err) {
 
@@ -93,15 +82,13 @@ export function updateAsset(props: FormAndOptionalCallback): Dispatch {
                     .asset
                     .put(form)
                     .parseResponseContent();
-        //const response = await GwClientApi.putAsset(asset);
-        //const updatedAsset = response.data;
 
-        //alert(JSON.stringify(props))
+            dispatch(updateAssetSuccess({asset: updatedAsset}));
+            dispatch(appActions.setInfoMessage(`Updated asset: ${updatedAsset.name}`));
+            dispatch(connectionActions.updateAssetConnections(updatedAsset));
+            dispatch(activeMappingActions.updateAssetState(updatedAsset));
 
-        dispatch(updateAssetSuccess({asset: updatedAsset}));
-        dispatch(appActions.setInfoMessage(`Updated asset: ${updatedAsset.name}`));
-        dispatch(connectionActions.updateAssetConnections(updatedAsset));
-        dispatch(activeMappingActions.updateAssetState(updatedAsset));
+            if (callback) { callback(updatedAsset) }
 
         } catch (err) {
             console.error(err)
@@ -119,9 +106,9 @@ export function deleteAsset(props: {name: string, callback:(any)=>void}) {
 
     return async function (dispatch: Dispatch, getState: State) {
 
-        const {name, callback} = props;
+        const {form:{name}, callback} = props;
 
-        await GwClientApi.deleteAsset(name);
+        await api.asset.delete(name);
 
         dispatch(deleteAssetSuccess(name));
         dispatch(removeReferencesToDeletedAsset(name));
@@ -236,7 +223,8 @@ export function syncConnectionSourceAsset(connection: Connection) {
      */
 
     return function (dispatch: Dispatch, getState: State): void {
-
+        alert("syncConnection")
+        alert(JSON.stringify(connection))
         // assets keep track of the target connections
         // so if the connection is created separately
         // from the asset form. The source assets
@@ -255,6 +243,6 @@ export function syncConnectionSourceAsset(connection: Connection) {
             ]
         };
 
-        dispatch(updateAsset(updatedAsset));
+        dispatch(updateAsset({form:updatedAsset}));
     }
 }

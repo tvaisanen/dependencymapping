@@ -1,5 +1,4 @@
-import React, {Suspense, Lazy} from 'react';
-import PropTypes from 'prop-types';
+import React, {Suspense} from 'react';
 import styled from 'styled-components';
 import ResourceBrowserContainer from '../resource-browser/ResourceBrowserContainer';
 import {connect} from 'react-redux'
@@ -27,19 +26,14 @@ const BottomPanelContainer = (props) => {
         <BottomPanel id="bottom-panel-container">
             <PanelNavTabs/>
             <PanelContent id="panel-content">
-                    <Suspense fallback={<div>Loading...</div>}>
-
-                        <SelectedViewComponent id="active-panel-view"/>
-      </Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                    <SelectedViewComponent id="active-panel-view"/>
+                </Suspense>
             </PanelContent>
         </BottomPanel>
     );
 };
 
-
-BottomPanelContainer.propTypes = {
-    detail: PropTypes.object.isRequired,
-};
 
 const mapStateToProps = (state) => (
     {SelectedViewComponent: panelViews[state.app.bottomPanel.view].component}

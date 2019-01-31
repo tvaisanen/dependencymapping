@@ -9,7 +9,7 @@ const Fallback = () => (
 )
 
 const WrappedWithSuspense = () => (
-    <React.Suspense fallback={Fallback}>
+    <React.Suspense fallback={<Fallback/>}>
        <TopBarContainer/>
     </React.Suspense>
 );

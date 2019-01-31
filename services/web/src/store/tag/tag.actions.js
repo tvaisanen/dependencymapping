@@ -4,7 +4,6 @@ import GwClientApi from '../../api/gwClientApi';
 import * as types from './tag.action-types';
 import * as apiHelpers from '../../common/api.helpers';
 import * as appActions from '../../actions/app.actions';
-import * as detailFormActions from '../detail-form/detail-form.actions';
 import { TAG } from "../../constants";
 
 import { parseHALResponseData } from "../response-parser";
@@ -12,10 +11,13 @@ import { parseHALResponseData } from "../response-parser";
 import { routeApiActionError } from "../error-handling";
 
 import type { Dispatch, Tag } from "../types";
+import type {FormAndOptionalCallback} from "../store-action.arg-types";
+
+const api = GwClientApi;
 
 /********* TAG POST *******************/
 
-export function postTag(tag: Tag, callback: (any) => void): Dispatch {
+export function postTag(props: FormAndOptionalCallback): Dispatch {
     /**
      *  Dispatchable store action to create new Tag.
      *  Related state actions handled here.
@@ -26,18 +28,19 @@ export function postTag(tag: Tag, callback: (any) => void): Dispatch {
     return async function (dispatch: Dispatch): Promise<any> {
 
         try {
+            const {form, callback} = props;
 
-            // wait for the response
-            const response = await GwClientApi.postTag(tag);
-
-            // response data should be of a type Tag
-            const storedTag: Tag = parseHALResponseData(TAG, response.data);
+            const storedTag = await
+                api
+                    .tag
+                    .post(form)
+                    .parseResponseContent();
 
             dispatch(appActions.setInfoMessage(`Created tag: ${storedTag.name}`));
             dispatch(postTagSuccess(storedTag));
 
             // run callers callback function
-            callback ? callback(storedTag) : null;
+            if (callback) { callback(storedTag) }
 
         } catch (err) {
             routeApiActionError(err);
@@ -51,23 +54,30 @@ export function postTagSuccess(tag: Tag) {
 
 /*************** TAG UPDATE **************/
 
-export function updateTag(tag: Tag) {
+export function updateTag(props: FormAndOptionalCallback) {
 
     return async function (dispatch: Dispatch) {
 
         try {
-            const response = await GwClientApi.putTag(tag);
+            const {form, callback} = props;
+
+            // const response = await GwClientApi.putTag(tag);
+
+            const updatedTag = await
+                api
+                    .tag
+                    .put(form)
+                    .parseResponseContent();
 
             /**   update does not return the data
              *    -> update state with the payload
              *    after confirming success
              */
 
-            dispatch(appActions.setInfoMessage(`Updated tag: ${tag.name}`));
-            dispatch(updateTagSuccess(tag));
+            dispatch(appActions.setInfoMessage(`Updated tag: ${form.name}`));
+            dispatch(updateTagSuccess(updatedTag));
 
-            // return the data to unify the API
-            return tag;
+            if (callback) { callback(updatedTag) }
 
         } catch (err) {
             // handle updateTag related errors here
@@ -83,18 +93,23 @@ export function updateTagSuccess(tag: Tag) {
 
 /*************** DELETE **************/
 
-export function deleteTag(name: string) {
+export function deleteTag(props: FormAndOptionalCallback) {
     /**
      *  Async redux action
      */
     return async function (dispatch: Dispatch) {
         try {
-            const response = await GwClientApi.deleteTag(name);
-            dispatch(appActions.setInfoMessage(`Deleted tag: ${name}`));
-            dispatch(deleteTagSuccess(name));
+            //const response = await GwClientApi.deleteTag(name);
+            const {form, callback} = props;
+            await api.tag.delete(form);
 
-            // delete action does not need a response
-            // this is not yet supported (err: {response: ?any}) ?
+            dispatch(appActions.setInfoMessage(`Deleted tag: ${form.name}`));
+            dispatch(deleteTagSuccess(props.name));
+
+            if (callback) {
+                callback();
+            }
+
         } catch (err) {
             // if error occurs
             // handle updateTag related errors here

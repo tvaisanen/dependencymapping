@@ -31,6 +31,9 @@ function parseHALAsset(data) {
 }
 
 function parseHALConnection(data) {
+    console.groupCollapsed("%c parse: %cparse hal connection", "color:grey", "color:black");
+    console.info(data)
+    console.groupEnd();
     return {
         _id: data._id,
         description: data.description,

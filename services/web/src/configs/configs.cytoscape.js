@@ -14,7 +14,6 @@ export const graphStyle = [
             'text-background-opacity': '0.9',
             'text-border-color': "#232323",
             'text-border-opacity': "0.5",
-            'letter-spacing': "0.05rem",
             'color': '#fafafa',
             'text-outline-color': '#232323',
             'text-outline-width': '1px',
@@ -68,7 +67,8 @@ export const graphStyle = [
     {
         selector: 'node.flash-shadow',
         style: {
-            'background-color': 'rgb(244,0,0)',
+            'width': 50,
+            'height': 50
         }
     },
     {
@@ -80,7 +80,6 @@ export const graphStyle = [
     {
         selector: '$node > node',
         style: {
-            'border-radius': '3px',
             'padding-top': '10px',
             'padding-left': '10px',
             'padding-bottom': '10px',
@@ -254,7 +253,6 @@ export const colorOptions = [
     "plum",
     "powderblue",
     "purple",
-    "rebeccapurple",
     "red",
     "rosybrown",
     "royalblue",

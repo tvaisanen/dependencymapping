@@ -3,7 +3,7 @@ import * as resourceHelpers from '../../common/resource-helpers';
 import * as activeDetailActions from '../../store/active-detail/active-detail.actions';
 import * as activeMappingActions from '../../store/active-mapping/active-mapping.actions';
 
-import { ASSET, CONNECTION, TAG } from './../../constants/types';
+import { ASSET } from './../../constants/types';
 
 const mapStateToProps = (state, ownProps = {}) => {
 

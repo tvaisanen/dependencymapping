@@ -7,7 +7,14 @@ import FormButtons from './components/ControllerNavTabs';
 import {AssetSelection, TagSelection, DescriptionTextarea} from "./components/";
 import NameInputField from "./components/NameInputField";
 import ConnectionForm, {ConnectionSelections} from './components/connection-form-components';
-import {Container, FormColumn, FormWrapper, SelectionColumn} from "./detail-editor.styled";
+import {
+    Container,
+    EditorGrid,
+    FormColumn, InflateGridCell,
+    ListSelection,
+    ResourceDetails,
+    SelectionColumn
+} from "./detail-editor.styled";
 
 const SelectionMenus = React.lazy (() => import('./components/SelectionMenus'));
 
@@ -54,13 +61,14 @@ const TagForm = () => (
     </React.Fragment>
 );
 
-const TagSelections = () => null;
+
+const TagSelections = () => <InflateGridCell>Tag does not have any selectable assets</InflateGridCell>;
 
 const formComponentsByType = {
-    ASSET: {formComponent: AssetForm, selectionComponent: AssetSelections},
-    CONNECTION: {formComponent: ConnectionForm, selectionComponent: ConnectionSelections},
-    MAPPING: {formComponent: MappingForm, selectionComponent: MappingSelections},
-    TAG: {formComponent: TagForm, selectionComponent: TagSelections},
+    [ASSET]: {formComponent: AssetForm, selectionComponent: AssetSelections},
+    [CONNECTION]: {formComponent: ConnectionForm, selectionComponent: ConnectionSelections},
+    [MAPPING]: {formComponent: MappingForm, selectionComponent: MappingSelections},
+    [TAG]: {formComponent: TagForm, selectionComponent: TagSelections},
 }
 /**
  *  Asset:
@@ -76,7 +84,8 @@ const formComponentsByType = {
  *      - fields: name, description
  *
  */
-const DetailEditor = (props: DetailEditorProps) => {
+
+const DetailEditorGrid = (props: DetailEditorProps) => {
 
     // select fields by form type
     const Form = formComponentsByType[props.formType].formComponent;
@@ -85,20 +94,17 @@ const DetailEditor = (props: DetailEditorProps) => {
     const Selection = formComponentsByType[props.formType].selectionComponent;
 
     return (
-        <Container>
+        <EditorGrid>
             <FormButtons/>
-            <FormWrapper>
-
                 <Suspense fallback={<div>Loading...</div>}>
-                <FormColumn>
+                <ResourceDetails>
                     <Form/>
-                </FormColumn>
-                <SelectionColumn visible={Selection()}>
+                </ResourceDetails>
+                <ListSelection visible={Selection()}>
                     <Selection/>
-                </SelectionColumn>
+                </ListSelection>
                 </Suspense>
-            </FormWrapper>
-        </Container>)
+        </EditorGrid>)
 };
 
 export default connect(
@@ -107,4 +113,4 @@ export default connect(
         error: state.detailForm.errorMsg
     }),
     {}
-)(DetailEditor);
+)(DetailEditorGrid);
