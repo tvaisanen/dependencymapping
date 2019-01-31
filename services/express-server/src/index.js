@@ -71,6 +71,12 @@ app.get('*', (req, res) => {
 });
 // server misc
 
+// set default headers
+app.use(function(req, res, next) {
+  res.set({'Content-Type': 'application/hal+json'});
+  next();
+});
+
 app.listen(3000, ()=> {
     console.log(
         `Dependency Mapping :: env: ${process.env.NODE_ENV}`

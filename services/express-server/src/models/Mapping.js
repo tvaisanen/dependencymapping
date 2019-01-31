@@ -2,11 +2,13 @@ const mongoose = require('mongoose');
 const ObjectId = mongoose.Schema.ObjectId;
 
 const mappingSchema = new mongoose.Schema({
-    name: String,
+    name: {
+        type: String,
+        required: true,
+    },
     description: String,
     assets: [String],
     tags: [String],
-    grouped: {type: [String], default: []}
 });
 
 try {
