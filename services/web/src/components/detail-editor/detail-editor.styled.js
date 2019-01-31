@@ -64,8 +64,9 @@ export const SelectionField = styled.div`
     display: flex;
     flex-shrink: 1;
     height: 1.4em;
-    padding: 6px;
+    padding: 6px 1px;
     flex-basis: 100%;
+    
 `;
 
 export const Label = styled.span`

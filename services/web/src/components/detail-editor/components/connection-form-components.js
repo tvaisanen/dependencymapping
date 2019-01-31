@@ -19,8 +19,7 @@ export const WrapFields = styled.div`
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
-  padding: 6px; 
-  margin-bottom: 6px;
+  padding: 6px 0; 
   background-color: ${p => p.theme.formFieldBackgroundColor};
   flex-shrink: 1;
   align-content: flex-start;
@@ -28,49 +27,81 @@ export const WrapFields = styled.div`
    border-radius: 3px;
 `;
 
-const SpaceAround = styled.div`
-  display: flex;
-  justify-content: space-around; 
-  align-items: center;
-  flex-basis: 100%;
-  padding: 6px;
+export const ConnectionFormGrid = styled.div`
+  display: grid;
+  grid-template:
+   min-content
+   min-content
+   1fr
+  / 1fr;
+  height: 100%;
 `;
 
 const Input = styled.input`
   flex-grow:1;
+  height: 1rem;
+  margin-right: 6px;
 `;
 
-const CheckBoxes = styled.div`
+const FlexRow = styled.div`
   display: flex;
+  padding: 6px 0;
   align-items: center;
-  border: ${p => p.theme.cardBorder};
-  margin-left: 6px;
+   padding: 6px; 
+  margin-bottom: 6px;
+  background-color: ${p => p.theme.formFieldBackgroundColor};
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 3px;
+
 `;
 
+const Box = styled.div`
+  display: flex;
+  border: ${p => p.theme.insetBorder};
+  border-radius: 3px;
+  padding: 3px;
+  align-items: center;
+`;
+
+const FormBox = styled.div`
+  display: flex;
+  flex-flow: column nowrap;
+  padding: 6px; 
+  margin-bottom: 6px;
+  background-color: ${p => p.theme.formFieldBackgroundColor};
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 3px;
+
+`;
 
 export const ConnectionForm = (props) => (
     <React.Fragment>
-        <WrapFields>
+        <ConnectionFormGrid>
+            <FormBox>
             <AssetSelectOrLabel
                 label={"source"}
                 onChange={props.onSourceSelection}
                 selected={props.source.name}
                 error={props.errors.source}
                 {...props}/>
+
             <AssetSelectOrLabel
                 label={"target"}
                 error={props.errors.target}
                 selected={props.target.name}
                 onChange={props.onTargetSelection}
                 {...props}/>
-            <Label>edge</Label>
-            <SpaceAround>
-                <Label>label</Label>
+            </FormBox>
+            <FlexRow>
+
+                <Label>edge </Label>
+                    <Label>label</Label>
                 <Input
                     value={props.edgeLabel}
                     onChange={(e) => props.onEdgeLabelChange(e.target.value)}
                     type="text"/>
-                <CheckBoxes>
+                <Label>arrows</Label>
+                    <Box>
                     <Label>source</Label>
                     <input
                         type="checkbox"
@@ -83,10 +114,10 @@ export const ConnectionForm = (props) => (
                         checked={props.targetArrow}
                         onChange={props.toggleTargetArrow}
                     />
-                </CheckBoxes>
-            </SpaceAround>
-        </WrapFields>
-        <DescriptionTextarea/>
+                    </Box>
+            </FlexRow>
+            <DescriptionTextarea/>
+        </ConnectionFormGrid>
     </React.Fragment>
 );
 
