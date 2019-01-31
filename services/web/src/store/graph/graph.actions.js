@@ -127,6 +127,7 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                     dispatch(appActions.setInfoMessage("Select node to connect to."));
                     dispatch(setEventHook({
                         hook: "onNodeClick",
+                        notification: "Select asset to connect to",
                         callback: (assetName: string) => {
                             //alert(`${assetToGroup.name} to ${JSON.stringify(assetName)}`);
                             const newConnection = {
@@ -134,7 +135,6 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                                 target: assetName
                             };
 
-                            alert(JSON.stringify(newConnection))
 
                             dispatch(connectionActions.postConnection({form:newConnection}));
                             dispatch(clearEventHook())

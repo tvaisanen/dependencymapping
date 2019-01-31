@@ -223,8 +223,6 @@ export function syncConnectionSourceAsset(connection: Connection) {
      */
 
     return function (dispatch: Dispatch, getState: State): void {
-        alert("syncConnection")
-        alert(JSON.stringify(connection))
         // assets keep track of the target connections
         // so if the connection is created separately
         // from the asset form. The source assets

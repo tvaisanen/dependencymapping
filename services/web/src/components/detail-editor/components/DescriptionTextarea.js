@@ -14,7 +14,7 @@ const Container = styled.div`
 `;
 
 const Textarea = styled.textarea`
-    grow: 1;
+    grow: 2;
     resize: none;
 `;
 
@@ -28,7 +28,7 @@ const DescriptionTextarea = (props) => {
             <Label> description</Label>
             <Textarea
                 style={{flexGrow:1}}
-                rows="10"
+                rows="4"
                 value={props.description}
                 valid={true}
                 onChange={(e) => {

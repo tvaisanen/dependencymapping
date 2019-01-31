@@ -39,13 +39,13 @@ export const ResourceDetails = styled.div`
 `;
 
 export const ListSelection = styled.div`
+    grid-area: list-selection;
     display: flex;
     flex-direction: column;
     transition: all 2s ease-in-out;
     border-left: ${p=>p.theme.cardBorder}; 
     width: 100%;
     height: 100%;
-    
 `;
 
 export const Select = styled.select`

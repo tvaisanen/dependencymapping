@@ -114,26 +114,7 @@ export const SmallLabel = styled.small`
   background-color: ${p => p.theme.cardHeaderBackgroundColor};
   border-bottom: ${p => p.theme.cardBorder};
 `;
-/*
-export const OptionItem = styled.div`
-            font-size: small;
-            background-color: rgba(255,255,255,0.2);
-            padding: 2px;
-            margin: 2px 0; border-radius: 3px; box-shadow: 0 0 2px rgba(255,255,255,0.1);
-            :hover {
-              background-color: ${props =>
-    props.remove ?
-        'rgba(255,0,0,0.35)'
-        : 'rgba(255,255,0,0.5)'};
-            }
-            transition: all .15s ease-in-out;
-            cursor: pointer;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            min-height: 1em;
-`;
 
-*/
 export const OptionItem = styled.div`
 
     font-size: small; 
