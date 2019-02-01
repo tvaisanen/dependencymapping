@@ -3,7 +3,7 @@ import React from 'react';
 import {ASSET} from '../../../constants/types';
 import {connect} from 'react-redux'
 import styled from 'styled-components';
-import {nodeShapes, colorOptions} from "../../../configs/configs.cytoscape";
+import {nodeShapes, colorOptions} from "../../../store/graph/graph.styles";
 import * as detailEditorActions from '../detail-editor.actions'
 import { Label, SelectionField, FieldGroup, Select } from "../detail-editor.styled";
 

@@ -1,7 +1,7 @@
 //@flow
 import GwClientApi from '../../api/gwClientApi';
 import * as types from './asset.action-types';
-import * as apiHelpers from '../../common/api.helpers';
+import * as apiHelpers from '../../api/api.utils';
 import * as appActions from '../../actions/app.actions';
 import * as mappingActions from '../mapping/mapping.actions';
 import * as activeMappingActions from '../active-mapping/active-mapping.actions';

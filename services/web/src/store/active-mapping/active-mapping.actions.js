@@ -6,7 +6,7 @@ import type {
     ActiveMappingAction
 } from "./active-mapping.types";
 
-import * as mappingHelpers from '../../common/dependency-map.helpers';
+import * as mappingHelpers from './active-mapping.utils';
 
 export function setActiveMapping(mapping: ActiveMappingState)
     : ActiveMappingAction {

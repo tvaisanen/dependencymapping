@@ -14,7 +14,7 @@ import type {
 } from "../types";
 import * as appActions from '../../actions/app.actions';
 import * as assetActions from '../../store/asset/asset.actions';
-import * as apiHelpers from '../../common/api.helpers';
+import * as apiHelpers from '../../api/api.utils';
 import * as graphHelpers from '../../common/graph-helpers';
 
 import {parseHALResponseData} from "../response-parser";

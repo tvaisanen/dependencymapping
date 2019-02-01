@@ -1,9 +1,9 @@
-import * as graphHelpers from './graph-helpers'
-import * as activeMappingActions from '../store/active-mapping/active-mapping.actions'
-import * as activeDetailActions from '../store/active-detail/active-detail.actions';
-import * as parser from './parser';
-import * as resourceHelpers from './graph-helpers';
-import * as types from '../constants/types';
+import * as graphHelpers from '../../common/graph-helpers'
+import * as activeMappingActions from './active-mapping.actions'
+import * as activeDetailActions from '../active-detail/active-detail.actions';
+import * as parser from '../../common/parser';
+import * as resourceHelpers from '../../common/graph-helpers';
+import * as types from '../../constants/types';
 import * as _ from 'lodash';
 
 export function getMappingById(mapId, mappings) {

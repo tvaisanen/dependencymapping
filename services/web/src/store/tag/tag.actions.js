@@ -2,7 +2,7 @@
 
 import GwClientApi from '../../api/gwClientApi';
 import * as types from './tag.action-types';
-import * as apiHelpers from '../../common/api.helpers';
+import * as apiHelpers from '../../api/api.utils';
 import * as appActions from '../../actions/app.actions';
 import { TAG } from "../../constants";
 

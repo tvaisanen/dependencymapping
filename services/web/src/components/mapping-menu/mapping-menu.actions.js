@@ -1,7 +1,7 @@
 import * as actions from './../../actions';
 import * as views from '../../constants/views';
 import * as activeDetailActions from '../../store/active-detail/active-detail.actions'
-import * as dependencyMapHelpers from '../../common/dependency-map.helpers';
+import * as dependencyMapHelpers from '../../store/active-mapping/active-mapping.utils';
 
 export function onMappingItemClick(mappingName){
     return function(dispatch){

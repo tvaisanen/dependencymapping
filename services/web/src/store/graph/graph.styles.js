@@ -1,4 +1,4 @@
-import {nodeStyles} from './graph.styles';
+import {nodeStyles} from '../../configs/graph.styles';
 
 export const graphStyle = [
     {

@@ -11,7 +11,7 @@ import * as detailFormActions from '../detail-form/detail-form.actions';
 import * as connectionActions from '../connection/connection.actions';
 
 import cytoscape from 'cytoscape';
-import style from '../../configs/configs.cytoscape';
+import style from './graph.styles';
 import cxtmenu from 'cytoscape-cxtmenu';
 import cola from 'cytoscape-cola';
 

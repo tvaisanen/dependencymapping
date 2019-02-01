@@ -6,7 +6,6 @@ import * as activeMappingActions from '../store/active-mapping/active-mapping.ac
 import * as activeDetailActions from '../store/active-detail/active-detail.actions';
 import * as eventHookActions from '../store/event-hook/event-hook.reducer';
 
-
 export function onNodeMouseOver(event) {
     return function (dispatch, getState) {
         helpers.hoverIndicationOn(event.target.cy(), event.target.id());
@@ -37,10 +36,12 @@ export function onCanvasClick(event) {
 
 
 export function onNodeClick(event) {
+    /**
+     *
+     *
+     *
+     */
     return function (dispatch: Dispatch, getState: State) {
-
-        // alert('if setWaitSelection === true');
-        // alert('take the next step');
 
         const {assets, connections, eventHook} = getState();
 
@@ -77,12 +78,7 @@ export function onNodeClick(event) {
 
             // the active mapping state needs to be updated by
             // adding the resources of the expanded node.
-            /*
-            dispatch(activeMappingActions
-                .addActiveMappingAssetsFromNameList(
-                    clickedAssetIsConnectedTo
-                )
-            );*/
+
             dispatch(activeMappingActions
                 .addActiveMappingAssetsFromNameList(
                     clickedAssetIsConnectedTo
@@ -95,11 +91,6 @@ export function onNodeClick(event) {
 
 
             const layout = getState().app.graph.selectedLayout;
-
-            /*const nodesToCreate = helpers.createNodeElements({
-                ids: clickedAssetIsConnectedTo
-            });*/
-
 
             const nodesToCreate = helpers.assetsToNodes((connectedAssets: Array<Asset>));
 

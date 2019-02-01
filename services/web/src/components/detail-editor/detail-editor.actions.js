@@ -9,7 +9,7 @@ import * as types from '../../constants/types';
 
 import * as activeDetailActions from '../../store/active-detail/active-detail.actions';
 import * as appActions from '../../actions/app.actions';
-import * as dependencyMapHelpers from "../../common/dependency-map.helpers";
+import * as dependencyMapHelpers from "../../store/active-mapping/active-mapping.utils";
 
 import formValidators from '../../store/detail-form/form.validators';
 
