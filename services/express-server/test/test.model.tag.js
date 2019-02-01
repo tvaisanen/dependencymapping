@@ -16,6 +16,7 @@ try {
 
 describe('Tag model tests', function () {
 
+
     before(async function () {
         try {
             await resetModels();
@@ -26,9 +27,7 @@ describe('Tag model tests', function () {
     });
 
     it('should be invalid if name is empty', function (done) {
-
         const a = new Tag();
-
         a.validate(function (err) {
             expect(err.errors.name).to.exist;
             done();

@@ -45,14 +45,12 @@ const Input = styled.input`
 
 const FlexRow = styled.div`
   display: flex;
-  padding: 6px 0;
   align-items: center;
-   padding: 6px; 
+  padding: 6px; 
   margin-bottom: 6px;
   background-color: ${p => p.theme.formFieldBackgroundColor};
   border: 1px solid rgba(255,255,255,0.15);
   border-radius: 3px;
-
 `;
 
 const Box = styled.div`
