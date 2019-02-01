@@ -14,6 +14,7 @@ import type {
 } from "../types";
 import * as appActions from '../../actions/app.actions';
 import * as assetActions from '../../store/asset/asset.actions';
+import { updateAsset } from '../../store/asset/asset.actions';
 import * as apiHelpers from '../../api/api.utils';
 import * as graphHelpers from '../../common/graph-helpers';
 
@@ -138,6 +139,7 @@ export function addConnections(connections: Array<Connection>) {
 export function deleteConnection(props: FormAndOptionalCallback) {
     return async function (dispatch: Dispatch, getState: State) {
 
+        console.info(props)
         try {
 
             // for updating the source assets
@@ -174,7 +176,7 @@ export function deleteConnection(props: FormAndOptionalCallback) {
                      and ${connection.target}`));
 
             dispatch(deleteConnectionSuccess(connection));
-            dispatch(assetActions.updateAsset(updatedAsset));
+            dispatch(updateAsset({form:updatedAsset}));
 
             // if callback provided, run it with response data
             if (callback) {
