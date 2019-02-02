@@ -13,6 +13,7 @@ import resourceBrowserCtrl from './resource-browser.controller';
 import {ResourceBrowser} from './components/components';
 
 import {
+    BrowserGrid,
     ResourceBrowserLayout,
 } from './resource-browser.styled.js';
 
@@ -60,7 +61,7 @@ class ResourceBrowserContainer extends Component <Props, State> {
             });
 
         return (
-            <ResourceBrowserLayout id="resource-browser__layout">
+            <BrowserGrid id="resource-browser__layout">
                 <ResourceBrowser
                     tabItems={tabs}
                     listItems={listItems}
@@ -71,7 +72,7 @@ class ResourceBrowserContainer extends Component <Props, State> {
                     setActiveDetail={this.props.setActiveDetail}
                 />
                 <ResourceDetail/>
-            </ResourceBrowserLayout>
+            </BrowserGrid>
         );
     }
 }

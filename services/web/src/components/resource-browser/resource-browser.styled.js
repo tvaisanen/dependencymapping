@@ -1,5 +1,19 @@
 import styled from 'styled-components';
 
+export const BrowserGrid = styled.div`
+  display: grid;
+  grid-template:
+  "resource-browser resource-detail" 1fr
+  / 16em 1fr;
+  grid-gap: 4px;
+  height: 100%;
+  width: 100%;
+  border-radius: 3px;
+  border: ${p=>p.theme.cardBorder}; 
+  > div {
+    max-height: 100%;
+  }
+`;
 
 export const ResourceBrowserLayout = styled.div`
   display: flex;
@@ -20,7 +34,7 @@ export const BrowserContainer = styled.div`
     min-width: 16em;
     margin-right: 12px;
     border-radius: 3px;
-    border: 1px solid grey;
+    border-left: 1px solid grey;
     background-color: ${p=>p.theme.cardBackgroundColor};
 `;
 
