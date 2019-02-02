@@ -55,17 +55,6 @@ export const ListItemBox = styled.div`
     transition: all .15s ease-in-out;
 `;
 
-const Container = styled.div`
-    width: 16em;
-    min-width: 16em;
-    display: flex;
-    flex-direction: column;
-    height: inherit;
-    background-color: ${p=>p.theme.cardBackgroundColor}; 
-    border: ${p=>p.theme.cardBorder}; 
-    border-radius: 3px;
-    margin-right: 6px;
-`;
 
 const Header = styled.div`
     display: flex;
