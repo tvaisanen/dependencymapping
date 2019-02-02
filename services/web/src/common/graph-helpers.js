@@ -139,7 +139,8 @@ export function updateLayout(cy = required(), layout = required()) {
 }
 
 
-export function clearGraph(cy = required()) {
+export function clearGraph(cy) {
+
     try {
         cy.elements().remove()
     } catch (e) {
