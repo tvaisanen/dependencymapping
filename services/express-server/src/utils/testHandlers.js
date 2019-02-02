@@ -1,5 +1,8 @@
 const {Asset, Connection, Tag, Mapping} = require('../models');
+const Router = require('express').Router;
+const mongoose = require('mongoose');
 
+const testHandlersRouter = Router();
 
 // TEST DATA
 const assets = require(`../__test__/unit-tests/assets.json`);
@@ -47,28 +50,51 @@ async function clearDB() {
     try {
         await Asset.collection.drop();
     } catch (e) {
+        console.error("Asset collection did not get cleared.")
+        console.error(e)
     }
     try {
-        
         await Connection.collection.drop();
-
     } catch (e) {
     }
     try {
         await Tag.collection.drop();
-
     } catch (e) {
     }
     try {
         await Mapping.collection.drop();
-
     } catch (e) {
     }
+
+
+    console.log("\n\nCLEARED DB\n\n");
 }
 
+
+testHandlersRouter.use(function timeLog(req, res, next) {
+    const d = new Date();
+    //${d.toUTCString()},
+    console.log(`${JSON.stringify(req.headers)}`);
+    console.log(`\n${req.method} ::  ${req.path}, \n\tbody: ${JSON.stringify(req.body)}`);
+    console.log(req.query);
+    next();
+});
+
+testHandlersRouter.get('/purge-data', (req, res) => {
+    clearDB();
+    res.send("Database cleared")
+});
+
+
+
+testHandlersRouter.get('/reset-models', (req, res) => {
+    resetModels(req,res)
+    res.send("Test data reseted.")
+});
 
 module.exports = {
     resetModels: resetModels,
     clearDB: clearDB,
-    loadDataToDB: loadDataToDb
+    loadDataToDB: loadDataToDb,
+    testRoutes: testHandlersRouter
 };
