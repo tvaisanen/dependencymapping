@@ -15,18 +15,6 @@ export const ConnectionSelections = () => (
     </React.Fragment>
 );
 
-export const WrapFields = styled.div`
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-start;
-  padding: 6px 0; 
-  background-color: ${p => p.theme.formFieldBackgroundColor};
-  flex-shrink: 1;
-  align-content: flex-start;
-   border: 1px solid rgba(255,255,255,0.15);
-   border-radius: 3px;
-`;
-
 export const ConnectionFormGrid = styled.div`
   display: grid;
   grid-template:
@@ -164,14 +152,15 @@ const SelectAsset = (props) => (
             for={`${props.label}-asset`}
         >{props.label}</Label>
         <Select
-            selected={"none"}
+            selected={""}
             onChange={(e) => {
                 this.selected = e.target.value;
                 props.onChange((e.target.value: string));
             }}>
-            <option value="" disabled selected>Select asset</option>
-            {props.assets.map(option => (
+            <option value="" disabled>Select asset</option>
+            {props.assets.map((option,index) => (
                 <option
+                    key={index}
                     selected={option === props.selected}
                     value={option}
                 >{option}</option>))}

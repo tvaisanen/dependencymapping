@@ -13,8 +13,8 @@ import type {
     State
 } from "../types";
 import * as appActions from '../../actions/app.actions';
-import * as assetActions from '../../store/asset/asset.actions';
-import { updateAsset } from '../../store/asset/asset.actions';
+import {setInfoMessage} from '../../actions/app.actions';
+import {updateAsset, syncConnectionSourceAsset} from '../../store/asset/asset.actions';
 import * as apiHelpers from '../../api/api.utils';
 import * as graphHelpers from '../../common/graph-helpers';
 
@@ -42,6 +42,7 @@ export function loadAllConnections() {
 
         try {
 
+            // ! todo: refactor
             const response = await GwClientApi.getConnections();
             const connections: Array<Connection> = response
                 .data
@@ -49,7 +50,7 @@ export function loadAllConnections() {
                     parseHALResponseData(CONNECTION, c));
 
             dispatch(
-                appActions.setInfoMessage(
+                setInfoMessage(
                     "Loaded all connections successfully"));
             dispatch(setConnections(connections));
 
@@ -80,18 +81,8 @@ export function postConnection(props: FormAndOptionalCallback) {
     return async function (dispatch: Dispatch, getState: State) {
 
         try {
-            // for updating the source assets
-            // connected to list
 
             const {form, callback} = props;
-
-            //const response = await
-            //    GwClientApi.postConnection(connection);
-
-            // after response is resolved store
-            // the received data as storedConnection
-            // const storedConnection = parseHALResponseData(CONNECTION, response.data);
-
 
             const storedConnection = await
                 api
@@ -99,22 +90,18 @@ export function postConnection(props: FormAndOptionalCallback) {
                     .post(form)
                     .parseResponseContent();
 
-            console.info(storedConnection)
 
-            // update the state and sync related assets
             dispatch(postConnectionSuccess(storedConnection));
-            dispatch(assetActions.syncConnectionSourceAsset(storedConnection));
-            dispatch(appActions.setInfoMessage(infoMessages.post.success(storedConnection)));
+            dispatch(syncConnectionSourceAsset(storedConnection));
+            dispatch(setInfoMessage(infoMessages.post.success(storedConnection)));
 
-            // finally if caller provided callback function,
-            // execute it with the response data as an argument
             if (callback) {
                 callback(storedConnection)
             }
 
-
         } catch (err) {
-
+            alert("todo: handle postconnection error")
+            throw new Error(err)
         }
     }
 }
@@ -149,34 +136,25 @@ export function deleteConnection(props: FormAndOptionalCallback) {
             const {assets} = getState();
 
             await api.connection.delete(form);
-            //GwClientApi
-            //   .deleteConnection(
-            //      connection.source,
-            //     connection.target
-            //);
 
             // the source asset needs to know about the new connection
             const assetToUpdate = assets.filter(
                 asset => asset.name === connection.source)[0];
 
-            // make a updated version
-            // of the updated asset
             const updatedAsset = {
                 ...assetToUpdate,
                 connected_to: assetToUpdate
                     .connected_to.filter(
                         asset => asset !== connection.target
                     )
-
             };
 
-            dispatch(
-                appActions.setInfoMessage(
-                    `Deleted connection between: ${connection.source} \
+            dispatch(setInfoMessage(
+                `Deleted connection between: ${connection.source} \
                      and ${connection.target}`));
 
             dispatch(deleteConnectionSuccess(connection));
-            dispatch(updateAsset({form:updatedAsset}));
+            dispatch(updateAsset({form: updatedAsset}));
 
             // if callback provided, run it with response data
             if (callback) {
@@ -184,7 +162,8 @@ export function deleteConnection(props: FormAndOptionalCallback) {
             }
 
         } catch (err) {
-
+            alert("todo: handle delete connection error");
+            throw new Error(err)
         }
     }
 }
@@ -211,10 +190,8 @@ export function updateConnection(props: FormAndOptionalCallback) {
 
 
             dispatch(updateConnectionSuccess(updatedConnection));
-            console.groupEnd();
 
-            dispatch(
-                appActions.setInfoMessage(
+            dispatch(setInfoMessage(
                     `Updated connection: ${updatedConnection.source} \
                      to ${updatedConnection.target}`));
 
@@ -222,11 +199,14 @@ export function updateConnection(props: FormAndOptionalCallback) {
             dispatch(graphHelpers.updateConnectionEdge(updatedConnection));
 
             // if callback provided, run it with response data
-            if (callback) { callback(updatedConnection) };
+            if (callback) {
+                callback(updatedConnection)
+            }
+
 
         } catch (err) {
-            console.info(err);
-            alert('catch')
+            alert("todo: handle update connection error");
+            throw new Error(err)
         }
     }
 }
@@ -239,7 +219,7 @@ export function updateConnectionSuccess(connection: Connection) {
 export function updateAssetConnections(asset: Asset) {
     return function (dispatch: Dispatch, getState: State) {
 
-        const { connections } = getState();
+        const {connections} = getState();
 
         let deleteList = [];
         let createList = [];
@@ -276,16 +256,6 @@ export function updateAssetConnections(asset: Asset) {
             }
         });
 
-        // ! hold on to this debug just in case
-        // console.group("updateAssetConnections");
-        // console.debug(asset);
-        // console.debug("deletelist");
-        // console.debug(deleteList);
-        // console.debug("createList");
-        // console.debug(createList);
-        // console.debug("keeplist");
-        // console.debug(keepList);
-        // console.groupEnd();
 
         dispatch(deleteConnections(deleteList));
         dispatch(addConnections(createList));
