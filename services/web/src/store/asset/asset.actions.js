@@ -2,11 +2,11 @@
 import GwClientApi from '../../api/gwClientApi';
 import * as types from './asset.action-types';
 import * as apiHelpers from '../../api/api.utils';
-import * as appActions from '../../actions/app.actions';
+import { setInfoMessage } from '../../store/ui/ui.actions';
 import * as mappingActions from '../mapping/mapping.actions';
 import * as activeMappingActions from '../active-mapping/active-mapping.actions';
 import * as detailFormActions from '../detail-form/detail-form.actions';
-import {connectionActions} from '../actions';
+import * as connectionActions from '../connection/connection.actions';
 import type {Asset, Connection, Dispatch, State} from "../types";
 import type {FormAndOptionalCallback} from "../store-action.arg-types";
 
@@ -34,7 +34,7 @@ export function postAsset(props: FormAndOptionalCallback): Dispatch {
 
             // resolving a request is done in form container
             dispatch(postAssetSuccess(storedAsset));
-            dispatch(appActions.setInfoMessage(`Created asset: ${storedAsset.name}`));
+            dispatch(setInfoMessage(`Created asset: ${storedAsset.name}`));
             dispatch(connectionActions.updateAssetConnections(storedAsset));
 
             // execute callback from caller if there's one
@@ -84,7 +84,7 @@ export function updateAsset(props: FormAndOptionalCallback): Dispatch {
                     .parseResponseContent();
 
             dispatch(updateAssetSuccess({asset: updatedAsset}));
-            dispatch(appActions.setInfoMessage(`Updated asset: ${updatedAsset.name}`));
+            dispatch(setInfoMessage(`Updated asset: ${updatedAsset.name}`));
             dispatch(connectionActions.updateAssetConnections(updatedAsset));
             dispatch(activeMappingActions.updateAssetState(updatedAsset));
 
@@ -114,7 +114,7 @@ export function deleteAsset(props: {name: string, callback:(any)=>void}) {
         dispatch(removeReferencesToDeletedAsset(name));
         dispatch(mappingActions.removeDeletedAssetFromMappings(name));
         dispatch(activeMappingActions.removeResourceFromActiveMapping({name}));
-        dispatch(appActions.setInfoMessage(`Deleted asset: ${name}`));
+        dispatch(setInfoMessage(`Deleted asset: ${name}`));
 
         // caller callback
         callback ? callback() : null;
@@ -196,7 +196,7 @@ export function loadAllAssets() {
                 .getAll()
                 .parseResponseContent();
 
-            dispatch(appActions.setInfoMessage("Loaded all resources successfully"));
+            dispatch(setInfoMessage("Loaded all resources successfully"));
             dispatch(loadAssetsSuccess(parsedAssets));
 
         } catch (error) {

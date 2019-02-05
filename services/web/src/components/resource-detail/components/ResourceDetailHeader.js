@@ -18,13 +18,17 @@ const HeaderTitle = (props) => (props.type === EMPTY ? null
 );
 
 
-export const AssetLinkButton = styled.div`
+export const AssetLinkButton = styled.small`
     letter-spacing: 0.1em;
     text-align: center;
     cursor: pointer;
-    margin: 1px 6px;
-    border-bottom: 1px solid white;
-
+    margin: 6px;
+    padding: 2px 4px;
+    background: rgba(255,255,255, 0.3);
+    border-radius: 3px;
+    border: 1px solid white;
+    
+    
     :hover {
         background: rgba(255,255,255, 0.35);
     }
@@ -32,6 +36,7 @@ export const AssetLinkButton = styled.div`
 
 const AssetLink = (props) => (
     <AssetLinkButton
+
         onClick={() => props.setActiveDetail({
             type: ASSET,
             data: props.asset
@@ -61,9 +66,6 @@ const ConnectionHeader = (props) => (
                 setActiveDetail={props.setActiveDetail}
             />
             </ConnectionTitle>
-        <div>
-            <small>group: {props.group || "none"}</small>
-        </div>
     </HeaderBar>
 );
 

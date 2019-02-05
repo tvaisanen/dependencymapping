@@ -12,8 +12,7 @@ import type {
     Dispatch,
     State
 } from "../types";
-import * as appActions from '../../actions/app.actions';
-import {setInfoMessage} from '../../actions/app.actions';
+import {setInfoMessage} from '../../store/ui/ui.actions';
 import {updateAsset, syncConnectionSourceAsset} from '../../store/asset/asset.actions';
 import * as apiHelpers from '../../api/api.utils';
 import * as graphHelpers from '../../common/graph-helpers';
