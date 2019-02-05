@@ -12,6 +12,7 @@ import {
 } from '../resource-browser.styled.js';
 
 import {FilterInputField} from '../../common.components';
+import styled from 'styled-components';
 
 export type Selected = ASSET | CONNECTION | TAG
 
@@ -167,6 +168,21 @@ function connectionIsActiveDetail(item, activeDetail) {
     }
 }
 
+export const ConnectionLabel =  styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45%;
+    background: rgba(180,180,255,0.2);
+    letter-spacing: 0.05rem;
+    overflow: hidden;
+  }
+`;
+
 export const ConnectionListItem = (props: ListItemProps) => (
     <ListItemBox
         selected={connectionIsActiveDetail(props.item, props.activeDetail)}
@@ -177,7 +193,11 @@ export const ConnectionListItem = (props: ListItemProps) => (
                 }
             )}
     >
-        {`${props.item.source} -> ${props.item.target}`}
+        <ConnectionLabel>
+            <span>{props.item.source}</span>
+            >
+            <span>{props.item.target}</span>
+        </ConnectionLabel>
     </ListItemBox>
 );
 

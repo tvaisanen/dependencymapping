@@ -35,9 +35,7 @@ function post (req, res){
                         pathToExisting: `/asset/${existing.name}`
                     });
                 } else {
-                    console.log('here')
                     asset.save().then(saved => {
-                        console.log(`saved: ${saved.name}`);
                         const halAsset = hal.serializeAsset(`${req.headers.host}`, saved);
                         res.status(201).send(halAsset);
                     }).catch(err => {

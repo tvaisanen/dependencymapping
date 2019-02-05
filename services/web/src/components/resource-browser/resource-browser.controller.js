@@ -4,6 +4,7 @@ import * as activeDetailActions from '../../store/active-detail/active-detail.ac
 import * as activeMappingActions from '../../store/active-mapping/active-mapping.actions';
 
 import { ASSET } from './../../constants/types';
+import {CONNECTION} from "../../constants";
 
 const mapStateToProps = (state, ownProps = {}) => {
 
@@ -22,7 +23,7 @@ const mapStateToProps = (state, ownProps = {}) => {
     };
 
     return {
-        selected: ASSET,
+        selected: CONNECTION,
         cy: state.graph,
         assets: sortedAssets || [],
         connections: state.connections,
