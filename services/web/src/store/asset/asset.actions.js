@@ -21,10 +21,8 @@ export function postAsset(props: FormAndOptionalCallback): Dispatch {
     return async function (dispatch: Dispatch): Asset {
 
         try {
-            const { form, callback } = props;
 
-            //const response = await api.asset.post(asset);
-            //const storedAsset = response.parseResponseContent();
+            const { form, callback } = props;
 
             const storedAsset = await
                 api
@@ -42,11 +40,9 @@ export function postAsset(props: FormAndOptionalCallback): Dispatch {
 
         } catch (err) {
 
-            console.info(err);
-
             if (err.response ? err.response.status === 409 : false) {
-                // conflict -> error with name field
 
+                // conflict -> error with name field
                 // name field error
                 const errors = {
                     name: err.response.data.error
@@ -54,7 +50,6 @@ export function postAsset(props: FormAndOptionalCallback): Dispatch {
 
                 // set errors to be displayed in the form
                 dispatch(detailFormActions.setErrors(errors));
-
             }
 
             throw new Error(`asset.actions.postTag() :: ${err} `)

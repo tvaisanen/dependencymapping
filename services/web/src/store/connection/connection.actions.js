@@ -40,7 +40,6 @@ export function loadAllConnections() {
     return async function (dispatch: Dispatch) {
 
         try {
-
             // ! todo: refactor
             const response = await GwClientApi.getConnections();
             const connections: Array<Connection> = response
@@ -51,6 +50,7 @@ export function loadAllConnections() {
             dispatch(
                 setInfoMessage(
                     "Loaded all connections successfully"));
+
             dispatch(setConnections(connections));
 
         } catch (err) {
@@ -70,8 +70,9 @@ export function loadAllConnections() {
 const infoMessages = {
     post: {
         success: (connection: Connection) => {
-            return `Created connection between: ${connection.source} \
-                     and ${connection.target}`;
+            return `Created connection between: \
+                    ${connection.source} and \
+                    ${connection.target}`;
         }
     }
 };
@@ -82,13 +83,11 @@ export function postConnection(props: FormAndOptionalCallback) {
         try {
 
             const {form, callback} = props;
-
             const storedConnection = await
                 api
                     .connection
                     .post(form)
                     .parseResponseContent();
-
 
             dispatch(postConnectionSuccess(storedConnection));
             dispatch(syncConnectionSourceAsset(storedConnection));
@@ -99,7 +98,6 @@ export function postConnection(props: FormAndOptionalCallback) {
             }
 
         } catch (err) {
-            alert("todo: handle postconnection error")
             throw new Error(err)
         }
     }
