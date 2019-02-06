@@ -13,8 +13,15 @@ CS-Aware at OUSGP univ. of Oulu.
 This starts three services for development.
 
 * React JS hotreloaded dev server
+    - `./src` is mounted into the container allowing live editing
+    - uses Jest for unit tests
+    
 * Express backend API
+    - `./src` is mounted into the container allowing live editing
+    - uses Mocha and Chai for unit tests
+    
 * Mongo DB
+    - generic Mongo DB instance with defaults
 
 File `docker-compose.development.yml` resets the database
 on page refresh. If you need the data to persist use the 
