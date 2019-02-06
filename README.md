@@ -8,16 +8,26 @@ CS-Aware at OUSGP univ. of Oulu.
 ## Development
 
 1. git clone https://github.com/tvaisanen/dependencymapping
-2. docker-compose up
+2. docker-compose -f docker-compose.development.yml up
+
+This starts three services for development.
+
+* React JS hotreloaded dev server
+* Express backend API
+* Mongo DB
+
+File `docker-compose.development.yml` resets the database
+on page refresh. If you need the data to persist use the 
+file `docker-compose.development.persistent-data.yml` and
+the application will use different database in Mongo and
+the resetting will be disabled.
 
 ### Run tests
 
-React web app: `docker exec -it dependencymapping_web npm test`
+get container ids with: `docker ps`
 
-Django Rest API: `docker exec -it dependencymapping_api ptw`
-
-run `docker container ls` if container if default container names are not found.
-
+web app: `docker exec -it ${id for web} npm test`
+api app: `docker exec -it ${id for api} npm test`
 
 ## Environment
 
