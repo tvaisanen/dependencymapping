@@ -1,0 +1,298 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "description" : "Simple Dependency Mapping API",
+    "version" : "1.0.0-oas3",
+    "title" : "Dependency Mappings API",
+    "termsOfService" : "todo",
+    "contact" : {
+      "email" : "vaisanen.toni@gmail.com"
+    },
+    "license" : {
+      "name" : "MIT",
+      "url" : "https://opensource.org/licenses/MIT"
+    }
+  },
+  "tags" : [ {
+    "name" : "Asset",
+    "description" : "assets",
+    "externalDocs" : {
+      "description" : "todo",
+      "url" : "http://docs.localhost/assets"
+    }
+  }, {
+    "name" : "Connection",
+    "description" : "connections"
+  }, {
+    "name" : "Mapping",
+    "description" : "mappings",
+    "externalDocs" : {
+      "description" : "todo",
+      "url" : "http://docs.localhost/mappings"
+    }
+  } ],
+  "paths" : {
+    "/asset" : {
+      "post" : {
+        "tags" : [ "asset" ],
+        "summary" : "Add a new asset to the database",
+        "operationId" : "addAsset",
+        "requestBody" : {
+          "description" : "Asset object that needs to be added to the database",
+          "required" : true,
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Asset"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Asset"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input"
+          },
+          "409" : {
+            "description" : "Asset already exists"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "asset" ],
+        "summary" : "Update an existing asset",
+        "operationId" : "updateAsset",
+        "responses" : {
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "Asset not found"
+          },
+          "405" : {
+            "description" : "Validation exception"
+          }
+        },
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Asset"
+              }
+            }
+          },
+          "description" : "Asset object that needs to be updated in the database",
+          "required" : true
+        }
+      }
+    },
+    "/asset/{id}" : {
+      "get" : {
+        "tags" : [ "asset" ],
+        "summary" : "Find asset by ID",
+        "description" : "Returns a single asset",
+        "operationId" : "getAssetById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID of asset to return",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Asset"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "Asset not found"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "asset" ],
+        "summary" : "Updates an asset in the database with form data",
+        "operationId" : "updateAssetWithJSON",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID of asset to return",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "405" : {
+            "description" : "Invalid input"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "asset" ],
+        "summary" : "Deletes a pet",
+        "operationId" : "deletePet",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Asset id to delete",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "Asset not found"
+          }
+        }
+      }
+    }
+  },
+  "externalDocs" : {
+    "description" : "Find out more about Swagger",
+    "url" : "http://swagger.io"
+  },
+  "servers" : [ {
+    "url" : "https://virtserver.swaggerhub.com/tvaisanen_dev/dependency-maps/1.0.0"
+  }, {
+    "url" : "http://virtserver.swaggerhub.com/tvaisanen_dev/dependency-maps/1.0.0"
+  } ],
+  "components" : {
+    "requestBodies" : {
+      "AssetArray" : {
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/components/schemas/Asset"
+              }
+            }
+          }
+        },
+        "description" : "List of asset objects",
+        "required" : true
+      }
+    },
+    "securitySchemes" : {
+      "petstore_auth" : {
+        "type" : "oauth2",
+        "flows" : {
+          "implicit" : {
+            "authorizationUrl" : "http://petstore.swagger.io/oauth/dialog",
+            "scopes" : {
+              "write:pets" : "modify pets in your account",
+              "read:pets" : "read your pets"
+            }
+          }
+        }
+      },
+      "api_key" : {
+        "type" : "apiKey",
+        "name" : "api_key",
+        "in" : "header"
+      }
+    },
+    "schemas" : {
+      "_embedded_object" : {
+        "type" : "object",
+        "properties" : {
+          "_id" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "href" : {
+            "type" : "string"
+          }
+        }
+      },
+      "_links" : {
+        "type" : "object",
+        "properties" : {
+          "href" : {
+            "type" : "string",
+            "format" : "url"
+          }
+        }
+      },
+      "Asset" : {
+        "type" : "object",
+        "properties" : {
+          "_id" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "_embedded" : {
+            "type" : "object",
+            "properties" : {
+              "connected_to" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/_embedded_object"
+                }
+              },
+              "tags" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "object"
+                }
+              }
+            }
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/_links"
+          }
+        },
+        "xml" : {
+          "name" : "Order"
+        }
+      },
+      "ApiResponse" : {
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "type" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      }
+    }
+  }
+}
