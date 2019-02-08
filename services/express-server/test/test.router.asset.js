@@ -92,7 +92,7 @@ describe('Asset API endpoint ', function () {
                     .delete(`/asset/${res.body._id}`)
                     .send({name: "TestPageFour"})
                     .end((err, res) => {
-                        expect(res).to.have.status(409);
+                        expect(res).to.have.status(204);
                         done();
                     });
             })
