@@ -1,7 +1,8 @@
 
 module.exports = {
-    get: null,
-    post: null,
-    put: null,
+    get: require('./mapping.get'),
+    getById: require('./mapping.getById'),
+    post: require('./mapping.post'),
+    put: require('./mapping.put'),
     deleteById: require('./mapping.deleteById')
 };

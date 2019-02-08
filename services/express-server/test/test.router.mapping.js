@@ -18,7 +18,7 @@ try {
 }
 
 
-describe('Connection API endpoint ', function () {
+describe('Mapping API endpoint ', function () {
 
     before(async function () {
         await loadDataToDB();
@@ -52,7 +52,7 @@ describe('Connection API endpoint ', function () {
     });
 
 
-    it('post returns 200 and connection with defaults if source and target provided', (done) => {
+    it('Post should return 200 and the created Mapping with defaults if namet provided', (done) => {
         chai.request(HOST)
             .post(RESOURCE)
             .send({
@@ -65,11 +65,11 @@ describe('Connection API endpoint ', function () {
             });
     });
 
-    it('post returns 400 if connection already exists ', (done) => {
+    it('Post should return 400 if mapping by given name already exists ', (done) => {
         chai.request(HOST)
             .post(RESOURCE)
             .send({
-                source: "TestMappingOne",
+                name: "TestMappingOne",
             })
             .end((err, res) => {
                 console.debug(res.body)
