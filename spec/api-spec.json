@@ -33,6 +33,14 @@
   } ],
   "paths" : {
     "/asset" : {
+      "get" : {
+        "summary" : "Asset detail list.",
+        "responses" : {
+          "200" : {
+            "description" : "Asset list"
+          }
+        }
+      },
       "post" : {
         "tags" : [ "asset" ],
         "summary" : "Add a new asset to the database",
@@ -65,33 +73,6 @@
           "409" : {
             "description" : "Asset already exists"
           }
-        }
-      },
-      "put" : {
-        "tags" : [ "asset" ],
-        "summary" : "Update an existing asset",
-        "operationId" : "updateAsset",
-        "responses" : {
-          "400" : {
-            "description" : "Invalid ID supplied"
-          },
-          "404" : {
-            "description" : "Asset not found"
-          },
-          "405" : {
-            "description" : "Validation exception"
-          }
-        },
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/Asset"
-              }
-            }
-          },
-          "description" : "Asset object that needs to be updated in the database",
-          "required" : true
         }
       }
     },
@@ -131,21 +112,37 @@
       },
       "put" : {
         "tags" : [ "asset" ],
-        "summary" : "Updates an asset in the database with form data",
-        "operationId" : "updateAssetWithJSON",
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
-          "description" : "ID of asset to return",
           "required" : true,
           "schema" : {
             "type" : "string"
           }
         } ],
+        "summary" : "Update an existing asset",
+        "operationId" : "updateAsset",
         "responses" : {
+          "400" : {
+            "description" : "Invalid ID supplied"
+          },
+          "404" : {
+            "description" : "Asset not found"
+          },
           "405" : {
-            "description" : "Invalid input"
+            "description" : "Validation exception"
           }
+        },
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Asset"
+              }
+            }
+          },
+          "description" : "Asset object that needs to be updated in the database",
+          "required" : true
         }
       },
       "delete" : {
@@ -167,6 +164,26 @@
           },
           "404" : {
             "description" : "Asset not found"
+          }
+        }
+      }
+    },
+    "/connection" : {
+      "get" : null,
+      "post" : null
+    },
+    "/connection/{id}" : {
+      "delete" : {
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path"
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Connection"
+          },
+          "400" : {
+            "description" : "Error deleting"
           }
         }
       }
