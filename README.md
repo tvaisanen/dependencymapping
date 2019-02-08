@@ -35,8 +35,8 @@ the resetting will be disabled.
 
 get container ids with: `docker ps`
 
-web app: `docker exec -it ${id for web} npm test`
-api app: `docker exec -it ${id for api} npm test`
+* web app: `docker exec -it ${id for web} npm test`
+* api app: `docker exec -it ${id for api} npm test`
 
 ## Environment
 
