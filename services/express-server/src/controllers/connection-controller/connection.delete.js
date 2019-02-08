@@ -1,6 +1,4 @@
 const Connection = require('../../models').Connection;
-const hal = require('../../utils/hal.utils');
-
 
 function remove(req, res) {
     Connection.remove(req.query)

@@ -1,6 +1,6 @@
-const ConnectionController = require('./connection-controller/');
 
 
 module.exports = {
-    Connection:ConnectionController
-}
+    Connection: require('./connection-controller/'),
+    MappingCtrl: require('./mapping-controller/')
+};

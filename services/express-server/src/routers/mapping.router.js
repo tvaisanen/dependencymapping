@@ -4,6 +4,7 @@ const mappingRouter = express.Router();
 const hal = require('../utils/hal.utils');
 const msg = require('../constants').messages;
 const err = require('../constants').errors;
+const { MappingCtrl } = require('../controllers/');
 
 
 mappingRouter.get('(/:id)?', (req, res) => {
@@ -93,22 +94,7 @@ mappingRouter.put('(/:id)?', (req, res) => {
         .catch(err => res.status(400).send(err));
 });
 
-mappingRouter.delete('/:id', (req, res) => {
-    Mapping.remove({name: req.params.id})
-        .then(msg => {
-            if (msg.ok === 1) {
-
-                //res.status(200).json(msg.DELETED_SUCCESFULLY_200)
-                res.status(200).send({
-                    msg:"Resource deleted successfully."
-                })
-            }
-        })
-        .catch(err => {
-            console.log(err)
-            res.status(400).json({"error": "error"});
-        });
-});
+mappingRouter.delete('/:id', (req, res) => MappingCtrl.deleteById(req,res));
 
 
 module.exports = mappingRouter;

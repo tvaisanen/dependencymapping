@@ -11,6 +11,7 @@ const assetEndpoint = require('../src/controllers/asset.controller');
 chai.use(chaiHttp);
 
 const HOST = 'http://localhost:3000';
+const RESOURCE = '/connection';
 
 const expect = chai.expect;
 
@@ -44,7 +45,7 @@ describe('Connection API endpoint ', function () {
     it('Returns 200', function (done) {
 
         chai.request(HOST)
-            .get('/connection')
+            .get(RESOURCE)
             .end((err, res) => {
 
                 expect(err).to.be.null;
@@ -56,9 +57,9 @@ describe('Connection API endpoint ', function () {
     });
 
 
-    it('post returns 200 and connectio with defaults if source and target provided', (done) => {
+    it('post returns 200 and connection with defaults if source and target provided', (done) => {
         chai.request(HOST)
-            .post("/connection")
+            .post(RESOURCE)
             .send({
                 source: "sourceName",
                 target: "targetName"
@@ -71,24 +72,27 @@ describe('Connection API endpoint ', function () {
             });
     });
 
-    it('post returns 400 if asset already exists ', (done) => {
+    it('post returns 400 if connection already exists ', (done) => {
         chai.request(HOST)
-            .post('/asset')
-            .send({name: "TestPageFour"})
+            .post(RESOURCE)
+            .send({
+                source: "TestPageOne",
+                target: "TestPageFour"
+            })
             .end((err, res) => {
+                console.debug(res.body)
                 expect(res).to.have.status(409);
                 done();
             });
     });
 
-    it('delete returns success', (done) => {
+    it('Connection delete by id should delete and return', (done) => {
         chai.request(HOST)
-            .get('/asset/?name=TestPageFour')
+            .get('/connection/?source=TestPageOne&target=TestPageFour')
             .end((err, res) => {
-                console.log(res)
+                console.log(res.body)
                 chai.request(HOST)
-                    .delete(`/asset/${res.body._id}`)
-                    .send({name: "TestPageFour"})
+                    .delete(`${RESOURCE}/${res.body._id}`)
                     .end((err, res) => {
                         expect(res).to.have.status(204);
                         done();
