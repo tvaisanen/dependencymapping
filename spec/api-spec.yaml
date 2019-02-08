@@ -34,25 +34,27 @@ paths:
       responses:
         '200':
           description: Asset list
+          content:
+            application/hal+json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfAssets'
     post:
       tags:
         - Asset
       summary: Add a new asset to the database
       operationId: addAsset
       requestBody:
-        description: Asset object that needs to be added to the database
-        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Asset'
+              $ref: '#/components/schemas/AssetJSON'
       responses:
         '201': 
           description: Created
           content:
             application/hal+json:
               schema:
-                $ref: '#/components/schemas/Asset'
+                $ref: '#/components/schemas/AssetHALJSON'
         '405':
           description: Invalid input
         '409':
@@ -71,13 +73,15 @@ paths:
           required: true
           schema:
             type: string
+            
+
       responses:
         '200':
           description: successful operation
           content:
             application/hal+json:
               schema:
-                $ref: '#/components/schemas/Asset'
+                $ref: '#/components/schemas/AssetHALJSON'
         '400':
           description: Invalid ID supplied
         '404':
@@ -105,7 +109,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Asset'
+              $ref: '#/components/schemas/AssetJSON'
         description: Asset object that needs to be updated in the database
         required: true
         
@@ -131,8 +135,19 @@ paths:
     get:
       tags: 
         - Connection
-      description: >
-        Get all tags
+      description: 
+        Get collection of connections. Filtering is supported via query params.
+      parameters:
+        - in: query
+          name: source
+          schema:
+            type: string
+          description: Source asset name
+        - in: query
+          name: target
+          schema:
+            type: string
+          description: Source asset name      
       responses:
         '200':
           description: Get list of connections
@@ -151,6 +166,8 @@ paths:
     delete:
       tags:
         - Connection
+      description: 
+        Get connection by ID
       parameters:
         - name: id
           in: path
@@ -164,7 +181,6 @@ paths:
         '400':
           description: Error deleting
   '/mapping':
-  
     get:
       tags:
         - Mapping
@@ -184,7 +200,6 @@ paths:
           description: Validation exception
         '500':
           description: Internal server error
-  
   '/mapping/{id}':
     get:
       tags:
@@ -228,9 +243,7 @@ paths:
       responses:
         '204':
           description: Delete mapping detail
-          
   '/tag':
-  
     get:
       tags:
         - Tag
@@ -250,7 +263,6 @@ paths:
           description: Validation exception
         '500':
           description: Internal server error
-  
   '/tag/{id}':
     get:
       tags:
@@ -302,16 +314,7 @@ servers:
   - url: 'https://virtserver.swaggerhub.com/tvaisanen_dev/dependency-maps/1.0.0'
   - url: 'http://virtserver.swaggerhub.com/tvaisanen_dev/dependency-maps/1.0.0'
 components:
-  requestBodies:
-    AssetArray:
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/Asset'
-      description: List of asset objects
-      required: true
+
   securitySchemes:
     petstore_auth:
       type: oauth2
@@ -347,7 +350,28 @@ components:
         href:
           type: string
           format: url
-    Asset:
+  
+    AssetJSON:
+      type: object
+      description: _id is generated automatically
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        connected_to:
+          type: array
+          items:
+            type: string
+        tags:
+          type: array
+          items: 
+            type: string
+
+          
+    AssetHALJSON:
       type: object
       properties:
         _id:
@@ -369,8 +393,36 @@ components:
                 type: object
         _links:
           $ref: '#/components/schemas/_links'
-      xml:
-        name: Order
+    
+    ArrayOfAssets:
+      type: array
+      items:
+        $ref: '#/components/schemas/AssetHALJSON'
+    
+    Connection:
+      type: object
+      properties:
+        _id:
+          type: string
+        source:
+          type: string
+        target:
+          type: string
+        description:
+          type: string
+        _embedded:
+          type: object
+          properties:
+            source:
+              type: object
+           
+            tags:
+              type: array
+              items:
+                type: object
+        _links:
+          $ref: '#/components/schemas/_links'
+
     
     ApiResponse:
       type: object
