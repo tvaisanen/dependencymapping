@@ -35,7 +35,7 @@ export const BrowserContainer = styled.div`
     margin-right: 12px;
     border-radius: 3px;
     border-left: 1px solid grey;
-    background-color: ${p=>p.theme.cardBackgroundColor};
+    /*background-color: ${p=>p.theme.cardBackgroundColor};*/
 `;
 
 
@@ -78,7 +78,7 @@ export const ListTab = styled.div`
     text-align: center;
     justify-content: center;
     padding: 2px 2px 4px 2px;
-    cursor: pointer;
+    cursor: ${p=>p.selected? "default":"pointer"};
     width: 100%;
     grow: 1;
     
