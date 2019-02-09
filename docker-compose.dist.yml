@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+    mongo:
+        image: mongo
+        ports:
+          - 27017:27017
+        networks:
+          - overlay
+
+    #express:
+    #    build:
+    #      context: ./services/express-server
+    #      dockerfile: Dockerfile-dist
+#
+#        ports:
+#          - 3000:3000
+#        env_file:
+#         - .env-dist
+#        networks:
+#          - overlay
+
+    express:
+        build: ./services/express-server
+        ports:
+          - 3000:3000
+        volumes:
+          - ./services/express-server/src/:/usr/local/src/express/src
+          - ./services/express-server/test/:/usr/local/src/express/test
+        env_file:
+         - .env-development
+        networks:
+          - overlay
+
+    web:
+        build:
+          context: ./services/web
+          dockerfile: Dockerfile-dist
+        networks:
+            - overlay
+        command: npm run serve
+        ports:
+            - 3001:5000
+        env_file:
+            - .env-dist
+
+networks:
+   overlay:
+             

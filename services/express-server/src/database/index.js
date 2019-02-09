@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 // set defaults for testing if env variables not provided
 const MONGO_PATH = process.env.MONGO_PATH || "mongo";
 const MONGO_PORT = process.env.MONGO_PORT || "27017";
-const DB_NAME = process.env.DB_NAME // || "test";
+const DB_NAME = process.env.DB_NAME       || "production";
 
 /**
  *  Database configuration here
@@ -33,9 +33,24 @@ const testConfig = () => ({
     }
 });
 
+const productionConfig = () => ({
+    onConnected: () => {
+        console.log('PRODUCTiON: Mongoose successful connection:');
+        console.log(`running in: ${process.env.NODE_ENV} mode`)
+        console.log(`using database: ${process.env.DB_NAME}`);
+    }
+    ,
+    onError: () => {
+        console.log('Mongoose connection error:');
+        console.log(`running in: ${process.env.NODE_ENV} mode`)
+        console.log(`using database: ${process.env.DB_NAME}`);
+    }
+});
+
 const configs = {
     development: devConfig(),
-    test: testConfig()
+    test: testConfig(),
+    production: productionConfig()
 };
 
 function getConfig() {

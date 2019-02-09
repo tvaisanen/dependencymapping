@@ -1,11 +1,11 @@
-export const API_HOST = process.env.REACT_APP_API_HOST || "localhost"
-export const API_URL = `http://${API_HOST}/`;
+export const API_HOST = process.env.REACT_APP_API_HOST || "localhost";
+export const API_PORT = process.env.REACT_APP_API_PORT || "3000";
+export const API_URL = `http://${API_HOST}:${API_PORT}/`;
 
 export const MAPPINGS_URL = `${API_URL}mapping/`;
 export const CONNECTIONS_URL = `${API_URL}connection/`;
 export const TAGS_URL = `${API_URL}tag/`;
 export const RESOURCES_URL = `${API_URL}asset/`;
-export const ASSET_GROUPS_URL = `${API_URL}asset-group/`;
 
 
 export function tagDetailUrl({name}) {
