@@ -2,7 +2,7 @@ import React from 'react';
 import {ASSET, CONNECTION, MAPPING, TAG} from '../../../constants/types';
 import {connect} from 'react-redux'
 import styled from 'styled-components';
-import * as actions from '../../../actions';
+import { setFormType } from "../../../store/ui/ui.actions";
 
 // todo: needs to be refactored
 import * as detailEditorActions from '../detail-editor.actions';
@@ -101,7 +101,7 @@ const mapStateToProps = (state, props) => ({
 const mapDispatchToProps = (dispatch) => ({
     setFormType: (formType) => {
         dispatch(detailEditorActions.clickDetailType(formType));
-        dispatch(actions.setFormType(formType))
+        dispatch(setFormType(formType))
     }
 });
 

@@ -15,8 +15,8 @@ function mapStateToProps(state, props) {
 
 function dispatchToProps(dispatch) {
     return {
-        toggleCollapseMenu: () => dispatch(actions.toggleCollapseMenu()),
-        setGraphLayout: (layout) => dispatch(actions.setGraphLayout(layout)),
+        toggleCollapseMenu: () => dispatch(actions.onToggleCollapseMenu()),
+        setGraphLayout: (layout) => dispatch(actions.onSetGraphLayout(layout)),
     }
 }
 

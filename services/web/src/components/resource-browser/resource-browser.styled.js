@@ -41,6 +41,9 @@ export const BrowserContainer = styled.div`
 
 export const ListItemBox = styled.div`
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: small; 
     letter-spacing: 0.07em;
     text-align: center;

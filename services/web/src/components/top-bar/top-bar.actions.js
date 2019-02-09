@@ -1,14 +1,14 @@
-import * as appActions from '../../actions/app.actions';
+import { setGraphLayout, toggleCollapseMenu } from '../../store/ui/ui.actions';
 
-export function setGraphLayout(layout) {
+export function onSetGraphLayout(layout) {
     console.info("top-bar.actions.setGraphLayout("+layout+");");
     return function (dispatch, getState) {
-        dispatch(appActions.setGraphLayout(layout))
+        dispatch(setGraphLayout(layout))
     }
 };
 
-export function toggleCollapseMenu() {
+export function onToggleCollapseMenu() {
     return function (dispatch) {
-       dispatch(appActions.toggleCollapseMenu());
+       dispatch(toggleCollapseMenu());
     }
 }

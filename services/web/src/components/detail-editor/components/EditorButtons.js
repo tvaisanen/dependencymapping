@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import * as detailEditorActions from '../detail-editor.actions';
 import styled from 'styled-components';
 import { CREATE } from "../../../constants/views";
-import * as appActions from '../../../actions/app.actions';
 import { BROWSE } from "../../../constants/views";
 
 type EditorButtonProps = {

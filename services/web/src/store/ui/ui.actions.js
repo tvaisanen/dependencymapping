@@ -1,5 +1,5 @@
-import * as types from './actionTypes';
-import * as views from '../constants/views';
+import * as types from './ui.action-types';
+import * as views from '../../constants/views';
 
 export function setInfoMessage(infoMessage){
     return {type: types.SET_INFO_MESSAGE, infoMessage};

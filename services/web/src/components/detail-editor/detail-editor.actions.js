@@ -8,7 +8,7 @@ import * as detailFormActions from '../../store/detail-form/detail-form.actions'
 import * as types from '../../constants/types';
 
 import * as activeDetailActions from '../../store/active-detail/active-detail.actions';
-import * as appActions from '../../actions/app.actions';
+import * as appActions from '../../store/ui/ui.actions';
 import * as dependencyMapHelpers from "../../store/active-mapping/active-mapping.utils";
 
 import formValidators from '../../store/detail-form/form.validators';

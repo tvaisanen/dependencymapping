@@ -2,7 +2,7 @@ import api from '../../api/gwClientApi';
 
 import * as types from './mapping.action-types';
 import {clearActiveMappingSelection, updateActiveMapping} from '../active-mapping/active-mapping.actions';
-import { setInfoMessage } from '../../actions/app.actions';
+import { setInfoMessage } from '../../store/ui/ui.actions';
 
 import {routeApiActionError} from "../error-handling";
 

@@ -1,0 +1,15 @@
+const Mapping = require('../../models').Mapping;
+
+function getById(req, res) {
+    Mapping.findOne({name: req.params.id})
+        .then(mapping => {
+            if (!mapping) {
+                res.status(404).json(err.RESOURCE_NOT_FOUND)
+            } else {
+                res.status(200).json(mapping);
+            }
+
+        }).catch(err => res.status(400).json(err));
+}
+
+module.exports = getById;

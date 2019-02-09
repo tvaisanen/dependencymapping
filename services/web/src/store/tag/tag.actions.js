@@ -3,10 +3,8 @@
 import GwClientApi from '../../api/gwClientApi';
 import * as types from './tag.action-types';
 import * as apiHelpers from '../../api/api.utils';
-import * as appActions from '../../actions/app.actions';
-import { TAG } from "../../constants";
+import { setInfoMessage } from "../ui/ui.actions";
 
-import { parseHALResponseData } from "../response-parser";
 
 import { routeApiActionError } from "../error-handling";
 
@@ -36,7 +34,7 @@ export function postTag(props: FormAndOptionalCallback): Dispatch {
                     .post(form)
                     .parseResponseContent();
 
-            dispatch(appActions.setInfoMessage(`Created tag: ${storedTag.name}`));
+            dispatch(setInfoMessage(`Created tag: ${storedTag.name}`));
             dispatch(postTagSuccess(storedTag));
 
             // run callers callback function
@@ -74,7 +72,7 @@ export function updateTag(props: FormAndOptionalCallback) {
              *    after confirming success
              */
 
-            dispatch(appActions.setInfoMessage(`Updated tag: ${form.name}`));
+            dispatch(setInfoMessage(`Updated tag: ${form.name}`));
             dispatch(updateTagSuccess(updatedTag));
 
             if (callback) { callback(updatedTag) }
@@ -103,7 +101,7 @@ export function deleteTag(props: FormAndOptionalCallback) {
             const {form, callback} = props;
             await api.tag.delete(form);
 
-            dispatch(appActions.setInfoMessage(`Deleted tag: ${form.name}`));
+            dispatch(setInfoMessage(`Deleted tag: ${form.name}`));
             dispatch(deleteTagSuccess(props.name));
 
             if (callback) {
@@ -138,7 +136,7 @@ export function loadAllTags() {
     return function (dispatch: Dispatch) {
         const promise = GwClientApi.getTags();
         promise.then(response => {
-            dispatch(appActions.setInfoMessage("Loaded all tags successfully"));
+            dispatch(setInfoMessage("Loaded all tags successfully"));
             dispatch(loadTagsSuccess(response.data));
         }).catch(error => {
             if (apiHelpers.isNetworkError(error)) {

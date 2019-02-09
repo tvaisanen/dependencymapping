@@ -5,7 +5,7 @@ import {setEventHook, clearEventHook} from "../event-hook";
 
 import * as activeDetailActions from '../active-detail/active-detail.actions';
 import * as activeMappingActions from '../active-mapping/active-mapping.actions';
-import * as appActions from '../../actions/app.actions';
+import { editDetail, setInfoMessage } from '../../store/ui/ui.actions';
 import * as assetActions from '../asset/asset.actions';
 import * as detailFormActions from '../detail-form/detail-form.actions';
 import * as connectionActions from '../connection/connection.actions';
@@ -88,7 +88,7 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                             })
                     );
 
-                    dispatch(appActions.editDetail());
+                    dispatch(editDetail());
                     dispatch(detailFormActions.setFormEditTrue());
                 },
                 enabled: true
@@ -100,7 +100,7 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                     const assetToGroup = getAssetByName((ele.id(): string));
                     // set event hook to call
                     // callback on event
-                    dispatch(appActions.setInfoMessage("Select node to group under."));
+                    dispatch(setInfoMessage("Select node to group under."));
                     dispatch(setEventHook({
                         hook: "onNodeClick",
                         notification: "Select asset to group by",
@@ -112,7 +112,7 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
 
                             dispatch(assetActions.updateAsset({form: updatedAsset}));
                             dispatch(clearEventHook());
-                            dispatch(appActions.setInfoMessage("grouping should be done."));
+                            dispatch(setInfoMessage("grouping should be done."));
                         }
                     }))
                 },
@@ -124,7 +124,7 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                 select: function (ele) {
                     // set event hook to call
                     // callback on event
-                    dispatch(appActions.setInfoMessage("Select node to connect to."));
+                    dispatch(setInfoMessage("Select node to connect to."));
                     dispatch(setEventHook({
                         hook: "onNodeClick",
                         notification: "Select asset to connect to",
@@ -138,7 +138,7 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
 
                             dispatch(connectionActions.postConnection({form:newConnection}));
                             dispatch(clearEventHook())
-                            dispatch(appActions.setInfoMessage("connection should be made."));
+                            dispatch(setInfoMessage("connection should be made."));
 
                         }
                     }))
@@ -186,7 +186,7 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                             })
                     );
 
-                    dispatch(appActions.editDetail());
+                    dispatch(editDetail());
                     dispatch(detailFormActions.setFormEditTrue());
 
                 },

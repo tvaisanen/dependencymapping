@@ -2,7 +2,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-import * as appActions from '../../../actions/app.actions';
+import { editDetail } from '../../../store/ui/ui.actions';
 import {ActionLink} from "../resource-detail.styled";
 import * as detailFormActions from '../../../store/detail-form/detail-form.actions';
 
@@ -27,7 +27,7 @@ export default connect(
     }),
     (dispatch) => ({
         editDetail: () => {
-            dispatch(appActions.editDetail());
+            dispatch(editDetail());
             dispatch(detailFormActions.setFormEditTrue());
         }
     })

@@ -1,9 +1,9 @@
-import * as appActions from './../../actions/app.actions';
+import { editDetail } from './../../store/ui/ui.actions';
 import * as resourceHelpers from '../../common/resource-helpers';
 import * as activeDetailActions from '../../store/active-detail/active-detail.actions';
 import * as activeMappingActions from '../../store/active-mapping/active-mapping.actions';
 
-import { ASSET } from './../../constants/types';
+import {CONNECTION} from "../../constants";
 
 const mapStateToProps = (state, ownProps = {}) => {
 
@@ -22,7 +22,7 @@ const mapStateToProps = (state, ownProps = {}) => {
     };
 
     return {
-        selected: ASSET,
+        selected: CONNECTION,
         cy: state.graph,
         assets: sortedAssets || [],
         connections: state.connections,
@@ -36,7 +36,7 @@ const mapStateToProps = (state, ownProps = {}) => {
 
 
 const mapDispatchToProps = dispatch => ({
-    editDetail: () => dispatch(appActions.editDetail()),
+    editDetail: () => dispatch(editDetail()),
     setActiveDetail: (activeDetail) => {
         dispatch(activeDetailActions.setAsActiveDetail(activeDetail))
     },

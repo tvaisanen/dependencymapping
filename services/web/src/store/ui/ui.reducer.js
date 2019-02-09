@@ -1,6 +1,6 @@
-import initialState from '../store/initialState';
-import * as types from '../actions/actionTypes';
-import * as resourceType from '../constants/types';
+import initialState from '../initialState';
+import * as types from './ui.action-types';
+import * as resourceType from '../../constants/types';
 
 export default function ( state = initialState.app, action ){
     switch(action.type){

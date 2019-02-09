@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import { setBottomPanelView } from '../../actions/app.actions';
+import { setBottomPanelView } from '../../store/ui/ui.actions';
 import * as s from './bottom-panel.styled';
 import EditorButtons from "../detail-editor/components/EditorButtons";
                     //selectedView={props.selectedView}
