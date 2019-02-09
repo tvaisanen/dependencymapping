@@ -1,7 +1,7 @@
 const Mapping = require('../../models').Mapping;
 const hal = require('../../utils/hal.utils');
 
-function post(req, res) {
+function mappingPost(req, res) {
 
     const mapping = new Mapping(req.body);
     const query = {name: mapping.name};
@@ -28,4 +28,4 @@ function post(req, res) {
         });
 }
 
-module.exports = post;
+module.exports = mappingPost;

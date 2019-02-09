@@ -1,6 +1,6 @@
 const Connection = require('../../models').Connection;
 
-function remove(req, res) {
+function connectionDelete(req, res) {
     Connection.remove(req.query)
         .then(response => {
             console.log(response);
@@ -12,4 +12,4 @@ function remove(req, res) {
         })
 }
 
-module.exports = remove;
+module.exports = connectionDelete;

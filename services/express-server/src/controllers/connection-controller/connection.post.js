@@ -2,7 +2,7 @@ const Connection = require('../../models').Connection;
 const hal = require('../../utils/hal.utils');
 
 
-function post(req, res) {
+function connectionPost(req, res) {
 
     const {source, target} = req.body;
 
@@ -32,4 +32,4 @@ function post(req, res) {
 };
 
 
-module.exports = post;
+module.exports = connectionPost;

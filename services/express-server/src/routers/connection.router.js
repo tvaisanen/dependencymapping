@@ -1,11 +1,11 @@
 const express = require('express');
 const connectionRouter = express.Router();
-const ConnectionController = require('../controllers/').Connection;
+const { ConnectionCtrl } = require('../controllers/');
 
-connectionRouter.get('/', (req,res) => ConnectionController.get(req,res));
-connectionRouter.get('/:id', (req,res) => ConnectionController.get(req,res));
-connectionRouter.put('(/:id)?', (req, res) => ConnectionController.put(req,res));
-connectionRouter.post('(/:id)?', (req, res) => ConnectionController.post(req,res));
-connectionRouter.delete('/:id', (req, res) => ConnectionController.deleteById(req,res));
+connectionRouter.get('/',       (req,res) => ConnectionCtrl.get(req,res));
+connectionRouter.post('/',   (req, res) => ConnectionCtrl.post(req,res));
+connectionRouter.get('/:id',    (req,res) => ConnectionCtrl.get(req,res));
+connectionRouter.put('/:id',    (req, res) => ConnectionCtrl.put(req,res));
+connectionRouter.delete('/:id',  (req, res) => ConnectionCtrl.deleteById(req,res));
 
 module.exports = connectionRouter;

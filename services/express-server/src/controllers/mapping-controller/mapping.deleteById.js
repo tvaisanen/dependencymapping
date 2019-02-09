@@ -1,6 +1,6 @@
 const Mapping = require('../../models').Mapping;
 
-function deleteById (req, res) {
+function mappingDeleteById (req, res) {
     Mapping.remove({name: req.params.id})
         .then(msg => {
             if (msg.ok === 1) {
@@ -12,4 +12,4 @@ function deleteById (req, res) {
         });
 };
 
-module.exports = deleteById;
+module.exports = mappingDeleteById;

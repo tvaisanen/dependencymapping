@@ -1,7 +1,7 @@
 const Tag = require('../../models').Tag;
 const hal = require('../../utils/hal.utils');
 
-function put(req, res) {
+function tagPut(req, res) {
 
     const query = {name: req.params.id};
 
@@ -14,4 +14,4 @@ function put(req, res) {
         .catch(err => res.status(400).send(err));
 }
 
-module.exports = put;
+module.exports = tagPut;

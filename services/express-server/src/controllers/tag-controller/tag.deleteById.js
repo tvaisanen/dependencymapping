@@ -1,6 +1,6 @@
 const Tag = require('../../models').Tag;
 
-function remove(req,res) {
+function tagDeleteById(req,res) {
     const query = {name: req.params.id};
     Tag.remove(query)
         .then(msg => {
@@ -10,4 +10,4 @@ function remove(req,res) {
         .catch(err => res.status(400).json(err))
 }
 
-module.exports = remove;
+module.exports = tagDeleteById;

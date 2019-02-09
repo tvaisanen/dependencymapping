@@ -1,7 +1,7 @@
 const Tag = require('../../models').Tag;
 const hal = require('../../utils/hal.utils');
 
-function getById(req, res) {
+function tagGetByID(req, res) {
     Tag.findOne({_id: req.params.id})
         .then(tag => {
 
@@ -16,4 +16,4 @@ function getById(req, res) {
         }).catch(err => res.status(400).json(err));
 }
 
-module.exports = getById;
+module.exports = tagGetByID;

@@ -6,7 +6,6 @@ const initDatabaseConnection = require('../src/database');
 const {resetModels, loadDataToDB, clearDB} = require('../src/utils/testHandlers');
 //const app = require('../src/index');
 
-const assetEndpoint = require('../src/controllers/asset.controller');
 
 chai.use(chaiHttp);
 
@@ -33,7 +32,6 @@ describe('Asset API endpoint ', function () {
 
 
     beforeEach(async function () {
-        console.log("reset?")
         //await resetModels();
     });
 

@@ -1,7 +1,7 @@
 const Mapping = require('../../models').Mapping;
 const hal = require('../../utils/hal.utils');
 
-function put (req, res) {
+function mappingPut (req, res) {
     const query = {name: req.params.id};
     console.log(query);
     const updatedMapping = req.body;
@@ -19,4 +19,4 @@ function put (req, res) {
         .catch(err => res.status(400).send(err));
 }
 
-module.exports = put;
+module.exports = mappingPut;

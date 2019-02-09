@@ -1,7 +1,7 @@
 const Connection = require('../../models').Connection;
 const hal = require('../../utils/hal.utils');
 
-function put(req, res) {
+function connectionPut(req, res) {
     console.log("update");
     console.log(req.body)
     const query = {
@@ -33,4 +33,4 @@ function put(req, res) {
         });
 }
 
-module.exports = put;
+module.exports = connectionPut;

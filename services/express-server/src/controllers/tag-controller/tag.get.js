@@ -1,7 +1,7 @@
 const Tag = require('../../models').Tag;
 const hal = require('../../utils/hal.utils');
 
-function get(req,res) {
+function tagGet(req,res) {
     Tag.find()
         .then(tags => {
             const serializedTags = tags.map(t => hal.serializeTag(req.headers.host, t));
@@ -10,4 +10,4 @@ function get(req,res) {
         .catch(err => res.status(400).json(err));
 }
 
-module.exports = get;
+module.exports = tagGet;

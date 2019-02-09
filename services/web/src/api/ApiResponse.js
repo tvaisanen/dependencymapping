@@ -25,7 +25,11 @@ class ApiResponse {
                 // o => config.parseResponseData(o))
                 // if detail -> if response is an object
                 console.debug(serverResponse)
-                return this.config.parseResponseData(serverResponse.data);
+                if (serverResponse.data !== {}){
+                    return this.config.parseResponseData(serverResponse.data);
+                } else {
+                    return  {}
+                }
             }
         } catch (err) {
             console.error(err);

@@ -2,7 +2,7 @@ const Connection = require('../../models').Connection;
 const hal = require('../../utils/hal.utils');
 
 
-function deleteById(req, res) {
+function connectionDeleteById(req, res) {
     Connection.remove({_id:req.params.id})
         .then(ok => {
             res.status(204).json();
@@ -12,4 +12,4 @@ function deleteById(req, res) {
         })
 }
 
-module.exports = deleteById;
+module.exports = connectionDeleteById;

@@ -2,7 +2,7 @@ const Tag = require('../../models').Tag;
 const hal = require('../../utils/hal.utils');
 
 
-function post(req, res) {
+function tagPost(req, res) {
 
     const tag = new Tag({...req.body});
 
@@ -30,4 +30,4 @@ function post(req, res) {
         });
 }
 
-module.exports = post;
+module.exports = tagPost;

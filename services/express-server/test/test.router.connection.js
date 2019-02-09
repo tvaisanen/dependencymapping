@@ -1,12 +1,8 @@
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const assetRouter = require('../src/routers/asset.router');
-
 const initDatabaseConnection = require('../src/database');
-const {resetModels, loadDataToDB, clearDB} = require('../src/utils/testHandlers');
-//const app = require('../src/index');
+const {loadDataToDB, clearDB} = require('../src/utils/testHandlers');
 
-const assetEndpoint = require('../src/controllers/asset.controller');
 
 chai.use(chaiHttp);
 
@@ -65,9 +61,9 @@ describe('Connection API endpoint ', function () {
                 target: "targetName"
             })
             .end((err, res) => {
+                expect(res).to.have.status(201);
                 expect(res.body.source).to.equal("sourceName");
                 expect(res.body.target).to.equal("targetName");
-                expect(res).to.have.status(201);
                 done();
             });
     });

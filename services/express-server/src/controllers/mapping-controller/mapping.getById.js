@@ -1,6 +1,8 @@
 const Mapping = require('../../models').Mapping;
+const hal = require('../../utils/hal.utils');
 
-function getById(req, res) {
+function mappingGetById(req, res) {
+
     Mapping.findOne({name: req.params.id})
         .then(mapping => {
             if (!mapping) {
@@ -12,4 +14,4 @@ function getById(req, res) {
         }).catch(err => res.status(400).json(err));
 }
 
-module.exports = getById;
+module.exports = mappingGetById;

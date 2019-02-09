@@ -1,7 +1,7 @@
 const Connection = require('../../models').Connection;
 const hal = require('../../utils/hal.utils');
 
-function get(req, res) {
+function connectionGet(req, res) {
     if (req.query.source || req.query.target) {
         console.log("connection");
         console.log(req.query);
@@ -26,4 +26,4 @@ function get(req, res) {
     }
 }
 
-module.exports = get;
+module.exports = connectionGet;
