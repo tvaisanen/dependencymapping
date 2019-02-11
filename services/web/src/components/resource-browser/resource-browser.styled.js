@@ -9,7 +9,6 @@ export const BrowserGrid = styled.div`
   height: 100%;
   width: 100%;
   border-radius: 3px;
-  border: ${p=>p.theme.cardBorder}; 
   > div {
     max-height: 100%;
   }
@@ -34,8 +33,7 @@ export const BrowserContainer = styled.div`
     min-width: 16em;
     margin-right: 12px;
     border-radius: 3px;
-    border-left: 1px solid grey;
-    /*background-color: ${p=>p.theme.cardBackgroundColor};*/
+    border-right: 1px solid rgba(25,25,25,0.1);
 `;
 
 
@@ -117,5 +115,4 @@ export const ListContainer = styled.div`
     align-items: stretch;
     width: inherit; 
     overflow-y: auto;
-   background-color: rgba(60,63,65,0.35) 
 `;

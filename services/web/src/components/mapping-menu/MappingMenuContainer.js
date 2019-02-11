@@ -15,7 +15,7 @@ import * as resourceHelpers from '../../common/resource-helpers';
 // todo: refactor
 
 const MappingMenuContainer = props => (
-    <React.Fragment>
+    <MappingLists>
         <MenuColumn id="sidepanel">
             <Menu
                 title="Mappings "
@@ -55,7 +55,7 @@ const MappingMenuContainer = props => (
                 }
             />
         </MenuColumn>
-    </React.Fragment>
+    </MappingLists>
 );
 
 export default connect(
@@ -74,11 +74,16 @@ MappingMenuContainer.propTypes = {
     onActiveAssetClick: PropTypes.func.isRequired,
 };
 
+export const MappingLists = styled.div`
+  grid-area: lists;
+  display: flex;
+`;
+
 export const MenuColumn = styled.div`
     background: ${p=>p.theme.colorLightBackground};
     display: flex;
     flex-direction: column;
-    width: 320px;
+    width: 200px;
     min-height: inherit;
     min-width: 100px;
     max-width: ${props=>props.max};

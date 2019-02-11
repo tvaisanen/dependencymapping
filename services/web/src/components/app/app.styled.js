@@ -1,37 +1,32 @@
 import styled from 'styled-components';
 
-export const AppContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    background: ${p=>p.theme.colorLightBackground};
-    flex-grow: 1;
-    min-height: 600px;
-    min-width: 800px;
-    height: 100vh;
-    overflow: hidden;
+export const AppGrid = styled.div`
+  display: grid;
+  grid-template:
+  "top-bar"        min-content
+  "middle-section" 60vh 
+  "bottom-panel"   1fr 
+  / 1fr;
+  min-height: 600px;
+  min-width: 800px;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100vw;
+  overflow: hidden;
 `;
 
-export const TopContent = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: ${props=>props.align};
-    height: 60vh;
-    min-height: 360px;
+export const MiddleSection = styled.div`
+  display: grid;
+  grid-template:
+  "lists graph" 1fr
+  / 1fr 3fr;
 `;
 
-export const MappingContent = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: ${props => props.justify};
-    align-items: ${props => props.align};
-    height: ${props => props.height ? props.height : 'inherit'};
-    overflow: hidden;
-`;
 
 export const GraphCanvasContainer = styled.div` 
     position: relative;
-    width: inherit;
-    height: inherit;
+    width: 100%;
+    height: 100%;
     min-height: 360px;
     min-width: 400px;
     background: ${p=>p.theme.colorGraphBackground}; 
@@ -42,9 +37,9 @@ export const GraphCanvasContainer = styled.div`
 `;
 
 export const GraphCanvasInflater = styled.div`
-    width: 100%;
-    height: 100%;
-    min-height: 360px;
+    grid-area: graph;
+    width: auto;
+    height: auto;
     background-color: transparent;
     overflow: hidden;
 `;

@@ -53,9 +53,7 @@ const BottomPanel = styled.div`
     width: 100vw;
     height: 100%;
     max-height: 40vh;
-  
     background-color: ${p => p.theme.colorDarkBackground};
-    transform: ${props => props.collapsed ? 'scaleY(0)' : 'scaleY(1)'};
     color: rgba(255,255,255,0.8);
 `;
 
@@ -66,7 +64,7 @@ const PanelContent = styled.div`
     color: #fafafa;
     background: transparent;
     height: inherit;
-    max-height: 33vh;
-    padding: 12px;
+    overflow: hidden;
+    margin: 0 12px 12px 12px;
 `;
 

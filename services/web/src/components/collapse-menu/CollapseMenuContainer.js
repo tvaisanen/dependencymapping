@@ -29,22 +29,21 @@ export default connect(
 
 export const CollapseMenu = styled.div`
     position: fixed;
+    z-index: 1;
     display: flex;
     flex-direction: column;
     opacity: ${props => props.visible ? 1 : 0};
     transform: ${props => props.visible ? 'scaleY(1)' : 'scaleY(0)'};
     transform-origin: top center;
     padding: 0 24px;
+    top: 36px;
     right: 28px;
     background: ${colorDark};
     width: 80px;
-    min-height: inherit;
-    height: auto;
     overflow: hidden;
-    overflow-x: hidden;
     transition: all .2s ease-in-out;
-
-  border-radius: 0 0 3px 3px;
+    border-radius: 0 0 3px 3px;
+    font-size: small;
 `;
 export const MenuBtn = styled.div`
   padding: 4px 0;
@@ -53,6 +52,7 @@ export const MenuBtn = styled.div`
   color: rgba(255,255,255,0.8);
   :hover {
     font-weight: bold;
+    background-color: #2b81af; 
   }
   cursor: pointer;
   

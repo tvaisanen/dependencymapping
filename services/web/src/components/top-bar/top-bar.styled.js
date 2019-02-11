@@ -27,10 +27,8 @@ export const BarBlock = styled.div`
     `;
 
 export const TopBar = styled.div`
-    background: ${p => p.theme.colorDarkBackground};
+    grid-area: top-bar;
     display: flex;
-    flex-direction: row;
-    border-bottom: 1px solid grey; 
     color: #FAFAFA;
     font-size: larger;
     font-weight: bold;

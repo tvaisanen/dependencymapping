@@ -12,10 +12,7 @@ export const DetailGrid = styled.div`
   height: 100%;
   width: inherit;
   border-radius: 3px;
-  border: 1px solid grey;
-  padding: 4px;
   padding-top: 0;
-  background-color: rgba(22,22,22, 0.5);
 `;
 
 export const DetailHeaderLinks = styled.div`
@@ -88,7 +85,6 @@ export const ListWrapper = styled.div`
     flex-shrink: 1;
     //border: 1px solid grey;
     overflow-y: auto;
-   background-color: rgba(60,63,65,0.35) 
 `;
 
 export const List = styled.div`

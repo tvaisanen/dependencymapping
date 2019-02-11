@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import topBarController from './top-bar.controller';
 import * as sc from './top-bar.styled';
-
+import CollapseMenuContainer from '../collapse-menu/CollapseMenuContainer';
 /**
  * Generate dropdown selection for
  * selecting the layout
@@ -36,6 +36,7 @@ const TopBarContainer = (props) => (
             />
             <MenuToggleButton onClick={props.toggleCollapseMenu}/>
         </sc.BarBlock>
+        <CollapseMenuContainer/>
     </sc.TopBar>
 );
 

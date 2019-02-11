@@ -6,6 +6,7 @@ body {
   min-width: 800px;
   min-height: 600px;
   font-family: sans-serif;
+  background-color: rgb(45, 45, 57);
 }
 
 div::-webkit-scrollbar {

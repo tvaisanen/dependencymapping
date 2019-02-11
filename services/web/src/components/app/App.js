@@ -6,11 +6,9 @@ import BottomPanelContainer from '../bottom-panel/BottomPanelContainer';
 import MappingMenuContainer from '../mapping-menu/LazyMappingMenu';
 import CollapseMenuContainer from '../collapse-menu/CollapseMenuContainer';
 
-
 import {
-    AppContainer,
-    TopContent,
-    MappingContent,
+    AppGrid,
+    MiddleSection,
     GraphCanvasInflater,
     GraphCanvasContainer
 } from './app.styled';
@@ -18,26 +16,24 @@ import {
 import ActionNotifier from '../action-notifier/ActionNotifier';
 
 
-
 const App = () => (
-    <AppContainer id="app-container">
-        <TopContent id="container-top">
-            <TopBarContainer id="top-bar-container"/>
-            <MappingContent id="mapping-content-container">
-                <MappingMenuContainer id="mapping-menu-container"/>
-                <GraphCanvasInflater id="graph-canvas-wrapper">
-                    <ActionNotifier id="action-notifier"/>
-                    <GraphCanvasContainer id="cy"/>
-                </GraphCanvasInflater>
-                <CollapseMenuContainer/>
-            </MappingContent>
-        </TopContent>
+    <AppGrid id="app-container">
+        <TopBarContainer id="top-bar-container"/>
+        <MappingListWithGraph/>
         <BottomPanelContainer id="bottom-panel-container"/>
-    </AppContainer>
+    </AppGrid>
 );
 
 export default App;
 
 
-
+const MappingListWithGraph = () => (
+    <MiddleSection>
+        <MappingMenuContainer id="mapping-menu-container"/>
+        <GraphCanvasInflater id="graph-canvas-wrapper">
+            <ActionNotifier id="action-notifier"/>
+            <GraphCanvasContainer id="cy"/>
+        </GraphCanvasInflater>
+    </MiddleSection>
+)
 
