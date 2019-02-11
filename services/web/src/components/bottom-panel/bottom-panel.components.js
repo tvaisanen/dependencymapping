@@ -14,7 +14,7 @@ const PanelNavTabs = ({selectedView, tabItems, setView}) => (
                     <s.PanelNavTab id="panel-nav-tab"
                         key={i}
                         selected={selectedView === tab.view}
-                        onClick={() => setView(tab.view)}
+                        onClick={() => selectedView === tab.view ? null : setView(tab.view)}
                         largePadding
                     >{tab.label}
                     </s.PanelNavTab>

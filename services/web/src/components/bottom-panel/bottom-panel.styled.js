@@ -30,7 +30,11 @@ export const PanelNavTab = styled.span`
     border: 1px solid silver;
     border-bottom: none;
     margin: 2px;
-    cursor: pointer;
+    cursor: ${
+        p => p.selected ? 
+            "default"
+            : "pointer"
+    };
     
     transition: all .3s ease-in-out;
 `;

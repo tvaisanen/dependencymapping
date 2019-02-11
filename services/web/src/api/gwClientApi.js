@@ -19,7 +19,7 @@ import ApiResponse from './ApiResponse';
 
 
 console.group("Api client config");
-console.info(`api host: ${API_HOST}`);
+console.info(`URI: ${API_HOST}`);
 console.groupEnd();
 
 
