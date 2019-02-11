@@ -92,15 +92,15 @@ const DetailEditorGrid = (props: DetailEditorProps) => {
 
     // null if no selection
     const Selection = formComponentsByType[props.formType].selectionComponent;
-
+    console.log(props)
     return (
         <EditorGrid>
             <FormButtons/>
                 <Suspense fallback={<div>Loading...</div>}>
-                <ResourceDetails>
+                <ResourceDetails edit={props.edit}>
                     <Form/>
                 </ResourceDetails>
-                <ListSelection visible={Selection()}>
+                <ListSelection  visible={Selection()}>
                     <Selection/>
                 </ListSelection>
                 </Suspense>
@@ -109,6 +109,7 @@ const DetailEditorGrid = (props: DetailEditorProps) => {
 
 export default connect(
     (state, props) => ({
+        edit: state.detailForm.edit,
         formType: state.detailForm.formType,
         error: state.detailForm.errorMsg
     }),

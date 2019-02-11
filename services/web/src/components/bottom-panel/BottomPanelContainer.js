@@ -47,23 +47,24 @@ export default connect(
 
 
 const BottomPanel = styled.div`
+    display:grid;
+    grid-area: bottom-panel;
+    grid-template:
+    "panel-nav" min-content
+    "panel-content" 1fr
+    /1fr;
     max-width: 100vw;
     min-width: 800px;
     flex-grow: 1;
     width: 100vw;
     height: 100%;
     max-height: 40vh;
-    background-color: ${p => p.theme.colorDarkBackground};
-    color: rgba(255,255,255,0.8);
 `;
 
 const PanelContent = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: grid;
+    grid-area: panel-content;
     color: #fafafa;
-    background: transparent;
-    height: inherit;
     overflow: hidden;
     margin: 0 12px 12px 12px;
 `;

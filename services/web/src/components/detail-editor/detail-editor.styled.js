@@ -3,35 +3,28 @@ import styled from 'styled-components';
 
 export const EditorGrid = styled.div`
   display: grid;
-  grid-template:
+  grid-template: 
   "resource-selection resource-details list-selection" 1fr
   / 16em 3fr 2fr;
   grid-gap: 4px;
   height: 100%;
   width: 100%;
   border-radius: 3px;
-  border: ${p=>p.theme.cardBorder}; 
-  > div {
-    max-height: 100%;
-  }
+ 
 `;
 
 export const ResourceSelection = styled.div`
-    width: 16em;
     grid-area: resource-selection;
     display: flex;
     flex-direction: column;
     height: inherit;
-    /*background-color: ${p=>p.theme.cardBackgroundColor}; */
     border-radius: 3px;
-    border-right: ${p=>p.theme.cardBorder}; 
-    background-color: rgba(255,255,255,0.1);
 `;
 
 
 export const ResourceDetails = styled.div`
     grid-area: resource-details;
-    margin: 4px 0;
+    ${p => p.edit ? "grid-column: 1 / 3" : null}; 
     max-height: 100%;
     display: flex;
     justify-content: space-between;
@@ -42,10 +35,10 @@ export const ListSelection = styled.div`
     grid-area: list-selection;
     display: flex;
     flex-direction: column;
-    transition: all 2s ease-in-out;
-    border-left: ${p=>p.theme.cardBorder}; 
     width: 100%;
     height: 100%;
+    border-radius: 3px; 
+    border: ${p => p.theme.insetBorder};
 `;
 
 export const Select = styled.select`
