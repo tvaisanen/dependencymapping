@@ -68,22 +68,17 @@ export const ListBlock = styled.div`
     min-width: 200px;
     flex-grow: 1;
     border-radius: 3px;
-    border: 1px solid grey;
-    height: inherit;
-    max-height: inherit;
+    border: ${p => p.theme.insetBorder}; 
     overflow: hidden;
 `;
 
 export const ListWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    width: auto;
     min-width: 100px;
     min-height: 20px;
     flex-grow: 1;
-    flex-basis: 50%;
     flex-shrink: 1;
-    //border: 1px solid grey;
     overflow-y: auto;
 `;
 
