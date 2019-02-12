@@ -15,10 +15,10 @@
   },
   "tags" : [ {
     "name" : "Asset",
-    "description" : "assets",
+    "description" : "Asset resource paths. [source](https://github.com/tvaisanen/dependencymapping/blob/master/services/express-server/src/routers/asset.router.js)\n",
     "externalDocs" : {
-      "description" : "todo",
-      "url" : "http://docs.localhost/assets"
+      "description" : "no external docs",
+      "url" : ""
     }
   }, {
     "name" : "Connection",
@@ -34,24 +34,30 @@
   "paths" : {
     "/asset" : {
       "get" : {
+        "tags" : [ "Asset" ],
         "summary" : "Asset detail list.",
         "responses" : {
           "200" : {
-            "description" : "Asset list"
+            "description" : "Asset list",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ArrayOfAssets"
+                }
+              }
+            }
           }
         }
       },
       "post" : {
-        "tags" : [ "asset" ],
-        "summary" : "Add a new asset to the database",
+        "tags" : [ "Asset" ],
+        "summary" : "Create a new asset",
         "operationId" : "addAsset",
         "requestBody" : {
-          "description" : "Asset object that needs to be added to the database",
-          "required" : true,
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/Asset"
+                "$ref" : "#/components/schemas/AssetJSON"
               }
             }
           }
@@ -62,7 +68,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Asset"
+                  "$ref" : "#/components/schemas/AssetHALJSON"
                 }
               }
             }
@@ -78,9 +84,9 @@
     },
     "/asset/{id}" : {
       "get" : {
-        "tags" : [ "asset" ],
+        "tags" : [ "Asset" ],
         "summary" : "Find asset by ID",
-        "description" : "Returns a single asset",
+        "description" : "Returns an asset detail",
         "operationId" : "getAssetById",
         "parameters" : [ {
           "name" : "id",
@@ -93,11 +99,11 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "successful operation",
+            "description" : "Successfull operation",
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Asset"
+                  "$ref" : "#/components/schemas/AssetHALJSON"
                 }
               }
             }
@@ -111,7 +117,7 @@
         }
       },
       "put" : {
-        "tags" : [ "asset" ],
+        "tags" : [ "Asset" ],
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
@@ -123,6 +129,16 @@
         "summary" : "Update an existing asset",
         "operationId" : "updateAsset",
         "responses" : {
+          "200" : {
+            "description" : "Asset updated succesfully",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AssetHALJSON"
+                }
+              }
+            }
+          },
           "400" : {
             "description" : "Invalid ID supplied"
           },
@@ -137,7 +153,7 @@
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/Asset"
+                "$ref" : "#/components/schemas/AssetJSON"
               }
             }
           },
@@ -146,9 +162,9 @@
         }
       },
       "delete" : {
-        "tags" : [ "asset" ],
-        "summary" : "Deletes a pet",
-        "operationId" : "deletePet",
+        "tags" : [ "Asset" ],
+        "summary" : "Delete asset by ID",
+        "operationId" : "deleteAsset",
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
@@ -159,31 +175,424 @@
           }
         } ],
         "responses" : {
+          "204" : {
+            "description" : "Asset deleted successfully"
+          },
           "400" : {
             "description" : "Invalid ID supplied"
           },
           "404" : {
-            "description" : "Asset not found"
+            "description" : "Resource not found"
+          },
+          "500" : {
+            "description" : "Internal server error"
           }
         }
       }
     },
     "/connection" : {
-      "get" : null,
-      "post" : null
+      "get" : {
+        "tags" : [ "Connection" ],
+        "description" : "Get collection of connections. Filtering is supported via query params.",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "source",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Source asset name"
+        }, {
+          "in" : "query",
+          "name" : "target",
+          "schema" : {
+            "type" : "string"
+          },
+          "description" : "Source asset name"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Get list of connections",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ArrayOfConnections"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Connection" ],
+        "description" : "Create new connection",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ConnectionPayload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Connection created successfully",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ArrayOfConnections"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Connection already exists"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
     },
     "/connection/{id}" : {
-      "delete" : {
+      "get" : {
+        "tags" : [ "Connection" ],
         "parameters" : [ {
           "name" : "id",
-          "in" : "path"
+          "in" : "path",
+          "description" : "ID of asset to return",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Successfull operation"
+          },
+          "400" : {
+            "description" : "Error"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Connection" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID of asset to return",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ConnectionPayload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Connection updated successfully",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ConnectionHALJSON"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Error"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Connection" ],
+        "description" : "Get connection by ID",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID of asset to delete",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
         } ],
         "responses" : {
           "204" : {
-            "description" : "Connection"
+            "description" : "Successfull operation"
           },
           "400" : {
-            "description" : "Error deleting"
+            "description" : "Error"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/mapping" : {
+      "get" : {
+        "tags" : [ "Mapping" ],
+        "operationId" : "getMappings",
+        "responses" : {
+          "200" : {
+            "description" : "Return a list of mappings",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ArrayOfMappings"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Mapping" ],
+        "operationId" : "postMapping",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MappingPayload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Tag created successfully",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MappingHALJSON"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Validation exception"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/mapping/{id}" : {
+      "get" : {
+        "tags" : [ "Mapping" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID of the Mapping to return",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "operationId" : "getMapping",
+        "responses" : {
+          "200" : {
+            "description" : "Get mapping detail"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Mapping" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID of mapping to update",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "operationId" : "putMapping",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MappingPayload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Successfull operation",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MappingHALJSON"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Mapping" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID of the mapping to delete",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "operationId" : "deleteMapping",
+        "responses" : {
+          "204" : {
+            "description" : "Successful operation"
+          },
+          "404" : {
+            "description" : "Resource not found"
+          }
+        }
+      }
+    },
+    "/tag" : {
+      "get" : {
+        "tags" : [ "Tag" ],
+        "operationId" : "getTags",
+        "responses" : {
+          "200" : {
+            "description" : "Successfull operation",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ArrayOfTags"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Tag" ],
+        "operationId" : "postTag",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TagPayload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Successfull operation",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TagHALJSON"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Validation exception"
+          },
+          "500" : {
+            "description" : "Internal server error"
+          }
+        }
+      }
+    },
+    "/tag/{id}" : {
+      "get" : {
+        "tags" : [ "Tag" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID of asset to return",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "operationId" : "getTag",
+        "responses" : {
+          "200" : {
+            "description" : "Successfull operation",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TagHALJSON"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Tag" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID of asset to return",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "operationId" : "putTag",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TagPayload"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Successfull operation",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TagHALJSON"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "Tag" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID of asset to return",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "operationId" : "deleteTag",
+        "responses" : {
+          "204" : {
+            "description" : "Successfull operation"
+          },
+          "404" : {
+            "description" : "Resource not found"
           }
         }
       }
@@ -199,22 +608,6 @@
     "url" : "http://virtserver.swaggerhub.com/tvaisanen_dev/dependency-maps/1.0.0"
   } ],
   "components" : {
-    "requestBodies" : {
-      "AssetArray" : {
-        "content" : {
-          "application/json" : {
-            "schema" : {
-              "type" : "array",
-              "items" : {
-                "$ref" : "#/components/schemas/Asset"
-              }
-            }
-          }
-        },
-        "description" : "List of asset objects",
-        "required" : true
-      }
-    },
     "securitySchemes" : {
       "petstore_auth" : {
         "type" : "oauth2",
@@ -235,6 +628,14 @@
       }
     },
     "schemas" : {
+      "Error" : {
+        "type" : "object",
+        "properties" : {
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
       "_embedded_object" : {
         "type" : "object",
         "properties" : {
@@ -258,7 +659,31 @@
           }
         }
       },
-      "Asset" : {
+      "AssetJSON" : {
+        "type" : "object",
+        "description" : "Asset payload",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "connected_to" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "tags" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "AssetHALJSON" : {
         "type" : "object",
         "properties" : {
           "_id" : {
@@ -290,9 +715,171 @@
           "_links" : {
             "$ref" : "#/components/schemas/_links"
           }
-        },
-        "xml" : {
-          "name" : "Order"
+        }
+      },
+      "ArrayOfAssets" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/AssetHALJSON"
+        }
+      },
+      "ConnectionPayload" : {
+        "type" : "object",
+        "properties" : {
+          "source" : {
+            "type" : "string"
+          },
+          "target" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "tags" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "ConnectionHALJSON" : {
+        "type" : "object",
+        "properties" : {
+          "_id" : {
+            "type" : "string"
+          },
+          "source" : {
+            "type" : "string"
+          },
+          "target" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "_embedded" : {
+            "type" : "object",
+            "properties" : {
+              "source" : {
+                "type" : "object"
+              },
+              "tags" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "object"
+                }
+              }
+            }
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/_links"
+          }
+        }
+      },
+      "ArrayOfConnections" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/ConnectionHALJSON"
+        }
+      },
+      "MappingPayload" : {
+        "type" : "object",
+        "description" : "Mapping JSON payload",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "assets" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "tags" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "MappingHALJSON" : {
+        "type" : "object",
+        "properties" : {
+          "_id" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "_embedded" : {
+            "type" : "object",
+            "properties" : {
+              "assets" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/_embedded_object"
+                }
+              },
+              "tags" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "object"
+                }
+              }
+            }
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/_links"
+          }
+        }
+      },
+      "ArrayOfMappings" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/MappingHALJSON"
+        }
+      },
+      "TagPayload" : {
+        "type" : "object",
+        "description" : "Tag JSON payload",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          }
+        }
+      },
+      "TagHALJSON" : {
+        "type" : "object",
+        "properties" : {
+          "_id" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/_links"
+          }
+        }
+      },
+      "ArrayOfTags" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/TagHALJSON"
         }
       },
       "ApiResponse" : {
