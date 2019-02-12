@@ -19,7 +19,7 @@ export const MiddleSection = styled.div`
   display: grid;
   grid-template:
   "lists graph" 1fr
-  / 1fr 3fr;
+  / min-content 1fr;
 `;
 
 
