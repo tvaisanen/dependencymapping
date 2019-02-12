@@ -147,7 +147,7 @@ export function deleteConnection(props: FormAndOptionalCallback) {
             const connection = form;
             const {assets} = getState();
 
-            await api.connection.delete(form);
+            await api.connection.deleteById(form);
 
             // the source asset needs to know about the new connection
             const assetToUpdate = assets.filter(

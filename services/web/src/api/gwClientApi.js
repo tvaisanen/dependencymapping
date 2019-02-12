@@ -6,6 +6,7 @@ import ResponseParserConfig from './response-parser.config';
 import {
     tagDetailUrl,
     connectionDetailUrl,
+    connectionDetailBySourceAndTarget,
     mappingsDetailUrl,
     resourceDetailUrl,
     API_HOST,
@@ -69,11 +70,12 @@ class Client {
 
     /** connection api calls */
     static connection = {
-        getAll: args => Client.apiCall(Client.getConnections, connectionParser, args),
+        getAll:     args => Client.apiCall(Client.getConnections, connectionParser, args),
         //get:    args => Client.apiCall(Client.getAsset, new ParserConfig(ASSET), args),
-        put:    args => Client.apiCall(Client.putConnection, connectionParser, args),
-        post:   args => Client.apiCall(Client.postConnection, connectionParser, args),
-        delete: args => Client.apiCall(Client.deleteConnection, connectionParser, args),
+        put:        args => Client.apiCall(Client.putConnection, connectionParser, args),
+        post:       args => Client.apiCall(Client.postConnection, connectionParser, args),
+        delete:     args => Client.apiCall(Client.deleteConnection, connectionParser, args),
+        deleteById: args => Client.apiCall(Client.deleteConnectionById, connectionParser, args),
     };
 
     /** mapping api calls */
@@ -126,14 +128,20 @@ class Client {
     static putConnection(connection: Connection): Promise<any> {
         console.info(connection)
         const {source, target} = connection;
-        const uri = connectionDetailUrl({source, target});
+        const uri = connectionDetailBySourceAndTarget({source, target});
         console.info(uri)
         return axios.put(uri, connection);
     }
 
     static deleteConnection(connection: Connection): Promise<any> {
         const { source, target } = connection;
-        const uri = connectionDetailUrl({source, target});
+        const uri = connectionDetailBySourceAndTarget({source, target});
+        return axios.delete(uri);
+    }
+
+
+    static deleteConnectionById(connection: Connection): Promise<any> {
+        const uri = connectionDetailUrl(connection);
         return axios.delete(uri);
     }
 

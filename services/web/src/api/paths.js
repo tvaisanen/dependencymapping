@@ -13,6 +13,10 @@ export function tagDetailUrl({name}) {
 }
 
 export function connectionDetailUrl(connection) {
+    return `${CONNECTIONS_URL}/${connection._id}`
+}
+
+export function connectionDetailBySourceAndTarget(connection) {
     return `${CONNECTIONS_URL}?source=${encodeURI(connection.source)}&target=${encodeURI(connection.target)}`;
 }
 

@@ -103,7 +103,8 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                     dispatch(setInfoMessage("Select node to group under."));
                     dispatch(setEventHook({
                         hook: "onNodeClick",
-                        notification: "Select asset to group by.\n todo: add button here to remove from group.",
+                        notification: `Select asset to group ${ele.id()} under or clear grouping.`,
+                        optionalAction: { callback: () => alert('todo remove from group'), name: "clear"},
                         callback: (assetName: string) => {
                             const updatedAsset = {
                                 ...assetToGroup,
@@ -124,10 +125,10 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                 select: function (ele) {
                     // set event hook to call
                     // callback on event
-                    dispatch(setInfoMessage("Select node to connect to."));
+                    const message = `Select an asset node to connect ${ele.id()} with.`;
                     dispatch(setEventHook({
                         hook: "onNodeClick",
-                        notification: "Select asset to connect to",
+                        notification: message,
                         callback: (assetName: string) => {
                             //alert(`${assetToGroup.name} to ${JSON.stringify(assetName)}`);
                             const newConnection = {
