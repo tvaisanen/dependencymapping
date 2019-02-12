@@ -103,7 +103,7 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                     dispatch(setInfoMessage("Select node to group under."));
                     dispatch(setEventHook({
                         hook: "onNodeClick",
-                        notification: "Select asset to group by",
+                        notification: "Select asset to group by.\n todo: add button here to remove from group.",
                         callback: (assetName: string) => {
                             const updatedAsset = {
                                 ...assetToGroup,

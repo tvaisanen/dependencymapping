@@ -10,7 +10,8 @@ const Anchor = styled.div`
   display: flex;
   position: relative;
   z-index: 2;
-  justify-content: center;
+  justify-content: flex-start;
+  width: 100%;
   height: 0; 
   
   > * {
@@ -20,16 +21,17 @@ const Anchor = styled.div`
 
 const Content = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  top: 12px;
+  padding: 0 12px;
+  flex-grow: 1;
   border: 1px solid grey;
-  border-radius: 3px;
   position: relative;
-  height: 60px;
-  width: 200px;
-  background-color: rgba(20,100,20,0.3); 
+  height: 30px;
+  color: rgba(255,255,255,1);
+  letter-spacing: 0.06rem;
+  font-size: small;
+  background-color: rgba(20,20,20,0.3); 
 `;
 
 const CancelBtn = styled.div`
