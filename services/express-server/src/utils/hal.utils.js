@@ -1,16 +1,3 @@
-function getHALJSON(host, resourcetype, resource) {
-
-    console.log(resource._doc)
-    console.log(Object.keys(resource))
-    return {
-        _links: {
-            self: {
-                href: `${host}/${resourcetype}/${resource._id}`
-            }
-        },
-        ...resource._doc
-    }
-}
 
 function serializeAsset(host, resource) {
 
@@ -89,9 +76,6 @@ function serializeConnection(host, resource) {
 }
 
 function serializeMapping(host, resource) {
-
-    console.log(`serialize: ${resource.name}`)
-    console.log(resource)
     try {
         return {
             _links: {

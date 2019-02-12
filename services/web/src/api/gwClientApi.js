@@ -61,11 +61,11 @@ class Client {
 
     /** asset api calls */
     static asset = {
-        getAll: args => Client.apiCall(Client.getAssets, assetParser, args),
         //get:    args => Client.apiCall(Client.getAsset, new ParserConfig(ASSET), args),
-        put:    args => Client.apiCall(Client.putAsset, assetParser, args),
-        post:   args => Client.apiCall(Client.postAsset, assetParser, args),
-        delete: args => Client.apiCall(Client.deleteAsset, assetParser,  args),
+        getAll: args => Client.apiCall(Client.getAssets,    assetParser, args),
+        put:    args => Client.apiCall(Client.putAsset,     assetParser, args),
+        post:   args => Client.apiCall(Client.postAsset,    assetParser, args),
+        delete: args => Client.apiCall(Client.deleteAsset,  assetParser,  args),
     };
 
     /** connection api calls */
