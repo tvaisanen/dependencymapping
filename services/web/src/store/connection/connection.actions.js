@@ -83,18 +83,33 @@ export function postConnection(props: FormAndOptionalCallback) {
         try {
 
             const {form, callback} = props;
-            const storedConnection = await
-                api
-                    .connection
-                    .post(form)
-                    .parseResponseContent();
 
-            dispatch(postConnectionSuccess(storedConnection));
-            dispatch(syncConnectionSourceAsset(storedConnection));
-            dispatch(setInfoMessage(infoMessages.post.success(storedConnection)));
 
-            if (callback) {
-                callback(storedConnection)
+            const iShouldContainNone = getState()
+                .connections
+                .filter(c => (
+                    c.source === form.source
+                    && c.target === form.target
+                ));
+
+            // if connection does not already exist
+            if (iShouldContainNone.length < 1) {
+
+                const storedConnection = await
+                    api
+                        .connection
+                        .post(form)
+                        .parseResponseContent();
+
+                dispatch(postConnectionSuccess(storedConnection));
+                dispatch(syncConnectionSourceAsset(storedConnection));
+                dispatch(setInfoMessage(infoMessages.post.success(storedConnection)));
+
+                if (callback) {
+                    callback(storedConnection)
+                }
+            } else {
+                alert('Connection does exist already. Todo: add message box and show the connection.')
             }
 
         } catch (err) {
