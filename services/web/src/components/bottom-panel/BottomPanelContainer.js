@@ -60,6 +60,7 @@ const BottomPanel = styled.div`
     /1fr;
     max-width: 100vw;
     min-width: 800px;
+    padding-top: 4px;
     flex-grow: 1;
     width: 100vw;
     height: 100%;

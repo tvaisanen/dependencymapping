@@ -18,6 +18,7 @@ export const PanelNavigation = styled.div`
     border-top: 1px inset grey;
     border-bottom: 1px inset grey;
     padding: 4px 24px;
+    margin-bottom: 6px;
     //background-color: rgba(22,22,22,0.3);
 `;
 

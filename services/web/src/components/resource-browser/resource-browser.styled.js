@@ -73,9 +73,9 @@ export const ListTabs = styled.div`
 
 export const ListTab = styled.div`
 
-    font-size: small;
+    font-size: x-small;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.07em;
     text-align: center;
     justify-content: center;
     padding: 2px 2px 4px 2px;
@@ -83,20 +83,11 @@ export const ListTab = styled.div`
     width: 100%;
     grow: 1;
     
-    :first-of-type {
-      border-top-left-radius: 3px;
-    }
-     
-    :last-of-type {
-      border-top-right-radius: 3px;
-    }
-
-    background: ${p=>p.theme.cardHeaderBackgroundColor};
-    
+    background-color: ${p => p.theme.cardHeaderBackgroundColor};
     border-bottom: 1px solid ${p=>p.selected?"whitesmoke":"transparent"};
 
     :hover{
-        background: rgba(22,44,22, 0.7);
+        background: rgba(255,255,255,0.1);
     }
     
     :first-of-type {

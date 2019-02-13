@@ -19,15 +19,14 @@ const HeaderTitle = (props) => (props.type === EMPTY ? null
 
 
 export const AssetLinkButton = styled.small`
-    letter-spacing: 0.1em;
+    letter-spacing: 0.07rem;
     text-align: center;
     cursor: pointer;
     margin: 6px;
     padding: 2px 4px;
-    background: rgba(255,255,255, 0.3);
+    background: rgba(255,255,255, 0.1);
     border-radius: 3px;
-    border: 1px solid white;
-    
+    font-size: smaller;
     
     :hover {
         background: rgba(255,255,255, 0.35);

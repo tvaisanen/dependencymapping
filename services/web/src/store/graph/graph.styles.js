@@ -1,9 +1,42 @@
-import {nodeStyles} from '../../configs/graph.styles';
+const sizes = {
+    expanded: 42,
+    neighbor: 41,
+    passive: 40,
+};
+
+const color = {
+    passive: 'rgba(200,190,200)',
+    expanded: 'rgba(174,200,174)',
+    expandedNeighbor: 'rgb(168, 174, 168)',
+};
+
+
+
+const nodesStylePassive = {
+    'text-background-color': '#fafafa',
+    'text-background-opacity': '0.9',
+    'text-border-style': "solid",
+    'content': 'data(id)',
+    shape: 'roundrectangle',
+    'color': '#818181',
+    fontSize: '1em',
+    'text-border-width': 1,
+    'text-border-color': '#b3b3b3',
+    'text-border-opacity': 0,
+    'text-wrap': 'wrap',
+    'text-max-width': '13em',
+    padding: "20%",
+    width: sizes.passive,
+    height: sizes.passive,
+    backgroundColor: color.passive,
+
+    'ghost': 'yes',
+};
 
 export const graphStyle = [
     {
         selector: 'node',
-        style: nodeStyles.passive
+        style: nodesStylePassive
     },
     {
         selector: 'edge',

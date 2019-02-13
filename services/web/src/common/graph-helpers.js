@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import {edgeStyles, nodeStyles} from "../configs/graph.styles";
 import {layoutOptions} from "../store/graph/graph.styles";
 import type {Asset, Connection} from "../store/types";
 
