@@ -25,19 +25,24 @@ const BottomPanelContainer = (props) => {
     return (
         <BottomPanel id="bottom-panel-container">
             <PanelNavTabs/>
+
+            { props.bottomPanel.visible ?
+
             <PanelContent id="panel-content">
                 <Suspense fallback={<div>Loading...</div>}>
                     <SelectedViewComponent id="active-panel-view"/>
                 </Suspense>
             </PanelContent>
+                :null}
         </BottomPanel>
     );
 };
 
 
-const mapStateToProps = (state) => (
-    {SelectedViewComponent: panelViews[state.app.bottomPanel.view].component}
-);
+const mapStateToProps = (state) => ({
+        SelectedViewComponent: panelViews[state.app.bottomPanel.view].component,
+        bottomPanel: state.app.bottomPanel
+    });
 
 
 export default connect(

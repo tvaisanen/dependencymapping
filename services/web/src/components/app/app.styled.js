@@ -4,8 +4,8 @@ export const AppGrid = styled.div`
   display: grid;
   grid-template:
   "top-bar"        min-content
-  "middle-section" 60vh 
-  "bottom-panel"   1fr 
+  "middle-section" ${p => p.bottomPanelVisible ? '60vh' : '1fr'}
+  "bottom-panel"   ${p => p.bottomPanelVisible ? '1fr' : 'min-content'} 
   / 1fr;
   min-height: 600px;
   min-width: 800px;

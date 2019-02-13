@@ -64,8 +64,10 @@ export const Button = styled.button`
   border: none;
   margin: 0 5px;
   border-radius: 3px;
-  letter-spacing: 0.05rem;
+  letter-spacing: 0.07rem;
   color: white;
+  font-size: x-small;
+  padding: 2px 4px;
   background-color: ${p => p.cancel ?
     'rgba(244,0,0,0.3)'
     : 'rgba(0,244,0,0.3)'

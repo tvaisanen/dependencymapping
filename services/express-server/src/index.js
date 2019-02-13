@@ -31,8 +31,7 @@ app.use('/coverage', express.static(__dirname + '/../coverage/'));
 app.use('/open-api', express.static(__dirname + '/open-api/'));
 app.use('/test', express.static(__dirname + 'src/pages'));
 app.use(testHandlers.testRoutes);
-app.get('/', express.static(__dirname + '/templates/'));
-app.get('/404', express.static(__dirname + '/templates/404.html'));
+app.use('/', express.static(__dirname + '/templates/'));
 
 // 404
 app.get('*', (req, res) => {

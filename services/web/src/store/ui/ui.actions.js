@@ -29,6 +29,33 @@ export function toggleCollapseMenu(){
     return {type: types.TOGGLE_COLLAPSE_MENU};
 }
 
+export function collapseBottomPanel(){
+    return function (dispatch, getState) {
+        const graph = getState().graph;
+        // resize the graph canvas
+        setTimeout(()=> graph.resize(), 15);
+        dispatch({type: types.COLLAPSE_BOTTOM_PANEL})
+    }
+}
+
+export function showBottomPanel(){
+    return function (dispatch, getState) {
+        const graph = getState().graph;
+        // resize the graph canvas
+        setTimeout(()=> graph.resize(), 15);
+        dispatch({type: types.SHOW_BOTTOM_PANEL})
+    }
+}
+
+export function toggleBottomPanel(){
+    return function (dispatch, getState) {
+        const graph = getState().graph;
+        // resize the graph canvas
+        setTimeout(()=> graph.resize(), 15);
+        dispatch({type: types.TOGGLE_BOTTOM_PANEL})
+    }
+}
+
 
 export function editDetail(){
     return function(dispatch, getState){

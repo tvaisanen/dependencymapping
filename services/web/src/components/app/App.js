@@ -1,10 +1,9 @@
 import React from 'react';
-
+import { connect } from 'react-redux';
 import TopBarContainer from '../top-bar/LazyTopBar';
 import BottomPanelContainer from '../bottom-panel/BottomPanelContainer';
-//import MappingMenuContainer from '../mapping-menu/MappingMenuContainer';
 import MappingMenuContainer from '../mapping-menu/LazyMappingMenu';
-import CollapseMenuContainer from '../collapse-menu/CollapseMenuContainer';
+
 
 import {
     AppGrid,
@@ -16,15 +15,27 @@ import {
 import ActionNotifier from '../action-notifier/ActionNotifier';
 
 
-const App = () => (
-    <AppGrid id="app-container">
+const App = (props) => (
+    <AppGrid id="app-container"
+             bottomPanelVisible={props.bottomPanel.visible}
+    >
         <TopBarContainer id="top-bar-container"/>
         <MappingListWithGraph/>
         <BottomPanelContainer id="bottom-panel-container"/>
     </AppGrid>
 );
 
-export default App;
+function mapStateToProps(state) {
+    return {
+       sidePanel: state.app.sidePanel,
+       bottomPanel: state.app.bottomPanel,
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    null
+)(App);
 
 
 const MappingListWithGraph = () => (
@@ -35,5 +46,5 @@ const MappingListWithGraph = () => (
             <GraphCanvasContainer id="cy"/>
         </GraphCanvasInflater>
     </MiddleSection>
-)
+);
 

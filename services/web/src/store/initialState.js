@@ -4,7 +4,11 @@ import * as views from '../constants/views';
 export default {
     app: {
         info: "Initial info message",
+        sidePanel:{
+            visible: true
+        },
         bottomPanel: {
+            visible: true,
             view: views.BROWSE,
             tabItems: [
                 {label: 'Resource Browser', view: views.BROWSE},

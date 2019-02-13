@@ -57,7 +57,25 @@ export default function ( state = initialState.app, action ){
             return {
                 ...state,
                 showCollapseMenu: !state.showCollapseMenu
-            }
+            };
+
+        case types.TOGGLE_BOTTOM_PANEL:
+            return {
+                ...state,
+                bottomPanel: {
+                    ...state.bottomPanel,
+                    visible: !state.bottomPanel.visible
+                }
+            };
+
+            case types.SHOW_BOTTOM_PANEL:
+            return {
+                ...state,
+                bottomPanel: {
+                    ...state.bottomPanel,
+                    visible: true
+                }
+            };
 
         default:
             return state;

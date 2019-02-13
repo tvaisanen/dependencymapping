@@ -40,6 +40,10 @@ services:
         env_file:
             - .env-development
 
+    swagger:
+        image: swaggerapi/swagger-editor
+        ports:
+          - 8081:8080
 networks:
    overlay:
              

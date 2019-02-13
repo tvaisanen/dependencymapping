@@ -204,6 +204,9 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
     });
 
 
+    window.cy = cy;
+
+
 
 
     return cy;

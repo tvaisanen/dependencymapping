@@ -1,40 +1,59 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import { setBottomPanelView } from '../../store/ui/ui.actions';
-import * as s from './bottom-panel.styled';
+import {setBottomPanelView, showBottomPanel, toggleBottomPanel} from '../../store/ui/ui.actions';
+import {ArrowIcon, PanelNavigation, PanelNavTab} from './bottom-panel.styled';
 import EditorButtons from "../detail-editor/components/EditorButtons";
-                    //selectedView={props.selectedView}
-                    //setView={this.setView}
-                    //tabItems={tabItems}
-const PanelNavTabs = ({selectedView, tabItems, setView}) => (
-    <s.PanelNavigation id="panel-nav-tabs">
+
+const PanelNavTabs = ({bottomPanel, setView, toggleBottomPanelVisibility,showBottomPanel}) => (
+    <PanelNavigation id="panel-nav-tabs">
         <div>
             {
-                tabItems.map((tab,i) => (
-                    <s.PanelNavTab id="panel-nav-tab"
+                bottomPanel.tabItems.map((tab,i) => (
+                    <PanelNavTab id="panel-nav-tab"
                         key={i}
-                        selected={selectedView === tab.view}
-                        onClick={() => selectedView === tab.view ? null : setView(tab.view)}
+                        selected={bottomPanel.view === tab.view}
+                        onClick={() => {
+
+                            if (bottomPanel.view !== tab.view){
+                                setView(tab.view)
+                            }
+
+                            if (!bottomPanel.visible){
+                                showBottomPanel()
+                            }
+                        }}
                         largePadding
                     >{tab.label}
-                    </s.PanelNavTab>
+                    </PanelNavTab>
                 ))
             }
         </div>
         <EditorButtons/>
-    </s.PanelNavigation>
+
+        <ToggleArrow up={!bottomPanel.visible} toggle={toggleBottomPanelVisibility}/>
+    </PanelNavigation>
+);
+
+
+const ToggleArrow = ({up, toggle}) => (
+    <ArrowIcon style={{color:'white', cursor:'pointer'}} onClick={toggle}>
+        {up ?  <span>&#9653;</span> : <span>&#9663;</span> }
+        </ArrowIcon>
 );
 
 
 const mapStateToProps = (state, props) => {
     return {
+        bottomPanel: state.app.bottomPanel,
         selectedView: state.app.bottomPanel.view,
         tabItems: state.app.bottomPanel.tabItems,
     }
 };
 
 const dispatchToProps = (dispatch) => ({
-    setView: (view) => dispatch(setBottomPanelView(view))
+    setView: (view) => dispatch(setBottomPanelView(view)),
+    toggleBottomPanelVisibility: () => dispatch(toggleBottomPanel()),
+    showBottomPanel: () => dispatch(showBottomPanel())
 })
 
 export default connect(
