@@ -8,18 +8,6 @@ services:
         networks:
           - overlay
 
-    #express:
-    #    build:
-    #      context: ./services/express-server
-    #      dockerfile: Dockerfile-dist
-#
-#        ports:
-#          - 3000:3000
-#        env_file:
-#         - .env-dist
-#        networks:
-#          - overlay
-
     express:
         build: ./services/express-server
         ports:

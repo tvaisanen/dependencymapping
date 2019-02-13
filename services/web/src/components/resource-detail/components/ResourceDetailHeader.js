@@ -48,7 +48,7 @@ const AssetLink = (props) => (
 
 const ConnectionTitle = styled.div`
    display: flex;
-   font-size: small
+   font-size: small;
    justify-content: center;
    align-items: center;
 `;

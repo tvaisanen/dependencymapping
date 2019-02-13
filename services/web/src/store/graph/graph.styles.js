@@ -119,7 +119,7 @@ export const graphStyle = [
             'padding-right': '10px',
             'text-valign': 'top',
             'text-halign': 'center',
-            'background-color': "transparent"
+            'background-color': "white"
         }
     },
 ];

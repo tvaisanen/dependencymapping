@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import TopBarContainer from '../top-bar/LazyTopBar';
+//import MappingMenuContainer from '../mapping-menu/LazyMappingMenu';
 import BottomPanelContainer from '../bottom-panel/BottomPanelContainer';
-import MappingMenuContainer from '../mapping-menu/LazyMappingMenu';
+import MappingMenuContainer from '../mapping-menu/MappingMenuContainer';
 
 
 import {

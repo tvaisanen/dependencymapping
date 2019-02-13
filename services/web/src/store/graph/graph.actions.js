@@ -5,7 +5,7 @@ import {setEventHook, clearEventHook} from "../event-hook";
 
 import * as activeDetailActions from '../active-detail/active-detail.actions';
 import * as activeMappingActions from '../active-mapping/active-mapping.actions';
-import { editDetail, setInfoMessage } from '../../store/ui/ui.actions';
+import {editDetail, setInfoMessage} from '../../store/ui/ui.actions';
 import * as assetActions from '../asset/asset.actions';
 import * as detailFormActions from '../detail-form/detail-form.actions';
 import * as connectionActions from '../connection/connection.actions';
@@ -14,6 +14,7 @@ import cytoscape from 'cytoscape';
 import style from './graph.styles';
 import cxtmenu from 'cytoscape-cxtmenu';
 import cola from 'cytoscape-cola';
+import {updateAsset} from "..";
 
 cytoscape.use(cola);
 cytoscape.use(cxtmenu);
@@ -103,8 +104,14 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                     dispatch(setInfoMessage("Select node to group under."));
                     dispatch(setEventHook({
                         hook: "onNodeClick",
-                        notification: `Select asset to group ${ele.id()} under or clear grouping.`,
-                        optionalAction: { callback: () => alert('todo remove from group'), name: "clear"},
+                        notification: `Select asset to group ${ele.id()} or `,
+                        optionalAction: {
+                            callback: () => {
+                                dispatch(updateAsset({form: {name: ele.id(), group: "none"}}));
+                                dispatch(clearEventHook());
+                            },
+                            name: "ungroup"
+                        },
                         callback: (assetName: string) => {
                             const updatedAsset = {
                                 ...assetToGroup,
@@ -137,7 +144,7 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                             };
 
 
-                            dispatch(connectionActions.postConnection({form:newConnection}));
+                            dispatch(connectionActions.postConnection({form: newConnection}));
                             dispatch(clearEventHook())
                             dispatch(setInfoMessage("connection should be made."));
 
@@ -167,7 +174,7 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                 contentStyle: {},
                 select: function (ele) {
                     const connectionToRemove = getConnectionByName(ele.id())
-                    dispatch(connectionActions.deleteConnection({form:connectionToRemove}));
+                    dispatch(connectionActions.deleteConnection({form: connectionToRemove}));
                 },
                 enabled: true
             },
@@ -205,8 +212,6 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
 
 
     window.cy = cy;
-
-
 
 
     return cy;

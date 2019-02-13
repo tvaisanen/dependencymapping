@@ -128,8 +128,8 @@ class Client {
     static putConnection(connection: Connection): Promise<any> {
         console.info(connection)
         const {source, target} = connection;
-        const uri = connectionDetailBySourceAndTarget({source, target});
-        console.info(uri)
+        // const uri = connectionDetailBySourceAndTarget({source, target});
+        const uri = connectionDetailUrl(connection);
         return axios.put(uri, connection);
     }
 

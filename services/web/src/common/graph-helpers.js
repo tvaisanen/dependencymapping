@@ -189,7 +189,6 @@ export function downloadPng(cy = required()) {
 
 export function updateNodeParent(cy, asset: Asset): void {
     const el = cy.getElementById(asset.name);
-
     el.move({parent: asset.group === "none" ? null : asset.group});
 }
 
@@ -211,7 +210,6 @@ export function activeMappingAssetUpdateActions(asset: Asset) {
                 });
 
             const edges = updatedEdgesFromThese.map(c => getEdgeFromConnection(c));
-
             updateNodeParent(graph, (asset: Asset));
             updateShapeAndColor(graph, (asset: Asset));
             removeResourceEdges(graph, (asset: Asset));

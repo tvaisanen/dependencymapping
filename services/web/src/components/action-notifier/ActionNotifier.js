@@ -49,6 +49,14 @@ const Notification = styled.div`
     letter-spacing: 0.04rem;
 `;
 
+const ActionText = styled.span`
+  color: #005788;
+  cursor: pointer;
+  :hover {
+    color: #116899;
+  }
+`;
+
 type ActionNotifierProps = {
     hook: string,
     callback: (any) => void,
@@ -71,13 +79,14 @@ const ActionNotifier = (props: ActionNotifierProps) => {
 
         <Anchor visible={hook}>
             <Content>
-                <Notification>{notification}</Notification>
+                <Notification>{notification}
                 {optionalAction ?
-                    <button onClick={() => optionalAction.callback()}>
+                    <ActionText onClick={() => optionalAction.callback()}>
                         {optionalAction.name}
-                    </button>
+                    </ActionText>
                     : null
                 }
+                </Notification>
                 <CancelBtn onClick={props.clearHook}>&#10005;</CancelBtn>
             </Content>
         </Anchor>
