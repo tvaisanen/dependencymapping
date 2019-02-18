@@ -1,37 +1,58 @@
 version: '3'
 
 services:
-    mongo:
-        image: mongo
-        ports:
-          - 27017:27017
-        networks:
-          - overlay
+    #mongo:
+    #    image: mongo
+    #    ports:
+    #      - 27017:27017
+    #    networks:
+    #      - overlay
+#
+#    express:
+#        build: ./services/express-server
+#        ports:
+#          - 3000:3000
+#        volumes:
+#          - ./services/express-server/src/:/usr/local/src/express/src
+#          - ./services/express-server/test/:/usr/local/src/express/test
+#        env_file:
+#         - .env-development
+#        networks:
+#          - overlay
 
-    express:
-        build: ./services/express-server
-        ports:
-          - 3000:3000
-        volumes:
-          - ./services/express-server/src/:/usr/local/src/express/src
-          - ./services/express-server/test/:/usr/local/src/express/test
-        env_file:
-         - .env-development
-        networks:
-          - overlay
+    build-web:
+        ## build the web application to
+        ## be deployed as static files
+        ## served by NGINX
 
-    web:
         build:
           context: ./services/web
           dockerfile: Dockerfile-dist
         networks:
-            - overlay
-        command: npm run serve
-        ports:
-            - 3001:5000
+          - overlay
+        command: npm run build
+        volumes:
+          - static-webapp:/usr/webapp/src/build
         env_file:
             - .env-dist
+
+    nginx:
+        build:
+          context: ./services/proxy
+        networks:
+          - overlay
+        volumes:
+          - static-webapp/:/www/webapp/
+        ports:
+          - 80:80
+        tty: true
+        stdin_open: true
+        depends_on:
+          - build-web
+
 
 networks:
    overlay:
              
+volumes:
+  static-webapp:
