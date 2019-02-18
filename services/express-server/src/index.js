@@ -19,6 +19,11 @@ if (process.env.NODE_ENV === "PRODUCTION"){
 // register middleware
 app.use(cors());
 app.use(bodyParser.json());
+app.use((req,res,next)=> {
+    console.log('message')
+
+    next()
+})
 
 // init db connection
 initDatabaseConnection();
@@ -35,7 +40,7 @@ app.use('/', express.static(__dirname + '/templates/'));
 
 // 404
 app.get('*', (req, res) => {
-    res.status(404).send("resource not found")
+    res.status(404).send("Resource not found!")
 });
 
 // start the server

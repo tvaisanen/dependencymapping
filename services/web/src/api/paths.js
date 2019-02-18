@@ -1,6 +1,11 @@
-export const API_HOST = process.env.REACT_APP_API_HOST || "localhost";
-export const API_PORT = process.env.REACT_APP_API_PORT || "3000";
-export const API_URL = `http://${API_HOST}:${API_PORT}/`;
+const {NODE_ENV, REACT_APP_API_PATH, REACT_APP_API_PORT} = process.env;
+
+const API_URL = NODE_ENV === 'production' ?
+    REACT_APP_API_PATH
+    : `http://${REACT_APP_API_PATH}:${REACT_APP_API_PORT}/`
+;
+
+export const API_HOST = REACT_APP_API_PATH;
 
 export const MAPPINGS_URL = `${API_URL}mapping/`;
 export const CONNECTIONS_URL = `${API_URL}connection/`;
