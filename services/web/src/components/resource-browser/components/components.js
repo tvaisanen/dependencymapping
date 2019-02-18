@@ -73,18 +73,21 @@ export const ListTabItems = (props: ListTabItemsProps) => (
 export const ResourceBrowser = (props: BrowserProps) => (
     <BrowserContainer>
         <ListTabItems
+            id={"resource-list-nav"}
             items={props.tabItems}
             selected={props.selected}
             onSelect={props.onSelect}
         />
 
         <FilterInputField
+            id={"resource-list-filter"}
             type="text"
             placeholder="filter..."
             onChange={props.onFilterChange}
         />
 
         <ResourceList
+            id={"resource-list"}
             onClick={props.setActiveDetail}
             listItems={props.listItems}
             selected={props.selected}
@@ -134,7 +137,7 @@ export const TagList = (props: ResourceListProps) => (
 
 
 export const ResourceList = (props: ResourceListProps) => (
-    <ListContainer>
+    <ListContainer id={props.id}>
         <AssetList      {...props}/>
         <ConnectionList {...props}/>
         <TagList        {...props}/>

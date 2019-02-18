@@ -4,14 +4,15 @@ export const AppGrid = styled.div`
   display: grid;
   grid-template:
   "top-bar"        min-content
-  "middle-section" ${p => p.bottomPanelVisible ? '60vh' : '1fr'}
-  "bottom-panel"   ${p => p.bottomPanelVisible ? '1fr' : 'min-content'} 
+  "middle-section" ${p => p.bottomPanelVisible ? '60%' : '1fr'}
+  "bottom-panel"   ${p => p.bottomPanelVisible ? '35%' : 'min-content'} 
   / 1fr;
   min-height: 600px;
   min-width: 800px;
   width: 100vw;
   height: 100vh;
   max-width: 100vw;
+  max-height: 100vh;
   overflow: hidden;
 `;
 

@@ -3,7 +3,7 @@ import * as resourceHelpers from '../../common/resource-helpers';
 import * as activeDetailActions from '../../store/active-detail/active-detail.actions';
 import * as activeMappingActions from '../../store/active-mapping/active-mapping.actions';
 
-import {CONNECTION} from "../../constants";
+import {ASSET, CONNECTION} from "../../constants";
 
 const mapStateToProps = (state, ownProps = {}) => {
 
@@ -22,7 +22,7 @@ const mapStateToProps = (state, ownProps = {}) => {
     };
 
     return {
-        selected: CONNECTION,
+        selected: ASSET,
         cy: state.graph,
         assets: sortedAssets || [],
         connections: state.connections,

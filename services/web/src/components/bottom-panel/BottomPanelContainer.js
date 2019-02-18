@@ -56,7 +56,7 @@ const BottomPanel = styled.div`
     grid-area: bottom-panel;
     grid-template:
     "panel-nav" min-content
-    "panel-content" 1fr
+    "panel-content" minmax(0, 1fr)
     /1fr;
     max-width: 100vw;
     min-width: 800px;
@@ -65,13 +65,14 @@ const BottomPanel = styled.div`
     width: 100vw;
     height: 100%;
     max-height: 40vh;
+    overflow: hidden;
 `;
 
 const PanelContent = styled.div`
-    display: grid;
     grid-area: panel-content;
     color: #fafafa;
-    overflow: hidden;
     margin: 0 12px 12px 12px;
+    height: 100%;
+    overflow:hidden;
 `;
 

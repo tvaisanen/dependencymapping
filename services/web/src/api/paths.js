@@ -1,9 +1,6 @@
-const {NODE_ENV, REACT_APP_API_PATH, REACT_APP_API_PORT} = process.env;
+const {NODE_ENV, REACT_APP_API_PATH, REACT_APP_API_PORT, REACT_APP_API_HOST} = process.env;
 
-const API_URL = NODE_ENV === 'production' ?
-    REACT_APP_API_PATH
-    : `http://${REACT_APP_API_PATH}:${REACT_APP_API_PORT}/`
-;
+const API_URL = REACT_APP_API_PATH;
 
 export const API_HOST = REACT_APP_API_PATH;
 

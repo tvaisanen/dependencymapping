@@ -42,9 +42,9 @@ const Icon = styled.span`
   right: 0px;
 `;
 
-export const FilterInputField = ({onChange}) => {
+export const FilterInputField = ({onChange,id}) => {
 
-    return <Field>
+    return <Field id={id}>
         <Input
         type="text"
         placeholder="filter..."

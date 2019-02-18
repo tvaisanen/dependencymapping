@@ -8,11 +8,9 @@ export const DetailGrid = styled.div`
   "detail-content detail-lists  " 1fr
   / 60% 40%;
   grid-row-gap: 4px;
-  
-  height: 100%;
-  width: inherit;
   border-radius: 3px;
   padding-top: 0;
+  overflow: hidden;
 `;
 
 export const DetailHeaderLinks = styled.div`
@@ -36,8 +34,7 @@ export const DetailContent = styled.div`
     width: inherit;
     text-align: justify;
     text-justify: inter-character;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden;
     
     > * {
       heigh: inherit;
@@ -66,7 +63,6 @@ export const ListBlock = styled.div`
     flex-direction: row;
     margin-left: 6px;
     min-width: 200px;
-    flex-grow: 1;
     border-radius: 3px;
     border: ${p => p.theme.insetBorder}; 
     overflow: hidden;
@@ -75,20 +71,11 @@ export const ListBlock = styled.div`
 export const ListWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    min-width: 100px;
-    min-height: 20px;
+    flex-basis: 100%;
     flex-grow: 1;
-    flex-shrink: 1;
-    overflow-y: auto;
+    overflow:hidden;
 `;
 
-export const List = styled.div`
-    flex-direction: column;
-    overflow-y: auto;
-    margin: 0 4px;
-    padding: 6px 0;
-    flex-grow:1;
-`;
 
 export const ListLabel = styled.div`
     text-align: center;
@@ -101,12 +88,19 @@ export const ListLabel = styled.div`
     letter-spacing: 0.07rem;
 `;
 
+export const List = styled.div`
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    margin: 0 4px;
+    padding: 6px 0;
+    flex-grow:0;
+`;
 
 export const ListItem = styled.div`
     font-size: small;
     letter-spacing: 0.07em;
     text-align: center;
-    // background-color: rgba(255,255,255,0.2);
     background-color: rgba(22,22,22, 0.5);
     padding: 2px;
     margin: 2px 0; 

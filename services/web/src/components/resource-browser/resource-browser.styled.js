@@ -6,12 +6,9 @@ export const BrowserGrid = styled.div`
   "resource-browser resource-detail" 1fr
   / 16em 1fr;
   grid-gap: 4px;
-  height: 100%;
+  height: inherit;
   width: 100%;
   border-radius: 3px;
-  > div {
-    max-height: 100%;
-  }
 `;
 
 export const ResourceBrowserLayout = styled.div`
@@ -25,20 +22,16 @@ export const BrowserContainer = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
-    height: 100%;
-    flex-grow: 1;
-    width: 16em;
-    max-width: 16em;
-    min-width: 16em;
+    align-items: stretch;
     margin-right: 12px;
     border-radius: 3px;
     border-right: 1px solid rgba(25,25,25,0.1);
+    overflow: hidden;
 `;
 
 
-export const ListItemBox = styled.div`
 
+export const ListItemBox = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -49,6 +42,7 @@ export const ListItemBox = styled.div`
     margin: 1px 6px;
     border-radius: 3px;
     padding: 2px; 
+    flex-shrink: 0;
 
     background: ${p => p.selected ? 
         p.theme.listItemSelectedDarkBackground
@@ -62,7 +56,6 @@ export const ListItemBox = styled.div`
 `;
 
 export const ListTabs = styled.div`
-
     display: flex;
     flex-direction: row;
     background: transparent;
@@ -104,6 +97,5 @@ export const ListContainer = styled.div`
     display: flex;
     flex-direction:column;
     align-items: stretch;
-    width: inherit; 
-    overflow-y: auto;
+    overflow-y: scroll;
 `;

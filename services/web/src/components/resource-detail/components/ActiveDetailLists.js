@@ -28,7 +28,7 @@ export const ListItems = ({items, type, clickHandler}) => {
 };
 
 export const detailListFragment = ({label, items, type, setActiveDetail, i}) => (
-    <ListWrapper key={i}>
+    <ListWrapper id={"list-wrapper"} key={i}>
         <ListLabel>{label}</ListLabel>
         <List>
             <ListItems
