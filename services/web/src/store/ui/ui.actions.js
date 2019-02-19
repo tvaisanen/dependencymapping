@@ -64,3 +64,11 @@ export function editDetail(){
         dispatch(setBottomPanelView(views.CREATE));
     }
 }
+
+export function setErrorMessage(errorMessage){
+    return {type: types.SET_ERROR_MESSAGE, errorMessage}
+}
+
+export function clearErrorMessage(){
+    return {type: types.CLEAR_ERROR_MESSAGE}
+}

@@ -18,6 +18,7 @@ services:
           - 3000:3000
         volumes:
           - ./services/express-server/src/:/usr/local/src/express/src
+          - ./services/express-server/test/:/usr/local/src/express/test
         environment:
           - MONGO_PATH=mongo
           - MONGO_PORT=27017
@@ -47,9 +48,9 @@ services:
           - ./services/web/package.json:/usr/webapp/src/package.json
           - ./services/web/.flowconfig:/usr/webapp/src/.flowconfig
         environment:
-          - REACT_APP_API_PATH=/api/
+          - REACT_APP_API_PATH=/api
           - REACT_APP_API_PORT=
-          - REACT_APP_API_HOST=/api/
+          - REACT_APP_API_HOST=/api
           - REACT_APP_PERSIST_DATA=true
 
     nginx:

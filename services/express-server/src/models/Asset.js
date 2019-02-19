@@ -28,6 +28,19 @@ assetSchema.post('save', (asset) => {
     })
 });
 
+
+assetSchema.post('delete', (asset) => {
+    console.log('\n post delete here \n')
+    console.log(JSON.stringify(asset))
+    asset.connected_to.forEach(target => {
+        const connection = new Connection({source: asset.name, target: target});
+        connection
+            .save()
+            .then()
+            .catch(err => console.log(`error saving connection: ${err}`))
+    })
+});
+
 try {
     // ! Remove the try catch from coverage
     // ! it affects the coverage percentage.

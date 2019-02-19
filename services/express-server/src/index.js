@@ -8,22 +8,18 @@ const { registerRoutes } = require('./routers/');
 
 let app = express();
 
-if (process.env.NODE_ENV === "PRODUCTION"){
+/*if (process.env.NODE_ENV === "PRODUCTION"){
     const compression = require('compression');
     const helmet = require('helmet');
 
     app.use(compression);
     app.use(helmet);
-}
+}*/
 
 // register middleware
-app.use(cors());
-app.use(bodyParser.json());
-app.use((req,res,next)=> {
-    console.log('message')
 
-    next()
-})
+app.use(bodyParser.json());
+app.use(cors());
 
 // init db connection
 initDatabaseConnection();

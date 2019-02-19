@@ -1,3 +1,9 @@
+import {connect} from 'react-redux';
+import {setErrorMessage} from "../store/ui/ui.actions";
+import { store } from '../store/configureStore';
+
+const setErrorMsg = (errorMsg) => store.dispatch(setErrorMessage(errorMsg))
+
 class ApiResponse {
     constructor(serverPromise, config = {}) {
         this.config = config;
@@ -34,9 +40,12 @@ class ApiResponse {
         } catch (err) {
             console.error(err);
             console.info("refactor all api response related error handling here")
-            throw new Error("ApiResponse.parseResponseContent", err.stack)
+            setErrorMsg("refactor all api response related error handling here")
         }
     };
 }
 
+
+
 export default ApiResponse;
+

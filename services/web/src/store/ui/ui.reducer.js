@@ -5,6 +5,19 @@ import * as resourceType from '../../constants/types';
 export default function ( state = initialState.app, action ){
     switch(action.type){
 
+        case types.SET_ERROR_MESSAGE:
+            return {
+                ...state,
+                errorMsg: action.errorMsg
+            };
+
+        case types.CLEAR_ERROR_MESSAGE:
+            return {
+                ...state,
+                errorMessage: null
+            };
+
+
         case types.SET_INFO_MESSAGE:
             return {
                 ...state,

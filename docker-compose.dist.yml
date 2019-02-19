@@ -40,7 +40,7 @@ services:
         volumes:
           - static-webapp:/usr/webapp/src/build
         environment:
-          - REACT_APP_API_PATH=/api/
+          - REACT_APP_API_PATH=/api
           - REACT_APP_API_PORT=
 
     nginx:

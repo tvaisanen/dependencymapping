@@ -7,11 +7,9 @@ import {createLogger} from 'redux-logger';
 const logger = createLogger({
     collapsed: true
 });
-
-export default function configureStore() {  
-  return createStore(
+export const store = createStore(
       rootReducer,
       //applyMiddleware(thunk),
       applyMiddleware(thunk,logger),
-  );
-}
+);
+

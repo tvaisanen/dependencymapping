@@ -4,10 +4,10 @@ const API_URL = REACT_APP_API_PATH;
 
 export const API_HOST = REACT_APP_API_PATH;
 
-export const MAPPINGS_URL = `${API_URL}mapping/`;
-export const CONNECTIONS_URL = `${API_URL}connection/`;
-export const TAGS_URL = `${API_URL}tag/`;
-export const RESOURCES_URL = `${API_URL}asset/`;
+export const MAPPINGS_URL = `${API_URL}/mapping/`;
+export const CONNECTIONS_URL = `${API_URL}/connection/`;
+export const TAGS_URL = `${API_URL}/tag/`;
+export const RESOURCES_URL = `${API_URL}/asset/`;
 
 
 export function tagDetailUrl({name}) {
