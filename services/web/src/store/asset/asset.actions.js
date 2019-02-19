@@ -9,6 +9,8 @@ import * as detailFormActions from '../detail-form/detail-form.actions';
 import * as connectionActions from '../connection/connection.actions';
 import type {Asset, Connection, Dispatch, State} from "../types";
 import type {FormAndOptionalCallback} from "../store-action.arg-types";
+import {deleteConnections} from "../connection/connection.actions";
+import {deleteConnection} from "..";
 
 // ! refactor to use api
 // ? can be deleted already?
@@ -110,6 +112,7 @@ export function deleteAsset(props: {name: string, callback:(any)=>void}) {
         dispatch(mappingActions.removeDeletedAssetFromMappings(name));
         dispatch(activeMappingActions.removeResourceFromActiveMapping({name}));
         dispatch(setInfoMessage(`Deleted asset: ${name}`));
+        dispatch(deleteRelatedAssetConnections(name));
 
         // caller callback
         callback ? callback() : null;
@@ -118,6 +121,18 @@ export function deleteAsset(props: {name: string, callback:(any)=>void}) {
 
 export function deleteAssetSuccess(name: string) {
     return {type: types.DELETE_ASSET_SUCCESS, name};
+}
+
+export function deleteRelatedAssetConnections(name){
+    return function (dispatch: Dispatch, getState: State): void {
+        const { connections } = getState();
+
+        const connectionsToDelete = connections.filter(connection => {
+           return connection.target === name || connection.source === name;
+        });
+
+        deleteConnections(connectionsToDelete);
+    }
 }
 
 /*********************************************** */

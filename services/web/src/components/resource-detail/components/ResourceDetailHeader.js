@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import styled from 'styled-components';
 
-import { setAsActiveDetail } from "../../../store/active-detail/active-detail.actions";
+import {setAsActiveDetail} from "../../../store/active-detail/active-detail.actions";
 
 import {ASSET, CONNECTION, MAPPING, TAG, EMPTY} from '../../../constants/types';
 import {HeaderBar} from "../resource-detail.styled";
@@ -33,17 +33,26 @@ export const AssetLinkButton = styled.small`
     }
 `;
 
-const AssetLink = (props) => (
-    <AssetLinkButton
+const AssetLink = (props) => {
 
-        onClick={() => props.setActiveDetail({
+        const onClick = () => props.setActiveDetail({
             type: ASSET,
             data: props.asset
-        })}
-    >
-        {props.asset.name}
-    </AssetLinkButton>
-);
+        });
+
+        if (props.asset) {
+            return <AssetLinkButton onClick={onClick}>{props.asset.name}</AssetLinkButton>
+        } else {
+            return <DeletedAssetLabel>Asset has been deleted</DeletedAssetLabel>
+        }
+    }
+;
+
+const DeletedAssetLabel = styled.div`
+  color: red;
+  margin: 6px;
+  
+`;
 
 
 const ConnectionTitle = styled.div`
@@ -64,18 +73,18 @@ const ConnectionHeader = (props) => (
                 asset={props.data.target}
                 setActiveDetail={props.setActiveDetail}
             />
-            </ConnectionTitle>
+        </ConnectionTitle>
     </HeaderBar>
 );
 
 // customize detail header here
 // HeaderTitle is the default
 const headersByResourceType = {
-    [ASSET]:        HeaderTitle,
-    [CONNECTION]:   ConnectionHeader,
-    [MAPPING]:      HeaderTitle,
-    [TAG]:          HeaderTitle,
-    [EMPTY]:        HeaderTitle
+    [ASSET]: HeaderTitle,
+    [CONNECTION]: ConnectionHeader,
+    [MAPPING]: HeaderTitle,
+    [TAG]: HeaderTitle,
+    [EMPTY]: HeaderTitle
 };
 
 
@@ -96,7 +105,7 @@ const mapDispatchToProps = (dispatch) => {
     return ({
         setActiveDetail: (detail) => dispatch(setAsActiveDetail(detail))
     })
-}
+};
 
 export default connect(
     mapStateToProps,

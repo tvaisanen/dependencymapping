@@ -163,11 +163,15 @@ export const AssetListItem = ListItemByName;
 
 // logic for ConnectionListItem selected field
 function connectionIsActiveDetail(item, activeDetail) {
-    if (activeDetail.type === CONNECTION) {
-        return item.source === activeDetail.data.source.name
-        && item.target === activeDetail.data.target.name
-    } else {
-        return false;
+    try {
+        if (activeDetail.type === CONNECTION) {
+            return item.source === activeDetail.data.source.name
+                && item.target === activeDetail.data.target.name
+        } else {
+            return false;
+        }
+    } catch (err){
+        console.warn(err)
     }
 }
 

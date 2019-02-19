@@ -15,7 +15,7 @@ export function tagDetailUrl({name}) {
 }
 
 export function connectionDetailUrl(connection) {
-    return `${CONNECTIONS_URL}/${connection._id}`
+    return `${CONNECTIONS_URL}${connection._id}`
 }
 
 export function connectionDetailBySourceAndTarget(connection) {

@@ -28,7 +28,7 @@ export default function (state: ConnectionState = initialState, action: Connecti
 
         case DELETE_CONNECTION:
             return state.filter(
-                connection => connection !== action.connection
+                connection => connection._id !== action.connection._id
             );
 
         case DELETE_CONNECTIONS:

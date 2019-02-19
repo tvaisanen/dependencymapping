@@ -141,7 +141,9 @@ class Client {
 
 
     static deleteConnectionById(connection: Connection): Promise<any> {
+        alert(JSON.stringify(connection))
         const uri = connectionDetailUrl(connection);
+        alert(uri)
         return axios.delete(uri);
     }
 

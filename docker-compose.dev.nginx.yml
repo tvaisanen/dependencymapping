@@ -6,8 +6,9 @@ services:
         networks:
           - closed
         # Allow access only in closed network
-        # ports:
-        #    - 27017:27017
+        # enabled for development
+        ports:
+          - 27017:27017
 
     api:
         build:
@@ -39,6 +40,8 @@ services:
         networks:
           - public
         command: npm start
+        ports:
+          - 3001:3000
         volumes:
           - ./services/web/src/:/usr/webapp/src/src
           - ./services/web/package.json:/usr/webapp/src/package.json
@@ -53,6 +56,11 @@ services:
         build:
           context: ./services/proxy
           dockerfile: Dockerfile-dev
+        volumes:
+          - ./services/proxy/default.dev.conf:/etc/nginx/conf.d/default.conf
+          - ./services/proxy/nginx.conf:/etc/nginx/nginx.conf
+          - ./services/proxy/site-enabled/:/etc/nginx/site-enabled
+
         networks:
           - public
           - closed

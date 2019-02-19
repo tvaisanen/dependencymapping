@@ -149,24 +149,31 @@ export function deleteConnection(props: FormAndOptionalCallback) {
 
             await api.connection.deleteById(form);
 
-            // the source asset needs to know about the new connection
-            const assetToUpdate = assets.filter(
-                asset => asset.name === connection.source)[0];
 
-            const updatedAsset = {
-                ...assetToUpdate,
-                connected_to: assetToUpdate
-                    .connected_to.filter(
-                        asset => asset !== connection.target
-                    )
-            };
+            try {
+                const assetToUpdate = assets.filter(
+                    asset => asset.name === connection.source)[0];
 
-            dispatch(setInfoMessage(
-                `Deleted connection between: ${connection.source} \
+                const updatedAsset = {
+                    ...assetToUpdate,
+                    connected_to: assetToUpdate
+                        .connected_to.filter(
+                            asset => asset !== connection.target
+                        )
+                };
+
+                dispatch(updateAsset({form: updatedAsset}));
+
+                dispatch(setInfoMessage(
+                    `Deleted connection between: ${connection.source} \
                      and ${connection.target}`));
 
+            } catch (err) {
+               console.warn('here')
+            }
+
+
             dispatch(deleteConnectionSuccess(connection));
-            dispatch(updateAsset({form: updatedAsset}));
 
             // if callback provided, run it with response data
             if (callback) {
@@ -204,7 +211,7 @@ export function updateConnection(props: FormAndOptionalCallback) {
             dispatch(updateConnectionSuccess(updatedConnection));
 
             dispatch(setInfoMessage(
-                    `Updated connection: ${updatedConnection.source} \
+                `Updated connection: ${updatedConnection.source} \
                      to ${updatedConnection.target}`));
 
             //dispatch(assetActions.updateAsset(updatedAsset));

@@ -42,6 +42,9 @@ export function setConnectionAsActiveDetail(activeDetail) {
     return function (dispatch, getState) {
 
         try {
+            // Todo: continue here!
+            // catches when connection dangling
+            // without an source/target asset
 
             const {data} = activeDetail;
             const {assets, tags} = getState();
@@ -50,6 +53,7 @@ export function setConnectionAsActiveDetail(activeDetail) {
             const assetFilter = [activeDetail.data.source, activeDetail.data.target];
 
             const filteredAssets = assets.filter(asset => _.includes(assetFilter, asset.name));
+
 
             const first = filteredAssets.pop();
 
