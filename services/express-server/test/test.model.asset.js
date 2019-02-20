@@ -1,5 +1,5 @@
 const assert = require('assert').assert;
-const expect = require('chai').expect;
+const {expect, should} = require('chai');
 const Asset = require('../src/models').Asset;
 const Connection = require('../src/models').Connection;
 const path = require('path');
@@ -191,4 +191,111 @@ describe('Asset model tests', function () {
             })
             .catch(err => done(err))
     });
+
+    it('Delete asset should remove asset', function (done) {
+
+        const expectedValues = {
+            name: "asset to delete",
+            connected_to: ["random asset"]
+        };
+
+        const a = new Asset(expectedValues);
+        const assetPromise = a.save();
+
+
+        assetPromise.then(asset => {
+
+            const removePromise = Asset.remove({_id: asset._id});
+
+            // At this point the asset exists
+            //
+            // Asset.findOne({_id:asset._id})
+            //     .then(result => {
+            //         console.log('did we find it?')
+            //         console.log(result)
+            //     }).catch(err => console.warn(err))
+
+                Asset.findOne({_id: asset._id})
+                    .then(result => {
+
+                        expect(result).to.be.null;
+                        console.log(result)
+                    })
+                    .catch(err => console.warn(err))
+            removePromise.then(response => {
+
+                Asset.findOne({_id: asset._id})
+                    .then(result => {
+                        console.log(result)
+                        expect(result).to.be.null;
+
+                        done();
+                    })
+                    .catch(err => console.warn(err))
+            })
+
+        });
+
+
+    });
+
 });
+/*
+    it('On asset delete connection should be deleted.', async function (done) {
+
+        const expectedValues = {
+            name: "asset to delete",
+            connected_to: ["source asset"]
+        };
+
+        const a = new Asset(expectedValues);
+
+        const asset = await a.save();
+
+        // this should be deleted after asset deletion
+        const connectionsBeforeDeletion = await Connection.find({source: asset.name})
+
+        const deleteResponse = await Asset.remove({_id: asset._id});
+
+
+        const connectionsAfterDeletion = await Connection.find({source: asset.name})
+
+        console.log(deleteResponse)
+        //console.log(connectionsBeforeDeletion)
+        //console.log(connectionsAfterDeletion)
+
+        expect(connectionsBeforeDeletion.length).to.equal(1);
+        expect(connectionsAfterDeletion.length).to.equal(1);
+
+        done();
+
+
+    });
+});
+Connection.find({source: expectedValues.name})
+    .then(connections => {
+    // debug
+    connections.forEach(c => {
+        console.log(`source: ${c.source}, target: ${c.target}`)
+    });
+
+    // expect to find two connections where
+    // expectedValues.name is the source
+    expect(connections.length).to.equal(2);
+
+    const sourceTargetArray = connections.map(c => ({
+        source: c.source, target: c.target
+    }));
+
+    console.log(sourceTargetArray)
+
+    expect(sourceTargetArray)
+        .to.have.deep.members([
+        {source: "source asset", target: "foo"},
+        {source: "source asset", target: "bar"},
+    ]);
+
+    done();
+    })
+    .catch(err => done(err))
+*/
