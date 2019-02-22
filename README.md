@@ -6,6 +6,26 @@ Web app for dependency mapping.
 
 ## Development
 
+### docker-compose.dist.yml
+
+Deployment setup using NGINX as reverse proxy and
+for serving the static application files. 
+Uses mongo DB as database
+react app is built to static files and served via
+NGINX, which also acts as reverse proxy for the api.
+
+### docker-compose.dev.nginx.yml
+
+* Same setup as in `docker-compose.dist.yml` with slight mods:
+    * web app is attached as run by dev server.
+    * tests are mounted into volumes
+
+* Docker files used: `Dockerfile-dev`
+
+
+
+### docker-compose.development.yml
+
 1. git clone https://github.com/tvaisanen/dependencymapping
 2. docker-compose -f docker-compose.development.yml up
 
@@ -30,6 +50,10 @@ on page refresh. If you need the data to persist use the
 file `docker-compose.development.persistent-data.yml` and
 the application will use different database in Mongo and
 the resetting will be disabled.
+
+### docker-compose.development.persistent-data.yml
+
+Same as above, but database reset disabled by default.
 
 ### Run tests
 
