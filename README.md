@@ -8,6 +8,10 @@ Web app for dependency mapping.
 
 ### docker-compose.dist.yml
 
+#### todo:
+> * user management htpasswd
+> * testing in more detail
+
 Deployment setup using NGINX as reverse proxy and
 for serving the static application files. 
 Uses mongo DB as database
