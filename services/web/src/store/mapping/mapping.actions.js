@@ -88,9 +88,12 @@ export function deleteMapping(props: FormAndOptionalCallback) {
 
         try {
 
-            await api.mapping.delete();
-            dispatch(deleteMappingSuccess(props.name));
-            dispatch(setInfoMessage(`Deleted mapping: ${props.name}`));
+            const {form:{name}, callback} = props;
+
+
+            await api.mapping.delete(name);
+            dispatch(deleteMappingSuccess(name));
+            dispatch(setInfoMessage(`Deleted mapping: ${name}`));
             dispatch(clearActiveMappingSelection(getState().graph));
 
             // run caller callback

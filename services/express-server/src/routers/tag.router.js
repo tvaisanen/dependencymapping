@@ -9,6 +9,7 @@ tagRouter.post('/', (req, res) => TagCtrl.post(req, res));
 tagRouter.get('/:id', (req, res) => TagCtrl.getById(req, res));
 tagRouter.put('/:id', (req, res) => TagCtrl.put(req, res));
 tagRouter.delete('/:id', (req, res) => TagCtrl.deleteById(req, res));
+tagRouter.delete('/deleteByName/:name', (req, res) => TagCtrl.deleteByName(req, res));
 
 
 module.exports = tagRouter;

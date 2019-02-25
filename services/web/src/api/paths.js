@@ -11,7 +11,7 @@ export const RESOURCES_URL = `${API_URL}/asset/`;
 
 
 export function tagDetailUrl({name}) {
-    return `${TAGS_URL}${encodeURI(name)}/`;
+    return `${TAGS_URL}deleteByName/${encodeURI(name)}/`;
 }
 
 export function connectionDetailUrl(connection) {

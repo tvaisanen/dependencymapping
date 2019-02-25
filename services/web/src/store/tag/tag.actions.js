@@ -102,7 +102,7 @@ export function deleteTag(props: FormAndOptionalCallback) {
             await api.tag.delete(form);
 
             dispatch(setInfoMessage(`Deleted tag: ${form.name}`));
-            dispatch(deleteTagSuccess(props.name));
+            dispatch(deleteTagSuccess(form.name));
 
             if (callback) {
                 callback();

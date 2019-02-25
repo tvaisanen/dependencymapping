@@ -141,9 +141,7 @@ class Client {
 
 
     static deleteConnectionById(connection: Connection): Promise<any> {
-        alert(JSON.stringify(connection))
         const uri = connectionDetailUrl(connection);
-        alert(uri)
         return axios.delete(uri);
     }
 
@@ -187,8 +185,7 @@ class Client {
     }
 
     static deleteTag(props): Promise<any> {
-
-        alert(`deleteTag: ${JSON.stringify(props.name)}`);
+        alert(JSON.stringify(props))
         return axios.delete(tagDetailUrl({name: props.name}));
     }
 }
