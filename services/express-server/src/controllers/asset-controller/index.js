@@ -5,5 +5,6 @@ module.exports = {
     getByName: require('./asset.getByName'),
     post: require('./asset.post'),
     put: require('./asset.put'),
-    delete: require('./asset.delete')
+    delete: require('./asset.delete'),
+    deleteByName: require('./asset.deleteByName'),
 };

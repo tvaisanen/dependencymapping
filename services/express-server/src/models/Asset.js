@@ -29,7 +29,10 @@ assetSchema.post('save', (asset) => {
 });
 
 
-assetSchema.post('remove', (asset, next) => {
+
+
+
+assetSchema.post('delete', (asset) => {
     console.log('\npost delete here \n')
     console.log(JSON.stringify(asset))
     Connection.find({$or: [{source: asset.name}, {target: asset.name}]});
