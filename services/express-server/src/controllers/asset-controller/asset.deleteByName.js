@@ -7,7 +7,7 @@ function assetDeleteByName(req, res){
         .then(asset => {
             asset.connected_to.forEach(target => {
                 console.log(`find: ${target}`)
-                Connection.deleteOne({$or: [{source: asset.name, target: target}, {target: asset.name}]})
+                Connection.deleteMany({$or: [{source: asset.name}, {target: asset.name}]})
                     .then((ok) => console.log(ok))
                     .catch(err => console.log(err))
             });
