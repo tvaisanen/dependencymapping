@@ -192,6 +192,25 @@ export function loadAssetsSuccess(assets: Array<Asset>) {
     return {type: types.LOAD_ASSETS_SUCCESS, assets}
 }
 
+/// GET ONE
+
+export function getAssetByName(props: {name: string, callback:(any)=>void}) {
+
+    return async function (dispatch: Dispatch, getState: State) {
+
+        const {form:{name}, callback} = props;
+
+        const asset = await api
+            .asset
+            .getByName(name)
+            .parseResponseContent();
+
+       console.log(asset)
+
+        // caller callback
+        return callback ? callback(asset) : null;
+    }
+}
 export function loadAssetSuccess(asset: Asset) {
     return {type: types.LOAD_ASSET_SUCCESS, asset}
 }

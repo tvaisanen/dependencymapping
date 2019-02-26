@@ -8,10 +8,19 @@ export const MAPPINGS_URL = `${API_URL}/mapping/`;
 export const CONNECTIONS_URL = `${API_URL}/connection/`;
 export const TAGS_URL = `${API_URL}/tag/`;
 export const RESOURCES_URL = `${API_URL}/asset/`;
+export const ASSETS_URL = `${API_URL}/asset/`;
 
 
-export function tagDetailUrl({name}) {
-    return `${TAGS_URL}deleteByName/${encodeURI(name)}/`;
+export function assetDetailUrlByName(name){
+    return `${ASSETS_URL}byName/${encodeURI(name)}/`;
+}
+
+export function tagDetailUrl(props) {
+    return `${TAGS_URL}/${encodeURI(props._id)}/`;
+}
+
+export function tagDetailUrlById(id) {
+    return `${TAGS_URL}/${encodeURI(id)}/`;
 }
 
 export function connectionDetailUrl(connection) {

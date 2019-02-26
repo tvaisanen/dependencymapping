@@ -1,8 +1,9 @@
 import * as types from './active-detail.action-types';
 import * as resourceTypes from '../../constants/types';
 import * as _ from 'lodash';
-import { ASSET, CONNECTION, MAPPING, TAG } from "../../constants/types";
-import { Asset, Connection, Mapping, Tag} from "../types";
+import {ASSET, CONNECTION, MAPPING, TAG} from "../../constants/types";
+import {Asset, Connection, Mapping, Tag} from "../types";
+import {deleteConnection, getAssetByName} from "..";
 
 
 export function setActiveDetail(activeDetail) {
@@ -54,6 +55,14 @@ export function setConnectionAsActiveDetail(activeDetail) {
 
             const filteredAssets = assets.filter(asset => _.includes(assetFilter, asset.name));
 
+            if (filteredAssets.length < 2) {
+                console.group("Asssets could not be found locally, check if they exist on the server)")
+                console.info(`fetchAssets(${activeDetail.data.source}, ${activeDetail.data.target}`);
+                dispatch(deleteConnection({form: activeDetail.data}));
+                alert('this connection should have been deleted')
+                console.groupEnd()
+                return null;
+            }
 
             const first = filteredAssets.pop();
 
@@ -119,15 +128,15 @@ export function setAssetAsActiveDetail(activeDetail) {
 
 
 type SetAsActiveProps = {
-   type: ASSET | CONNECTION | MAPPING | TAG,
-   data: Asset | Connection | Mapping | Tag
+    type: ASSET | CONNECTION | MAPPING | TAG,
+    data: Asset | Connection | Mapping | Tag
 }
 
 
-export function setAsActiveDetail(activeDetail: SetAsActiveProps){
+export function setAsActiveDetail(activeDetail: SetAsActiveProps) {
 
-    return function (dispatch){
-        switch (activeDetail.type){
+    return function (dispatch) {
+        switch (activeDetail.type) {
             case resourceTypes.ASSET:
                 dispatch(setAssetAsActiveDetail(activeDetail));
                 break;

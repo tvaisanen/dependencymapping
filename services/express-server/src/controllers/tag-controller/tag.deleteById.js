@@ -2,7 +2,10 @@ const Tag = require('../../models').Tag;
 
 function tagDeleteById(req,res) {
     console.log("DELETE TAG")
-    const query = {_id: req.params._id};
+
+    const query = {_id: req.params.id};
+    console.log(query)
+
     Tag.deleteOne(query)
         .then(msg => {
             console.log(msg);

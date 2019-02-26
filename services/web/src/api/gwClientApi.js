@@ -5,10 +5,12 @@ import {ASSET, CONNECTION, MAPPING, TAG} from "../constants";
 import ResponseParserConfig from './response-parser.config';
 import {
     tagDetailUrl,
+    tagDetailUrlById,
     connectionDetailUrl,
     connectionDetailBySourceAndTarget,
     mappingsDetailUrl,
     resourceDetailUrl,
+    assetDetailUrlByName,
     API_HOST,
     MAPPINGS_URL,
     CONNECTIONS_URL,
@@ -61,11 +63,11 @@ class Client {
 
     /** asset api calls */
     static asset = {
-        //get:    args => Client.apiCall(Client.getAsset, new ParserConfig(ASSET), args),
-        getAll: args => Client.apiCall(Client.getAssets,    assetParser, args),
-        put:    args => Client.apiCall(Client.putAsset,     assetParser, args),
-        post:   args => Client.apiCall(Client.postAsset,    assetParser, args),
-        delete: args => Client.apiCall(Client.deleteAsset,  assetParser,  args),
+        getByName:  args => Client.apiCall(Client.getAssetByName, assetParser, args),
+        getAll:     args => Client.apiCall(Client.getAssets,      assetParser, args),
+        put:        args => Client.apiCall(Client.putAsset,       assetParser, args),
+        post:       args => Client.apiCall(Client.postAsset,      assetParser, args),
+        delete:     args => Client.apiCall(Client.deleteAsset,    assetParser, args),
     };
 
     /** connection api calls */
@@ -162,6 +164,10 @@ class Client {
 
     /** ***********************************************************/
 
+    static getAssetByName(name: string): Promise<any> {
+        return axios.delete(assetDetailUrlByName(name));
+    }
+
     static deleteAsset(name: string): Promise<any> {
         return axios.delete(resourceDetailUrl({name}));
     }
@@ -186,7 +192,7 @@ class Client {
 
     static deleteTag(props): Promise<any> {
         alert(JSON.stringify(props))
-        return axios.delete(tagDetailUrl({name: props.name}));
+        return axios.delete(tagDetailUrlById(props._id));
     }
 }
 

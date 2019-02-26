@@ -3,9 +3,10 @@ const hal = require('../../utils/hal.utils');
 
 function getByName(req, res) {
 
+    console.log(`Asset.router.getByName(${req.params.name})`);
     // if id provided, get detail
-    if (req.params.id) {
-        Asset.findOne({_id: req.params.id})
+    if (req.params.name) {
+        Asset.findOne({name: req.params.name})
 
             .then(asset => {
                 if (!asset) {
@@ -18,3 +19,5 @@ function getByName(req, res) {
             }).catch(err => res.status(400).json(err));
     }
 }
+
+module.exports = getByName;
