@@ -11,6 +11,7 @@ import {
     mappingsDetailUrl,
     resourceDetailUrl,
     assetDetailUrlByName,
+    assetDetailUrlById,
     API_HOST,
     MAPPINGS_URL,
     CONNECTIONS_URL,
@@ -63,11 +64,13 @@ class Client {
 
     /** asset api calls */
     static asset = {
-        getByName:  args => Client.apiCall(Client.getAssetByName, assetParser, args),
-        getAll:     args => Client.apiCall(Client.getAssets,      assetParser, args),
-        put:        args => Client.apiCall(Client.putAsset,       assetParser, args),
-        post:       args => Client.apiCall(Client.postAsset,      assetParser, args),
-        delete:     args => Client.apiCall(Client.deleteAsset,    assetParser, args),
+        getByName:      args => Client.apiCall(Client.getAssetByName,       assetParser, args),
+        getAll:         args => Client.apiCall(Client.getAssets,            assetParser, args),
+        put:            args => Client.apiCall(Client.putAsset,             assetParser, args),
+        post:           args => Client.apiCall(Client.postAsset,            assetParser, args),
+        delete:         args => Client.apiCall(Client.deleteAsset,          assetParser, args),
+        deleteById:     args => Client.apiCall(Client.deleteAssetById,      assetParser, args),
+        deleteByName:   args => Client.apiCall(Client.deleteAssetByName,    assetParser, args),
     };
 
     /** connection api calls */
@@ -82,11 +85,12 @@ class Client {
 
     /** mapping api calls */
     static mapping = {
-        getAll: args => Client.apiCall(Client.getMappings, mappingParser, args),
+        getAll:     args => Client.apiCall(Client.getMappings, mappingParser, args),
         //get:    args => Client.apiCall(Client.getAsset, new ParserConfig(ASSET), args),
-        put:    args => Client.apiCall(Client.putMapping, mappingParser, args),
-        post:   args => Client.apiCall(Client.postMapping, mappingParser, args),
-        delete: args => Client.apiCall(Client.deleteMapping, mappingParser, args),
+        put:        args => Client.apiCall(Client.putMapping, mappingParser, args),
+        post:       args => Client.apiCall(Client.postMapping, mappingParser, args),
+        delete:     args => Client.apiCall(Client.deleteMapping, mappingParser, args),
+        deleteById: args => Client.apiCall(Client.deleteMappingById, mappingParser, args),
     };
 
     /** tag api calls */
@@ -162,14 +166,26 @@ class Client {
         return axios.delete(mappingsDetailUrl({name}));
     }
 
+    static deleteMappingById(id: string) {
+        //return axios.delete(mappingsDetailUrlById(id));
+    }
+
     /** ***********************************************************/
 
     static getAssetByName(name: string): Promise<any> {
         return axios.delete(assetDetailUrlByName(name));
     }
 
+    static deleteAssetById(id: string): Promise<any> {
+        return axios.delete(assetDetailUrlById(id));
+    }
+
+    static deleteAssetByName(name: string): Promise<any> {
+        return axios.delete(assetDetailUrlByName(name));
+    }
+
     static deleteAsset(name: string): Promise<any> {
-        return axios.delete(resourceDetailUrl({name}));
+        return axios.delete(assetDetailUrlByName(name));
     }
 
     static postAsset(asset: Asset): Promise<any> {

@@ -25,7 +25,8 @@ import {
     DELETE_CONNECTION,
     DELETE_CONNECTIONS,
     UPDATE_CONNECTION,
-    ADD_CONNECTIONS
+    ADD_CONNECTIONS,
+    DELETE_CONNECTIONS_TO_ASSET
 } from "./connection.action-types";
 import type {FormAndOptionalCallback} from "../store-action.arg-types";
 
@@ -285,6 +286,11 @@ export function updateAssetConnections(asset: Asset) {
 
 export function deleteConnections(connections: Array<Connection>) {
     return {type: DELETE_CONNECTIONS, connections};
+}
+
+export function deleteConnectionsToAsset(assetName: string){
+    console.log('deleting')
+    return {type: DELETE_CONNECTIONS_TO_ASSET, assetName}
 }
 
 // public namespace

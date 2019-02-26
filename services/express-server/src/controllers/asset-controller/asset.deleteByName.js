@@ -4,9 +4,11 @@ function assetDeleteByName(req, res){
     console.log(`Asset.router.assetDeleteByName(${req.params.name})`)
     const query = {name: req.params.name};
     Asset.findOneAndDelete(query)
+
         .then(asset => {
+
             asset.connected_to.forEach(target => {
-                console.log(`find: ${target}`)
+
                 Connection.deleteMany({$or: [{source: asset.name}, {target: asset.name}]})
                     .then((ok) => console.log(ok))
                     .catch(err => console.log(err))

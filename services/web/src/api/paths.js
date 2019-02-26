@@ -10,9 +10,33 @@ export const TAGS_URL = `${API_URL}/tag/`;
 export const RESOURCES_URL = `${API_URL}/asset/`;
 export const ASSETS_URL = `${API_URL}/asset/`;
 
+export default {
+    mapping
+}
+
+export const mapping = {
+    collection: () => ASSETS_URL,
+    detail: {
+        byId: (id)      => `${ASSETS_URL}${encodeURI(id)}/`,
+        byName: (name)  => `${ASSETS_URL}byName/${encodeURI(name)}/`
+    }
+};
+
+export const asset = {
+    collection: () => ASSETS_URL,
+    detail: {
+        byId: (id)      => `${ASSETS_URL}${encodeURI(id)}/`,
+        byName: (name)  => `${ASSETS_URL}byName/${encodeURI(name)}/`
+    }
+};
+
 
 export function assetDetailUrlByName(name){
     return `${ASSETS_URL}byName/${encodeURI(name)}/`;
+}
+
+export function assetDetailUrlById(id){
+    return `${ASSETS_URL}${encodeURI(id)}/`;
 }
 
 export function tagDetailUrl(props) {
@@ -38,5 +62,4 @@ export function mappingsDetailUrl({name}) {
 export function resourceDetailUrl({name}) {
     return `${RESOURCES_URL}${encodeURI(name)}/`;
 }
-
 /* ****************************************** */

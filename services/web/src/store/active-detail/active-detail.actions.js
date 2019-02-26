@@ -56,11 +56,12 @@ export function setConnectionAsActiveDetail(activeDetail) {
             const filteredAssets = assets.filter(asset => _.includes(assetFilter, asset.name));
 
             if (filteredAssets.length < 2) {
-                console.group("Asssets could not be found locally, check if they exist on the server)")
-                console.info(`fetchAssets(${activeDetail.data.source}, ${activeDetail.data.target}`);
+                // the assets have been deleted
+                // in this situation the assets
+                // connections should have been
+                // deleted too
                 dispatch(deleteConnection({form: activeDetail.data}));
-                alert('this connection should have been deleted')
-                console.groupEnd()
+                alert('this connection should have already been deleted');
                 return null;
             }
 
