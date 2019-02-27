@@ -1,8 +1,8 @@
 const Asset = require('../../models').Asset;
 
 function assetDelete(req, res){
-    console.log(`assetDelete:: ${req.params.id}`)
-    const query = {name: req.params.id};
+    console.log(`assetDeleteById:: ${req.params.id}`)
+    const query = {_id: req.params.id};
     Asset.deleteOne(query)
         .then(ok => {
             res.status(204).json();

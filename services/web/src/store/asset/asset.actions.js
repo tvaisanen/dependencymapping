@@ -77,7 +77,7 @@ export function updateAsset(props: FormAndOptionalCallback): Dispatch {
             const updatedAsset = await
                 api
                     .asset
-                    .put(form)
+                    .putById(form)
                     .parseResponseContent();
 
             dispatch(updateAssetSuccess({asset: updatedAsset}));
@@ -105,7 +105,46 @@ export function deleteAsset(props: {name: string, callback:(any)=>void}) {
 
         const {form:{name}, callback} = props;
 
+        await api.asset.deleteByName(name);
+
+        dispatch(deleteAssetSuccess(name));
+        dispatch(removeReferencesToDeletedAsset(name));
+        dispatch(mappingActions.removeDeletedAssetFromMappings(name));
+        dispatch(activeMappingActions.removeResourceFromActiveMapping({name}));
+        dispatch(setInfoMessage(`Deleted asset: ${name}`));
+        dispatch(deleteConnectionsToAsset(name));
+
+        // caller callback
+        callback ? callback() : null;
+    }
+}
+export function deleteAssetByName(props: {name: string, callback:(any)=>void}) {
+
+    return async function (dispatch: Dispatch, getState: State) {
+
+        const {form:{name}, callback} = props;
+
         await api.asset.delete(name);
+
+        dispatch(deleteAssetSuccess(name));
+        dispatch(removeReferencesToDeletedAsset(name));
+        dispatch(mappingActions.removeDeletedAssetFromMappings(name));
+        dispatch(activeMappingActions.removeResourceFromActiveMapping({name}));
+        dispatch(setInfoMessage(`Deleted asset: ${name}`));
+        dispatch(deleteConnectionsToAsset(name));
+
+        // caller callback
+        callback ? callback() : null;
+    }
+}
+
+export function deleteAssetById(props: {name: string, callback:(any)=>void}) {
+
+    return async function (dispatch: Dispatch, getState: State) {
+
+        const {form:{_id, name}, callback} = props;
+
+        await api.asset.deleteById(_id);
 
         dispatch(deleteAssetSuccess(name));
         dispatch(removeReferencesToDeletedAsset(name));

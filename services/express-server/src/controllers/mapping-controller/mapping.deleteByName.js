@@ -1,7 +1,7 @@
 const Mapping = require('../../models').Mapping;
 
-function mappingDeleteById(req, res) {
-    Mapping.remove({_id: req.params.id})
+function mappingDeleteById (req, res) {
+    Mapping.remove({name: req.params.name})
         .then(msg => {
             if (msg.ok === 1) {
                 res.status(204).json();

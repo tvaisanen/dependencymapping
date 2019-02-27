@@ -40,8 +40,9 @@ export default function (state: ConnectionState = initialState, action: Connecti
             return state.filter(connection => !_.includes(action.connections, connection));
 
         case DELETE_CONNECTIONS_TO_ASSET:
-            alert(JSON.stringify(action))
-            state.forEach(c => console.log(`${c.target} === ${action.assetName} || ${c.source} === ${action.assetName} : ${!(c.target === action.assetName || c.source === action.assetName)}`));
+            //state.forEach(c => console.log(`${c.target} === ${action.assetName}
+            // || ${c.source} === ${action.assetName} :
+            // ${!(c.target === action.assetName || c.source === action.assetName)}`));
             return state.filter(c => !(c.target === action.assetName || c.source === action.assetName));
 
         case UPDATE_CONNECTION:

@@ -10,26 +10,47 @@ export const TAGS_URL = `${API_URL}/tag/`;
 export const RESOURCES_URL = `${API_URL}/asset/`;
 export const ASSETS_URL = `${API_URL}/asset/`;
 
-export default {
-    mapping
-}
+console.group("Api client config");
+console.info(`URI: ${API_HOST}`);
+console.groupEnd();
+
 
 export const mapping = {
-    collection: () => ASSETS_URL,
+    collection: MAPPINGS_URL,
+    post: MAPPINGS_URL,
     detail: {
-        byId: (id)      => `${ASSETS_URL}${encodeURI(id)}/`,
-        byName: (name)  => `${ASSETS_URL}byName/${encodeURI(name)}/`
+        byId: (id)      => `${MAPPINGS_URL}${encodeURI(id)}/`,
+        byName: (name)  => `${MAPPINGS_URL}byName/${encodeURI(name)}/`
     }
 };
 
 export const asset = {
-    collection: () => ASSETS_URL,
+    collection: ASSETS_URL,
+    post: ASSETS_URL,
     detail: {
         byId: (id)      => `${ASSETS_URL}${encodeURI(id)}/`,
         byName: (name)  => `${ASSETS_URL}byName/${encodeURI(name)}/`
     }
 };
 
+export const connection = {
+    collection: CONNECTIONS_URL,
+    post: CONNECTIONS_URL,
+    detail: {
+        byId: (id)      => `${CONNECTIONS_URL}${encodeURI(id)}/`,
+        byName: (name)  => `${CONNECTIONS_URL}byName/${encodeURI(name)}/`,
+        byEndPoints: (connection) => `${CONNECTIONS_URL}?source=${encodeURI(connection.source)}&target=${encodeURI(connection.target)}`
+    }
+};
+
+export const tag = {
+    collection: TAGS_URL,
+    post: TAGS_URL,
+    detail: {
+        byId: (id)      => `${TAGS_URL}${encodeURI(id)}/`,
+        byName: (name)  => `${TAGS_URL}byName/${encodeURI(name)}/`
+    }
+};
 
 export function assetDetailUrlByName(name){
     return `${ASSETS_URL}byName/${encodeURI(name)}/`;
@@ -63,3 +84,10 @@ export function resourceDetailUrl({name}) {
     return `${RESOURCES_URL}${encodeURI(name)}/`;
 }
 /* ****************************************** */
+
+export default {
+    asset,
+    connection,
+    mapping,
+    tag
+}

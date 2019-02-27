@@ -28,6 +28,7 @@ import {
     ADD_CONNECTIONS,
     DELETE_CONNECTIONS_TO_ASSET
 } from "./connection.action-types";
+
 import type {FormAndOptionalCallback} from "../store-action.arg-types";
 
 const api = GwClientApi;
@@ -135,11 +136,15 @@ export function addConnections(connections: Array<Connection>) {
     return {type: ADD_CONNECTIONS, connections};
 }
 
-
 export function deleteConnection(props: FormAndOptionalCallback) {
     return async function (dispatch: Dispatch, getState: State) {
+        dispatch(deleteConnectionById(props))
+    }
+}
 
-        console.info(props)
+export function deleteConnectionById(props: FormAndOptionalCallback) {
+    return async function (dispatch: Dispatch, getState: State) {
+
         try {
 
             // for updating the source assets

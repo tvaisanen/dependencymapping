@@ -48,6 +48,7 @@ export function closeFormAndSetActiveDetail(activeDetail) {
 
 export function closeEdit() {
     return function (dispatch: Dispatch): void {
+        dispatch(detailFormActions.clearForm());
         dispatch(appActions.setEditFalse());
         dispatch(detailFormActions.setFormEditFalse());
         dispatch(appActions.setBottomPanelView(BROWSE))
@@ -189,7 +190,7 @@ export function onDelete(): Dispatch {
             try {
                 await
                     dispatch(typeToActionMap[formType]
-                        .delete(({
+                        .deleteById(({
                             form: {
                                 _id: detailForm._id,
                                 name: detailForm.name,

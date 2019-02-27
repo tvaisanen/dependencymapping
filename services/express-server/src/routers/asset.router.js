@@ -14,8 +14,8 @@ assetRouter.post('/',               (req,res) => AssetCtrl.post(req,res));
 
 // by id
 assetRouter.get('/:id',             (req,res) => AssetCtrl.getById(req,res));
-assetRouter.put('/:id',             (req,res) => AssetCtrl.put(req,res));
-assetRouter.delete('/:id',          (req,res) => AssetCtrl.delete(req,res));
+assetRouter.put('/:id',             (req,res) => AssetCtrl.putById(req,res));
+assetRouter.delete('/:id',          (req,res) => AssetCtrl.deleteById(req,res));
 
 // by name
 assetRouter.get('/byName/:name',    (req,res) => AssetCtrl.getByName(req,res));
