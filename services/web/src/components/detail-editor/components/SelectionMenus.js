@@ -5,15 +5,15 @@ import {connect} from 'react-redux'
 import styled from 'styled-components';
 import {nodeShapes, colorOptions} from "../../../store/graph/graph.styles";
 import * as detailEditorActions from '../detail-editor.actions'
-import { Label, SelectionField, FieldGroup, Select } from "../detail-editor.styled";
+import {Label, SelectionField, FieldGroup, Select} from "../detail-editor.styled";
 
 type SelectionMenusProps = {
     formType: string,
     assets: Array<String>,
     setValue: (any) => void,
-    onAssetGroupSelection: (value:string) => void,
-    onNodeColorSelection: (value:string) => void,
-    onNodeShapeSelection: (value:string) => void,
+    onAssetGroupSelection: (value: string) => void,
+    onNodeColorSelection: (value: string) => void,
+    onNodeShapeSelection: (value: string) => void,
     group: string,
     nodeShape: string,
     nodeColor: string
@@ -27,19 +27,19 @@ const SelectionMenus = (props: SelectionMenusProps) => (
                 onChange={props.onAssetGroupSelection}
                 assets={props.assets}/>
             <FieldGroup>
-            <NodeShapeSelection
-                selected={props.nodeShape}
-                onChange={props.onNodeShapeSelection}/>
-            <NodeColorSelection
-                selected={props.nodeColor}
-                onChange={props.onNodeColorSelection}/>
+                <NodeShapeSelection
+                    selected={props.nodeShape}
+                    onChange={props.onNodeShapeSelection}/>
+                <NodeColorSelection
+                    selected={props.nodeColor}
+                    onChange={props.onNodeColorSelection}/>
             </FieldGroup>
         </Container>
         : null
 );
 
 const mapStateToProps = (state, props) => ({
-    assets: ["none", ...state.assets.map(asset=>asset.name)],
+    assets: ["none", ...state.assets.map(asset => asset.name)],
     formType: state.detailForm.formType,
     group: state.detailForm.group,
     nodeShape: state.detailForm.nodeShape,
@@ -71,52 +71,65 @@ const Container = styled.div`
 `;
 
 
-
 const NodeGroupSelection = (props) => {
     return <SelectionField id={"select-asset-group"}>
-        <Label for="node-group">group</Label><br/>
+        <Label htmlFor="node-group">group</Label><br/>
         <Select
-        selected={"none"}
-        onChange={(e) => {
-            props.onChange((e.target.value: string));
-        }}>
+            defaultValue={props.selected}
+            onChange={(e) => {
+                props.onChange((e.target.value: string));
+            }}>
 
-            <option value="" disabled selected>select group</option>
-        {props.assets.map(option => (
-            <option
-                selected={option === props.selected}
-                onClick={(e)=>{
-                    e.preventDefault();
-                }}
-                value={option}
-            >{option}</option>))}
-    </Select></SelectionField>
+            <option value="" disabled>select group</option>
+            {props.assets.map((option, index) => (
+                <option
+                    key={index}
+                    onClick={(e) => {
+                        e.preventDefault();
+                    }}
+                    value={option}
+                >{option}</option>))}
+        </Select></SelectionField>
 };
 
 const NodeShapeSelection = (props) => {
 
     return <SelectionField>
-        <Label for="node-shape">shape</Label>
-        <Select name="node-shape" onChange={(e) => {props.onChange((e.target.value:string));}}>
+        <Label htmlFor="node-shape">shape</Label>
+        <Select
+            name="node-shape"
+            defaultValue={props.selected}
+            onChange={(e) => {
+                props.onChange((e.target.value: string));
+            }}>
 
-            <option value="" disabled selected>select shape</option>
-        {nodeShapes.map(option => <option
-            selected={option === props.selected}
-            value={option}>{option}</option>)}
-    </Select>
+            <option value="" disabled>select shape</option>
+            {nodeShapes.map((option, index) => (
+                <option
+                    key={index}
+                    value={option}>
+                    {option}
+                </option>)
+            )}
+        </Select>
     </SelectionField>
 };
 
 const NodeColorSelection = (props) => {
 
-    return<SelectionField>
-            <Label for="node-color">color</Label>
-    <Select name="node-color" onChange={(e) => {props.onChange((e.target.value:string));}}>
-        <option value="" disabled selected>select color</option>
-        {colorOptions.map(option => <option
-            selected={option === props.selected}
-            value={option}>{option}</option>)}
-    </Select>
+    return <SelectionField>
+        <Label htmlFor="node-color">color</Label>
+        <Select name="node-color"
+                defaultValue={props.selected}
+                onChange={(e) => {
+                    props.onChange((e.target.value: string));
+                }}>
+            <option value="" disabled>select color</option>
+            {colorOptions.map((option, index) => <option
+                key={index}
+                selected={option === props.selected}
+                value={option}>{option}</option>)}
+        </Select>
     </SelectionField>
 };
 
