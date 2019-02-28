@@ -33,10 +33,10 @@ export default function (state: ConnectionState = initialState, action: Connecti
             );
 
         case DELETE_CONNECTIONS:
-            state.forEach(c => {
-                const r = !_.includes(action.connections, c)
-                console.log(`remove: ${c.source}:${c.target} = ${r}`)
-            })
+            //state.forEach(c => {
+            //    const r = !_.includes(action.connections, c)
+            //    console.log(`remove: ${c.source}:${c.target} = ${r}`)
+            //})
             return state.filter(connection => !_.includes(action.connections, connection));
 
         case DELETE_CONNECTIONS_TO_ASSET:

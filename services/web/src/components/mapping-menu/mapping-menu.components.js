@@ -1,5 +1,5 @@
 import React from 'react';
-import * as s from './mapping-menu.styled'
+import {PanelHeader, ScrollContent, ListItem, SidePanelMenu, SelectFirst} from './mapping-menu.styled'
 
 export const Menu = (
     {title,
@@ -11,15 +11,15 @@ export const Menu = (
         selected,
         listItemType
     }) => (
-    <s.SidePanelMenu>
+    <SidePanelMenu>
 
-        <s.PanelHeader>
+        <PanelHeader>
                 {title}
-        </s.PanelHeader>
-        <s.ScrollContent>
+        </PanelHeader>
+        <ScrollContent>
             {listItems ?
                 listItems.map((listItem, i) => (
-                    <s.ListItem
+                    <ListItem
                         id={`list-item__${listItemType}`}
                         selected={selected === listItem}
                         darkButtons={darkButtons}
@@ -29,11 +29,11 @@ export const Menu = (
                         onMouseOut={onMouseOut ? () => onMouseOut(listItem) : null}
                     >
                         {listItem}
-                    </s.ListItem>)
+                    </ListItem>)
                 )
                 : null
             }
-            {title === "no selection" ? <s.SelectFirst>Create or select a mapping first, before adding assets.</s.SelectFirst> :  null }
-        </s.ScrollContent>
-    </s.SidePanelMenu>
+            {title === "no selection" ? <SelectFirst>Create or select a mapping first, before adding assets.</SelectFirst> :  null }
+        </ScrollContent>
+    </SidePanelMenu>
 );

@@ -1,10 +1,11 @@
-import {ASSET} from "../constants";
+import {ASSET} from "../../constants";
 import * as _ from 'lodash';
-import * as helpers from './graph-helpers';
-import * as resourceHelpers from "./resource-helpers";
-import * as activeMappingActions from '../store/active-mapping/active-mapping.actions';
-import * as activeDetailActions from '../store/active-detail/active-detail.actions';
-import * as eventHookActions from '../store/event-hook/event-hook.reducer';
+import * as helpers from '../../common/graph-helpers';
+import * as resourceHelpers from "../../common/resource-helpers";
+import * as activeMappingActions from '../active-mapping/active-mapping.actions';
+import * as activeDetailActions from '../active-detail/active-detail.actions';
+import * as eventHookActions from '../event-hook/event-hook.reducer';
+import {addAssetsToGraph} from "./graph.actions";
 
 export function onNodeMouseOver(event) {
     return function (dispatch, getState) {
@@ -55,9 +56,12 @@ export function onNodeClick(event) {
             const cy = event.target.cy();
 
             // name of the clicked asset
+            // todo: refactor to clickedAssetName
             const resourceName = event.target.id();
+            const clickedAssetName = resourceName;
 
             // set store active detail
+            // todo: get rid of this
             const clickedAsset = resourceHelpers
                 .getObjectByName({
                     name: resourceName,
@@ -72,9 +76,17 @@ export function onNodeClick(event) {
                     })
             );
 
+
             const clickedAssetIsConnectedTo = clickedAsset.connected_to;
 
+            // get assets that needs to be added to active mapping
             const connectedAssets = assets.filter(asset => _.includes(clickedAssetIsConnectedTo, asset.name));
+
+            dispatch(addAssetsToGraph(connectedAssets))
+
+            // get connections that other active assets might have
+            // with the added assets
+
 
             // the active mapping state needs to be updated by
             // adding the resources of the expanded node.
@@ -94,17 +106,16 @@ export function onNodeClick(event) {
 
             const nodesToCreate = helpers.assetsToNodes((connectedAssets: Array<Asset>));
 
-            const createEdgesFromThese = connections.filter(
-                connection => {
-                    // console.debug(`${connection.source} == ${resourceName}`)
-                    return connection.source === resourceName
-                }
-            );
 
-            // get filter connections
+            // get all connections that the clicked
+            // asset is associated with
+            const connectionsToDraw = connections.filter( c => (
+                c.source === clickedAssetName ||
+                c.target === clickedAssetName
+            ));
 
 
-            const edges = createEdgesFromThese.map(c => helpers.getEdgeFromConnection(c));
+            const edges = connectionsToDraw.map(c => helpers.getEdgeFromConnection(c));
 
 
 

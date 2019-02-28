@@ -59,7 +59,7 @@ export const PanelHeader = styled.div`
     text-align: center;
     text-transform: uppercase;
     letter-spacing: 0.07em;
-    padding: 6px 15px;
+    padding: 3px 2px;
     margin: 4px;
     border-radius: 3px;
 `;

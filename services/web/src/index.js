@@ -9,7 +9,7 @@ import * as storeActions from './store';
 import {ThemeProvider} from 'styled-components';
 import theme from './theme';
 import * as graphActions from './store/graph/graph.actions';
-import * as graphEvents from './common/graph.events';
+import * as graphEvents from './store/graph/graph.events';
 import apiClient from './api/gwClientApi';
 
 

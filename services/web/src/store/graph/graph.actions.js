@@ -1,4 +1,5 @@
 import * as types from './graph.action-types';
+import * as _ from 'lodash';
 
 import {ASSET, CONNECTION} from "../../constants";
 import {setEventHook, clearEventHook} from "../event-hook";
@@ -10,11 +11,26 @@ import * as assetActions from '../asset/asset.actions';
 import * as detailFormActions from '../detail-form/detail-form.actions';
 import * as connectionActions from '../connection/connection.actions';
 
+
 import cytoscape from 'cytoscape';
 import style from './graph.styles';
 import cxtmenu from 'cytoscape-cxtmenu';
 import cola from 'cytoscape-cola';
 import {updateAsset} from "..";
+
+// todo: refactor to utils
+import {getEdgeFromConnection } from "../../common/graph-helpers";
+
+export function assetToNode(asset: Asset) {
+    return {
+        group: 'nodes',
+        data: {
+            id: asset.name,
+            parent: asset.group || null
+        },
+        classes: `${asset.nodeShape} ${asset.nodeColor}`
+    };
+}
 
 cytoscape.use(cola);
 cytoscape.use(cxtmenu);
@@ -215,4 +231,50 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
 
 
     return cy;
+}
+
+
+export function addAssetsToGraph(assets: Array<Asset>) {
+    return function (dispatch: Dispatch, getState: State): void {
+
+        const {activeMapping} = getState();
+        console.log(activeMapping)
+
+        assets.forEach(asset => {
+
+            // if asset is already in active mapping skip it
+            if (!_.includes(activeMapping.assets, asset.name)) {
+                dispatch(addAssetToGraph(asset))
+            } else {
+                console.log(`skipped: ${asset.name} since its already drawn`)
+            }
+        })
+    }
+}
+
+export function addAssetToGraph(asset: Asset) {
+    return function (dispatch: Dispatch, getState: State): void {
+
+        const { graph } = getState();
+
+        // add asset to the graph as node
+        graph.add(assetToNode(asset));
+        // add the associated connections to the graph
+        dispatch(syncAssetConnectionsInGraph(asset));
+    }
+}
+
+export function syncAssetConnectionsInGraph(asset: Asset) {
+
+    return function (dispatch: Dispatch, getState: State): void {
+
+        const {connections,graph} = getState();
+
+        const connectionsToDraw = connections.filter(c => (
+            c.source === asset.name ||
+            c.target === asset.name
+        )).map(c => getEdgeFromConnection(c));
+
+        graph.add(connectionsToDraw);
+    }
 }
