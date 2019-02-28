@@ -9,9 +9,6 @@ const required = () => {
     throw new Error('Missing parameter')
 };
 
-export function nodeElementsFromResources(resources = required()) {
-
-}
 
 export function getEdgeId(source = required(), target = required()) {
     // always construct edge id for cy edge with this function

@@ -5,7 +5,7 @@ import * as resourceHelpers from "../../common/resource-helpers";
 import * as activeMappingActions from '../active-mapping/active-mapping.actions';
 import * as activeDetailActions from '../active-detail/active-detail.actions';
 import * as eventHookActions from '../event-hook/event-hook.reducer';
-import {addAssetsToGraph} from "./graph.actions";
+import {addAssetsToGraph, syncAssetConnectionsInGraph} from "./graph.actions";
 
 export function onNodeMouseOver(event) {
     return function (dispatch, getState) {
@@ -104,28 +104,20 @@ export function onNodeClick(event) {
 
             const layout = getState().app.graph.selectedLayout;
 
-            const nodesToCreate = helpers.assetsToNodes((connectedAssets: Array<Asset>));
+            // const nodesToCreate = helpers.assetsToNodes((connectedAssets: Array<Asset>));
+            // helpers.addElements(cy, nodesToCreate);
 
 
             // get all connections that the clicked
             // asset is associated with
-            const connectionsToDraw = connections.filter( c => (
-                c.source === clickedAssetName ||
-                c.target === clickedAssetName
-            ));
-
-
-            const edges = connectionsToDraw.map(c => helpers.getEdgeFromConnection(c));
+            dispatch(syncAssetConnectionsInGraph(clickedAsset));
 
 
 
-            helpers.addElements(cy, nodesToCreate);
-            helpers.addElements(cy, edges);
-
-            if (nodesToCreate.length > 0) {
-                // nodes are created, update the layout
-                helpers.updateLayout(cy, layout);
-            }
+            //if (nodesToCreate.length > 0) {
+            //    // nodes are created, update the layout
+            //   helpers.updateLayout(cy, layout);
+            //}
 
         }
     };

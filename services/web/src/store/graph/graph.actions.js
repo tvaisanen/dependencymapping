@@ -11,6 +11,7 @@ import * as assetActions from '../asset/asset.actions';
 import * as detailFormActions from '../detail-form/detail-form.actions';
 import * as connectionActions from '../connection/connection.actions';
 
+import {layoutOptions} from "./graph.styles";
 
 import cytoscape from 'cytoscape';
 import style from './graph.styles';
@@ -19,7 +20,7 @@ import cola from 'cytoscape-cola';
 import {updateAsset} from "..";
 
 // todo: refactor to utils
-import {getEdgeFromConnection } from "../../common/graph-helpers";
+import {getEdgeFromConnection} from "../../common/graph-helpers";
 
 export function assetToNode(asset: Asset) {
     return {
@@ -240,22 +241,53 @@ export function addAssetsToGraph(assets: Array<Asset>) {
         const {activeMapping} = getState();
         console.log(activeMapping)
 
+        let needToRedrawLayout = false;
+
         assets.forEach(asset => {
 
             // if asset is already in active mapping skip it
             if (!_.includes(activeMapping.assets, asset.name)) {
+                // update layout only if there's new assets
+                needToRedrawLayout = true;
                 dispatch(addAssetToGraph(asset))
-            } else {
-                console.log(`skipped: ${asset.name} since its already drawn`)
             }
-        })
+        });
+
+        if (needToRedrawLayout){
+            dispatch(updateLayout());
+        }
+    }
+}
+
+export function updateLayout() {
+    return function (dispatch: Dispatch, getState: State): void {
+
+        const {graph, app} = getState();
+        const {selectedLayout} = app.graph;
+
+        try {
+            // if selected layout has additional options
+            const options = layoutOptions[selectedLayout] || [];
+            const layout = selectedLayout || "preset";
+
+            const layoutToRun = graph.layout({
+                name: layout
+                , ...options
+            });
+            layoutToRun.run();
+
+        } catch (e) {
+            console.error(e);
+        }
+
+
     }
 }
 
 export function addAssetToGraph(asset: Asset) {
     return function (dispatch: Dispatch, getState: State): void {
 
-        const { graph } = getState();
+        const {graph} = getState();
 
         // add asset to the graph as node
         graph.add(assetToNode(asset));
@@ -268,7 +300,7 @@ export function syncAssetConnectionsInGraph(asset: Asset) {
 
     return function (dispatch: Dispatch, getState: State): void {
 
-        const {connections,graph} = getState();
+        const {connections, graph} = getState();
 
         const connectionsToDraw = connections.filter(c => (
             c.source === asset.name ||
