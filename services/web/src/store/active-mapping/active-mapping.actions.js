@@ -7,6 +7,7 @@ import type {
 } from "./active-mapping.types";
 
 import * as mappingHelpers from './active-mapping.utils';
+import {addAssetToGraph, updateLayout} from "../graph/graph.actions";
 
 export function setActiveMapping(mapping: ActiveMappingState)
     : ActiveMappingAction {
@@ -43,78 +44,16 @@ export function addResourceToActiveMapping(asset) {
 
     return function (dispatch, getState) {
 
-        const {activeMapping, assets, graph} = getState();
+        const {activeMapping} = getState();
 
         if (activeMapping.name === "no selection") {
             alert("Create or select a mapping first, before adding assets.")
-            return;
+
+        } else {
+            dispatch({type: types.ADD_ACTIVE_MAPPING_ASSET, asset: asset.name});
+            dispatch(addAssetToGraph(asset));
+            dispatch(updateLayout());
         }
-
-        const newAssetName = asset.name;
-
-        const edgeElements = asset.connected_to.map(
-            target => graphHelpers
-                .edgeElementFromResource(asset.name, target.name)
-        );
-
-
-        const cy = getState().graph;
-        const node = graphHelpers.nodeElementFromResource(asset);
-
-
-        dispatch({type: types.ADD_ACTIVE_MAPPING_ASSET, asset: asset.name});
-
-        // check if the assets in map have connections
-        // to the new asset
-
-        console.group("Check if premapped points to new");
-        const preMappedAssetObjects = assets.filter(asset => {
-            return _.includes(activeMapping.assets, asset.name);
-        });
-
-        // todo: refactor to reduce
-        let preMappedToNewEdges = [];
-
-        preMappedAssetObjects.forEach(preMappedAsset => {
-            preMappedAsset.connected_to.forEach(target => {
-                if (target === newAssetName) {
-                    preMappedToNewEdges.push(
-                        graphHelpers.edgeElementFromResource(
-                            preMappedAsset.name,
-                            newAssetName
-                        )
-                    );
-                }
-            })
-        });
-
-
-        //graphHelpers.addElement(cy, node);
-        graph.add(node);
-        graphHelpers.addElements(cy, preMappedToNewEdges);
-        graphHelpers.addElements(cy, edgeElements);
-
-        // move children under parent if exist
-
-        const assetObjects = assets.filter(asset => {
-            return _.includes(activeMapping.assets, asset.name)
-        });
-
-        assetObjects.forEach(a => {
-            const el = graph.getElementById(a.name);
-            console.info(a)
-            if (a.group === asset.name) {
-                el.move({parent: asset.name})
-            }
-            console.info(`${el.parent().id()} -> ${el.id()} `);
-        });
-        graph.elements('node').forEach(el => {
-            console.info(`${el.parent().id()} -> ${el.id()} `);
-        });
-
-        console.groupEnd();
-
-        graphHelpers.updateLayout(cy, "cola");
     }
 }
 
