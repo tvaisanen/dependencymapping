@@ -77,6 +77,7 @@ MappingMenuContainer.propTypes = {
 export const MappingLists = styled.div`
   grid-area: lists;
   display: flex;
+  overflow: hidden;
 `;
 
 export const MenuColumn = styled.div`
