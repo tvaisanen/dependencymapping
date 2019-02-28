@@ -236,7 +236,7 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
 }
 
 
-export function addAssetsToGraph(assets: Array<Asset>) {
+export function addAssetsToGraph(assetsToAdd: Array<Asset>) {
     return function (dispatch: Dispatch, getState: State): void {
 
         const {activeMapping} = getState();
@@ -244,17 +244,18 @@ export function addAssetsToGraph(assets: Array<Asset>) {
 
         let needToRedrawLayout = false;
 
-        assets.forEach(asset => {
+        assetsToAdd.forEach(asset => {
 
             // if asset is already in active mapping skip it
             if (!_.includes(activeMapping.assets, asset.name)) {
+
                 // update layout only if there's new assets
                 needToRedrawLayout = true;
                 dispatch(addAssetToGraph(asset))
             }
         });
 
-        if (needToRedrawLayout){
+        if (needToRedrawLayout) {
             dispatch(updateLayout());
         }
     }
@@ -329,11 +330,21 @@ export function syncAssetConnectionsInGraph(asset: Asset) {
 
         const {connections, graph} = getState();
 
-        const connectionsToDraw = connections.filter(c => (
-            c.source === asset.name ||
-            c.target === asset.name
-        )).map(c => getEdgeFromConnection(c));
+        // get all connections where the asset is
+        // either source or target and create an
+        // array of graph compatible edge elements
+        // and then filter out the edges that do
+        // not have the other endpoint drawn in the
+        // graph.
+        const edgesToDraw = connections
+            .filter(c => (c.source === asset.name || c.target === asset.name))
+            .map(c => getEdgeFromConnection(c))
+            .filter(edge => {
+                const sourceEle = graph.getElementById(edge.data.source);
+                const targetEle = graph.getElementById(edge.data.target);
+                return sourceEle.isNode() && targetEle.isNode();
+            });
 
-        graph.add(connectionsToDraw);
+        graph.add(edgesToDraw);
     }
 }

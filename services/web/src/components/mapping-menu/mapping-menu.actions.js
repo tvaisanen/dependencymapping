@@ -6,9 +6,12 @@ import { setAsActiveDetail } from "../../store/active-detail/active-detail.actio
 
 export function onMappingItemClick(mappingName){
     return function(dispatch, getState){
-        const { app:{ bottomPanel } } = getState();
+        const { activeMapping, app:{ bottomPanel } } = getState();
 
-        dispatch(dependencyMapHelpers.loadDependencyMap(mappingName));
+        if (activeMapping.name !== mappingName){
+            dispatch(dependencyMapHelpers.loadDependencyMap(mappingName));
+        }
+
         dispatch(setBottomPanelView(views.BROWSE));
 
         if (!bottomPanel.visible){
