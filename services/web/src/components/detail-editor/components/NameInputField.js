@@ -21,19 +21,24 @@ const Label = styled.label`
 const Input = styled.input`
     flex-grow: 1;
     border-radius: 3px;
+    padding-left: 6px;
+    
+    ::placeholder {
+      color: rgba(255,22,22,0.5);
+    }
 `;
 
 const NameInputField = (props) => {
+
+    const errorMsg = props.error;
+
     return (
         <Container>
-            {props.error ?
-                <span>{props.error}</span>
-                : null
-            }
             <Label>name</Label>
             <Input type={"text"}
                    readOnly={props.readOnly}
                    value={props.name ? props.name : ""}
+                   placeholder={errorMsg}
                    onChange={(e) => {
                        if (e.target.value===""){this.value=""}
                        props.onChange(e.target.value);
