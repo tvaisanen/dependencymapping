@@ -21,6 +21,7 @@ import {updateAsset} from "..";
 
 // todo: refactor to utils
 import {getEdgeFromConnection} from "../../common/graph-helpers";
+import {removeResourceFromActiveMapping} from "../active-mapping/active-mapping.actions";
 
 export function assetToNode(asset: Asset) {
     return {
@@ -256,6 +257,32 @@ export function addAssetsToGraph(assets: Array<Asset>) {
         if (needToRedrawLayout){
             dispatch(updateLayout());
         }
+    }
+}
+
+export function removeAssetFromGraph(asset: Asset) {
+    return function (dispatch, getState) {
+        const {graph} = getState();
+
+        const el = graph.getElementById(asset.name);
+
+        // before deleting parent node, get the children
+        if (el.isParent()) {
+            const removeChildren = window.confirm("remove the sub-graph too?");
+            if (removeChildren) {
+                el.children().forEach(child => {
+                    console.info("this needs to be removed");
+                    const removeThis = {name: child.id()};
+                    console.info(removeThis);
+                    dispatch(removeResourceFromActiveMapping(removeThis));
+                });
+            } else {
+                // move children
+                el.children().move({parent: null})
+            }
+        }
+
+        graph.remove(el);
     }
 }
 
