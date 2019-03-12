@@ -22,7 +22,7 @@ assetSchema.post('save', (asset) => {
     asset.connected_to.forEach(target => {
         const connection = new Connection({source: asset.name, target: target});
         connection
-            .save()
+            .save(() =>  console.log("here"))
             .then()
             .catch(err => console.log(`error saving connection: ${err}`))
     })
@@ -31,20 +31,9 @@ assetSchema.post('save', (asset) => {
 
 
 
+assetSchema.post('findOneAndUpdate()', (asset) => {
+    console.log('\nfindoneandupdate middle \n')
 
-assetSchema.post('delete', (asset) => {
-    console.log('\npost delete here \n')
-    console.log(JSON.stringify(asset))
-    Connection.find({$or: [{source: asset.name}, {target: asset.name}]});
-    /*console.log(JSON.stringify(asset))
-    asset.connected_to.forEach(target => {
-        const connection = new Connection({source: asset.name, target: target});
-        connection
-            .save()
-            .then()
-            .catch(err => console.log(`error saving connection: ${err}`))
-    })*/
-    next();
 });
 
 try {

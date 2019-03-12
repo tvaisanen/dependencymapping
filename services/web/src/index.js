@@ -40,9 +40,9 @@ console.groupEnd();
 const eventHandlers = [
     {action:'tap', selector:'node', callback:(event) => store.dispatch(graphEvents.onNodeClick(event))},
     //{action:'tap', selector:'cy', callback:(event) => store.dispatch(graphEvents.onCanvasClick(event))}
-        //mouseover: ['node',  (event) => store.dispatch(graphEvents.onNodeMouseOver(event))],
-        //mouseout: ['node', (event) => store.dispatch(graphEvents.onNodeMouseOut(event))],
-        //cxttap: ['node', (event) => store.dispatch(graphEvents.onCtxClick(event))]
+    //mouseover: ['node',  (event) => store.dispatch(graphEvents.onNodeMouseOver(event))],
+    //mouseout: ['node', (event) => store.dispatch(graphEvents.onNodeMouseOut(event))],
+    //cxttap: ['node', (event) => store.dispatch(graphEvents.onCtxClick(event))]
 ];
 
 

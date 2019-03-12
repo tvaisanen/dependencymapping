@@ -1,7 +1,6 @@
 const assert = require('assert').assert;
 const {expect, should} = require('chai');
-const Asset = require('../src/models').Asset;
-const Connection = require('../src/models').Connection;
+const { Asset, Connection } = require('../src/models');
 const path = require('path');
 
 const initDatabaseConnection = require('../src/database');

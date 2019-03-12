@@ -7,7 +7,7 @@ import {setEventHook, clearEventHook} from "../event-hook";
 import * as activeDetailActions from '../active-detail/active-detail.actions';
 import * as activeMappingActions from '../active-mapping/active-mapping.actions';
 import {editDetail, setInfoMessage} from '../../store/ui/ui.actions';
-import * as assetActions from '../asset/asset.actions';
+import {updateAssetByName} from '../asset/asset.actions';
 import * as detailFormActions from '../detail-form/detail-form.actions';
 import * as connectionActions from '../connection/connection.actions';
 
@@ -125,7 +125,7 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                         notification: `Select asset to group ${ele.id()} or `,
                         optionalAction: {
                             callback: () => {
-                                dispatch(updateAsset({form: {name: ele.id(), group: "none"}}));
+                                dispatch(updateAssetByName({form: {name: ele.id(), group: "none"}}));
                                 dispatch(clearEventHook());
                             },
                             name: "ungroup"
@@ -136,7 +136,7 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                                 group: assetName
                             };
 
-                            dispatch(assetActions.updateAsset({form: updatedAsset}));
+                            dispatch(updateAssetByName({form: updatedAsset}));
                             dispatch(clearEventHook());
                             dispatch(setInfoMessage("grouping should be done."));
                         }

@@ -65,6 +65,28 @@ export function postAssetSuccess(asset: Asset) {
 
 /************** UPDATE ******************/
 
+export function updateAssetByName(props: FormAndOptionalCallback): Dispatch {
+    return async function (dispatch: Dispatch, getState: State): void {
+        // get id of asset
+        const {assets} = getState();
+        const {form, callback} = props;
+
+        const assetToUpdate = assets.filter(a => a.name === form.name)[0];
+
+        console.log(assetToUpdate)
+        console.log(form);
+
+        const modifiedAsset = {
+            ...assetToUpdate,
+            ...form
+        };
+
+        console.log(modifiedAsset)
+        dispatch(updateAsset({form: modifiedAsset}));
+
+    };
+}
+
 
 export function updateAsset(props: FormAndOptionalCallback): Dispatch {
     // updates asset/resource to the database

@@ -83,12 +83,10 @@ describe('Asset API endpoint ', function () {
 
     it('delete returns success', (done) => {
         chai.request(HOST)
-            .get('/asset/?name=TestPageFour')
+            .get('/asset/byName/TestPageFour')
             .end((err, res) => {
-                console.log(res)
                 chai.request(HOST)
                     .delete(`/asset/${res.body._id}`)
-                    .send({name: "TestPageFour"})
                     .end((err, res) => {
                         expect(res).to.have.status(204);
                         done();
