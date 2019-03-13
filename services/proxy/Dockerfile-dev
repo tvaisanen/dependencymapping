@@ -6,6 +6,8 @@ RUN apk add openssl apache2-utils
 
 COPY ./default.dev.conf /etc/nginx/conf.d/default.conf
 COPY ./nginx.conf /etc/nginx/nginx.conf
+COPY ./entrypoint.sh /etc/nginx/entrypoint.sh
+RUN chmod 755 /etc/nginx/entrypoint.sh
 
 RUN mkdir /etc/nginx/auth.d
 RUN touch /etc/nginx/auth.d/auth.pwd
@@ -14,4 +16,12 @@ RUN htpasswd -b -d -c /etc/nginx/auth.d/auth.pwd admin password
 COPY ./ssl/ /etc/nginx/ssl
 COPY ./snippets/ /etc/nginx/snippets
 
-RUN ls /etc/nginx
+
+# start cron daemon to periodically
+# reload the nginx -> this is needed
+# for cert renewal
+RUN crond
+RUN (crontab -l && echo "*/1	*	*	*	*	nginx -s reload") | crontab -
+
+
+# RUN sh -c 'while :; do sleep 5s & wait $${!}; echo "update cert"'

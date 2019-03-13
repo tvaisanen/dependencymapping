@@ -57,10 +57,13 @@ services:
         build:
           context: ./services/proxy
           dockerfile: Dockerfile-dev
+        #command: sh -c /etc/nginx/entrypoint.sh
+        command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
         volumes:
           - ./services/proxy/default.dev.conf:/etc/nginx/conf.d/default.conf
           - ./services/proxy/nginx.conf:/etc/nginx/nginx.conf
           - ./services/proxy/site-enabled/:/etc/nginx/site-enabled
+          - ./services/certbot/data/:/data/certbot
 
         networks:
           - public
