@@ -19,12 +19,15 @@ const assetSchema = new mongoose.Schema({
 
 
 assetSchema.post('save', (asset) => {
+    console.log(asset)
     asset.connected_to.forEach(target => {
         const connection = new Connection({source: asset.name, target: target});
-        connection
-            .save(() =>  console.log("here"))
-            .then()
-            .catch(err => console.log(`error saving connection: ${err}`))
+        console.log(connection)
+        try {
+            connection.save(() => console.log("connectionSaved"))
+        } catch (err){
+            console.error("error saving connection")
+        }
     })
 });
 
