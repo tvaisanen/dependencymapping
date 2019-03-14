@@ -95,6 +95,7 @@ class Client {
         getAll:         args => Client.apiCall(Client.getConnections, connectionParser, args),
         //get:          args => Client.apiCall(Client.getAsset, new ParserConfig(ASSET), args),
         put:            args => Client.apiCall(Client.putConnection, connectionParser, args),
+        putByEndpoints: args => Client.apiCall(Client.putConnectionByEndpoints, connectionParser, args),
         post:           args => Client.apiCall(Client.postConnection, connectionParser, args),
         deleteById:     args => Client.apiCall(Client.deleteConnectionById, connectionParser, args),
         deleteByName:   args => Client.apiCall(Client.deleteConnectionByEndpoints, connectionParser, args),
@@ -110,6 +111,11 @@ class Client {
 
     static putConnection(connection: Connection): Promise<any> {
         const url= paths.connection.detail.byId(connection._id);
+        return axios.put(url, connection);
+    }
+
+    static putConnectionByEndpoints(connection: Connection): Promise<any> {
+        const url= paths.connection.detail.byEndPoints(connection);
         return axios.put(url, connection);
     }
 

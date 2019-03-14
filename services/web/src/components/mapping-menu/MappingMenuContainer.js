@@ -67,7 +67,7 @@ MappingMenuContainer.propTypes = {
     mappingNameList: PropTypes.array.isRequired,
     activeDetail: PropTypes.object.isRequired,
     activeMapping: PropTypes.object.isRequired,
-    activeResourceNameList: PropTypes.array,
+    activeMappingAssetNameList: PropTypes.array,
     hoverResourceOn: PropTypes.func.isRequired,
     hoverResourceOff: PropTypes.func.isRequired,
     onMappingItemClick: PropTypes.func.isRequired,

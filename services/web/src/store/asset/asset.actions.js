@@ -102,6 +102,13 @@ export function updateAsset(props: FormAndOptionalCallback): Dispatch {
                     .putById(form)
                     .parseResponseContent();
 
+            // the connections that might have been
+            // created by the update asset on the
+            // server side, are also created locally
+            // in the clients browser.
+            // The IDs are created on the server side
+            // and returned as embedded data in the updatedAsset
+
             dispatch(updateAssetSuccess({asset: updatedAsset}));
             dispatch(setInfoMessage(`Updated asset: ${updatedAsset.name}`));
             dispatch(connectionActions.updateAssetConnections(updatedAsset));

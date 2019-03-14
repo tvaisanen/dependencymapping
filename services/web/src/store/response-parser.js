@@ -18,6 +18,7 @@ const HALResourceParser = {
 };
 
 function parseHALAsset(data) {
+    //alert(JSON.stringify(data._embedded.connected_to))
     return {
         _id: data._id,
         name: data.name,

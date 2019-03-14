@@ -208,10 +208,14 @@ export function updateConnection(props: FormAndOptionalCallback) {
             // for updating the source assets
             // connected to list
             const {form, callback} = props;
+
+            // Use putByEndpoints since the _ids are created
+            // on the server side. Client generates the connections
+            // when required and those lack the ids..
             const updatedConnection = await
                 api
                     .connection
-                    .put(form)
+                    .putByEndpoints(form)
                     .parseResponseContent();
 
 
@@ -244,6 +248,8 @@ export function updateConnectionSuccess(connection: Connection) {
 
 export function updateAssetConnections(asset: Asset) {
     return function (dispatch: Dispatch, getState: State) {
+
+        // _embedded.connected_to({name, href})
 
         const {connections} = getState();
 

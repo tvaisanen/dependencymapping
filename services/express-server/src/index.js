@@ -5,8 +5,11 @@ const cors = require('cors');
 const testHandlers = require('./utils/testHandlers');
 const initDatabaseConnection = require('./database');
 const { registerRoutes } = require('./routers/');
+const { registerWs } = require('./socket');
 
 let app = express();
+//const expressWs = require('express-ws')(app);
+const expressWs = registerWs(app);
 
 /*if (process.env.NODE_ENV === "PRODUCTION"){
     const compression = require('compression');
@@ -20,6 +23,30 @@ let app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
+
+/* WEBSOCKET */
+
+app.ws('/', function(ws, req) {
+
+    ws.on('connection', function(ws, req, next){
+        console.log('connected');
+        ws.send('hello there')
+    });
+
+    ws.on('message', function(msg){
+        console.log(msg);
+        ws.send('back at u')
+    });
+});
+
+app.use('/broadcast', (req,res) => {
+   expressWs.getWss('/').clients.forEach(client => {
+       client.send('broadcast message')
+   });
+   res.send(200);
+});
+
+/*************/
 
 // init db connection
 initDatabaseConnection();

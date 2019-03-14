@@ -19,7 +19,8 @@ const assetSchema = new mongoose.Schema({
 
 
 assetSchema.post('save', (asset) => {
-    console.log(asset)
+    console.log("assetSchema.post('save', asset)");
+    console.log(asset);
     asset.connected_to.forEach(target => {
         const connection = new Connection({source: asset.name, target: target});
         console.log(connection)
@@ -34,9 +35,19 @@ assetSchema.post('save', (asset) => {
 
 
 
-assetSchema.post('findOneAndUpdate()', (asset) => {
-    console.log('\nfindoneandupdate middle \n')
-
+assetSchema.post('findOneAndUpdate', (asset) => {
+    console.log("assetSchema.post('updateOne', asset)");
+    console.log(asset)
+    asset.connected_to.forEach(target => {
+        const connection = new Connection({source: asset.name, target: target});
+        console.log(connection)
+        try {
+            connection.save(() => console.log("connectionSaved"))
+        } catch (err){
+            console.error("error saving connection")
+            console.error(err)
+        }
+    })
 });
 
 try {

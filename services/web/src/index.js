@@ -11,6 +11,7 @@ import theme from './theme';
 import * as graphActions from './store/graph/graph.actions';
 import * as graphEvents from './store/graph/graph.events';
 import apiClient from './api/gwClientApi';
+import * as socket from './server-web-socket';
 
 
 if (
@@ -36,7 +37,7 @@ console.info(Object.keys(process.env));
 console.info(process.env.MESSAGE)
 console.groupEnd();
 
-// ! todo: continue here.. tap canvas and node separately
+// ! todo: refactor to graphstore
 const eventHandlers = [
     {action:'tap', selector:'node', callback:(event) => store.dispatch(graphEvents.onNodeClick(event))},
     //{action:'tap', selector:'cy', callback:(event) => store.dispatch(graphEvents.onCanvasClick(event))}
@@ -45,8 +46,6 @@ const eventHandlers = [
     //cxttap: ['node', (event) => store.dispatch(graphEvents.onCtxClick(event))]
 ];
 
-
-// configure application here based on the environment variables
 
 ReactDOM.render(
     <Provider store={store}>
@@ -57,5 +56,7 @@ ReactDOM.render(
     , document.getElementById('root'));
 
 store.dispatch(graphActions.initGraph({eventHandlers}));
+
+socket.initConnection();
 
 registerServiceWorker();

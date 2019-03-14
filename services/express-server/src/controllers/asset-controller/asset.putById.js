@@ -6,7 +6,9 @@ function assetPutById(req, res) {
     console.log(`asset.router.putById(${req.params.id})`);
     const query = {_id: req.params.id};
 
-    Asset.updateOne(query, req.body)
+    console.log(req.body)
+
+    Asset.findOneAndUpdate(query, req.body)
 
         .then(ok => {
             Asset.findOne(query)

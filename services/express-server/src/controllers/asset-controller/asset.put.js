@@ -6,7 +6,7 @@ function assetPut(req, res){
 
     const query = {name: req.params.id};
 
-    Asset.updateOne(query, req.body)
+    Asset.findOneAndUpdate(query, req.body)
 
         .then(ok => {
             Asset.findOne(query)

@@ -1,6 +1,5 @@
 
 function serializeAsset(host, resource) {
-
     console.log(`serialize: ${resource.name}`)
     try {
         return {
@@ -67,7 +66,7 @@ function serializeConnection(host, resource) {
             },
             tags: resource._doc.tags.map(tag => ({
                         name: tag,
-                        href: `${host}/tag/?name=${encodeURI(tag)}`
+                        href: `${host}/tag/?name=${encodeURI(tag)}`,
                     })
             )
         },
