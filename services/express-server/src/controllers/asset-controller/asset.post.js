@@ -1,6 +1,6 @@
 const Asset = require('../../models').Asset;
 const hal = require('../../utils/hal.utils');
-const { broadcastToClients } = require('../../socket/');
+//const { broadcastToClients } = require('../../socket/');
 
 function assetPost(req, res){
 
@@ -29,7 +29,7 @@ function assetPost(req, res){
                         .save()
                         .then(saved => {
                             const halAsset = hal.serializeAsset(`${req.headers.host}`, saved);
-                            broadcastToClients(`new asset, plz run: assetActions.getAssetById('${saved._id}')`);
+                            //broadcastToClients(`new asset, plz run: assetActions.getAssetById('${saved._id}')`);
                             res.status(201).send(halAsset);
                     }).catch(err => {
                         console.log(err);
