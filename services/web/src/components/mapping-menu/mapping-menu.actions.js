@@ -3,15 +3,24 @@ import * as activeDetailActions from '../../store/active-detail/active-detail.ac
 import * as dependencyMapHelpers from '../../store/active-mapping/active-mapping.utils';
 import {setBottomPanelView, showBottomPanel} from "../../store/ui/ui.actions";
 import { setAsActiveDetail } from "../../store/active-detail/active-detail.actions";
+import { MAPPING } from "../../constants";
 
 export function onMappingItemClick(mappingName){
     return function(dispatch, getState){
-        const { activeMapping, app:{ bottomPanel } } = getState();
+        const { activeMapping, mappings, app:{ bottomPanel } } = getState();
 
         if (activeMapping.name !== mappingName){
             dispatch(dependencyMapHelpers.loadDependencyMap(mappingName));
         }
 
+        // Set mapping as active.
+        const mapping = mappings.filter(m => m.name === mappingName)[0];
+
+        dispatch(activeDetailActions.setAsActiveDetail({
+                data: mapping,
+                type: MAPPING
+            })
+        );
         dispatch(setBottomPanelView(views.BROWSE));
 
         if (!bottomPanel.visible){

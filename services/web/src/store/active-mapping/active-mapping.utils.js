@@ -70,12 +70,6 @@ export function loadDependencyMap(mapId) {
         graphHelpers.addElements(cy, nodes);
         graphHelpers.addElements(cy, edges);
 
-        dispatch(activeDetailActions.setAsActiveDetail({
-                data: mapping,
-                type: types.MAPPING
-            })
-        );
-
         // update the graph layout
         graphHelpers.updateLayout(cy, layout);
 
