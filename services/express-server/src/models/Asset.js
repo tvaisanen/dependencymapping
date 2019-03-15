@@ -20,56 +20,22 @@ const assetSchema = new mongoose.Schema({
 
 
 assetSchema.post('save', (asset) => {
-    console.log("\tassetSchema.post('save', asset)");
-    console.log(asset);
-    syncAssetConnections(asset)
-    /*
+    console.log(`assetSchema.post('save', ${asset.name})`);
     asset.connected_to.forEach(target => {
-        const connection = new Connection({source: asset.name, target: target});
-        try {
-            connection.save(() => {
-                console.log("saved connection:");
-                console.log(connection)
-            })
-        } catch (err) {
-            console.error("error saving connection")
-        }
-    })*/
+        console.log(`create connection: {source: ${asset.name}, target:${target}}`);
+        const newConnection = new Connection({source: asset.name, target: target});
+        newConnection.save()
+    });
 });
 
 assetSchema.post('findOneAndUpdate', (asset) => {
-    console.log("assetSchema.post('findOneAndUpdate', asset)");
-    console.log(asset)
+    console.log(`assetSchema.post('findOneAndUpdate', ${asset.name}`);
     syncAssetConnections(asset)
-
-    /*
-    asset.connected_to.forEach(target => {
-        const connection = new Connection({source: asset.name, target: target});
-        console.log(connection)
-        try {
-            connection.save(() => console.log("connectionSaved"))
-        } catch (err) {
-            console.error("error saving connection")
-            console.error(err)
-        }
-    })*/
 });
 
 assetSchema.post('updateOne', (asset) => {
-    console.log("assetSchema.post('updateOne', asset)");
-    console.log(asset)
+    console.log(`assetSchema.post('updateOne', ${asset.name})`);
     syncAssetConnections(asset)
-    /*
-    asset.connected_to.forEach(target => {
-        const connection = new Connection({source: asset.name, target: target});
-        console.log(connection)
-        try {
-            connection.save(() => console.log("connectionSaved"))
-        } catch (err){
-            console.error("error saving connection")
-            console.error(err)
-        }
-    })*/
 });
 
 function syncAssetConnections(asset) {
@@ -81,29 +47,43 @@ function syncAssetConnections(asset) {
         .then(connections => {
             const targetNames = connections.map(c => c.target);
 
-            console.log(`these should match: ${asset.connected_to} == ${targetNames}`)
-
-            targetNames.forEach(target => {
-                const thisNeedsToBeDeleted = !_.includes(asset.connected_to, target);
-
-                console.log(`delete connection to: ${target} = ${thisNeedsToBeDeleted}`);
-                if (thisNeedsToBeDeleted){
-                    console.log(`deleting connection to ${target}`)
-                    Connection.deleteOne({source: asset.name, target});
-                }
-            });
-
-            asset.connected_to.forEach(target => {
-
-                const thisNeedsToBeCreated = !_.includes(targetNames, target);
-
-                console.log(`create connection to: ${target} = ${thisNeedsToBeCreated}`);
-
-                if ( thisNeedsToBeCreated){
+            if (targetNames.length === 0) {
+                console.log(asset.connected_to)
+                asset.connected_to.forEach(target => {
+                    console.log(`create connection: {source: ${asset.name}, target:${target}}`);
                     const newConnection = new Connection({source: asset.name, target: target});
-                    newConnection.save();
-                }
-            });
+                    newConnection.save()
+                        .then(ok => console.log('saved'));
+                });
+
+
+            } else {
+
+                console.log(`these should match: ${JSON.stringify(asset.connected_to)} == ${JSON.stringify(targetNames)}`)
+
+                targetNames.forEach(target => {
+                    const thisNeedsToBeDeleted = !_.includes(asset.connected_to, target);
+
+                    console.log(`delete connection to: ${target} = ${thisNeedsToBeDeleted}`);
+                    if (thisNeedsToBeDeleted) {
+                        console.log(`deleting connection to ${target}`)
+                        Connection.deleteOne({source: asset.name, target});
+                    }
+                });
+
+                asset.connected_to.forEach(target => {
+
+                    const thisNeedsToBeCreated = !_.includes(targetNames, target);
+
+                    console.log(`create connection to: ${target} = ${thisNeedsToBeCreated}`);
+
+                    if (thisNeedsToBeCreated) {
+                        const newConnection = new Connection({source: asset.name, target: target});
+                        newConnection.save();
+                    }
+                });
+            }
+
 
         });
 
