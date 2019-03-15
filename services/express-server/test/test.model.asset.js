@@ -256,34 +256,55 @@ describe('Asset model tests', function () {
             });
     });
 
-});
-/*
+    it('On asset update the connections are synced', done => {
+        console.log("create asset")
 
-});
-Connection.find({source: expectedValues.name})
-    .then(connections => {
-    // debug
-    connections.forEach(c => {
-        console.log(`source: ${c.source}, target: ${c.target}`)
-    });
+        const expectedValues = {
+            name: "asset for put test",
+            connected_to: ["putone", "puttwo"]
+        };
 
-    // expect to find two connections where
-    // expectedValues.name is the source
-    expect(connections.length).to.equal(2);
+        const a = new Asset(expectedValues);
+        const assetPromise = a.save();
 
-    const sourceTargetArray = connections.map(c => ({
-        source: c.source, target: c.target
-    }));
+        assetPromise
+            .then(asset => {
+                return Promise.all([
+                        Connection.find({source: asset.name}),
+                        Asset.findOneAndUpdate(
+                            // updated asset
+                            {_id: asset._id},
+                            // set new values, remove and add one
+                            {connected_to: [asset.connected_to[0], "putthree"]},
+                            // return the new value
+                            {new:true})
+                    ]
+                )
+            })
+            .then(([connections, asset]) => {
+                // connections are created by the Asset.post('save')
+                // asset is the stored asset before the update
+                expect(asset.connected_to.length).to.equal(expectedValues.connected_to.length + 1);
+                expect(connections.length).to.equal(expectedValues.connected_to.length);
+                 return Promise.all([
+                        Connection.find({source: asset.name}),
+                        Asset.findOne({_id: asset._id})
+                    ]
+                )
+            })
+            .then(([connections, asset]) => {
 
-    console.log(sourceTargetArray)
+                   // asset is the stored asset before the update
+                expect(asset.connected_to.length).to.equal(2);
+                expect(connections.length).to.equal(asset.connected_to.length);
+                done()
 
-    expect(sourceTargetArray)
-        .to.have.deep.members([
-        {source: "source asset", target: "foo"},
-        {source: "source asset", target: "bar"},
-    ]);
+            })
+            .catch(err => {
+                console.log(err)
+                done();
+            })
 
-    done();
     })
-    .catch(err => done(err))
-*/
+
+});
