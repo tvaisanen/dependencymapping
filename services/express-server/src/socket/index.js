@@ -1,4 +1,4 @@
-let expressWs;
+/*let expressWs;
 let pingTimer;
 
 const PING_INTERVAL = 10000; // 4 sec
@@ -19,7 +19,6 @@ module.exports = {
     },
     socketClients: () => expressWs.getWss('/'),
     broadcastToClients: (message) => {
-        /* for broadcasting all connected clients */
         console.log("broadcast to clients")
         expressWs.getWss('/').clients.forEach(client => {
             client.send(message)
@@ -27,4 +26,4 @@ module.exports = {
     }
 };
 
-
+*/

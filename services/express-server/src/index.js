@@ -5,11 +5,11 @@ const cors = require('cors');
 const testHandlers = require('./utils/testHandlers');
 const initDatabaseConnection = require('./database');
 const { registerRoutes } = require('./routers/');
-const { registerWs } = require('./socket');
+//const { registerWs } = require('./socket');
 
 let app = express();
 //const expressWs = require('express-ws')(app);
-const expressWs = registerWs(app);
+//const expressWs = registerWs(app);
 
 /*if (process.env.NODE_ENV === "PRODUCTION"){
     const compression = require('compression');
@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 /* WEBSOCKET */
-
+/*
 app.ws('/', function(ws, req) {
 
     ws.on('connection', function(ws, req, next){
@@ -38,13 +38,16 @@ app.ws('/', function(ws, req) {
         ws.send('back at u')
     });
 });
+*/
 
+/*
 app.use('/broadcast', (req,res) => {
    expressWs.getWss('/').clients.forEach(client => {
        client.send('broadcast message')
    });
    res.send(200);
 });
+*/
 
 /*************/
 
