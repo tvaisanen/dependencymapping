@@ -138,6 +138,7 @@ export function addConnections(connections: Array<Connection>) {
 
 export function deleteConnection(props: FormAndOptionalCallback) {
     return async function (dispatch: Dispatch, getState: State) {
+        alert('delete connection')
         dispatch(deleteConnectionById(props))
     }
 }
