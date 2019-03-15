@@ -1,6 +1,6 @@
 const assert = require('assert').assert;
 const {expect, should} = require('chai');
-const { Asset, Connection } = require('../src/models');
+const {Asset, Connection} = require('../src/models');
 const path = require('path');
 
 const initDatabaseConnection = require('../src/database');
@@ -17,11 +17,11 @@ try {
 describe('Asset model tests', function () {
 
     before(async function () {
-        await resetModels();
+        await loadDataToDB();
     });
 
     after(async function () {
-        // await clearDB();
+        await clearDB();
     });
 
     beforeEach(async function () {
@@ -206,21 +206,13 @@ describe('Asset model tests', function () {
 
             const removePromise = Asset.remove({_id: asset._id});
 
-            // At this point the asset exists
-            //
-            // Asset.findOne({_id:asset._id})
-            //     .then(result => {
-            //         console.log('did we find it?')
-            //         console.log(result)
-            //     }).catch(err => console.warn(err))
+            Asset.findOne({_id: asset._id})
+                .then(result => {
 
-                Asset.findOne({_id: asset._id})
-                    .then(result => {
-
-                        expect(result).to.be.null;
-                        console.log(result)
-                    })
-                    .catch(err => console.warn(err))
+                    expect(result).to.be.null;
+                    console.log(result)
+                })
+                .catch(err => console.warn(err))
             removePromise.then(response => {
 
                 Asset.findOne({_id: asset._id})
@@ -238,38 +230,35 @@ describe('Asset model tests', function () {
 
     });
 
-});
-/*
-    it('On asset delete connection should be deleted.', async function (done) {
+    it('On asset delete, connections of the asset should be deleted.', function (done) {
 
         const expectedValues = {
-            name: "asset to delete",
-            connected_to: ["source asset"]
+            name: "unique for deletion",
+            connected_to: ["targetone", "targettwo"]
         };
 
         const a = new Asset(expectedValues);
+        const assetPromise = a.save();
 
-        const asset = await a.save();
-
-        // this should be deleted after asset deletion
-        const connectionsBeforeDeletion = await Connection.find({source: asset.name})
-
-        const deleteResponse = await Asset.remove({_id: asset._id});
-
-
-        const connectionsAfterDeletion = await Connection.find({source: asset.name})
-
-        console.log(deleteResponse)
-        //console.log(connectionsBeforeDeletion)
-        //console.log(connectionsAfterDeletion)
-
-        expect(connectionsBeforeDeletion.length).to.equal(1);
-        expect(connectionsAfterDeletion.length).to.equal(1);
-
-        done();
-
-
+        assetPromise
+            .then(asset => Asset.findOneAndDelete({_id: asset._id}))
+            .then(deletedAsset => (
+                Connection.deleteMany({
+                    $or: [
+                        {source: deletedAsset.name},
+                        {target: deletedAsset.name},
+                    ]
+                })))
+            .then(msg => {
+                expect(msg.deletedCount).to.equal(2);
+                expect(msg.ok).to.equal(1);
+                done();
+            });
     });
+
+});
+/*
+
 });
 Connection.find({source: expectedValues.name})
     .then(connections => {
