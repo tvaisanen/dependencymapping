@@ -60,9 +60,13 @@ registerRoutes(app);
 // misc routes
 app.use('/coverage', express.static(__dirname + '/../coverage/'));
 app.use('/open-api', express.static(__dirname + '/open-api/'));
-app.use('/test', express.static(__dirname + 'src/pages'));
-app.use(testHandlers.testRoutes);
-app.use('/', express.static(__dirname + '/templates/'));
+
+if (process.env.NODE_ENV !== "PRODUCTION") {
+    // don't allow these in production
+    app.use('/test', express.static(__dirname + 'src/pages'));
+    app.use(testHandlers.testRoutes);
+    app.use('/', express.static(__dirname + '/templates/'));
+}
 
 // 404
 app.get('*', (req, res) => {
