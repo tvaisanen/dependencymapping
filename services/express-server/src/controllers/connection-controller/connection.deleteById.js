@@ -4,7 +4,7 @@ const hal = require('../../utils/hal.utils');
 
 function connectionDeleteById(req, res) {
     console.log("connectionRouter.deleteById()")
-    Connection.remove({_id:req.params.id})
+    Connection.findOneAndDelete({_id:req.params.id})
         .then(msg => {
             console.log(msg)
             res.status(204).json();
