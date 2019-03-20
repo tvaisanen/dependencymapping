@@ -24,17 +24,11 @@ describe('Asset model tests', function () {
         await clearDB();
     });
 
-    beforeEach(async function () {
-        //await resetModels();
-        //console.log('before each load data to db')
-    });
-
-    afterEach(async function () {
-        //await clearDB();
-        //console.log('after each clear data from db')
-    });
-
     it('should be invalid if name is empty', function (done) {
+        /**
+         *  Test that the data is validated correctly.
+         *  Name is required field.
+         */
 
         const a = new Asset();
 
@@ -59,7 +53,8 @@ describe('Asset model tests', function () {
 
                 bPromise
                     .then(bAsset => {
-                        //console.log(bAsset)
+                        console.log('here')
+                        console.log(bAsset)
                         //expect(false).is.ok;
 
                         done();
