@@ -4,19 +4,12 @@ import initialState from '../initialState';
 
 export default function assetReducer(state = initialState.resources, action) {
     switch (action.type) {
+
         case types.LOAD_ASSETS_SUCCESS:
             return [...action.assets];
 
-        case types.LOAD_ASSET_SUCCESS:
-            // todo: check this!
-            // ! why does this action exists?
-            return action.asset;
-
         case types.POST_ASSET_SUCCESS:
             return [action.asset, ...state];
-
-        //case types.ADD_ASSET:
-        //  return [action.asset, ...state];
 
         case types.UPDATE_ASSET_SUCCESS:
             const removeUpdated = state.filter(m => m.name !== action.asset.name);
@@ -24,6 +17,7 @@ export default function assetReducer(state = initialState.resources, action) {
 
         case types.DELETE_ASSET_SUCCESS:
             return state.filter(m => m.name !== action.name);
+
         default:
             return state;
     }

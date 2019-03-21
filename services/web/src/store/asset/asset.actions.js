@@ -191,11 +191,6 @@ export function deleteAssetSuccess(name: string) {
     return {type: types.DELETE_ASSET_SUCCESS, name};
 }
 
-export function deleteRelatedAssetConnections(name){
-    return function (dispatch: Dispatch, getState: State): void {
-
-    }
-}
 
 /*********************************************** */
 
