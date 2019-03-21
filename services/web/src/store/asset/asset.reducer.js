@@ -8,13 +8,15 @@ export default function assetReducer(state = initialState.resources, action) {
             return [...action.assets];
 
         case types.LOAD_ASSET_SUCCESS:
+            // todo: check this!
+            // ! why does this action exists?
             return action.asset;
 
         case types.POST_ASSET_SUCCESS:
             return [action.asset, ...state];
 
-        case types.ADD_ASSET:
-            return [action.asset, ...state];
+        //case types.ADD_ASSET:
+        //  return [action.asset, ...state];
 
         case types.UPDATE_ASSET_SUCCESS:
             const removeUpdated = state.filter(m => m.name !== action.asset.name);

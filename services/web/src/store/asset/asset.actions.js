@@ -109,7 +109,7 @@ export function updateAsset(props: FormAndOptionalCallback): Dispatch {
             // The IDs are created on the server side
             // and returned as embedded data in the updatedAsset
 
-            dispatch(updateAssetSuccess({asset: updatedAsset}));
+            dispatch(updateAssetSuccess(updatedAsset));
             dispatch(setInfoMessage(`Updated asset: ${updatedAsset.name}`));
             dispatch(connectionActions.updateAssetConnections(updatedAsset));
             dispatch(activeMappingActions.updateAssetState(updatedAsset));
@@ -122,7 +122,7 @@ export function updateAsset(props: FormAndOptionalCallback): Dispatch {
     }
 }
 
-function updateAssetSuccess({asset}) {
+export function updateAssetSuccess(asset) {
     return {type: types.UPDATE_ASSET_SUCCESS, asset};
 }
 
@@ -303,10 +303,10 @@ export function loadAllAssets() {
     }
 }
 
-
-export function addAsset(asset: Asset) {
-    return {type: types.ADD_ASSET, asset}
-}
+// ! make sure that this is unused before deleting
+// export function addAsset(asset: Asset) {
+//     return {type: types.ADD_ASSET, asset}
+// }
 
 export function syncConnectionSourceAsset(connection: Connection) {
     /**
