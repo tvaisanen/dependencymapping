@@ -83,6 +83,8 @@ export function updateActiveMapping(mapping) {
     return function (dispatch: Dispatch, getState: State){
             // if edited mapping is active mapping
             if (mapping.name === getState().activeMapping.name) {
+                // ? How did this ever happen?
+                // ! todo: clean up
                 mappingHelpers.loadDependencyMap(
                     mapping.name,
                     getState().graph,

@@ -1,3 +1,5 @@
+const API_PATH = process.env.PUBLIC_URL
+console.log(API_PATH)
 
 function serializeAsset(host, resource) {
     console.log(`serialize: ${resource.name}`)

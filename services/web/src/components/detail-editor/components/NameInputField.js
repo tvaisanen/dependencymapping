@@ -34,7 +34,13 @@ const NameInputField = (props) => {
 
     return (
         <Container>
-            <Label>name</Label>
+            <LabelOrInput {...props} errormsg/>
+        </Container>
+    )
+};
+/*
+ <Label>name</Label>
+
             <Input type={"text"}
                    readOnly={props.readOnly}
                    value={props.name ? props.name : ""}
@@ -44,9 +50,30 @@ const NameInputField = (props) => {
                        props.onChange(e.target.value);
                    }}
             />
-        </Container>
-    )
-};
+*/
+
+const LabelOrInput = (props) => {
+
+    if (props.readOnly) {
+
+        return <div>{props.name}</div>
+    } else {
+        return (<React.Fragment>
+        <Label>name</Label>
+
+            <Input type={"text"}
+                   readOnly={props.readOnly}
+                   value={props.name ? props.name : ""}
+                   placeholder={props.errorMsg}
+                   onChange={(e) => {
+                       if (e.target.value===""){this.value=""}
+                       props.onChange(e.target.value);
+                   }}
+            />
+        </React.Fragment>)
+    }
+
+}
 
 const mapStateToProps = (state, props) => ({
     readOnly: state.detailForm.edit, // name is read only if editing
