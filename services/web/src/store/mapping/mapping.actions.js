@@ -5,6 +5,7 @@ import {clearActiveMappingSelection, updateActiveMapping} from '../active-mappin
 import { setInfoMessage } from '../../store/ui/ui.actions';
 
 import {routeApiActionError} from "../error-handling";
+import * as graphHelpers from '../../common/graph-helpers';
 
 import type {FormAndOptionalCallback} from "../store-action.arg-types";
 import type {Dispatch, State} from "../types";
@@ -94,7 +95,8 @@ export function deleteMappingById(props: FormAndOptionalCallback) {
             await api.mapping.deleteById(_id);
             dispatch(deleteMappingSuccess(name));
             dispatch(setInfoMessage(`Deleted mapping: ${name}`));
-            dispatch(clearActiveMappingSelection(getState().graph));
+            //dispatch(clearActiveMappingSelection(getState().graph));
+            graphHelpers.clearGraph(getState().graph)
 
             // run caller callback
             props.callback ? props.callback() : null;

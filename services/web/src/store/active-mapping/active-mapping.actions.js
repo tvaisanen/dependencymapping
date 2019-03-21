@@ -14,13 +14,8 @@ export function setActiveMapping(mapping: ActiveMappingState)
     return {type: types.SET_ACTIVE_MAPPING, mapping}
 }
 
-export function clearActiveMappingSelection(graph) {
-    graphHelpers.clearGraph(graph);
+export function clearActiveMappingSelection() {
     return {type: types.CLEAR_ACTIVE_MAPPING_SELECTION}
-}
-
-export function setActiveMappingConnections(connections) {
-    return {type: types.SET_ACTIVE_MAPPING_CONNECTIONS, connections}
 }
 
 export function addActiveMappingAssets(assets) {
@@ -64,7 +59,7 @@ export function removeResourceFromActiveMapping(asset) {
     }
 }
 
-function removeAssetFromActiveMapping(asset) {
+export function removeAssetFromActiveMapping(asset) {
     return {type: types.REMOVE_ACTIVE_MAPPING_ASSET, asset};
 }
 
