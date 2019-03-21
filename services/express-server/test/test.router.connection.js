@@ -8,6 +8,8 @@ chai.use(chaiHttp);
 
 const HOST = 'http://localhost:3000';
 const RESOURCE = '/connection';
+const CONNECTION = '/connection';
+const ASSET = '/asset';
 
 const expect = chai.expect;
 
@@ -76,7 +78,6 @@ describe('Connection API endpoint ', function () {
                 target: "TestPageFour"
             })
             .end((err, res) => {
-                console.debug(res.body)
                 expect(res).to.have.status(409);
                 done();
             });
@@ -86,7 +87,6 @@ describe('Connection API endpoint ', function () {
         chai.request(HOST)
             .get('/connection/?source=TestPageOne&target=TestPageFour')
             .end((err, res) => {
-                console.log(res.body)
                 chai.request(HOST)
                     .delete(`${RESOURCE}/${res.body._id}`)
                     .end((err, res) => {
@@ -94,8 +94,91 @@ describe('Connection API endpoint ', function () {
                         done();
                     });
             })
-
     });
 
+    it('On connection delete the connection target should be removed from the source assets connected_to list', done => {
+
+        const asset = {
+            name: "testAssetForConnectionTest",
+            connected_to: ['other', 'delete this']
+        };
+
+        const expected = {
+            name: "testAssetForConnectionTest",
+            connected_to: ['other']
+        };
+
+        const startTheTestChain = () => {
+            chai.request(HOST)
+                .post(ASSET)
+                .send(asset)
+                .end((err, res) => {
+                    makeSureThatConnectionIsCreated();
+                });
+        };
+
+        const makeSureThatConnectionIsCreated = () => {
+            chai.request(HOST)
+                .get(`${CONNECTION}/?source=${asset.name}&target=${asset.connected_to[1]}`)
+                .end((err, res) => {
+                    deleteTheFetchedConnection(res.body._id);
+                })
+        };
+
+        const deleteTheFetchedConnection = (id) => {
+            console.log(`connection with this id should be deleted: ${id}`);
+            chai.request(HOST)
+                .delete(`${CONNECTION}/${id}`)
+                .end((err, res) => {
+                    fetchTheAssetAfterDeletingTheConnectionToSeeIfItsUpdatedCorrectly();
+                })
+        };
+
+        const fetchTheAssetAfterDeletingTheConnectionToSeeIfItsUpdatedCorrectly = () => {
+            chai.request(HOST)
+                .get(`${ASSET}/byName/${asset.name}`)
+                .end((err,res) => {
+                    expect(res.body._embedded.connected_to.length)
+                        .to.equal(expected.connected_to.length);
+                    done();
+                })
+        };
+
+        startTheTestChain();
+
+    })
+
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
