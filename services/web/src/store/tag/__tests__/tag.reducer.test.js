@@ -12,11 +12,15 @@ test('Tag reducer returns initialState as default', () => {
 });
 
 test('Tag should be removed from the store after success the tag with name t.name', () => {
+
+    const [tagToPersist, tagToRemove] = initialState;
+
     const state = tagReducer(
         initialState,
-        actions.deleteTagSuccess({tagName: initialState[1].name})
+        actions.deleteTagSuccess(tagToRemove.name)
     );
-    const expected = [initialState[0]];
+
+    const expected = [tagToPersist];
     expect(state).toEqual(expected)
 });
 
@@ -34,7 +38,7 @@ test('Update tag should update the tag with the same name', () => {
    const updatedTag = {...initialState[0], description: "updated description"};
    const state = tagReducer(
        initialState,
-       actions.updateTagSuccess({tag: updatedTag})
+       actions.updateTagSuccess(updatedTag)
    );
    const expectedUpdate = state.filter(t => t.name === updatedTag.name)[0];
    expect(updatedTag).toEqual(expectedUpdate);

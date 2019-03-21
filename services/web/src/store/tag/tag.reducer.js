@@ -15,8 +15,7 @@ export default function tagReducer(state = initialState.tags, action) {
             return [...removeUpdated, action.tag];
 
         case types.DELETE_TAG_SUCCESS:
-            const filtered = state.filter(t => t.name !== action.tagName);
-            return filtered;
+            return state.filter(t => t.name !== action.tagName);
         default:
             return state;
     }

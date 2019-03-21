@@ -54,11 +54,11 @@ This starts four services for development.
     - runs at `localhost: 27017`
     - generic Mongo DB instance with defaults
 
-###Additional API endpoints for development:
+### Additional API endpoints for development:
 * reset test data: `get /api/reset-models`
 * create your own 
     - create handler `services/express-server/src/utils/testHandlers.js`
-    - bind the created handler to testHandlerRouter by using the router.use
+    - bind the created handler to testHandlerRouter by using the `router.use`
 
 
 ### Run tests

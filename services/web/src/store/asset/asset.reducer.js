@@ -2,7 +2,7 @@ import * as types from './asset.action-types';
 import initialState from '../initialState';
 
 
-export default function resourceReducer(state = initialState.resources, action) {
+export default function assetReducer(state = initialState.resources, action) {
     switch (action.type) {
         case types.LOAD_ASSETS_SUCCESS:
             return [...action.assets];
