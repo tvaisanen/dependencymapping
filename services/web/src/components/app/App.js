@@ -15,11 +15,13 @@ import {
 
 import ActionNotifier from '../action-notifier/ActionNotifier';
 
+/**
+ *  Application root.
+ *  Layout and main containers.
+ */
 
-const App = (props) => (
-    <AppGrid id="app-container"
-             bottomPanelVisible={props.bottomPanel.visible}
-    >
+const App = ({bottomPanelVisible}) => (
+    <AppGrid id="app-container" bottomPanelVisible={bottomPanelVisible}>
         <TopBarContainer id="top-bar-container"/>
         <MappingListWithGraph/>
         <BottomPanelContainer id="bottom-panel-container"/>
@@ -28,8 +30,7 @@ const App = (props) => (
 
 function mapStateToProps(state) {
     return {
-       sidePanel: state.app.sidePanel,
-       bottomPanel: state.app.bottomPanel,
+       bottomPanelVisible: state.app.bottomPanel.visible,
     }
 }
 
@@ -38,6 +39,14 @@ export default connect(
     null
 )(App);
 
+
+/**
+ *  MappingListWithGraph has two columns containing
+ *  the list of mappings and the list of assets in the
+ *  active mapping. Graphcanvas inflater has the action-
+ *  notifier popup, which is used for indicating active
+ *  graph canvas action.
+ */
 
 const MappingListWithGraph = () => (
     <MiddleSection>
