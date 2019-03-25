@@ -27,10 +27,22 @@ describe('Tag model tests', function () {
     });
 
     it('should be invalid if name is empty', function (done) {
-        const a = new Tag();
-        a.validate(function (err) {
+        const tag = new Tag();
+        tag.validate(function (err) {
             expect(err.errors.name).to.exist;
             done();
         });
     });
+
+    it('Tag should save without errors when name is provided', done => {
+        const tag = new Tag({name: "newtag"});
+
+        tag.save()
+            .then(savedTag => {
+                expect(savedTag.name).to.be.equal(tag.name);
+                done()
+            })
+            .catch(err => done(err))
+
+    })
 });
