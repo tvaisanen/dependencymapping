@@ -6,8 +6,7 @@ import * as sc from './top-bar.styled';
 import CollapseMenuContainer from '../collapse-menu/CollapseMenuContainer';
 
 /**
- * Generate dropdown selection for
- * selecting the layout
+ * Sub components for the top bar
  */
 
 const renderOptions = options => {
@@ -26,6 +25,7 @@ const RefreshButton = ({onClick}) => <sc.RefreshBtn onClick={onClick}>&#8635;</s
 const MenuToggleButton = ({onClick}) => <sc.MenuToggle onClick={onClick}>&#9776;</sc.MenuToggle>;
 const InfoBlock = ({message}) => <sc.InfoSpan>{message}</sc.InfoSpan>;
 
+// top bar main component
 const TopBarContainer = (props) => (
     <sc.TopBar>
         <sc.Title>Dependency Mapper</sc.Title>
