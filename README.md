@@ -64,13 +64,14 @@ This starts four services for development.
 ### Run tests
 
 get container ids with: `docker ps`
-
 * web app: `docker exec -it ${id for web} npm test`
 * api app: `docker exec -it ${id for api} npm test`
 
 ## Environment
 
-Host setup is done in file `.env` where variables required
-by React app stars with `REACT_APP`. Environment variables
-that are not required by the webapp can be used without the prefix. 
+* environment variables are set in docker-compose files
+
+## Todo
+
+* web socket connection between client and server for broadcasting updates to clients
 
