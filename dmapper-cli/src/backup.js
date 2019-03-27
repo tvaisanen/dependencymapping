@@ -19,10 +19,6 @@ const datedBackupPath = `${backupsPath}/${datePath}`;
 
 function writeDataToFile(data, type) {
     console.log(`write data: ${data.length} ${type}s`)
-
-    if (!fs.existsSync(datePath)) {
-        fs.mkdirSync(datePath);
-    }
     fs.writeFileSync(`${datedBackupPath}/${type}.json`, JSON.stringify(data))
 }
 
