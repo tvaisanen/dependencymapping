@@ -1,6 +1,8 @@
 
 import type { Connection as ConnectionType } from "../store/connection/connection.types";
 
+// ! todo: for future to improve code quality
+
 function Connection (props: ConnectionType) {
     if (!props.source || !props.target){
         throw new Error("source and target are required for a connection.")

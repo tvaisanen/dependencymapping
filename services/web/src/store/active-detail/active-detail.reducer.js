@@ -17,6 +17,7 @@ function activeDetailReducer(state = initialState.activeDetail, action) {
 
         case types.CLEAR_ACTIVE_DETAIL:
             return emptyDetail;
+
         default:
             return state;
     }

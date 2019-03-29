@@ -1,4 +1,4 @@
-import data from './data';
+import data from '../src/api/__mocks__/data';
 import _ from 'lodash';
 
 /*

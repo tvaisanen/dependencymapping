@@ -13,7 +13,7 @@ services:
     api:
         build:
           context: ./services/express-server
-          dockerfile: Dockerfile-dist
+          dockerfile: Dockerfile
         ports:
           - 3000:3000
         volumes:

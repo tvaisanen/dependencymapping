@@ -12,7 +12,7 @@ const initialState = {
     resources: [
         {name: "Tag three", description: "describing three"}
     ],
-    tags: [{name:"tag one", description:"describing"}]
+    tags: [{name: "tag one", description: "describing"}]
 };
 
 test('Active detail reducer returns initialState as default', () => {
@@ -22,11 +22,11 @@ test('Active detail reducer returns initialState as default', () => {
 
 test('Set active detail should update the selected detail', () => {
     const newDetail = {name: "new detail"};
-   const state = activeDetailReducer(
-       initialState,
-       actions.setActiveDetail(newDetail)
-   );
-   expect(state).toEqual(newDetail);
+    const state = activeDetailReducer(
+        initialState,
+        actions.setActiveDetail(newDetail)
+    );
+    expect(state).toEqual(newDetail);
 });
 
 test('Set active detail should raise exception if called without a type', () => {

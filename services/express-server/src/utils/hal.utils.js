@@ -107,10 +107,44 @@ function serializeMapping(host, resource) {
     }
 }
 
+function serializeMappingWithAssetIDs(host, mapping) {
+    console.log(mapping)
+    try {
+        return {
+            _links: {
+                self: {
+                    // todo: use constants
+                    href: `${host}/mapping/${mapping._id}`
+                }
+            },
+            _embedded: {
+                assets: [
+                    ...mapping.assets.map(asset => ({
+                        name: asset.name,
+                        _id: asset._id,
+                        href: `${host}/asset/${asset._id}`
+                    }))
+                ],
+                tags: [
+                    ...mapping.tags.map(tag => ({
+                        _id: tag._id,
+                        name: tag.name,
+                        href: `${host}/tag/${tag._id}`
+                    }))
+                ],
+            },
+            description: mapping.description
+        }
+
+    } catch (err) {
+        console.error(err)
+    }
+}
 
 module.exports = {
     serializeAsset,
     serializeConnection,
     serializeMapping,
+    serializeMappingWithAssetIDs,
     serializeTag
 };

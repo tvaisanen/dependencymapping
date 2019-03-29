@@ -42,6 +42,7 @@ export function setConnectionAsActiveDetail(activeDetail) {
      */
     return function (dispatch, getState) {
 
+
         try {
             // Todo: continue here!
             // catches when connection dangling
@@ -88,7 +89,12 @@ export function setConnectionAsActiveDetail(activeDetail) {
 
             dispatch(setActiveDetail(collectedDetail));
         } catch (err) {
+
+            console.group("%csetConnectionAsActiveDetail", "font-size:1.2rem;color:red");
+            console.log(activeDetail)
             console.error(err)
+            console.groupEnd();
+
             alert("set connection as detail catch")
         }
     }

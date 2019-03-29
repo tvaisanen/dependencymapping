@@ -2,9 +2,9 @@ import {ASSET, CONNECTION, MAPPING, TAG} from "../constants";
 
 export function parseHALResponseData(resourceType, data) {
     if (resourceType === MAPPING) {
-        console.group("parseHALResponseData()");
-        console.info(data);
-        console.groupEnd()
+        //console.group("parseHALResponseData()");
+        //console.info(data);
+        //console.groupEnd()
     }
 
     return HALResourceParser[resourceType](data);
@@ -60,8 +60,8 @@ function parseTag(data) {
         name: data.name,
         description: data.description,
     };
-    console.info(data);
-    console.info(parsed);
+    //console.info(data);
+    //console.info(parsed);
 
     return parsed;
 }
