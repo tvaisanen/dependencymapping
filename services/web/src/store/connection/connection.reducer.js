@@ -46,10 +46,15 @@ export default function (state: ConnectionState = initialState, action: Connecti
             return state.filter(c => !(c.target === action.assetName || c.source === action.assetName));
 
         case UPDATE_CONNECTION:
-            return [...state.filter(connection =>
-                connection.source !== action.connection.source
-                && connection.target !== action.connection.target
-            ), action.connection];
+            return state.map(c => {
+                if (action.connection.source === c.source &&
+                    action.connection.target === c.target
+                ) {
+                    return action.connection;
+                }
+
+                return c
+            });
 
         default:
             return state;

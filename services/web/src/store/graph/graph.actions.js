@@ -74,6 +74,8 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
     function getConnectionByName(name) {
 
         const [sourceName, targetName] = name.split("_to_")
+        console.log(sourceName)
+        console.log(targetName)
 
         return getState().connections.filter(
             connection => (
@@ -81,6 +83,24 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                 && targetName === connection.target
             )
         )[0];
+    }
+
+    function getConnectionByEdge(edgeElement){
+
+        console.log(getState())
+
+        const filtered = getState().connections.filter(connection => {
+            console.log(connection)
+            console.log(`${connection.source} === ${edgeElement.data('source')} = ${connection.source === edgeElement.data('source')}`)
+            console.log(`${connection.target} === ${edgeElement.data('target')} = ${connection.target === edgeElement.data('target')}`)
+            return     (
+                    connection.source === edgeElement.data('source') &&
+                    connection.target === edgeElement.data('target')
+                )
+            }
+        );
+        console.log(filtered);
+        return filtered[0]
     }
 
 
@@ -201,7 +221,8 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
                 content: 'edit',
                 contentStyle: {},
                 select: function (ele) {
-                    const connectionToEdit = getConnectionByName(ele.id())
+
+                    const connectionToEdit = getConnectionByEdge(ele);
 
                     // set active for editing
                     dispatch(
