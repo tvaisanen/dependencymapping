@@ -66,7 +66,11 @@ export function loadDependencyMap(mapId) {
 
         graphHelpers.addElements(cy, nodes);
         graphHelpers.addElements(cy, edges);
-        graphHelpers.updateLayout(cy, layout);
+        graphHelpers.updateLayout(cy, "cose");
+        setTimeout(() => {
+            graphHelpers.updateLayout(cy, layout)
+        }, 100);
+
 
     }
 };
