@@ -6,11 +6,11 @@ if (process.env.NODE_ENV === 'development'){
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 }
 
-console.log(process.argv)
 const [exec, path, authFlag, credentials, command] = process.argv;
 
-console.log(authFlag);
-console.log(credentials)
+//console.log(process.argv)
+//console.log(authFlag);
+//console.log(credentials)
 
 const [username, password] = credentials.split(':');
 const auth = { username, password };
