@@ -1,7 +1,7 @@
 const axios = require('axios');
 const fs = require('fs');
 
-const {configs: {apiURL, backupsPath}} = require('./config');
+const {configs: {apiURL, backupsPath, configsPath}} = require('./config');
 
 
 const ASSET_ROOT = `${apiURL}/asset`;
@@ -27,7 +27,9 @@ function execute(auth) {
 
     axios({method: 'get', auth, url: ASSET_ROOT})
         .then(({data}) => writeDataToFile(data, "asset"))
-        .catch(err => {console.warn(err)})
+        .catch(err => {
+            console.warn(err)
+        })
 
     axios({method: 'get', auth, url: CONNECTION_ROOT})
         .then(({data}) => writeDataToFile(data, "connection"))
@@ -40,12 +42,23 @@ function execute(auth) {
     axios({method: 'get', auth, url: TAG_ROOT})
         .then(({data}) => writeDataToFile(data, "tag"))
         .catch(err => console.warn(err))
+
+    return {status: 'OK', exit:0}
 }
 
 
 function run(auth, args) {
-    console.log("Save mapping backups.");
-    execute(auth);
+    if (!apiURL) {
+        console.log("\x1b[31m")
+        console.log("API url not defined!");
+        console.log(`Add "apiURL" parameter to the configs: ${configsPath}`)
+        console.log("\x1b[0m");
+        return {status: 'OK', message: 'Invalid config', exit:0}
+    } else {
+        console.log("Save mapping backups.");
+        return execute(auth);
+    }
+
 }
 
 module.exports = {

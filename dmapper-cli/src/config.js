@@ -25,11 +25,14 @@ if (!fs.existsSync(backupsPath)) {
 }
 
 if (!fs.existsSync(configsPath)) {
+    console.log("\x1b[31m","No configuration found...")
     fs.writeFileSync(configsPath, JSON.stringify(defaultConfig));
+    console.log("Created a config with defaults.")
+    console.log(`Add "apiURL" parameter to the file: ${configsPath}`)
 }
 
 // Load configs
-console.log(`\nLoading configs from ${configsPath} ...`);
+console.log("\x1b[0m",`\nLoading configs from ${configsPath} ...`);
 console.log("using following configuration:");
 
 configs = require(configsPath);
