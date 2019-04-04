@@ -30,7 +30,7 @@ function mappingExport(req, res) {
                     _id: mapping._id,
                     name: mapping.name,
                     description: mapping.description,
-                    href: `${API_PATH}/asset/${mapping._id}`,
+                    href: `${API_PATH}/mapping/${mapping._id}`,
                     tags: mapping.tags,
                     resources: assets
                         .filter(a => mapping.assets.indexOf(a.name) !== -1)
