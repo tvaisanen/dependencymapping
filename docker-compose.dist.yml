@@ -1,4 +1,4 @@
-version: '3'
+version: '3.1'
 
 services:
     mongo:
@@ -21,6 +21,9 @@ services:
           - MONGO_PATH=mongo
           - MONGO_PORT=27017
           - DB_NAME=production
+
+        secrets:
+          - public-api-path
 
         networks:
           - closed # To access the database
@@ -73,3 +76,7 @@ networks:
              
 volumes:
   static-webapp:
+
+secrets:
+  public-api-path:
+    file: ./secrets/public-api-path.txt

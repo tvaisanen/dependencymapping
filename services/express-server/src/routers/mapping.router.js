@@ -6,6 +6,9 @@ const { MappingCtrl } = require('../controllers/');
 
 mappingRouter.get(   '/',               (req, res) => MappingCtrl.get(req,res));
 mappingRouter.post(  '/',               (req, res) => MappingCtrl.post(req,res));
+
+mappingRouter.get(   '/export',         MappingCtrl.export);
+
 mappingRouter.get(   '/:id',            (req, res) => MappingCtrl.getById(req,res));
 mappingRouter.put(   '/:id',            (req, res) => MappingCtrl.putById(req,res));
 mappingRouter.delete('/:id',            (req, res) => MappingCtrl.deleteById(req,res));

@@ -7,6 +7,7 @@ const initDatabaseConnection = require('./database');
 const { registerRoutes } = require('./routers/');
 //const { registerWs } = require('./socket');
 
+
 let app = express();
 //const expressWs = require('express-ws')(app);
 //const expressWs = registerWs(app);
@@ -78,6 +79,8 @@ app.listen(3000, ()=> {
     console.log(
         `Dependency Mapping :: env: ${process.env.NODE_ENV}`
     );
+
+    console.log(`public url :: env: ${process.env.PUBLIC_URL}`)
 });
 
 module.exports = app;

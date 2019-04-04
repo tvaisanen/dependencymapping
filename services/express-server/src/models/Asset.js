@@ -15,7 +15,7 @@ const assetSchema = new mongoose.Schema({
     tags: [String],
     group: {type: String, default: ""},
     nodeShape: {type: String, default: "ellipse"},
-    nodeColor: {type: String, default: "navyblue"}
+    nodeColor: {type: String, default: "navyblue"},
 });
 
 
