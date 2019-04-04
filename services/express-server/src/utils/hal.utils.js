@@ -7,8 +7,10 @@ const PUBLIC_URL_FILE = '/run/secrets/public-api-path';
 let API_PATH = "<FIXME-WITH-ENV-VARS>";
 
 try {
-   API_PATH = fs.readFileSync(PUBLIC_URL_FILE).toString();
-   console.log(API_PATH)
+    API_PATH = fs.readFileSync(PUBLIC_URL_FILE)
+        .toString()
+        .replace('\n', '');
+    console.log(API_PATH)
 } catch (err) {
     console.warn('public url secret not found?')
     console.log(err)
@@ -116,18 +118,18 @@ function serializeConnection(host, resource) {
             }
         },
         _embedded: {
-            target:{
+            target: {
                 name: resource.target,
                 href: `${API_PATH}/connection/${resource._doc.target}`
             },
-            source:{
+            source: {
                 name: resource.source,
                 href: `${API_PATH}/connection/${resource._doc.source}`
             },
             tags: resource._doc.tags.map(tag => ({
-                        name: tag,
-                        href: `${API_PATH}/tag/?name=${encodeURI(tag)}`,
-                    })
+                    name: tag,
+                    href: `${API_PATH}/tag/?name=${encodeURI(tag)}`,
+                })
             )
         },
         ...resource._doc

@@ -8,7 +8,9 @@ const PUBLIC_URL_FILE = '/run/secrets/public-api-path';
 let API_PATH = "<FIXME-WITH-ENV-VARS>";
 
 try {
-    API_PATH = fs.readFileSync(PUBLIC_URL_FILE).toString();
+    API_PATH = fs.readFileSync(PUBLIC_URL_FILE)
+        .toString()
+        .replace('\n', '');
     console.log(API_PATH)
 } catch (err) {
     console.warn('public url secret not found?')
