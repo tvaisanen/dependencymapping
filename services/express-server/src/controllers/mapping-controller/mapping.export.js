@@ -1,4 +1,4 @@
-const { Mapping, Asset, Tag } = require('../../models');
+const {Mapping, Asset, Tag} = require('../../models');
 const fs = require('fs');
 
 // this is handled via docker secrets
@@ -8,8 +8,8 @@ const PUBLIC_URL_FILE = '/run/secrets/public-api-path';
 let API_PATH = "<FIXME-WITH-ENV-VARS>";
 
 try {
-   API_PATH = fs.readFileSync(PUBLIC_URL_FILE).toString();
-   console.log(API_PATH)
+    API_PATH = fs.readFileSync(PUBLIC_URL_FILE).toString();
+    console.log(API_PATH)
 } catch (err) {
     console.warn('public url secret not found?')
     console.log(err)
@@ -32,7 +32,15 @@ function mappingExport(req, res) {
                     tags: mapping.tags,
                     resources: assets
                         .filter(a => mapping.assets.indexOf(a.name) !== -1)
-                        .map(a => a._id),
+                        .map(a => ({
+                            _id: a._id,
+                            href: `${API_PATH}/asset/${mapping._id}`,
+                            name: a.name,
+                            tags: a.tags,
+                            connectedTo: assets
+                                .filter(t => a.connected_to.indexOf(t.name) !== -1)
+                                .map(t => t._id)
+                        })),
                 }
             });
 
