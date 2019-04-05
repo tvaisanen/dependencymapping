@@ -7,5 +7,6 @@ module.exports = {
     putById: require('./mapping.putById'),
     deleteById: require('./mapping.deleteById'),
     deleteByName: require('./mapping.deleteByName'),
-    export: require('./mapping.export')
+    export: require('./mapping.export'),
+    exportById: require('./mapping.exportById')
 };
