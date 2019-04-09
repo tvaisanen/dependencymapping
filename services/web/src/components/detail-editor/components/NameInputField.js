@@ -3,31 +3,6 @@ import styled from 'styled-components';
 import {connect} from 'react-redux';
 import * as detailEditorActions from '../detail-editor.actions';
 
-const Container = styled.div`
-    display: flex;
-    background-color: ${p=>p.theme.formFieldBackgroundColor};
-    padding: 6px;
-    margin-bottom: 6px;
-    align-items: center;
-    border-radius: 3px;  
-    border: ${p=>p.theme.insetBorder}; 
-`;
-
-const Label = styled.label`
-    margin: 0 10px;
-    font-size: small;
-`;
-
-const Input = styled.input`
-    flex-grow: 1;
-    border-radius: 3px;
-    padding-left: 6px;
-    
-    ::placeholder {
-      color: rgba(255,22,22,0.5);
-    }
-`;
-
 const NameInputField = (props) => {
 
     const errorMsg = props.error;
@@ -38,39 +13,29 @@ const NameInputField = (props) => {
         </Container>
     )
 };
-/*
- <Label>name</Label>
 
-            <Input type={"text"}
-                   readOnly={props.readOnly}
-                   value={props.name ? props.name : ""}
-                   placeholder={errorMsg}
-                   onChange={(e) => {
-                       if (e.target.value===""){this.value=""}
-                       props.onChange(e.target.value);
-                   }}
-            />
-*/
 
 const LabelOrInput = (props) => {
 
     if (props.readOnly) {
-
         return <div>{props.name}</div>
-    } else {
-        return (<React.Fragment>
-        <Label>name</Label>
 
-            <Input type={"text"}
-                   readOnly={props.readOnly}
-                   value={props.name ? props.name : ""}
-                   placeholder={props.errorMsg}
-                   onChange={(e) => {
-                       if (e.target.value===""){this.value=""}
-                       props.onChange(e.target.value);
-                   }}
-            />
-        </React.Fragment>)
+    } else {
+        return (
+            <React.Fragment>
+                <Label>name</Label>
+                <Input type={"text"}
+                       readOnly={props.readOnly}
+                       value={props.name ? props.name : ""}
+                       placeholder={props.errorMsg}
+                       onChange={(e) => {
+                           if (e.target.value === "") {
+                               this.value = ""
+                           }
+                           props.onChange(e.target.value);
+                       }}
+                />
+            </React.Fragment>)
     }
 
 }
@@ -89,3 +54,28 @@ export default connect(
     mapStateToProps,
     mapDispatchToProps
 )(NameInputField);
+
+const Container = styled.div`
+    display: flex;
+    background-color: ${p => p.theme.formFieldBackgroundColor};
+    padding: 6px;
+    margin-bottom: 6px;
+    align-items: center;
+    border-radius: 3px;  
+    border: ${p => p.theme.insetBorder}; 
+`;
+
+const Label = styled.label`
+    margin: 0 10px;
+    font-size: small;
+`;
+
+const Input = styled.input`
+    flex-grow: 1;
+    border-radius: 3px;
+    padding-left: 6px;
+    
+    ::placeholder {
+      color: rgba(255,22,22,0.5);
+    }
+`;

@@ -10,10 +10,6 @@ export const TAGS_URL = `${API_URL}/tag/`;
 export const RESOURCES_URL = `${API_URL}/asset/`;
 export const ASSETS_URL = `${API_URL}/asset/`;
 
-console.group("Api client config");
-console.info(`URI: ${API_HOST}`);
-console.groupEnd();
-
 
 export const mapping = {
     collection: MAPPINGS_URL,
@@ -51,6 +47,8 @@ export const tag = {
         byName: (name)  => `${TAGS_URL}byName/${encodeURI(name)}/`
     }
 };
+
+// todo: check if really redundant and clean up after.
 
 export function assetDetailUrlByName(name){
     return `${ASSETS_URL}byName/${encodeURI(name)}/`;

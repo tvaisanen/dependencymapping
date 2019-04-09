@@ -31,7 +31,7 @@ setTimeout(() => {
 }, 500);
 
 
-console.group("Environment");
+console.groupCollapsed("Environment");
 console.info(process.env);
 console.info(Object.keys(process.env));
 console.info(process.env.MESSAGE)

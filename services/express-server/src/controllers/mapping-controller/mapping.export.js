@@ -1,21 +1,6 @@
 const {Mapping, Asset, Tag} = require('../../models');
-const fs = require('fs');
+const {API_PATH} = require('../../utils/configs');
 
-// this is handled via docker secrets
-// and meant not to be included in the repo
-const PUBLIC_URL_FILE = '/run/secrets/public-api-path';
-
-let API_PATH = "<FIXME-WITH-ENV-VARS>";
-
-try {
-    API_PATH = fs.readFileSync(PUBLIC_URL_FILE)
-        .toString()
-        .replace('\n', '');
-    console.log(API_PATH)
-} catch (err) {
-    console.warn('public url secret not found?')
-    console.log(err)
-}
 
 function mappingExport(req, res) {
     Promise.all([
@@ -46,6 +31,7 @@ function mappingExport(req, res) {
                         })),
                 }
             });
+
 
         res.status(200).json(mappingsCompiled);
 

@@ -54,6 +54,8 @@ class Client {
         deleteByName:   args => Client.apiCall(Client.deleteAssetByName,    assetParser, args),
     };
 
+    // refactor the static methods
+
     static getAssets() {
         return axios.get(paths.asset.collection);
     }

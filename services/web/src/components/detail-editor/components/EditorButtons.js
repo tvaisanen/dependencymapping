@@ -1,10 +1,13 @@
 //@flow
 import React from 'react';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import * as detailEditorActions from '../detail-editor.actions';
 import styled from 'styled-components';
-import { CREATE } from "../../../constants/views";
-import { BROWSE } from "../../../constants/views";
+import {BROWSE, CREATE} from "../../../constants/views";
+import {MAPPING, TAG} from "../../../constants";
+
+// todo: refactor
+import axios from 'axios';
 
 type EditorButtonProps = {
     onCancel: () => void,
@@ -16,17 +19,79 @@ type EditorButtonProps = {
 
 //{cancel, save, remove, edit}
 
-export const EditorButtons = (props: EditorButtonProps) => (
-    props.view === CREATE ? <ButtonRow>
-        {
-            props.edit ? // render edit button if editing a detail
-                <Button cancel onClick={props.onDelete}>delete</Button>
-                : null
+const Btn = styled.button`
+  color: white;
+  font-weight: bold;
+  border-radius: 3px;
+  background-color: rgba(255,255,255,0.1);
+  cursor: pointer;
+  :focus {
+    outline: none;
+  }
+`;
+
+export const EditorButtons = (props: EditorButtonProps) => {
+    if (props.view === CREATE) {
+        return <ButtonRow>{// render edit button if editing a detail
+                !props.edit ?
+                    null :
+                    <Button
+                        cancel
+                        onClick={props.onDelete}>
+                        delete
+                    </Button>
+            }
+            <Button cancel onClick={props.onCancel}>cancel</Button>
+            <Button onClick={props.onSave}>save</Button>
+        </ButtonRow>
+    } else {
+        return <DownloadButton
+            type={props.activeDetail.type}
+            id={props.activeDetail.data._id}/>
+    }
+};
+
+
+
+const downloadBtnConfig = {
+    [MAPPING]: {
+        label: `Download mapping as JSON`,
+        action: (id) => {
+            // todo: refactor to APIclient
+            axios.get(`http://localhost:3000/mapping/export/${id}`)
+                .then(response => {
+                    const element = document.createElement('a');
+                    const formattedFile = encodeURIComponent(
+                        JSON.stringify(response.data, null, 2)
+                    );
+                    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + formattedFile);
+                    element.setAttribute('download', `${id}.json`);
+
+                    element.style.display = 'none';
+                    document.body.appendChild(element);
+
+                    element.click();
+
+                    document.body.removeChild(element);
+                })
+                .catch(err => console.err(err))
         }
-        <Button cancel onClick={props.onCancel}>cancel</Button>
-        <Button onClick={props.onSave}>save</Button>
-    </ButtonRow>: null
-);
+    }
+};
+
+
+// todo: cleaning
+
+const DownloadButton = ({type, id}) => {
+
+    if (Object.keys(downloadBtnConfig).indexOf(type) !== -1) {
+
+        const {label, action} = downloadBtnConfig[type];
+        return <Btn onClick={() => action(id)}>{label}</Btn>
+    }
+    return null;
+};
+
 
 EditorButtons.defaultProps = {
     edit: () => false,
@@ -35,17 +100,21 @@ EditorButtons.defaultProps = {
     onDelete: () => alert('todo'),
 };
 
-
+// <EditorButtons message={hello}/>
 const mapStateToProps = (state, props) => ({
     view: state.app.bottomPanel.view,
     edit: state.detailForm.edit,
-    description: state.detailForm.description
+    description: state.detailForm.description,
+    activeDetail: state.activeDetail,
+    activeDetailType: state.activeDetail.type,
+    activeDetailID: state.activeDetail.data._id,
+    activeTagDetailName: state.activeDetail.data.name,
 });
 
-const mapDispatchToProps= (dispatch) => ({
+const mapDispatchToProps = (dispatch) => ({
     onCancel: () => dispatch(detailEditorActions.closeEdit()),
-    onSave: ()  => dispatch(detailEditorActions.onSave()),
-    onDelete: ()  => dispatch(detailEditorActions.onDelete())
+    onSave: () => dispatch(detailEditorActions.onSave()),
+    onDelete: () => dispatch(detailEditorActions.onDelete()),
 });
 
 export default connect(

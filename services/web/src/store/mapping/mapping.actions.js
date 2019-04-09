@@ -119,8 +119,7 @@ export function loadMappingsSuccess(mappings) {
 
 export function loadAllMappings() {
 
-    return async function (dispatch) {
-
+    return async function (dispatch, getState) {
         const mappings = await
             api
                 .mapping

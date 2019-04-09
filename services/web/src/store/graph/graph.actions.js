@@ -17,7 +17,6 @@ import cytoscape from 'cytoscape';
 import style from './graph.styles';
 import cxtmenu from 'cytoscape-cxtmenu';
 import cola from 'cytoscape-cola';
-import {updateAsset} from "..";
 
 // todo: refactor to utils
 import {getEdgeFromConnection} from "../../common/graph-helpers";
@@ -245,7 +244,6 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
     // ! canvas click not working
     eventHandlers.forEach(event => {
         const {action, selector, callback} = event;
-        console.log(event)
         cy.on(action, selector, callback);
     });
 
@@ -261,7 +259,6 @@ export function addAssetsToGraph(assetsToAdd: Array<Asset>) {
     return function (dispatch: Dispatch, getState: State): void {
 
         const {activeMapping} = getState();
-        console.log(activeMapping)
 
         let needToRedrawLayout = false;
 

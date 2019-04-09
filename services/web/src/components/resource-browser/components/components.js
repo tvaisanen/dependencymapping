@@ -108,7 +108,7 @@ export const AssetList = (props: ResourceListProps) => (
                 />
             )
         )
-)
+);
 
 export const ConnectionList = (props: ResourceListProps) => (
     props.selected !== CONNECTION ? null :
@@ -120,7 +120,7 @@ export const ConnectionList = (props: ResourceListProps) => (
                 />
             )
         )
-)
+);
 
 export const TagList = (props: ResourceListProps) => (
     props.selected !== TAG ? null :
@@ -133,7 +133,7 @@ export const TagList = (props: ResourceListProps) => (
                 />
             )
         )
-)
+);
 
 
 export const ResourceList = (props: ResourceListProps) => (
@@ -142,7 +142,7 @@ export const ResourceList = (props: ResourceListProps) => (
         <ConnectionList {...props}/>
         <TagList        {...props}/>
     </ListContainer>
-)
+);
 
 
 export const ListItemByName = (props: ListItemProps) => (

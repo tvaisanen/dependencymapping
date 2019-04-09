@@ -1,20 +1,4 @@
-const fs = require('fs');
-
-// this is handled via docker secrets
-// and meant not to be included in the repo
-const PUBLIC_URL_FILE = '/run/secrets/public-api-path';
-
-let API_PATH = "<FIXME-WITH-ENV-VARS>";
-
-try {
-    API_PATH = fs.readFileSync(PUBLIC_URL_FILE)
-        .toString()
-        .replace('\n', '');
-    console.log(API_PATH)
-} catch (err) {
-    console.warn('public url secret not found?')
-    console.log(err)
-}
+const { API_PATH } = require('./configs');
 
 function serializeAsset(host, resource) {
     console.log(`serialize: ${resource.name}`)

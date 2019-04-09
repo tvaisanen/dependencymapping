@@ -14,7 +14,7 @@ const Fallback = () => (
 
 const WrappedWithSuspense = () => (
     <React.Suspense fallback={<Fallback/>}>
-       <TopBarContainer/>
+       <TopBarContainer />
     </React.Suspense>
 );
 

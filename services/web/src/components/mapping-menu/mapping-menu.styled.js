@@ -54,7 +54,6 @@ export const ScrollContent = styled.div`
 export const PanelHeader = styled.div`
     display: flex;
     justify-content: center;
-    //background: rgba(36,36,42, 0.8);
     color: white;
     text-align: center;
     text-transform: uppercase;
