@@ -60,7 +60,7 @@ const downloadBtnConfig = {
         label: `Download mapping as JSON`,
         action: (id) => {
             // todo: refactor to APIclient
-            axios.get(`http://${REACT_APP_API_PATH}/mapping/export/${id}`)
+            axios.get(`${REACT_APP_API_PATH}/mapping/export/${id}`)
                 .then(response => {
                     const element = document.createElement('a');
                     const formattedFile = encodeURIComponent(
