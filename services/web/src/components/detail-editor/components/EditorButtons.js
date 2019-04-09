@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import {BROWSE, CREATE} from "../../../constants/views";
 import {MAPPING, TAG} from "../../../constants";
 
+const {REACT_APP_API_PATH} = process.env;
+
 // todo: refactor
 import axios from 'axios';
 
@@ -58,7 +60,7 @@ const downloadBtnConfig = {
         label: `Download mapping as JSON`,
         action: (id) => {
             // todo: refactor to APIclient
-            axios.get(`http://localhost:3000/mapping/export/${id}`)
+            axios.get(`http://${REACT_APP_API_PATH}/mapping/export/${id}`)
                 .then(response => {
                     const element = document.createElement('a');
                     const formattedFile = encodeURIComponent(
