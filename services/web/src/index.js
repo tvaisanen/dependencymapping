@@ -57,6 +57,6 @@ ReactDOM.render(
 
 store.dispatch(graphActions.initGraph({eventHandlers}));
 
-socket.initConnection();
+//socket.initConnection();
 
 registerServiceWorker();
