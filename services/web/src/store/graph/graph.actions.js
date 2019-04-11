@@ -1,16 +1,16 @@
 import * as types from './graph.action-types';
 import * as _ from 'lodash';
 
-import {ASSET, CONNECTION} from "../../constants";
-import {setEventHook, clearEventHook} from "../event-hook";
-
+import * as graphEvents from './graph.events';
 import * as activeDetailActions from '../active-detail/active-detail.actions';
 import * as activeMappingActions from '../active-mapping/active-mapping.actions';
-import {editDetail, setInfoMessage} from '../../store/ui/ui.actions';
-import {updateAssetByName} from '../asset/asset.actions';
 import * as detailFormActions from '../detail-form/detail-form.actions';
 import * as connectionActions from '../connection/connection.actions';
 
+import {ASSET, CONNECTION} from "../../constants";
+import {setEventHook, clearEventHook} from "../event-hook";
+import {editDetail, setInfoMessage} from '../../store/ui/ui.actions';
+import {updateAssetByName} from '../asset/asset.actions';
 import {layoutOptions} from "./graph.styles";
 
 import cytoscape from 'cytoscape';
@@ -36,9 +36,22 @@ export function assetToNode(asset: Asset) {
 cytoscape.use(cola);
 cytoscape.use(cxtmenu);
 
-export function initGraph({eventHandlers}) {
+//const eHandlers = [
+//    {action: 'tap', selector: 'node', callback: (event) => store.dispatch(graphEvents.onNodeClick(event))},
+//];
+
+export function initGraph() {
 
     return function (dispatch, getState) {
+
+        const eventHandlers = [
+            {
+                action: 'tap',
+                selector: 'node',
+                callback: (event) => dispatch(graphEvents.onNodeClick(event))
+            },
+        ];
+
         const cy = newGraphInstance(
             eventHandlers,
             dispatch,
@@ -84,15 +97,15 @@ const newGraphInstance = (eventHandlers, dispatch, getState) => {
         )[0];
     }
 
-    function getConnectionByEdge(edgeElement){
+    function getConnectionByEdge(edgeElement) {
 
         console.log(getState())
 
         const filtered = getState().connections.filter(connection => {
-            console.log(connection)
-            console.log(`${connection.source} === ${edgeElement.data('source')} = ${connection.source === edgeElement.data('source')}`)
-            console.log(`${connection.target} === ${edgeElement.data('target')} = ${connection.target === edgeElement.data('target')}`)
-            return     (
+                console.log(connection)
+                console.log(`${connection.source} === ${edgeElement.data('source')} = ${connection.source === edgeElement.data('source')}`)
+                console.log(`${connection.target} === ${edgeElement.data('target')} = ${connection.target === edgeElement.data('target')}`)
+                return (
                     connection.source === edgeElement.data('source') &&
                     connection.target === edgeElement.data('target')
                 )
@@ -290,9 +303,7 @@ export function removeAssetFromGraph(asset: Asset) {
             const removeChildren = window.confirm("remove the sub-graph too?");
             if (removeChildren) {
                 el.children().forEach(child => {
-                    console.info("this needs to be removed");
                     const removeThis = {name: child.id()};
-                    console.info(removeThis);
                     dispatch(removeResourceFromActiveMapping(removeThis));
                 });
             } else {

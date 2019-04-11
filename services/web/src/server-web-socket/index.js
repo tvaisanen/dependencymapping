@@ -7,9 +7,10 @@ console.groupEnd();
 const HOST = document.location.host;
 const WS_PATH = `ws://localhost:3000/`;
 
-const socket = new WebSocket(WS_PATH);
 
 export const initConnection = () => {
+
+    const socket = new WebSocket(WS_PATH);
 
     socket.addEventListener('open', function (event) {
         socket.send('Hello Server!');

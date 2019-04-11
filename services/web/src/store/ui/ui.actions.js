@@ -59,8 +59,9 @@ export function toggleBottomPanel(){
 
 export function editDetail(){
     return function(dispatch, getState){
+        dispatch(showBottomPanel());
         dispatch(setEditDetail());
-        dispatch(setFormType(getState().activeDetail.type))
+        dispatch(setFormType(getState().activeDetail.type));
         dispatch(setBottomPanelView(views.CREATE));
     }
 }

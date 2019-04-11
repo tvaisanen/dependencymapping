@@ -6,10 +6,11 @@ import styled from 'styled-components';
 import {BROWSE, CREATE} from "../../../constants/views";
 import {MAPPING, TAG} from "../../../constants";
 
-const {REACT_APP_API_PATH} = process.env;
 
 // todo: refactor
 import axios from 'axios';
+
+const {REACT_APP_API_PATH} = process.env;
 
 type EditorButtonProps = {
     onCancel: () => void,

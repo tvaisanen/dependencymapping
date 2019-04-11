@@ -37,11 +37,7 @@ export function onCanvasClick(event) {
 
 
 export function onNodeClick(event) {
-    /**
-     *
-     *
-     *
-     */
+
     return function (dispatch: Dispatch, getState: State) {
 
         const {assets, connections, eventHook} = getState();
@@ -86,8 +82,6 @@ export function onNodeClick(event) {
 
             // get connections that other active assets might have
             // with the added assets
-
-
             // the active mapping state needs to be updated by
             // adding the resources of the expanded node.
 
@@ -101,23 +95,9 @@ export function onNodeClick(event) {
             // to have the reference of cy, target and the resource name
             // list to the target is connected to
 
-
-            const layout = getState().app.graph.selectedLayout;
-
-            // const nodesToCreate = helpers.assetsToNodes((connectedAssets: Array<Asset>));
-            // helpers.addElements(cy, nodesToCreate);
-
-
             // get all connections that the clicked
             // asset is associated with
             dispatch(syncAssetConnectionsInGraph(clickedAsset));
-
-
-
-            //if (nodesToCreate.length > 0) {
-            //    // nodes are created, update the layout
-            //   helpers.updateLayout(cy, layout);
-            //}
 
         }
     };
