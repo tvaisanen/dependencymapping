@@ -12,6 +12,7 @@ const PanelNavTabs = ({bottomPanel, setView, toggleBottomPanelVisibility,showBot
                     <PanelNavTab id="panel-nav-tab"
                         key={i}
                         selected={bottomPanel.view === tab.view}
+                        // todo: refactor function
                         onClick={() => {
 
                             if (bottomPanel.view !== tab.view){

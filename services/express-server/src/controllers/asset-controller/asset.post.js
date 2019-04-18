@@ -1,10 +1,13 @@
 const Asset = require('../../models').Asset;
 const hal = require('../../utils/hal.utils');
+//const { broadcastToClients } = require('../../socket/');
 
 function assetPost(req, res){
 
     const asset = new Asset(req.body);
 
+    console.log("assetRouter.post()");
+    console.log(asset);
 
     if (!asset.name) {
         console.log(asset)
@@ -15,14 +18,19 @@ function assetPost(req, res){
         Asset.findOne({name: asset.name})
             .then(existing => {
                 if (existing) {
-                    res.status(409).json({
-                        error: `Asset ${existing.name} already exists.`,
-                        pathToExisting: `/asset/${existing.name}`
-                    });
+                    res
+                        .status(409)
+                        .json({
+                            error: `Asset ${existing.name} already exists.`,
+                            pathToExisting: `/asset/${existing.name}`
+                        });
                 } else {
-                    asset.save().then(saved => {
-                        const halAsset = hal.serializeAsset(`${req.headers.host}`, saved);
-                        res.status(201).send(halAsset);
+                    asset
+                        .save()
+                        .then(saved => {
+                            const halAsset = hal.serializeAsset(`${req.headers.host}`, saved);
+                            //broadcastToClients(`new asset, plz run: assetActions.getAssetById('${saved._id}')`);
+                            res.status(201).send(halAsset);
                     }).catch(err => {
                         console.log(err);
                     })

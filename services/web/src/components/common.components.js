@@ -1,46 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Input = styled.input`
-background-color: transparent;
-  text-align: center;
-  max-width: 200px;
-  min-height: 1.2em;
-  width: 100%;
-  border: none; 
-  border-bottom: 1px solid grey; 
-  margin: 0 8px 8px 0;
-  color: rgba(255,255,255,0.8);
-  font-size: 1em;
-  flex-grow: 1;
-  
-  ::placeholder{
-    color: whitesmoke;
-  }
-`;
 
-const Field = styled.div`
-  display: flex;
-  justify-content: center;
-  padding: 4px;
-  min-height: 1.2em;
-  font-size: small;
-`;
-
-const Btn = styled.span`
-  width: 1em;
-  height: 1em;
-  cursor: pointer;
-
-`;
-
-const Icon = styled.span`
-  position: relative;
-  height: 1em;
-  width: 0;
-  bottom: 1px;
-  right: 0px;
-`;
 
 export const FilterInputField = ({onChange,id}) => {
 
@@ -82,3 +43,45 @@ export const AddInputField = ({addItem, placeholder}) => {
        </Btn>
     </Field>
 };
+
+
+const Input = styled.input`
+  background-color: transparent;
+  text-align: center;
+  max-width: 200px;
+  min-height: 1.2em;
+  width: 100%;
+  border: none; 
+  border-bottom: 1px solid grey; 
+  margin: 0 8px 8px 0;
+  color: rgba(255,255,255,0.8);
+  font-size: 1em;
+  flex-grow: 1;
+  
+  ::placeholder{
+    color: whitesmoke;
+  }
+`;
+
+const Field = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 4px;
+  min-height: 1.2em;
+  font-size: small;
+`;
+
+const Btn = styled.span`
+  width: 1em;
+  height: 1em;
+  cursor: pointer;
+
+`;
+
+const Icon = styled.span`
+  position: relative;
+  height: 1em;
+  width: 0;
+  bottom: 1px;
+  right: 0px;
+`;

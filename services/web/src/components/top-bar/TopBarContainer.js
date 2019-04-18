@@ -4,25 +4,28 @@ import {connect} from 'react-redux';
 import topBarController from './top-bar.controller';
 import * as sc from './top-bar.styled';
 import CollapseMenuContainer from '../collapse-menu/CollapseMenuContainer';
+
 /**
- * Generate dropdown selection for
- * selecting the layout
+ * Sub components for the top bar
  */
+
+const renderOptions = options => {
+    return options.map((option, i) => (
+        <option key={i}>{option}</option>
+    ))
+};
+
 const LayoutSelection = ({layoutOptions, selectedLayout, setGraphLayout}) => (
-    <select value   ={selectedLayout}
-            onChange={(e) => setGraphLayout(e.target.value)}>
-        {
-            layoutOptions.map((layoutOption, i) => (
-                <option key={i}>{layoutOption}</option>
-            ))
-        }
+    <select value={selectedLayout} onChange={(e) => setGraphLayout(e.target.value)}>
+        {renderOptions(layoutOptions)}
     </select>
 );
 
-const RefreshButton     = ({onClick}) => <sc.RefreshBtn onClick={onClick}>&#8635;</sc.RefreshBtn>;
-const MenuToggleButton  = ({onClick}) => <sc.MenuToggle onClick={onClick}>&#9776;</sc.MenuToggle>;
-const InfoBlock         = ({message}) => <sc.InfoSpan>{message}</sc.InfoSpan>;
+const RefreshButton = ({onClick}) => <sc.RefreshBtn onClick={onClick}>&#8635;</sc.RefreshBtn>;
+const MenuToggleButton = ({onClick}) => <sc.MenuToggle onClick={onClick}>&#9776;</sc.MenuToggle>;
+const InfoBlock = ({message}) => <sc.InfoSpan>{message}</sc.InfoSpan>;
 
+// top bar main component
 const TopBarContainer = (props) => (
     <sc.TopBar>
         <sc.Title>Dependency Mapper</sc.Title>

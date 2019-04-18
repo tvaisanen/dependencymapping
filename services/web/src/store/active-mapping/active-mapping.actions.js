@@ -7,19 +7,15 @@ import type {
 } from "./active-mapping.types";
 
 import * as mappingHelpers from './active-mapping.utils';
+import {addAssetToGraph, removeAssetFromGraph, updateLayout} from "../graph/graph.actions";
 
 export function setActiveMapping(mapping: ActiveMappingState)
     : ActiveMappingAction {
     return {type: types.SET_ACTIVE_MAPPING, mapping}
 }
 
-export function clearActiveMappingSelection(graph) {
-    graphHelpers.clearGraph(graph);
+export function clearActiveMappingSelection() {
     return {type: types.CLEAR_ACTIVE_MAPPING_SELECTION}
-}
-
-export function setActiveMappingConnections(connections) {
-    return {type: types.SET_ACTIVE_MAPPING_CONNECTIONS, connections}
 }
 
 export function addActiveMappingAssets(assets) {
@@ -43,178 +39,28 @@ export function addResourceToActiveMapping(asset) {
 
     return function (dispatch, getState) {
 
-        const {activeMapping, assets, graph} = getState();
+        const {activeMapping} = getState();
 
         if (activeMapping.name === "no selection") {
             alert("Create or select a mapping first, before adding assets.")
-            return;
+
+        } else {
+            dispatch({type: types.ADD_ACTIVE_MAPPING_ASSET, asset: asset.name});
+            dispatch(addAssetToGraph(asset));
+            dispatch(updateLayout());
         }
-
-        const newAssetName = asset.name;
-
-        const edgeElements = asset.connected_to.map(
-            target => graphHelpers
-                .edgeElementFromResource(asset.name, target.name)
-        );
-
-
-        const cy = getState().graph;
-        const node = graphHelpers.nodeElementFromResource(asset);
-
-
-        dispatch({type: types.ADD_ACTIVE_MAPPING_ASSET, asset: asset.name});
-
-        // check if the assets in map have connections
-        // to the new asset
-
-        console.group("Check if premapped points to new");
-        const preMappedAssetObjects = assets.filter(asset => {
-            return _.includes(activeMapping.assets, asset.name);
-        });
-
-        // todo: refactor to reduce
-        let preMappedToNewEdges = [];
-
-        preMappedAssetObjects.forEach(preMappedAsset => {
-            preMappedAsset.connected_to.forEach(target => {
-                if (target === newAssetName) {
-                    preMappedToNewEdges.push(
-                        graphHelpers.edgeElementFromResource(
-                            preMappedAsset.name,
-                            newAssetName
-                        )
-                    );
-                }
-            })
-        });
-
-
-        //graphHelpers.addElement(cy, node);
-        graph.add(node);
-        graphHelpers.addElements(cy, preMappedToNewEdges);
-        graphHelpers.addElements(cy, edgeElements);
-
-        // move children under parent if exist
-
-        const assetObjects = assets.filter(asset => {
-            return _.includes(activeMapping.assets, asset.name)
-        });
-
-        assetObjects.forEach(a => {
-            const el = graph.getElementById(a.name);
-            console.info(a)
-            if (a.group === asset.name) {
-                el.move({parent: asset.name})
-            }
-            console.info(`${el.parent().id()} -> ${el.id()} `);
-        });
-        graph.elements('node').forEach(el => {
-            console.info(`${el.parent().id()} -> ${el.id()} `);
-        });
-
-        console.groupEnd();
-
-        graphHelpers.updateLayout(cy, "cola");
     }
 }
 
 export function removeResourceFromActiveMapping(asset) {
-    return function (dispatch, getState) {
-        const {graph} = getState();
-
-        const el = graph.getElementById(asset.name);
-
-        // before deleting parent node, get the children
-        if (el.isParent()) {
-            const removeChildren = window.confirm("remove the sub-graph too?");
-            if (removeChildren) {
-                el.children().forEach(child => {
-                    console.info("this needs to be removed");
-                    const removeThis = {name: child.id()};
-                    console.info(removeThis);
-                    dispatch(removeAsset(removeThis));
-                });
-            } else {
-                // move children
-                el.children().move({parent: null})
-            }
-        }
-
-        dispatch(removeAsset(asset))
-        graphHelpers.removeElement(getState().graph, asset.name);
+    return function (dispatch) {
+        dispatch(removeAssetFromActiveMapping(asset));
+        dispatch(removeAssetFromGraph(asset));
     }
 }
 
-function removeAsset(asset) {
+export function removeAssetFromActiveMapping(asset) {
     return {type: types.REMOVE_ACTIVE_MAPPING_ASSET, asset};
-}
-
-
-export function groupByTag(tagName) {
-    return function (dispatch, getState) {
-        const {activeMapping, assets, graph} = getState();
-        console.group("lets do this");
-
-        // filter the active mapping assets with the tag
-        const assetObjects = assets.filter(
-            asset => {
-                const inMapping = _.includes(activeMapping.assets, asset.name)
-                return inMapping ?
-                    _.includes(asset.tags, tagName)
-                    : false;
-            }
-        );
-
-        // 1. create node for the tag
-        const parent = graph.add({
-            group: "nodes",
-            data: {
-                id: tagName,
-            },
-        });
-        parent.addClass('group');
-
-        console.info(assetObjects);
-
-        // 2. add all the assets which has the tag
-        /*
-        const newEdges = assetObjects.map(asset => {
-
-            const n = graph.getElementById(asset.name);
-            // if asset is moved from other group
-            // create edge from the tag node
-            const parent = n.data('parent');
-            console.info(parent)
-            n.move({parent: tagName});
-
-            if (parent) {
-                const edge = graphHelpers.edgeElementFromResource(parent, asset.name);
-                edge.classes = 'is-in-group';
-                return edge;
-            }
-        });
-        */
-
-        dispatch({type: types.GROUP_BY_TAG, tagName})
-
-        console.groupEnd();
-    }
-}
-
-export function ungroupByTag(tagName) {
-    return function (dispatch, getState) {
-        const {activeMapping, assets, graph} = getState();
-        try {
-            graph.getElementById(tagName)
-                .children().move({parent: null});
-            graph.getElementById(tagName).remove();
-
-        } catch (err) {
-            console.warn(err);
-        }
-
-        dispatch({type: types.UNGROUP_BY_TAG, tagName});
-    }
 }
 
 export function updateAssetState(asset: Asset) {
@@ -232,10 +78,13 @@ export function updateAssetState(asset: Asset) {
     }
 }
 
+// todo: clean this
 export function updateActiveMapping(mapping) {
     return function (dispatch: Dispatch, getState: State){
             // if edited mapping is active mapping
             if (mapping.name === getState().activeMapping.name) {
+                // ? How did this ever happen?
+                // ! todo: clean up
                 mappingHelpers.loadDependencyMap(
                     mapping.name,
                     getState().graph,

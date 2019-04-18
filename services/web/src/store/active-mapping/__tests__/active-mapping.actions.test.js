@@ -4,42 +4,55 @@ import type {ActiveMappingState} from "../active-mapping.types";
 import {
     setActiveMapping,
     clearActiveMappingSelection,
-    setActiveMappingConnections,
     addActiveMappingAssets,
+    removeAssetFromActiveMapping
 } from '../active-mapping.actions';
 
 import {
-    CLEAR_ACTIVE_MAPPING_SELECTION
+    ADD_ACTIVE_MAPPING_ASSETS,
+    CLEAR_ACTIVE_MAPPING_SELECTION, REMOVE_ACTIVE_MAPPING_ASSET,
+    SET_ACTIVE_MAPPING
 } from "../active-mapping.action-types";
 
 
-it("clearActiveMappingSelection action creator returns correctly", () => {
+describe('Active mapping action creator tests: active-mapping.actions.test.js', () => {
 
-    const mappingState: ActiveMappingState = {
-        name: "Tag one",
-        description: "describing one",
-        assets: [
+    it("setActiveMapping should return: {type: SET_ACTIVE_MAPPING, (mapping: Mapping)}", () => {
+
+        const mapping = {
+            name: "Tag one",
+            description: "describing one",
+            assets: [{name: "Tag three", description: "describing three"}],
+            tags: [{name: "tag one", description: "describing"}],
+        };
+
+        const action = setActiveMapping(mapping);
+
+        expect(action.type).toEqual(SET_ACTIVE_MAPPING);
+        expect(action.mapping).toEqual(mapping)
+    });
+
+    it("clearActiveMappingSelection action creator returns correctly", () => {
+        const action = clearActiveMappingSelection();
+        expect(action.type).toEqual(CLEAR_ACTIVE_MAPPING_SELECTION);
+    });
+
+    it('addActiveMappingAssets should return: {type: ADD_ACTIVE_MAPPING_ASSETS, (assets: Array<Asset>)', () => {
+        const assets = [
+            {name: "Tag three", description: "describing three"},
             {name: "Tag three", description: "describing three"}
-        ],
-        tags: [{name: "tag one", description: "describing"}],
-        grouped: ["RemoveMe"]
-    };
-    const action = setActiveMapping(mappingState);
-    const expected = {
-        type: CLEAR_ACTIVE_MAPPING_SELECTION
+            ];
+        const action = addActiveMappingAssets(assets);
+        expect(action.type).toEqual(ADD_ACTIVE_MAPPING_ASSETS);
+        expect(action.assets).toEqual(assets);
+    });
 
-    }
-    expect(action).toEqual(expected);
-});
 
-it("clearActiveMappingSelection action creator returns correctly", () => {
-    const action = clearActiveMappingSelection();
-    const expected = {type: CLEAR_ACTIVE_MAPPING_SELECTION}
-    expect(action).toEqual(expected);
-});
+    it('removeAssetFromActiveMapping should return: {type: REMOVE_ACTIVE_MAPPING_ASSET, (assets: Asset))', () => {
+        const asset = {name: "Tag three", description: "describing three"};
+        const action = removeAssetFromActiveMapping(asset);
+        expect(action.type).toEqual(REMOVE_ACTIVE_MAPPING_ASSET);
+        expect(action.asset).toEqual(asset);
+    });
 
-it("clearActiveMappingSelection action creator returns correctly", () => {
-    const action = clearActiveMappingSelection();
-    const expected = {type: CLEAR_ACTIVE_MAPPING_SELECTION}
-    expect(action).toEqual(expected);
 });

@@ -70,7 +70,7 @@ const initialState = {
     formType: "CONNECTION",
     selections: true, // if there's the selects
     nodeShape: "ellipse",
-    nodeColor: "black",
+    nodeColor: "",
     group: "none",
     source: "",
     target: "",

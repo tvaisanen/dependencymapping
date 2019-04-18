@@ -12,10 +12,17 @@ import * as types from './../../constants'
 import { Menu } from './mapping-menu.components';
 import * as resourceHelpers from '../../common/resource-helpers';
 
-// todo: refactor
+// todo: could be tidied up by refactoring
 
+/**
+ *  Contains list for map selection
+ *  and active mapping assets. This
+ *  is used in middle sections left
+ *  side.
+ */
 const MappingMenuContainer = props => (
     <MappingLists>
+
         <MenuColumn id="sidepanel">
             <Menu
                 title="Mappings "
@@ -28,19 +35,13 @@ const MappingMenuContainer = props => (
                         props.activeDetail.data.name : false
                 }
             />
-
-
         </MenuColumn>
 
         <MenuColumn id="active-resources-list" wide>
             <Menu
                 listItemType={"asset"}
                 darkButtons
-                title={
-                    props.activeMapping.name ?
-                        props.activeMapping.name
-                        : 'Select Mapping'
-                }
+                title={props.activeMapping.name ? props.activeMapping.name : 'Select Mapping'}
                 listItems={
                     props.activeMapping.assets ?
                         resourceHelpers.sortObjectsByName(props.activeMapping.assets)
@@ -67,16 +68,18 @@ MappingMenuContainer.propTypes = {
     mappingNameList: PropTypes.array.isRequired,
     activeDetail: PropTypes.object.isRequired,
     activeMapping: PropTypes.object.isRequired,
-    activeResourceNameList: PropTypes.array,
+    activeMappingAssetNameList: PropTypes.array,
     hoverResourceOn: PropTypes.func.isRequired,
     hoverResourceOff: PropTypes.func.isRequired,
     onMappingItemClick: PropTypes.func.isRequired,
     onActiveAssetClick: PropTypes.func.isRequired,
 };
 
+// styled divs
 export const MappingLists = styled.div`
   grid-area: lists;
   display: flex;
+  overflow: hidden;
 `;
 
 export const MenuColumn = styled.div`

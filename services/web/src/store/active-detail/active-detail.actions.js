@@ -1,8 +1,9 @@
 import * as types from './active-detail.action-types';
 import * as resourceTypes from '../../constants/types';
 import * as _ from 'lodash';
-import { ASSET, CONNECTION, MAPPING, TAG } from "../../constants/types";
-import { Asset, Connection, Mapping, Tag} from "../types";
+import {ASSET, CONNECTION, MAPPING, TAG} from "../../constants/types";
+import {Asset, Connection, Mapping, Tag} from "../types";
+import {deleteConnection, getAssetByName} from "..";
 
 
 export function setActiveDetail(activeDetail) {
@@ -41,6 +42,7 @@ export function setConnectionAsActiveDetail(activeDetail) {
      */
     return function (dispatch, getState) {
 
+
         try {
             // Todo: continue here!
             // catches when connection dangling
@@ -54,6 +56,15 @@ export function setConnectionAsActiveDetail(activeDetail) {
 
             const filteredAssets = assets.filter(asset => _.includes(assetFilter, asset.name));
 
+            if (filteredAssets.length < 2) {
+                // the assets have been deleted
+                // in this situation the assets
+                // connections should have been
+                // deleted too
+                dispatch(deleteConnection({form: activeDetail.data}));
+                alert('this connection should have already been deleted');
+                return null;
+            }
 
             const first = filteredAssets.pop();
 
@@ -78,7 +89,12 @@ export function setConnectionAsActiveDetail(activeDetail) {
 
             dispatch(setActiveDetail(collectedDetail));
         } catch (err) {
+
+            console.group("%csetConnectionAsActiveDetail", "font-size:1.2rem;color:red");
+            console.log(activeDetail)
             console.error(err)
+            console.groupEnd();
+
             alert("set connection as detail catch")
         }
     }
@@ -119,15 +135,15 @@ export function setAssetAsActiveDetail(activeDetail) {
 
 
 type SetAsActiveProps = {
-   type: ASSET | CONNECTION | MAPPING | TAG,
-   data: Asset | Connection | Mapping | Tag
+    type: ASSET | CONNECTION | MAPPING | TAG,
+    data: Asset | Connection | Mapping | Tag
 }
 
 
-export function setAsActiveDetail(activeDetail: SetAsActiveProps){
+export function setAsActiveDetail(activeDetail: SetAsActiveProps) {
 
-    return function (dispatch){
-        switch (activeDetail.type){
+    return function (dispatch) {
+        switch (activeDetail.type) {
             case resourceTypes.ASSET:
                 dispatch(setAssetAsActiveDetail(activeDetail));
                 break;

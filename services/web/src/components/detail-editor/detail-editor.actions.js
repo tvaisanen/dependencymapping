@@ -48,6 +48,7 @@ export function closeFormAndSetActiveDetail(activeDetail) {
 
 export function closeEdit() {
     return function (dispatch: Dispatch): void {
+        dispatch(detailFormActions.clearForm());
         dispatch(appActions.setEditFalse());
         dispatch(detailFormActions.setFormEditFalse());
         dispatch(appActions.setBottomPanelView(BROWSE))
@@ -153,7 +154,7 @@ export function onDelete(): Dispatch {
     return async function (dispatch: Dispatch, getState: State)
         : void {
         const {detailForm} = getState();
-        const {formType, name, source, target} = detailForm;
+        const {formType, _id, name, source, target} = detailForm;
 
         const confirmDelete = window
             .confirm(
@@ -178,17 +179,24 @@ export function onDelete(): Dispatch {
                 dispatch(detailFormActions.setFormEditFalse());
             };
 
-            const args = formType === CONNECTION ?
-                {form: {source: source.name, target: target.name}}
-                : {form: {name}}
-            ;
-
+            //const args = formType === CONNECTION ?
+            //    {form: {_id, source: source.name, target: target.name}}
+            //    : {form: {name, _id}}
+            //;
+            console.group("This is passed to delete:");
+            console.info(detailForm)
+            console.groupEnd();
 
             try {
                 await
                     dispatch(typeToActionMap[formType]
-                        .delete(({
-                            ...args,
+                        .deleteById(({
+                            form: {
+                                _id: detailForm._id,
+                                name: detailForm.name,
+                                source: detailForm.source,
+                                target: detailForm.target,
+                            },
                             callback
                         }: FormAndOptionalCallback))
                     );

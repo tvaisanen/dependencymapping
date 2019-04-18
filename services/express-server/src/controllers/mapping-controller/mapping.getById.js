@@ -3,7 +3,7 @@ const hal = require('../../utils/hal.utils');
 
 function mappingGetById(req, res) {
 
-    Mapping.findOne({name: req.params.id})
+    Mapping.findOne({_id: req.params.id})
         .then(mapping => {
             if (!mapping) {
                 res.status(404).json(err.RESOURCE_NOT_FOUND)

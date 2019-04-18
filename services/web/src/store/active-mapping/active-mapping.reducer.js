@@ -53,8 +53,9 @@ export default function activeMappingReducer(
                 return state;
             }
             // remove the given resource from active mapping resources
-            const filteredAssets: Array<Asset> = state.assets
-                .filter(assetName => assetName !== action.asset.name);
+            const filteredAssets: Array<Asset> = state.assets ?
+                state.assets.filter(assetName => assetName !== action.asset.name)
+                : [];
 
             return { ...state, assets: filteredAssets };
 

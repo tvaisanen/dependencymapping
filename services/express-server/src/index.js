@@ -5,8 +5,12 @@ const cors = require('cors');
 const testHandlers = require('./utils/testHandlers');
 const initDatabaseConnection = require('./database');
 const { registerRoutes } = require('./routers/');
+//const { registerWs } = require('./socket');
+
 
 let app = express();
+//const expressWs = require('express-ws')(app);
+//const expressWs = registerWs(app);
 
 /*if (process.env.NODE_ENV === "PRODUCTION"){
     const compression = require('compression');
@@ -21,6 +25,33 @@ let app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
+/* WEBSOCKET */
+/*
+app.ws('/', function(ws, req) {
+
+    ws.on('connection', function(ws, req, next){
+        console.log('connected');
+        ws.send('hello there')
+    });
+
+    ws.on('message', function(msg){
+        console.log(msg);
+        ws.send('back at u')
+    });
+});
+*/
+
+/*
+app.use('/broadcast', (req,res) => {
+   expressWs.getWss('/').clients.forEach(client => {
+       client.send('broadcast message')
+   });
+   res.send(200);
+});
+*/
+
+/*************/
+
 // init db connection
 initDatabaseConnection();
 
@@ -30,9 +61,13 @@ registerRoutes(app);
 // misc routes
 app.use('/coverage', express.static(__dirname + '/../coverage/'));
 app.use('/open-api', express.static(__dirname + '/open-api/'));
-app.use('/test', express.static(__dirname + 'src/pages'));
-app.use(testHandlers.testRoutes);
-app.use('/', express.static(__dirname + '/templates/'));
+
+if (process.env.NODE_ENV !== "PRODUCTION") {
+    // don't allow these in production
+    app.use('/test', express.static(__dirname + 'src/pages'));
+    app.use(testHandlers.testRoutes);
+    app.use('/', express.static(__dirname + '/templates/'));
+}
 
 // 404
 app.get('*', (req, res) => {
@@ -44,6 +79,8 @@ app.listen(3000, ()=> {
     console.log(
         `Dependency Mapping :: env: ${process.env.NODE_ENV}`
     );
+
+    console.log(`public url :: env: ${process.env.PUBLIC_URL}`)
 });
 
 module.exports = app;

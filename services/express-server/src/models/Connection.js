@@ -11,6 +11,23 @@ const connectionSchema = new mongoose.Schema({
     edgeLabel: {type: String, default: ""}
 });
 
+connectionSchema.methods.removeReferenceFromTheSourceAsset = function (target)  {
+    console.log("connectionSchema.methods.removeReferenceFromTheSourceAsset()");
+    console.log("\n ########### here with connectionschema method ##########");
+    console.log(this)
+    this.model('assets')
+        .findOneAndUpdate({name: this.source}, { $pullAll: {connected_to: [this.target]}})
+        .then(asset => {
+            console.log('updated asset')
+            console.log(asset)
+        })
+}
+
+connectionSchema.post('findOneAndDelete', (connection) => {
+    console.log(`connectionSchema.post('findOneAndDelete', ${connection._id}`);
+    connection.removeReferenceFromTheSourceAsset()
+});
+
 
 
 try {

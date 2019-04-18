@@ -69,8 +69,9 @@ const FormOptions = (props: Props) => {
 
                 <Inflater>
                     <div>
-                {props.buttons.map(b => (
+                {props.buttons.map((b,i) => (
                     <ListItemBox
+                        key={i}
                         selected={props.formType === b.type}
                         onClick={() => props.setFormType(b.type)}>
                         {b.label}

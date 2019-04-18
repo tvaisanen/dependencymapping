@@ -12,33 +12,37 @@ const initialState = {
     grouped: ["RemoveMe"]
 };
 
-it('Returns default if type is not defined', () => {
-    const result = activeMappingReducer(
-        initialState,
-        {type: "not defined"}
-    );
-    expect(initialState).toEqual(result);
-});
+
+describe('Active mapping reducer tests: active-mapping.reducer.test.js', () => {
+
+    it('Returns default if type is not defined', () => {
+        const result = activeMappingReducer(
+            initialState,
+            {type: "not defined"}
+        );
+        expect(initialState).toEqual(result);
+    });
 
 
-it('SET_ACTIVE_MAPPING sets the state correctly', () => {
+    it('SET_ACTIVE_MAPPING sets the state correctly', () => {
 
-    const newState = {
-        name: "Tag one",
-        description: "describing one",
-        assets: [
-            {name: "Tag three", description: "describing three"}
-        ],
-        tags: [{name: "tag one", description: "describing"}],
-        grouped: ["RemoveMe"]
-    };
+        const newState = {
+            name: "Tag one",
+            description: "describing one",
+            assets: [
+                {name: "Tag three", description: "describing three"}
+            ],
+            tags: [{name: "tag one", description: "describing"}],
+            grouped: ["RemoveMe"]
+        };
 
-    const action = actions.setActiveMapping(newState);
+        const action = actions.setActiveMapping(newState);
 
-    const result = activeMappingReducer(
-        initialState,
-        action
-    );
+        const result = activeMappingReducer(
+            initialState,
+            action
+        );
 
-    expect(result).toEqual(newState);
+        expect(result).toEqual(newState);
+    });
 });

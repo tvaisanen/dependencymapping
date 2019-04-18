@@ -31,22 +31,22 @@ export const typeToActionMap = {
     [types.ASSET]: {
         post: actionsAsset.postAsset,
         put: actionsAsset.updateAsset,
-        delete: actionsAsset.deleteAsset
+        deleteById: actionsAsset.deleteAssetById
     },
     [types.CONNECTION]: {
         post: actionsConnection.postConnection,
         put: actionsConnection.updateConnection,
-        delete: actionsConnection.deleteConnection,
+        deleteById: actionsConnection.deleteConnectionById,
     },
     [types.MAPPING]: {
         post: actionsMapping.postMapping,
         put: actionsMapping.updateMapping,
-        delete: actionsMapping.deleteMapping,
+        deleteById: actionsMapping.deleteMappingById,
     },
     [types.TAG]: {
         post: actionsTag.postTag,
         put: actionsTag.updateTag,
-        delete: actionsTag.deleteTag,
+        deleteById: actionsTag.deleteTagById,
     }
 };
 
@@ -62,7 +62,9 @@ export const getForm = {
         tags: detailForm.selectedTags,
         group: detailForm.group,
         nodeShape: detailForm.nodeShape,
-        nodeColor: detailForm.nodeColor
+        nodeColor: detailForm.nodeColor,
+        _id: detailForm._id
+
     }),
     CONNECTION: (detailForm: FormProps) => ({
         source: detailForm.source.name ? detailForm.source.name : detailForm.source,
@@ -72,15 +74,18 @@ export const getForm = {
         edgeLabel: detailForm.edgeLabel,
         sourceArrow: detailForm.sourceArrow,
         targetArrow: detailForm.targetArrow,
+        _id: detailForm._id
     }),
     MAPPING: (detailForm) => ({
         name: detailForm.name,
         description: detailForm.description,
         assets: detailForm.selectedAssets,
         tags: detailForm.selectedTags,
+        _id: detailForm._id
     }),
     TAG: (detailForm) => ({
         name: detailForm.name,
         description: detailForm.description,
+        _id: detailForm._id
     }),
 };

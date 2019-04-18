@@ -1,4 +1,4 @@
-import data from './data';
+import data from '../src/api/__mocks__/data';
 import _ from 'lodash';
 
 /*
@@ -50,6 +50,7 @@ class GwClientApi {
         });
     }
 
+
     static getResources() {
         return new Promise((resolve, reject) => {
             process.nextTick(
@@ -60,6 +61,23 @@ class GwClientApi {
                             status: 400,
                             statusText: "Bad request",
                             error: 'User with ' + userID + ' not found.',
+                        }),
+            );
+        });
+    }
+
+
+    static getAssets() {
+        console.log("get assets mocked here")
+        return new Promise((resolve, reject) => {
+            process.nextTick(
+                () =>
+                    data.assets
+                        ? resolve(getResponse({data: data.assets}))
+                        : reject({
+                            status: 200,
+                            statusText: "OK",
+                            error: '',
                         }),
             );
         });
@@ -150,32 +168,29 @@ class GwClientApi {
                     tagExists
                         ? resolve(
                         getResponse({
-                            data: {name,description},
+                            data: {name, description},
                             status: 200,
                             statusText: 'OK'
                         }))
                         : reject({
-                            error:"helo" ,
+                            error: "helo",
                         }),
             );
         });
     }
 
-        static deleteTag({name, description})
-        {
-            return new Promise((resolve, reject) => {
-                process.nextTick(
-                    () =>
-                        data.tags
-                            ? resolve(getResponse({status: 204}))
-                            : reject({
-                                error: 'User with ' + userID + ' not found.',
-                            }),
-                );
-            });
-        }
+    static deleteTag({name, description}) {
+        return new Promise((resolve, reject) => {
+            process.nextTick(
+                () =>
+                    data.tags
+                        ? resolve(getResponse({status: 204}))
+                        : reject({
+                            error: 'User with ' + userID + ' not found.',
+                        }),
+            );
+        });
     }
+}
 
-    export
-    default
-    GwClientApi;
+export default GwClientApi;

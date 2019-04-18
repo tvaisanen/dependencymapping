@@ -92,17 +92,19 @@ export function updateTagSuccess(tag: Tag) {
 /*************** DELETE **************/
 
 export function deleteTag(props: FormAndOptionalCallback) {
-    /**
-     *  Async redux action
-     */
+    return async function (dispatch: Dispatch) {
+        dispatch(deleteTagById(props))
+    }
+}
+export function deleteTagById(props: FormAndOptionalCallback) {
     return async function (dispatch: Dispatch) {
         try {
             //const response = await GwClientApi.deleteTag(name);
-            const {form, callback} = props;
-            await api.tag.delete(form);
+            const {form:{_id, name}, callback} = props;
+            await api.tag.deleteById(_id);
 
-            dispatch(setInfoMessage(`Deleted tag: ${form.name}`));
-            dispatch(deleteTagSuccess(props.name));
+            dispatch(setInfoMessage(`Deleted tag: ${name}`));
+            dispatch(deleteTagSuccess(name));
 
             if (callback) {
                 callback();

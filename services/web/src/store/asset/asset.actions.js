@@ -10,7 +10,7 @@ import * as connectionActions from '../connection/connection.actions';
 import type {Asset, Connection, Dispatch, State} from "../types";
 import type {FormAndOptionalCallback} from "../store-action.arg-types";
 import {deleteConnections} from "../connection/connection.actions";
-import {deleteConnection} from "..";
+import {deleteConnection, deleteConnectionsToAsset} from "..";
 
 // ! refactor to use api
 // ? can be deleted already?
@@ -65,6 +65,28 @@ export function postAssetSuccess(asset: Asset) {
 
 /************** UPDATE ******************/
 
+export function updateAssetByName(props: FormAndOptionalCallback): Dispatch {
+    return async function (dispatch: Dispatch, getState: State): void {
+        // get id of asset
+        const {assets} = getState();
+        const {form, callback} = props;
+
+        const assetToUpdate = assets.filter(a => a.name === form.name)[0];
+
+        console.log(assetToUpdate)
+        console.log(form);
+
+        const modifiedAsset = {
+            ...assetToUpdate,
+            ...form
+        };
+
+        console.log(modifiedAsset)
+        dispatch(updateAsset({form: modifiedAsset}));
+
+    };
+}
+
 
 export function updateAsset(props: FormAndOptionalCallback): Dispatch {
     // updates asset/resource to the database
@@ -77,10 +99,17 @@ export function updateAsset(props: FormAndOptionalCallback): Dispatch {
             const updatedAsset = await
                 api
                     .asset
-                    .put(form)
+                    .putById(form)
                     .parseResponseContent();
 
-            dispatch(updateAssetSuccess({asset: updatedAsset}));
+            // the connections that might have been
+            // created by the update asset on the
+            // server side, are also created locally
+            // in the clients browser.
+            // The IDs are created on the server side
+            // and returned as embedded data in the updatedAsset
+
+            dispatch(updateAssetSuccess(updatedAsset));
             dispatch(setInfoMessage(`Updated asset: ${updatedAsset.name}`));
             dispatch(connectionActions.updateAssetConnections(updatedAsset));
             dispatch(activeMappingActions.updateAssetState(updatedAsset));
@@ -93,13 +122,32 @@ export function updateAsset(props: FormAndOptionalCallback): Dispatch {
     }
 }
 
-function updateAssetSuccess({asset}) {
+export function updateAssetSuccess(asset) {
     return {type: types.UPDATE_ASSET_SUCCESS, asset};
 }
 
 /*************** DELETE **************/
 
 export function deleteAsset(props: {name: string, callback:(any)=>void}) {
+
+    return async function (dispatch: Dispatch, getState: State) {
+
+        const {form:{name}, callback} = props;
+
+        await api.asset.deleteByName(name);
+
+        dispatch(deleteAssetSuccess(name));
+        dispatch(removeReferencesToDeletedAsset(name));
+        dispatch(mappingActions.removeDeletedAssetFromMappings(name));
+        dispatch(activeMappingActions.removeResourceFromActiveMapping({name}));
+        dispatch(setInfoMessage(`Deleted asset: ${name}`));
+        dispatch(deleteConnectionsToAsset(name));
+
+        // caller callback
+        callback ? callback() : null;
+    }
+}
+export function deleteAssetByName(props: {name: string, callback:(any)=>void}) {
 
     return async function (dispatch: Dispatch, getState: State) {
 
@@ -112,7 +160,27 @@ export function deleteAsset(props: {name: string, callback:(any)=>void}) {
         dispatch(mappingActions.removeDeletedAssetFromMappings(name));
         dispatch(activeMappingActions.removeResourceFromActiveMapping({name}));
         dispatch(setInfoMessage(`Deleted asset: ${name}`));
-        dispatch(deleteRelatedAssetConnections(name));
+        dispatch(deleteConnectionsToAsset(name));
+
+        // caller callback
+        callback ? callback() : null;
+    }
+}
+
+export function deleteAssetById(props: {name: string, callback:(any)=>void}) {
+
+    return async function (dispatch: Dispatch, getState: State) {
+
+        const {form:{_id, name}, callback} = props;
+
+        await api.asset.deleteById(_id);
+
+        dispatch(deleteAssetSuccess(name));
+        dispatch(removeReferencesToDeletedAsset(name));
+        dispatch(mappingActions.removeDeletedAssetFromMappings(name));
+        dispatch(activeMappingActions.removeResourceFromActiveMapping({name}));
+        dispatch(setInfoMessage(`Deleted asset: ${name}`));
+        dispatch(deleteConnectionsToAsset(name));
 
         // caller callback
         callback ? callback() : null;
@@ -123,17 +191,6 @@ export function deleteAssetSuccess(name: string) {
     return {type: types.DELETE_ASSET_SUCCESS, name};
 }
 
-export function deleteRelatedAssetConnections(name){
-    return function (dispatch: Dispatch, getState: State): void {
-        const { connections } = getState();
-
-        const connectionsToDelete = connections.filter(connection => {
-           return connection.target === name || connection.source === name;
-        });
-
-        deleteConnections(connectionsToDelete);
-    }
-}
 
 /*********************************************** */
 
@@ -192,6 +249,25 @@ export function loadAssetsSuccess(assets: Array<Asset>) {
     return {type: types.LOAD_ASSETS_SUCCESS, assets}
 }
 
+/// GET ONE
+
+export function getAssetByName(props: {name: string, callback:(any)=>void}) {
+
+    return async function (dispatch: Dispatch, getState: State) {
+
+        const {form:{name}, callback} = props;
+
+        const asset = await api
+            .asset
+            .getByName(name)
+            .parseResponseContent();
+
+       console.log(asset)
+
+        // caller callback
+        return callback ? callback(asset) : null;
+    }
+}
 export function loadAssetSuccess(asset: Asset) {
     return {type: types.LOAD_ASSET_SUCCESS, asset}
 }
@@ -222,10 +298,10 @@ export function loadAllAssets() {
     }
 }
 
-
-export function addAsset(asset: Asset) {
-    return {type: types.ADD_ASSET, asset}
-}
+// ! make sure that this is unused before deleting
+// export function addAsset(asset: Asset) {
+//     return {type: types.ADD_ASSET, asset}
+// }
 
 export function syncConnectionSourceAsset(connection: Connection) {
     /**

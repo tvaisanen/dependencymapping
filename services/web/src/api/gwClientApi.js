@@ -3,26 +3,9 @@ import axios from 'axios';
 import type {Asset, Connection, Mapping, Tag} from "../store/types";
 import {ASSET, CONNECTION, MAPPING, TAG} from "../constants";
 import ResponseParserConfig from './response-parser.config';
-import {
-    tagDetailUrl,
-    connectionDetailUrl,
-    connectionDetailBySourceAndTarget,
-    mappingsDetailUrl,
-    resourceDetailUrl,
-    API_HOST,
-    MAPPINGS_URL,
-    CONNECTIONS_URL,
-    RESOURCES_URL,
-    TAGS_URL
-} from "./paths";
+import paths from "./paths";
 import { createApiResponse } from './api-client.utils';
 import ApiResponse from './ApiResponse';
-
-
-console.group("Api client config");
-console.info(`URI: ${API_HOST}`);
-console.groupEnd();
-
 
 const assetParser = new ResponseParserConfig(ASSET);
 const connectionParser = new ResponseParserConfig(CONNECTION);
@@ -39,7 +22,6 @@ class Client {
     }
 
     static apiCall(fn, parserConfig, args = {}): ApiResponse {
-
         const promise = fn(args);
 
         console.groupCollapsed(
@@ -50,7 +32,7 @@ class Client {
         );
 
         console.info("%cargs:", "color: grey");
-        console.info(parserConfig)
+        console.info(parserConfig);
         console.info(args);
         console.info(promise);
         console.groupEnd();
@@ -59,137 +41,166 @@ class Client {
     }
 
 
+    /********************** ASSET METHODS **********************/
+
+
     /** asset api calls */
     static asset = {
-        //get:    args => Client.apiCall(Client.getAsset, new ParserConfig(ASSET), args),
-        getAll: args => Client.apiCall(Client.getAssets,    assetParser, args),
-        put:    args => Client.apiCall(Client.putAsset,     assetParser, args),
-        post:   args => Client.apiCall(Client.postAsset,    assetParser, args),
-        delete: args => Client.apiCall(Client.deleteAsset,  assetParser,  args),
+        getByName:      args => Client.apiCall(Client.getAssetByName,       assetParser, args),
+        getAll:         args => Client.apiCall(Client.getAssets,            assetParser, args),
+        putById:        args => Client.apiCall(Client.putAssetById,         assetParser, args),
+        post:           args => Client.apiCall(Client.postAsset,            assetParser, args),
+        deleteById:     args => Client.apiCall(Client.deleteAssetById,      assetParser, args),
+        deleteByName:   args => Client.apiCall(Client.deleteAssetByName,    assetParser, args),
     };
+
+    // refactor the static methods
+
+    static getAssets() {
+        return axios.get(paths.asset.collection);
+    }
+
+    static getAssetByName(name: string): Promise<any> {
+        const url = paths.asset.detail.byName(name)
+        return axios.delete(url);
+    }
+
+    static deleteAssetById(id: string): Promise<any> {
+        const url = paths.asset.detail.byId(id);
+        return axios.delete(url);
+    }
+
+    static deleteAssetByName(name: string): Promise<any> {
+        const url = paths.asset.detail.byName(name)
+        return axios.delete(url);
+    }
+
+    static postAsset(asset: Asset): Promise<any> {
+        return axios.post(paths.asset.collection, asset);
+    }
+
+    static putAssetById(asset: Asset): Promise<any> {
+        const url = paths.asset.detail.byId(asset._id);
+        return axios.put(url, asset);
+    }
+
+    static putAssetByName(asset: Asset): Promise<any> {
+        const url = paths.asset.detail.byName(asset.name)
+        return axios.put(url, asset);
+    }
+
+    /********************** CONNECTION METHODS **********************/
+
 
     /** connection api calls */
     static connection = {
-        getAll:     args => Client.apiCall(Client.getConnections, connectionParser, args),
-        //get:    args => Client.apiCall(Client.getAsset, new ParserConfig(ASSET), args),
-        put:        args => Client.apiCall(Client.putConnection, connectionParser, args),
-        post:       args => Client.apiCall(Client.postConnection, connectionParser, args),
-        delete:     args => Client.apiCall(Client.deleteConnection, connectionParser, args),
-        deleteById: args => Client.apiCall(Client.deleteConnectionById, connectionParser, args),
+        getAll:         args => Client.apiCall(Client.getConnections, connectionParser, args),
+        //get:          args => Client.apiCall(Client.getAsset, new ParserConfig(ASSET), args),
+        put:            args => Client.apiCall(Client.putConnection, connectionParser, args),
+        putByEndpoints: args => Client.apiCall(Client.putConnectionByEndpoints, connectionParser, args),
+        post:           args => Client.apiCall(Client.postConnection, connectionParser, args),
+        deleteById:     args => Client.apiCall(Client.deleteConnectionById, connectionParser, args),
+        deleteByName:   args => Client.apiCall(Client.deleteConnectionByEndpoints, connectionParser, args),
     };
-
-    /** mapping api calls */
-    static mapping = {
-        getAll: args => Client.apiCall(Client.getMappings, mappingParser, args),
-        //get:    args => Client.apiCall(Client.getAsset, new ParserConfig(ASSET), args),
-        put:    args => Client.apiCall(Client.putMapping, mappingParser, args),
-        post:   args => Client.apiCall(Client.postMapping, mappingParser, args),
-        delete: args => Client.apiCall(Client.deleteMapping, mappingParser, args),
-    };
-
-    /** tag api calls */
-    static tag = {
-        getAll: args => Client.apiCall(Client.getTags, tagParser, args),
-        //get:    args => Client.apiCall(Client.getAsset, new ParserConfig(ASSET), args),
-        put:    args => Client.apiCall(Client.putTag, tagParser, args),
-        post:   args => Client.apiCall(Client.postTag, tagParser, args),
-        delete: args => Client.apiCall(Client.deleteTag, tagParser, args),
-    };
-
-
-    // todo: refactor to getMappings
-    static getMappings() {
-        return axios.get(MAPPINGS_URL);
-    }
 
     static getConnections() {
-        return axios.get(CONNECTIONS_URL);
+        return axios.get(paths.connection.collection);
     }
-
-    static getConnectionsByAsset(assetName: string) {
-        return axios.get(`${CONNECTIONS_URL}?source=${encodeURIComponent(assetName)}`)
-    }
-
-    static getAssets() {
-        return axios.get(RESOURCES_URL);
-    }
-
-    static getTags() {
-        return axios.get(TAGS_URL);
-    }
-
-
-    /********************** ConnectionMETHODS **********************/
 
     static postConnection(connection: Connection): Promise<any> {
-        return axios.post(CONNECTIONS_URL, connection)
+        return axios.post(paths.connection.post, connection)
     }
 
     static putConnection(connection: Connection): Promise<any> {
-        console.info(connection)
-        const {source, target} = connection;
-        // const uri = connectionDetailBySourceAndTarget({source, target});
-        const uri = connectionDetailUrl(connection);
-        return axios.put(uri, connection);
+        const url= paths.connection.detail.byId(connection._id);
+        return axios.put(url, connection);
     }
 
-    static deleteConnection(connection: Connection): Promise<any> {
-        const { source, target } = connection;
-        const uri = connectionDetailBySourceAndTarget({source, target});
-        return axios.delete(uri);
+    static putConnectionByEndpoints(connection: Connection): Promise<any> {
+        const url= paths.connection.detail.byEndPoints(connection);
+        return axios.put(url, connection);
     }
 
+    static deleteConnectionByEndpoints(connection: Connection): Promise<any> {
+        const url = paths.connection.detail.byEndPoints(connection);
+        return axios.delete(url);
+    }
 
     static deleteConnectionById(connection: Connection): Promise<any> {
-        alert(JSON.stringify(connection))
-        const uri = connectionDetailUrl(connection);
-        alert(uri)
-        return axios.delete(uri);
+        const url = paths.connection.detail.byId(connection._id);
+        return axios.delete(url);
     }
 
 
     /********************** MAPPING METHODS **********************/
 
+    /** mapping api calls */
+    static mapping = {
+        getAll:         args => Client.apiCall(Client.getMappings, mappingParser, args),
+        //get:          args => Client.apiCall(Client.getAsset, new ParserConfig(ASSET), args),
+        put:            args => Client.apiCall(Client.putMapping, mappingParser, args),
+        post:           args => Client.apiCall(Client.postMapping, mappingParser, args),
+        deleteById:     args => Client.apiCall(Client.deleteMappingById, mappingParser, args),
+        deleteByName:   args => Client.apiCall(Client.deleteMappingByName, mappingParser, args),
+    };
+
+    static getMappings() {
+        return axios.get(paths.mapping.collection);
+    }
+
     static postMapping(mapping: Mapping): Promise<any> {
-        return axios.post(MAPPINGS_URL, mapping)
+        return axios.post(paths.mapping.post, mapping)
     }
 
     static putMapping(mapping: Mapping): Promise<any> {
-        return axios.put(mappingsDetailUrl({name: mapping.name}), mapping);
+        const url = paths.mapping.detail.byId(mapping._id)
+        return axios.put(url, mapping);
     }
 
-    static deleteMapping(name: string) {
-        return axios.delete(mappingsDetailUrl({name}));
+    static deleteMappingByName(name: string) {
+        const url = paths.mapping.detail.byName(name)
+        return axios.delete(url);
     }
 
-    /** ***********************************************************/
-
-    static deleteAsset(name: string): Promise<any> {
-        return axios.delete(resourceDetailUrl({name}));
+    static deleteMappingById(id: string) {
+        const url = paths.mapping.detail.byId(id)
+        return axios.delete(url);
     }
 
-    static postAsset(asset: Asset): Promise<any> {
-        return axios.post(RESOURCES_URL, asset);
-    }
 
-    static putAsset(asset: Asset): Promise<any> {
-        const path = resourceDetailUrl({name: asset.name});
-        return axios.put(path, asset);
+
+    /********************** TAG METHODS **********************/
+
+    /** tag api calls */
+    static tag = {
+        getAll:     args => Client.apiCall(Client.getTags, tagParser, args),
+        //get:    args => Client.apiCall(Client.getAsset, new ParserConfig(ASSET), args),
+        put:        args => Client.apiCall(Client.putTag, tagParser, args),
+        post:       args => Client.apiCall(Client.postTag, tagParser, args),
+        deleteById: args => Client.apiCall(Client.deleteTagById, tagParser, args),
+    };
+
+    static getTags() {
+        return axios.get(paths.tag.collection);
     }
 
     static postTag(tag: Tag) {
-        return axios.post(TAGS_URL, tag)
+        return axios.post(paths.tag.post, tag)
     }
 
     static putTag(tag: Tag) {
-        const path = tagDetailUrl(tag);
-        return axios.put(path, tag)
+        const url = paths.tag.detail.byName(tag.name);
+        return axios.put(url, tag)
     }
 
-    static deleteTag(props): Promise<any> {
+    static deleteTagByName(name): Promise<any> {
+        const url = paths.tag.detail.byName(name);
+        return axios.delete(url);
+    }
 
-        alert(`deleteTag: ${JSON.stringify(props.name)}`);
-        return axios.delete(tagDetailUrl({name: props.name}));
+    static deleteTagById(id): Promise<any> {
+        const url = paths.tag.detail.byId(id);
+        return axios.delete(url);
     }
 }
 

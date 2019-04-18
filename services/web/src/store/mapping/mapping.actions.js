@@ -5,6 +5,7 @@ import {clearActiveMappingSelection, updateActiveMapping} from '../active-mappin
 import { setInfoMessage } from '../../store/ui/ui.actions';
 
 import {routeApiActionError} from "../error-handling";
+import * as graphHelpers from '../../common/graph-helpers';
 
 import type {FormAndOptionalCallback} from "../store-action.arg-types";
 import type {Dispatch, State} from "../types";
@@ -82,16 +83,20 @@ function updateMappingSuccess({mapping}) {
 
 /*************** DELETE **************/
 
-export function deleteMapping(props: FormAndOptionalCallback) {
+export function deleteMappingById(props: FormAndOptionalCallback) {
 
     return async function (dispatch, getState) {
 
         try {
 
-            await api.mapping.delete();
-            dispatch(deleteMappingSuccess(props.name));
-            dispatch(setInfoMessage(`Deleted mapping: ${props.name}`));
-            dispatch(clearActiveMappingSelection(getState().graph));
+            const {form:{_id, name}, callback} = props;
+
+
+            await api.mapping.deleteById(_id);
+            dispatch(deleteMappingSuccess(name));
+            dispatch(setInfoMessage(`Deleted mapping: ${name}`));
+            //dispatch(clearActiveMappingSelection(getState().graph));
+            graphHelpers.clearGraph(getState().graph)
 
             // run caller callback
             props.callback ? props.callback() : null;
@@ -114,8 +119,7 @@ export function loadMappingsSuccess(mappings) {
 
 export function loadAllMappings() {
 
-    return async function (dispatch) {
-
+    return async function (dispatch, getState) {
         const mappings = await
             api
                 .mapping

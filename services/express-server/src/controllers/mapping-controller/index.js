@@ -3,6 +3,10 @@ module.exports = {
     get: require('./mapping.get'),
     getById: require('./mapping.getById'),
     post: require('./mapping.post'),
-    put: require('./mapping.put'),
-    deleteById: require('./mapping.deleteById')
+    putByName: require('./mapping.putByName'),
+    putById: require('./mapping.putById'),
+    deleteById: require('./mapping.deleteById'),
+    deleteByName: require('./mapping.deleteByName'),
+    export: require('./mapping.export'),
+    exportById: require('./mapping.exportById')
 };

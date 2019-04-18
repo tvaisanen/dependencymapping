@@ -1,5 +1,5 @@
 import React from 'react';
-import * as s from './mapping-menu.styled'
+import {PanelHeader, ScrollContent, ListItem, SidePanelMenu, SelectFirst} from './mapping-menu.styled'
 
 export const Menu = (
     {title,
@@ -11,29 +11,34 @@ export const Menu = (
         selected,
         listItemType
     }) => (
-    <s.SidePanelMenu>
-
-        <s.PanelHeader>
-                {title}
-        </s.PanelHeader>
-        <s.ScrollContent>
-            {listItems ?
-                listItems.map((listItem, i) => (
-                    <s.ListItem
-                        id={`list-item__${listItemType}`}
-                        selected={selected === listItem}
-                        darkButtons={darkButtons}
-                        key={i}
-                        onClick={() => onItemClick(listItem)}
-                        onMouseOver={onMouseOver ? () => onMouseOver(listItem) : null}
-                        onMouseOut={onMouseOut ? () => onMouseOut(listItem) : null}
-                    >
-                        {listItem}
-                    </s.ListItem>)
-                )
-                : null
+    <SidePanelMenu>
+        <PanelHeader>{title}</PanelHeader>
+        <ScrollContent>
+            {
+                // this is where the list items are rendered
+                // for the menu component
+                listItems ?
+                    listItems.map((listItem, i) => (
+                        <ListItem
+                            id={`list-item__${listItemType}`}
+                            selected={selected === listItem}
+                            darkButtons={darkButtons}
+                            key={i}
+                            onClick={() => onItemClick(listItem)}
+                            onMouseOver={onMouseOver ? () => onMouseOver(listItem) : null}
+                            onMouseOut={onMouseOut ? () => onMouseOut(listItem) : null}
+                        >
+                            {listItem}
+                        </ListItem>)
+                    )
+                    : null
             }
-            {title === "no selection" ? <s.SelectFirst>Create or select a mapping first, before adding assets.</s.SelectFirst> :  null }
-        </s.ScrollContent>
-    </s.SidePanelMenu>
+            {
+                // empty selection
+                title === "no selection" ? // todo: more robust safetyguard would be in place
+                    <SelectFirst>Create or select a mapping first, before adding assets.</SelectFirst>
+                    :  null
+            }
+        </ScrollContent>
+    </SidePanelMenu>
 );

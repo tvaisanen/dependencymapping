@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const AppGrid = styled.div`
+  // Main layout of the application
   display: grid;
   grid-template:
   "top-bar"        min-content
@@ -17,6 +18,7 @@ export const AppGrid = styled.div`
 `;
 
 export const MiddleSection = styled.div`
+  // middle section for the main layout
   display: grid;
   grid-template:
   "lists graph" 1fr
@@ -25,6 +27,7 @@ export const MiddleSection = styled.div`
 
 
 export const GraphCanvasContainer = styled.div` 
+    // container for mounting the graph canvas
     position: relative;
     width: 100%;
     height: 100%;
@@ -38,6 +41,8 @@ export const GraphCanvasContainer = styled.div`
 `;
 
 export const GraphCanvasInflater = styled.div`
+    // container inflater to hold graph canvas
+    // and action notifier popup
     grid-area: graph;
     width: auto;
     height: auto;

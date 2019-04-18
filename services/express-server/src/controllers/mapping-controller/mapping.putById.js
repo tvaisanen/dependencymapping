@@ -2,7 +2,8 @@ const Mapping = require('../../models').Mapping;
 const hal = require('../../utils/hal.utils');
 
 function mappingPut (req, res) {
-    const query = {name: req.params.id};
+    console.log(`mapping.router.putById(${req.params.id})`)
+    const query = {_id: req.params.id};
     console.log(query);
     const updatedMapping = req.body;
     Mapping.update(query, {

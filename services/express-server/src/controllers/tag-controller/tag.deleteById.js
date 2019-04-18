@@ -1,11 +1,19 @@
 const Tag = require('../../models').Tag;
 
 function tagDeleteById(req,res) {
-    const query = {name: req.params.id};
-    Tag.remove(query)
+    console.log("DELETE TAG")
+
+    const query = {_id: req.params.id};
+    console.log(query)
+
+    Tag.deleteOne(query)
         .then(msg => {
             console.log(msg);
-            res.status(204).json();
+             if (msg.deletedCount === 0){
+                res.status(404).json();
+            } else {
+                res.status(204).json();
+            }
         })
         .catch(err => res.status(400).json(err))
 }

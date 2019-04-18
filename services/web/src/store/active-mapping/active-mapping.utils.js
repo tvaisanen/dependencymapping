@@ -54,8 +54,6 @@ export function loadDependencyMap(mapId) {
          * just an array of id's which would be used in a following manner.
          */
 
-            // if resource is a string
-            // map resource id's to resource objects
         const activeMappingAssetObjects = parser.filterObjectsByName({
                 names: assetNameList,
                 objectList: assets
@@ -63,27 +61,16 @@ export function loadDependencyMap(mapId) {
 
 
         const nodes = activeMappingAssetObjects
-            .map(
-                resource => resourceHelpers.nodeElementFromResource(resource)
-            );
+        // todo: semantics up to date resources should be assets
+            .map(asset => resourceHelpers.nodeElementFromResource(asset));
 
         graphHelpers.addElements(cy, nodes);
         graphHelpers.addElements(cy, edges);
+        graphHelpers.updateLayout(cy, "cose");
+        setTimeout(() => {
+            graphHelpers.updateLayout(cy, layout)
+        }, 100);
 
-        dispatch(activeDetailActions.setAsActiveDetail({
-                data: mapping,
-                type: types.MAPPING
-            })
-        );
 
-        // update the graph layout
-        graphHelpers.updateLayout(cy, layout);
-
-        // console.group("LoadDependencyMap()");
-        // console.debug(assets);
-        // console.debug(mapping);
-        // console.debug(createEdgesFromThese);
-        // console.debug(edges);
-        // console.groupEnd();
     }
 };

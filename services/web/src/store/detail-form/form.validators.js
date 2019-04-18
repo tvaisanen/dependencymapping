@@ -9,6 +9,8 @@ function logTodo(message){
         );
 }
 
+const NAME_FIELD_ERROR = "Name is a required field";
+
 function validateConnectionForm(form) {
 
     const source = form.source === "" ? "source asset is required" : false;
@@ -29,7 +31,7 @@ function validateConnectionForm(form) {
 
 function validateAssetForm (form){
 
-    const name = form.name === "" ? "asset name is required" : false;
+    const name = form.name === "" ? NAME_FIELD_ERROR : false;
 
     return {
         formIsValid: !name,
@@ -38,18 +40,28 @@ function validateAssetForm (form){
 }
 
 function validateMappingForm (form){
-    logTodo("Validate Mapping Form!");
-     return {
-        formIsValid: true,
-        fieldErrors: false
+
+    const name = form.name === "" ? NAME_FIELD_ERROR : false;
+
+    // form is valid if no errors
+    const formIsValid = !name;
+
+    return {
+        formIsValid,
+        fieldErrors: {name}
     }
 }
 
 function validateTagForm (form){
-    logTodo("Validate Tag Form!");
+
+    const name = form.name === "" ? NAME_FIELD_ERROR : false;
+
+    // form is valid if no errors
+    const formIsValid = !name;
+
     return {
-        formIsValid: true,
-        fieldErrors: false
+        formIsValid,
+        fieldErrors: {name}
     }
 }
 

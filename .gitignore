@@ -8,6 +8,7 @@ static/**
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+secrets/
 
 # Generated files
 .idea/**/contentModel.xml
@@ -275,3 +276,5 @@ pip-selfcheck.json
 
 
 # End of https://www.gitignore.io/api/python,django
+
+/services/webapp

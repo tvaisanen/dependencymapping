@@ -25,8 +25,10 @@ import {
     DELETE_CONNECTION,
     DELETE_CONNECTIONS,
     UPDATE_CONNECTION,
-    ADD_CONNECTIONS
+    ADD_CONNECTIONS,
+    DELETE_CONNECTIONS_TO_ASSET
 } from "./connection.action-types";
+
 import type {FormAndOptionalCallback} from "../store-action.arg-types";
 
 const api = GwClientApi;
@@ -134,11 +136,15 @@ export function addConnections(connections: Array<Connection>) {
     return {type: ADD_CONNECTIONS, connections};
 }
 
-
 export function deleteConnection(props: FormAndOptionalCallback) {
     return async function (dispatch: Dispatch, getState: State) {
+        dispatch(deleteConnectionById(props))
+    }
+}
 
-        console.info(props)
+export function deleteConnectionById(props: FormAndOptionalCallback) {
+    return async function (dispatch: Dispatch, getState: State) {
+
         try {
 
             // for updating the source assets
@@ -146,6 +152,7 @@ export function deleteConnection(props: FormAndOptionalCallback) {
             const {form, callback} = props;
             const connection = form;
             const {assets} = getState();
+
 
             await api.connection.deleteById(form);
 
@@ -201,10 +208,14 @@ export function updateConnection(props: FormAndOptionalCallback) {
             // for updating the source assets
             // connected to list
             const {form, callback} = props;
+
+            // Use putByEndpoints since the _ids are created
+            // on the server side. Client generates the connections
+            // when required and those lack the ids..
             const updatedConnection = await
                 api
                     .connection
-                    .put(form)
+                    .putByEndpoints(form)
                     .parseResponseContent();
 
 
@@ -237,6 +248,8 @@ export function updateConnectionSuccess(connection: Connection) {
 
 export function updateAssetConnections(asset: Asset) {
     return function (dispatch: Dispatch, getState: State) {
+
+        // _embedded.connected_to({name, href})
 
         const {connections} = getState();
 
@@ -284,6 +297,11 @@ export function updateAssetConnections(asset: Asset) {
 
 export function deleteConnections(connections: Array<Connection>) {
     return {type: DELETE_CONNECTIONS, connections};
+}
+
+export function deleteConnectionsToAsset(assetName: string){
+    console.log('deleting')
+    return {type: DELETE_CONNECTIONS_TO_ASSET, assetName}
 }
 
 // public namespace

@@ -8,10 +8,62 @@ export const MAPPINGS_URL = `${API_URL}/mapping/`;
 export const CONNECTIONS_URL = `${API_URL}/connection/`;
 export const TAGS_URL = `${API_URL}/tag/`;
 export const RESOURCES_URL = `${API_URL}/asset/`;
+export const ASSETS_URL = `${API_URL}/asset/`;
 
 
-export function tagDetailUrl({name}) {
-    return `${TAGS_URL}${encodeURI(name)}/`;
+export const mapping = {
+    collection: MAPPINGS_URL,
+    post: MAPPINGS_URL,
+    detail: {
+        byId: (id)      => `${MAPPINGS_URL}${encodeURI(id)}/`,
+        byName: (name)  => `${MAPPINGS_URL}byName/${encodeURI(name)}/`
+    }
+};
+
+export const asset = {
+    collection: ASSETS_URL,
+    post: ASSETS_URL,
+    detail: {
+        byId: (id)      => `${ASSETS_URL}${encodeURI(id)}/`,
+        byName: (name)  => `${ASSETS_URL}byName/${encodeURI(name)}/`
+    }
+};
+
+export const connection = {
+    collection: CONNECTIONS_URL,
+    post: CONNECTIONS_URL,
+    detail: {
+        byId: (id)      => `${CONNECTIONS_URL}${encodeURI(id)}/`,
+        byName: (name)  => `${CONNECTIONS_URL}byName/${encodeURI(name)}/`,
+        byEndPoints: (connection) => `${CONNECTIONS_URL}?source=${encodeURI(connection.source)}&target=${encodeURI(connection.target)}`
+    }
+};
+
+export const tag = {
+    collection: TAGS_URL,
+    post: TAGS_URL,
+    detail: {
+        byId: (id)      => `${TAGS_URL}${encodeURI(id)}/`,
+        byName: (name)  => `${TAGS_URL}byName/${encodeURI(name)}/`
+    }
+};
+
+// todo: check if really redundant and clean up after.
+
+export function assetDetailUrlByName(name){
+    return `${ASSETS_URL}byName/${encodeURI(name)}/`;
+}
+
+export function assetDetailUrlById(id){
+    return `${ASSETS_URL}${encodeURI(id)}/`;
+}
+
+export function tagDetailUrl(props) {
+    return `${TAGS_URL}/${encodeURI(props._id)}/`;
+}
+
+export function tagDetailUrlById(id) {
+    return `${TAGS_URL}/${encodeURI(id)}/`;
 }
 
 export function connectionDetailUrl(connection) {
@@ -29,5 +81,11 @@ export function mappingsDetailUrl({name}) {
 export function resourceDetailUrl({name}) {
     return `${RESOURCES_URL}${encodeURI(name)}/`;
 }
-
 /* ****************************************** */
+
+export default {
+    asset,
+    connection,
+    mapping,
+    tag
+}

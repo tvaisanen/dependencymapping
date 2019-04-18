@@ -1,4 +1,4 @@
-version: '3'
+version: '3.1'
 
 services:
     mongo:
@@ -13,7 +13,7 @@ services:
     api:
         build:
           context: ./services/express-server
-          dockerfile: Dockerfile-dist
+          dockerfile: Dockerfile
         ports:
           - 3000:3000
         volumes:
@@ -23,6 +23,9 @@ services:
           - MONGO_PATH=mongo
           - MONGO_PORT=27017
           - DB_NAME=development
+
+        secrets:
+          - public-api-path
 
         networks:
           - closed # To access the database
@@ -61,13 +64,14 @@ services:
           - ./services/proxy/default.dev.conf:/etc/nginx/conf.d/default.conf
           - ./services/proxy/nginx.conf:/etc/nginx/nginx.conf
           - ./services/proxy/site-enabled/:/etc/nginx/site-enabled
+          - ./services/certbot/data/:/data/certbot
 
         networks:
           - public
           - closed
         ports:
-          - 80:80
-          - 443:443
+          - 8080:80
+          - 8443:443
         tty: true
         stdin_open: true
         depends_on:
@@ -83,4 +87,8 @@ services:
 networks:
    closed:
    public:
+
+secrets:
+  public-api-path:
+    file: ./secrets/public-api-path.txt
              

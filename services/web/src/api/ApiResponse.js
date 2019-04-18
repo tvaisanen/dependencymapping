@@ -23,8 +23,7 @@ class ApiResponse {
             if (Array.isArray(serverResponse.data)) {
                 return serverResponse
                     .data
-                    .map(o =>
-                        this.config.parseResponseData(o))
+                    .map(o => this.config.parseResponseData(o))
 
             } else {
                 // response.data.map(:w

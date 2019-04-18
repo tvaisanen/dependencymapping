@@ -147,7 +147,7 @@ const SelectAsset = (props) => (
     <SelectionField id={"select-asset-group"}>
         <Label
             color={props.error ? 'red': null}
-            for={`${props.label}-asset`}
+            id={`${props.label}-asset`}
         >{props.label}</Label>
         <Select
             selected={""}

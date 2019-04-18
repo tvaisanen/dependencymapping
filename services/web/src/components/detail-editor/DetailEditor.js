@@ -92,7 +92,7 @@ const DetailEditorGrid = (props: DetailEditorProps) => {
 
     // null if no selection
     const Selection = formComponentsByType[props.formType].selectionComponent;
-    console.log(props)
+
     return (
         <EditorGrid>
             <FormButtons/>
