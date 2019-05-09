@@ -7,11 +7,14 @@ function connectionDeleteById(req, res) {
     Connection.findOneAndDelete({_id:req.params.id})
         .then(msg => {
             console.log(msg)
-            res.status(204).json();
+            res.status(204).json("Succesfull Operation");
         })
         .catch(err => {
-            res.status(500).json({error: "Server error."})
-        })
+            if (err.name === 'CastError') {
+            res.status(404).json("Not Found")
+        }
+            res.status(500).json("Internal Server Error")
+        });
 }
 
 module.exports = connectionDeleteById;

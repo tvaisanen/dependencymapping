@@ -1,17 +1,18 @@
 const Tag = require('../../models').Tag;
 const hal = require('../../utils/hal.utils');
 
-function tagPutByName(req, res) {
+function tagPutById(req, res) {
 
     const query = {_id: req.params.id};
 
-    Tag.update(query, req.body)
-        .then(ok => {
-            Tag.findOne(query)
-                .then(tag => res.status(200).json(tag))
-                .catch(err => res.status(400).json(err))
-        })
-        .catch(err => res.status(400).send(err));
+    Tag.findOneAndUpdate(query, req.body, {new: true})
+        .then(tag => res.status(200).json(hal.serializeTag("", tag)))
+        .catch(err => {
+            if (err.name === 'CastError' || err.name === 'TypeError') {
+                res.status(404).json("Not Found")
+            }
+            res.status(500).json("Internal Server Error")
+        });
 }
 
-module.exports = tagPutByName;
+module.exports = tagPutById;

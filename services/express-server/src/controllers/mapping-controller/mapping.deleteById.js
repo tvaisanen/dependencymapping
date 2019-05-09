@@ -6,10 +6,12 @@ function mappingDeleteById(req, res) {
             if (msg.ok === 1) {
                 res.status(204).json();
             }
-        })
-        .catch(err => {
-            res.status(400).json({"error": err});
-        });
+        }).catch(err => {
+        if (err.name === 'CastError') {
+            res.status(404).json("Not Found")
+        }
+        res.status(500).json("Internal Server Error")
+    });
 };
 
 module.exports = mappingDeleteById;

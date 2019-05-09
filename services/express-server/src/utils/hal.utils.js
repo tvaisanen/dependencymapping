@@ -2,6 +2,7 @@ const { API_PATH } = require('./configs');
 
 function serializeAsset(host, resource) {
     console.log(`serialize: ${resource.name}`)
+    const _doc = resource._doc;
     try {
         return {
             _links: {
@@ -14,7 +15,7 @@ function serializeAsset(host, resource) {
                 connected_to: [
                     ...resource._doc.connected_to.map(asset => ({
                         name: asset,
-                        href: `${API_PATH}/asset/?name=${encodeURI(asset)}`
+                        href: `${API_PATH}/asset/byName/${encodeURI(asset)}`
                     }))
                 ],
                 tags: [
@@ -26,11 +27,15 @@ function serializeAsset(host, resource) {
                 group: {
                     name: resource._doc.group,
                     href: resource._doc.group !== "" ?
-                        `${API_PATH}/asset/?name=${encodeURI(resource._doc.group)}`
+                        `${API_PATH}/asset/byName/${encodeURI(resource._doc.group)}`
                         : "",
                 }
             },
-            ...resource._doc
+            _id: _doc._id,
+            description: _doc.description,
+            name: _doc.name,
+            nodeColor: _doc.nodeColor,
+            nodeShape: _doc.nodeShape,
         }
 
     } catch (err) {
@@ -95,20 +100,22 @@ function serializeTag(host, resource) {
 }
 
 function serializeConnection(host, resource) {
+    console.log(resource)
+    const { _doc } = resource;
     return {
         _links: {
             self: {
-                href: `${API_PATH}/tag/${resource._id}`
+                href: `${API_PATH}/connection/${resource._id}`
             }
         },
         _embedded: {
             target: {
                 name: resource.target,
-                href: `${API_PATH}/connection/${resource._doc.target}`
+                href: `${API_PATH}/asset/byName/${resource._doc.target}`
             },
             source: {
                 name: resource.source,
-                href: `${API_PATH}/connection/${resource._doc.source}`
+                href: `${API_PATH}/asset/byName/${resource._doc.source}`
             },
             tags: resource._doc.tags.map(tag => ({
                     name: tag,
@@ -116,11 +123,17 @@ function serializeConnection(host, resource) {
                 })
             )
         },
-        ...resource._doc
+        _id: _doc._id,
+        description: _doc.description,
+        edgeLabel: _doc.edgeLabel,
+        sourceArrow: _doc.sourceArrow,
+        targetArrow: _doc.targetArrow
     }
 }
 
 function serializeMapping(host, resource) {
+    const { _doc } = resource;
+    console.log(resource)
     try {
         return {
             _links: {
@@ -143,7 +156,9 @@ function serializeMapping(host, resource) {
                     }))
                 ],
             },
-            ...resource._doc
+            _id: _doc._id,
+            name: _doc.name,
+            description: _doc.description ? _doc.description : ""
         }
 
     } catch (err) {
@@ -152,7 +167,6 @@ function serializeMapping(host, resource) {
 }
 
 function serializeMappingWithAssetIDs(host, mapping) {
-    console.log(mapping)
     try {
         return {
             _links: {

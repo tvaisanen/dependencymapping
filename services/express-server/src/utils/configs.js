@@ -6,7 +6,7 @@ const fs = require('fs');
 const PUBLIC_URL_FILE = '/run/secrets/public-api-path';
 
 // default
-let API_PATH = `http://localhost:3000`;
+let API_PATH = `https://localhost:8443/api`;
 
 try {
     API_PATH = fs.readFileSync(PUBLIC_URL_FILE)

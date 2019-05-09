@@ -8,10 +8,15 @@ function mappingGetById(req, res) {
             if (!mapping) {
                 res.status(404).json(err.RESOURCE_NOT_FOUND)
             } else {
-                res.status(200).json(mapping);
+                res.status(200).json(hal.serializeMapping("", mapping));
             }
 
-        }).catch(err => res.status(400).json(err));
+        }).catch(err => {
+            if (err.name === 'CastError') {
+                res.status(404).json("Not Found")
+            }
+            res.status(500).json('Internal Server Error')
+        });
 }
 
 module.exports = mappingGetById;

@@ -1,5 +1,6 @@
 const Asset = require('../../models').Asset;
 const hal = require('../../utils/hal.utils');
+const config = require('../../utils/configs');
 //const { broadcastToClients } = require('../../socket/');
 
 function assetPost(req, res){
@@ -20,10 +21,8 @@ function assetPost(req, res){
                 if (existing) {
                     res
                         .status(409)
-                        .json({
-                            error: `Asset ${existing.name} already exists.`,
-                            pathToExisting: `/asset/${existing.name}`
-                        });
+                        .set('Location', `${config.API_PATH}/asset/${existing.name}`)
+                        .json({msg: "Conflict"});
                 } else {
                     asset
                         .save()

@@ -17,7 +17,9 @@ function mappingPost(req, res) {
                 });
             } else {
                 mapping.save().then(saved => {
-                    res.status(201).json(hal.serializeMapping(req.headers.host, saved));
+                    res.status(201)
+                        .json(hal
+                            .serializeMapping(req.headers.host, saved));
                 }).catch(err => {
                     console.log(err);
                 })

@@ -1,6 +1,6 @@
 const Connection = require('../../models').Connection;
 const hal = require('../../utils/hal.utils');
-
+const config = require('../../utils/configs');
 
 function connectionPost(req, res) {
 
@@ -14,7 +14,8 @@ function connectionPost(req, res) {
             console.log(connection)
 
             if (connection) {
-                res.status(409).json({msg: "already exists"})
+                res.set('Location', `${config.API_PATH}/connection/?source=${source}&target=${target}`);
+                res.status(409).json({msg: "Conflict"})
 
             } else {
                 const newConnection = new Connection(req.body);
